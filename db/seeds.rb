@@ -23,7 +23,10 @@ end
   { name: "حرفيون",       position: 5, icon: "craft",      description: "سباكة وكهرباء ونجارة وصيانة" },
   { name: "مدارس",        position: 6, icon: "school",     description: "مدارس وحضانات ومراكز دروس" },
   { name: "مخابز",        position: 7, icon: "bakery",     description: "مخابز بلدي وأفرنجي وحلويات" },
-  { name: "مواصلات",      position: 8, icon: "transport",  description: "مواقف ومكاتب نقل وتوصيل" }
+  { name: "مواصلات",      position: 8, icon: "transport",  description: "مواقف ومكاتب نقل وتوصيل" },
+  { name: "مساجد",        position: 9, icon: "mosque",     description: "مساجد وزوايا القرية" },
+  { name: "رياضة وشباب",  position: 10, icon: "sports",    description: "مركز الشباب والجيم والملاعب" },
+  { name: "خدمات عامة",   position: 11, icon: "services",  description: "البريد والمصالح الحكومية" }
 ].each do |attrs|
   category = Category.find_or_initialize_by(name: attrs[:name])
   category.position = attrs[:position] if category.new_record?

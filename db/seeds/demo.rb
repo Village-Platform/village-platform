@@ -1,15 +1,16 @@
 # Demo data for development: firm owners with subscriptions, firms in every category,
-# and news of every kind. All names and phone numbers are fictional.
+# and news of every kind. The owners and their firms are fictional; the "real places"
+# section at the end imports public Google Maps listings from aghour_al_kubra_places.json.
 # Idempotent: records are found by a unique key and only created once.
 
 admin = User.super_admin.order(:id).first!
 plans = SubscriptionPlan.all.index_by(&:name)
 categories = Category.all.index_by(&:name)
 
-# Approximate village center; firms are spread a few hundred meters around it.
-# Replace with real coordinates when owners add their locations.
-center_lat = 30.3290
-center_lng = 31.2390
+# Village center (from the Google Maps pins in aghour_al_kubra_places.json);
+# fictional firms are spread a few hundred meters around it.
+center_lat = 30.3010
+center_lng = 31.1450
 demo_location = ->(i) { [ (center_lat + ((i % 5) - 2) * 0.0021).round(6), (center_lng + ((i % 7) - 3) * 0.0017).round(6) ] }
 
 # ---- Firm owners and their firms ----
@@ -241,6 +242,87 @@ articles.each_with_index do |a, i|
       end
   end
 end
+
+# ---- Real places: public Google Maps listings (collected 2026-10-25) ----
+# Owned by the super admin, so they are visible without a subscription. When the real
+# owner subscribes, move the firm to their account from the dashboard.
+# The source says the data is partial and unverified, so:
+#   - places outside the village or with an uncertain locality are created as "pending"
+#     (review them in the dashboard),
+#   - temporarily closed places are created as "suspended" (hidden),
+#   - opening hours are kept only when Google says "Open 24 hours" (other values are snapshots).
+places = JSON.parse(File.read(Rails.root.join("db/seeds/aghour_al_kubra_places.json")))["places"]
+
+place_categories = {
+  "صيدليات" => [ "Pharmacy" ],
+  "أطباء" => [ "Hospital", "Doctor" ],
+  "مدارس" => [ "General education school", "Primary school", "Preparatory school", "Girls' high school", "Boys' high school" ],
+  "مطاعم" => [ "Restaurant", "Pizza restaurant", "Barbecue restaurant", "Creperie", "Coffee shop", "Cafe" ],
+  "محلات تجارية" => [ "Supermarket", "Grocery store", "Store", "General store", "Electronics store",
+                      "Organic food store", "Motorcycle parts store", "Jewelry store" ],
+  "مساجد" => [ "Mosque" ],
+  "رياضة وشباب" => [ "Gym", "Sports club" ],
+  "خدمات عامة" => [ "Post office" ]
+}.flat_map { |category, types| types.map { |type| [ type, category ] } }.to_h
+
+place_types_ar = {
+  "Pharmacy" => "صيدلية", "Hospital" => "مستشفى", "Doctor" => "مركز طبي",
+  "General education school" => "مدرسة", "Primary school" => "مدرسة ابتدائية",
+  "Preparatory school" => "مدرسة إعدادية", "Girls' high school" => "مدرسة ثانوية بنات",
+  "Boys' high school" => "مدرسة ثانوية بنين", "Restaurant" => "مطعم", "Pizza restaurant" => "مطعم بيتزا",
+  "Barbecue restaurant" => "مشويات", "Creperie" => "كريب", "Coffee shop" => "كافيه", "Cafe" => "كافيتريا",
+  "Supermarket" => "سوبر ماركت", "Grocery store" => "بقالة", "Store" => "محل", "General store" => "محل",
+  "Electronics store" => "أدوات كهربائية", "Organic food store" => "منتجات غذائية",
+  "Motorcycle parts store" => "قطع غيار موتوسيكلات", "Jewelry store" => "مجوهرات", "Mosque" => "مسجد",
+  "Gym" => "مركز شباب", "Sports club" => "جيم", "Post office" => "مكتب بريد"
+}
+
+# "+201008501029" -> "01008501029", "+20132432550" -> "0132432550"
+local_phone = ->(phone) { phone.presence&.sub(/\A\+20/, "0") }
+
+# Keeps the Arabic street part of the Google address ("أول شارع الشكارة"); drops plus codes,
+# English-only parts, the village/district/governorate/postal code and the country.
+village_address = "أجهور الكبرى، طوخ، القليوبية"
+short_address = lambda do |address|
+  parts = address.to_s.split(/[,،]/).map(&:strip).reject(&:empty?)
+  street = parts.take_while { |part| part !~ /Aghour|Toukh|Qalyubia|Egypt|طوخ|القليوبية|أجهور|اجهور/i }
+                .map { |part| part.sub(/\A[0-9A-Z]{4}\+[0-9A-Z]{2,3}\s*/, "") }
+                .reject { |part| part.empty? || part.match?(/\A[A-Za-z .]+\z/) } # "Unnamed Road", "Dandana"
+  street.any? ? "#{street.join('، ')}، #{village_address}" : village_address
+end
+
+imported = 0
+places.each do |place|
+  category_name = place_categories[place["category"]]
+  next unless category_name # unknown type: skip rather than guess
+
+  lat = place["latitude"]&.round(6)
+  lng = place["longitude"]&.round(6)
+  status =
+    if place["business_status"] == "temporarily_closed" then :suspended
+    elsif place["scope_status"] != "address_mentions_aghour_al_kubra" then :pending
+    else :active
+    end
+
+  description = [ place_types_ar.fetch(place["category"], place["category"]) ]
+  if place["rating"]
+    description << "تقييم خرائط جوجل: #{place['rating']} من 5 (#{place['review_count']} مراجعة)"
+  end
+  description << "المصدر: خرائط جوجل، بيانات غير مؤكدة"
+
+  Firm.find_or_create_by!(name: place["name"].strip, latitude: lat, longitude: lng) do |firm|
+    firm.owner = admin
+    firm.category = categories.fetch(category_name)
+    firm.status = status
+    firm.phone = local_phone.call(place["phone"])
+    firm.address = short_address.call(place["address"])
+    firm.working_hours = "٢٤ ساعة" if place["opening_hours_summary"] == "Open 24 hours"
+    firm.description = description.join(". ") + "."
+    imported += 1
+  end
+end
+
+puts "Real places: #{imported} imported from Google Maps (#{places.size} in the file)"
 
 puts "Demo data: #{owners.size} firm owners (password: password123), " \
      "#{Firm.count} firms, #{Article.count} articles, #{Subscription.count} subscriptions"

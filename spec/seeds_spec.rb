@@ -41,6 +41,23 @@ RSpec.describe "db/seeds.rb" do
     expect(Subscription.rejected).to exist
   end
 
+  it "imports the real places from Google Maps" do
+    seed!
+
+    real = Firm.where("description LIKE ?", "%خرائط جوجل%")
+    expect(real.count).to eq(51)
+    expect(real.active.count).to eq(46)
+    expect(real.pending.count).to eq(4)   # locality not verified
+    expect(real.suspended.count).to eq(1) # temporarily closed
+    expect(real.distinct.pluck(:owner_id)).to eq([ User.super_admin.first.id ])
+
+    pharmacy = Firm.find_by!(name: "صيدليات العمري [ اجهور الكبري ]")
+    expect(pharmacy.category.name).to eq("صيدليات")
+    expect(pharmacy.phone).to eq("01008501029")
+    expect(pharmacy.address).to eq("أول شارع الشكارة، أجهور الكبرى، طوخ، القليوبية")
+    expect(pharmacy.latitude).to eq(BigDecimal("30.298964"))
+  end
+
   it "is idempotent" do
     seed!
     counts = [ User.count, Firm.count, Article.count, Subscription.count, Category.count ]
