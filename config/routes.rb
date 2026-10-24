@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   # Health check for load balancers and uptime monitors.
   get "up" => "rails/health#show", as: :rails_health_check
 
+  # Opening the bare domain goes to the admin dashboard.
+  root to: redirect("/admin")
+
   # Files of the "database" Active Storage service (signed URLs that expire).
   get "files/:encoded_key/*filename", to: "stored_files#show", as: :stored_file, format: false
 

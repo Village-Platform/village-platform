@@ -50,7 +50,8 @@ RUN mkdir -p tmp/pids tmp/cache log storage && chown -R rails:rails tmp log stor
 USER 1000:1000
 
 # The bootsnap cache was built above; do not try to write it at runtime.
-ENV BOOTSNAP_READONLY="1"
+ENV BOOTSNAP_READONLY="1" \
+    HOME="/home/rails"
 
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 

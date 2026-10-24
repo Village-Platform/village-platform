@@ -37,6 +37,9 @@ module AghourServices
     # because the admin dashboard (/admin) needs cookies, sessions, flash and assets.
     config.api_only = false
 
+    # No image variants yet (no image_processing gem); keeps boot logs quiet.
+    config.active_storage.variant_processor = :disabled
+
     config.generators do |g|
       g.test_framework :rspec
       g.fixture_replacement :factory_bot, dir: "spec/factories"
