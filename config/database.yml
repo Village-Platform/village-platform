@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV["DB_HOST"] %>
+  username: <%= ENV["DB_USERNAME"] %>
+  password: <%= ENV["DB_PASSWORD"] %>
+
+development:
+  <<: *default
+  database: aghour_services_development
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+test:
+  <<: *default
+  database: aghour_services_test
+
+# In production set DATABASE_URL, e.g. postgres://user:pass@host/aghour_services_production
+production:
+  <<: *default
+  database: aghour_services_production

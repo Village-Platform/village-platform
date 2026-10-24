@@ -1,0 +1,10 @@
+en:
+  errors:
+    api:
+      unauthorized: "You need to sign in first."
+      forbidden: "You are not allowed to perform this action."
+      not_found: "Record not found."
+      invalid_credentials: "Invalid phone or password."
+      validation_failed: "Validation failed."
+      bad_request: "Missing or invalid parameters."
+      cannot_delete: "This record cannot be deleted."

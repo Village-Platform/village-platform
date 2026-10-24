@@ -1,0 +1,31 @@
+module ErrorHandling
+  extend ActiveSupport::Concern
+
+  included do
+    rescue_from ActiveRecord::RecordNotFound do
+      render_error(:not_found, "not_found")
+    end
+
+    rescue_from ActiveRecord::RecordInvalid do |e|
+      render_error(:unprocessable_content, "validation_failed", details: e.record.errors.to_hash(true))
+    end
+
+    rescue_from ActionController::ParameterMissing do |e|
+      render_error(:bad_request, "bad_request", details: { param: e.param })
+    end
+
+    rescue_from Pundit::NotAuthorizedError do
+      current_user ? render_error(:forbidden, "forbidden") : render_error(:unauthorized, "unauthorized")
+    end
+  end
+
+  private
+
+  # Consistent error shape:
+  # { "error": { "code": "not_found", "message": "...", "details": {...} } }
+  def render_error(status, code, details: nil)
+    body = { code:, message: I18n.t("errors.api.#{code}") }
+    body[:details] = details if details.present?
+    render json: { error: body }, status:
+  end
+end

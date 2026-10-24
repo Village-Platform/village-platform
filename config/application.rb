@@ -1,0 +1,41 @@
+require_relative "boot"
+
+require "rails"
+# Pick the frameworks you want:
+require "active_model/railtie"
+require "active_job/railtie"
+require "active_record/railtie"
+# require "active_storage/engine"   # enable later for firm images
+require "action_controller/railtie"
+# require "action_mailer/railtie"
+# require "action_mailbox/engine"
+# require "action_text/engine"
+require "action_view/railtie"
+# require "action_cable/engine"     # enable later for live notifications
+
+# Require the gems listed in Gemfile, including any gems
+# you've limited to :test, :development, or :production.
+Bundler.require(*Rails.groups)
+
+module AghourServices
+  class Application < Rails::Application
+    config.load_defaults 8.1
+
+    config.autoload_lib(ignore: %w[assets tasks])
+
+    config.time_zone = "Cairo"
+
+    # Arabic first, English as fallback. Clients choose via the Accept-Language header.
+    config.i18n.available_locales = %i[ar en]
+    config.i18n.default_locale = :ar
+    config.i18n.fallbacks = [:en]
+
+    # Only loads a smaller set of middleware suitable for API only apps.
+    config.api_only = true
+
+    config.generators do |g|
+      g.test_framework :rspec
+      g.fixture_replacement :factory_bot, dir: "spec/factories"
+    end
+  end
+end

@@ -1,0 +1,35 @@
+ar:
+  errors:
+    api:
+      unauthorized: "يجب تسجيل الدخول أولاً."
+      forbidden: "غير مسموح لك بتنفيذ هذا الإجراء."
+      not_found: "العنصر غير موجود."
+      invalid_credentials: "رقم الهاتف أو كلمة المرور غير صحيحة."
+      validation_failed: "البيانات المدخلة غير صحيحة."
+      bad_request: "بيانات ناقصة أو غير صحيحة."
+      cannot_delete: "لا يمكن حذف هذا العنصر."
+  activerecord:
+    models:
+      user: "مستخدم"
+      category: "قسم"
+      firm: "منشأة"
+      article: "خبر"
+    attributes:
+      user:
+        name: "الاسم"
+        phone: "رقم الهاتف"
+        email: "البريد الإلكتروني"
+        password: "كلمة المرور"
+        role: "الصلاحية"
+      category:
+        name: "اسم القسم"
+        description: "الوصف"
+      firm:
+        name: "اسم المنشأة"
+        category: "القسم"
+        phone: "رقم الهاتف"
+        status: "الحالة"
+      article:
+        title: "العنوان"
+        body: "المحتوى"
+        kind: "النوع"
