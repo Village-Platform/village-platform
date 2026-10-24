@@ -5,7 +5,7 @@
 # Expiry is time-based: an active subscription is "current" only while starts_at <= now < ends_at.
 class Subscription < ApplicationRecord
   SCREENSHOT_CONTENT_TYPES = %w[image/png image/jpeg image/webp].freeze
-  SCREENSHOT_MAX_SIZE = 5.megabytes
+  SCREENSHOT_MAX_SIZE = 4.megabytes # Vercel accepts request bodies up to 4.5MB
 
   enum :status, { pending: 0, active: 1, rejected: 2 }, default: :pending, validate: true
   enum :payment_method, { instapay: 0, vodafone_cash: 1 }, validate: true
@@ -80,7 +80,7 @@ class Subscription < ApplicationRecord
       errors.add(:payment_screenshot, I18n.t("errors.api.invalid_image_type"))
     end
     if blob.byte_size > SCREENSHOT_MAX_SIZE
-      errors.add(:payment_screenshot, I18n.t("errors.api.file_too_large", size: "5MB"))
+      errors.add(:payment_screenshot, I18n.t("errors.api.file_too_large", size: "4MB"))
     end
   end
 end

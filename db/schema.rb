@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_25_090002) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_25_120001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -100,6 +100,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_090002) do
     t.index ["dedupe_key"], name: "index_notifications_on_dedupe_key", unique: true, where: "(dedupe_key IS NOT NULL)"
     t.index ["user_id", "created_at"], name: "index_notifications_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_notifications_unread_by_user", where: "(read_at IS NULL)"
+  end
+
+  create_table "stored_files", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.binary "data", null: false
+    t.string "key", null: false
+    t.index ["key"], name: "index_stored_files_on_key", unique: true
   end
 
   create_table "subscription_plans", force: :cascade do |t|

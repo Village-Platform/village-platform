@@ -6,7 +6,11 @@ local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
-# Later, for production:
+# File bodies in PostgreSQL. For hosts without a persistent disk (Vercel).
+database:
+  service: Database
+
+# Later, for many or large files:
 # amazon:
 #   service: S3
 #   access_key_id: <%= ENV["AWS_ACCESS_KEY_ID"] %>

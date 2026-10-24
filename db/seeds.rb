@@ -4,7 +4,11 @@ admin = User.find_or_initialize_by(phone: User.normalize_value_for(:phone, ENV.f
 if admin.new_record?
   admin.assign_attributes(
     name: "مدير النظام",
-    password: ENV.fetch("SUPER_ADMIN_PASSWORD", "change-me-please"),
+    password: ENV.fetch("SUPER_ADMIN_PASSWORD") {
+      raise "Set SUPER_ADMIN_PASSWORD before seeding production" if Rails.env.production?
+
+      "change-me-please"
+    },
     role: :super_admin
   )
   admin.save!

@@ -21,8 +21,9 @@ Rails.application.configure do
   config.cache_store = :memory_store
   config.active_job.queue_adapter = :async
 
-  # Uploaded files (payment screenshots). Mount ./storage on a persistent volume, or switch to S3.
-  config.active_storage.service = ENV.fetch("ACTIVE_STORAGE_SERVICE", "local").to_sym
+  # Uploaded files (payment screenshots). "database" keeps them in PostgreSQL, which works on
+  # hosts without a persistent disk (Vercel). Use "local" with a mounted volume, or S3 later.
+  config.active_storage.service = ENV.fetch("ACTIVE_STORAGE_SERVICE", "database").to_sym
 
   config.active_record.dump_schema_after_migration = false
   config.active_record.attributes_for_inspect = [ :id ]

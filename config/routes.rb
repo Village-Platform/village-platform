@@ -2,6 +2,12 @@ Rails.application.routes.draw do
   # Health check for load balancers and uptime monitors.
   get "up" => "rails/health#show", as: :rails_health_check
 
+  # Files of the "database" Active Storage service (signed URLs that expire).
+  get "files/:encoded_key/*filename", to: "stored_files#show", as: :stored_file, format: false
+
+  # Vercel Cron jobs (protected by CRON_SECRET).
+  get "internal/cron/subscription_reminders", to: "internal/cron#subscription_reminders"
+
   # Admin dashboard (server-rendered, Arabic RTL) — super admins only.
   namespace :admin do
     get    "login",  to: "sessions#new",     as: :login

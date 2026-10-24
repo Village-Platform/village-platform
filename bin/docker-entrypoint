@@ -1,0 +1,12 @@
+#!/bin/bash -e
+# Runs before the server starts (every cold start on Vercel).
+# - Migrates the database, and on an empty database loads the schema and runs the seeds.
+#   Uses the direct (unpooled) connection when the provider offers one, because migrations
+#   take a session-level advisory lock that a transaction pooler does not keep.
+# - Set DB_PREPARE_ON_BOOT=0 to skip it (e.g. when you migrate from your machine instead).
+
+if [ "${DB_PREPARE_ON_BOOT:-1}" = "1" ] && [ "${*: -1:1}" != "console" ]; then
+  DATABASE_URL="${DATABASE_URL_UNPOOLED:-$DATABASE_URL}" ./bin/rails db:prepare
+fi
+
+exec "${@}"

@@ -17,11 +17,14 @@ require "action_view/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# Lets Active Storage find the custom "Database" service in lib/active_storage/service/.
+$LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
+
 module AghourServices
   class Application < Rails::Application
     config.load_defaults 8.1
 
-    config.autoload_lib(ignore: %w[assets tasks])
+    config.autoload_lib(ignore: %w[assets tasks active_storage])
 
     config.time_zone = "Cairo"
 

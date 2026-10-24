@@ -20,7 +20,7 @@ module Api
 
       # POST /api/v1/subscriptions  (JSON, or multipart/form-data when sending a screenshot)
       # subscription[subscription_plan_id], [payment_method] instapay|vodafone_cash,
-      # [transaction_reference], [payer_phone], [notes], [payment_screenshot] (PNG/JPEG/WEBP, max 5MB)
+      # [transaction_reference], [payer_phone], [notes], [payment_screenshot] (PNG/JPEG/WEBP, max 4MB)
       def create
         authorize Subscription
         subscription = current_user.subscriptions.create!(permitted_attributes(Subscription))

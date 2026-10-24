@@ -27,7 +27,7 @@ RSpec.describe "Payment screenshots", type: :request do
     expect(Subscription.count).to eq(0)
   end
 
-  it "rejects files larger than 5MB" do
+  it "rejects files larger than the size limit" do
     stub_const("Subscription::SCREENSHOT_MAX_SIZE", 10)
 
     submit(fixture_file_upload("receipt.png", "image/png"))
