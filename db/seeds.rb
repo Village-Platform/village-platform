@@ -28,4 +28,13 @@ Article.find_or_create_by!(title: "مرحباً بكم في تطبيق أجهو�
   a.published_at = Time.current
 end
 
-puts "Seeded: #{User.count} users, #{Category.count} categories, #{Article.count} articles"
+# Example plans — adjust prices from the admin endpoints.
+[
+  { name: "شهري",   price_cents: 10_000,  duration_days: 30,  max_firms: 1, position: 1 },
+  { name: "ربع سنوي", price_cents: 27_000, duration_days: 90,  max_firms: 2, position: 2 },
+  { name: "سنوي",   price_cents: 100_000, duration_days: 365, max_firms: 3, position: 3 }
+].each do |attrs|
+  SubscriptionPlan.find_or_create_by!(name: attrs[:name]) { |p| p.assign_attributes(attrs) }
+end
+
+puts "Seeded: #{User.count} users, #{Category.count} categories, #{Article.count} articles, #{SubscriptionPlan.count} plans"

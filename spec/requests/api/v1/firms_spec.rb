@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Firms API", type: :request do
   let(:category) { create(:category) }
-  let(:owner) { create(:user, :firm_admin) }
+  let(:owner) { create(:user, :subscribed) }
   let(:super_admin) { create(:user, :super_admin) }
 
   describe "GET /api/v1/firms" do
@@ -55,6 +55,35 @@ RSpec.describe "Firms API", type: :request do
     it "forbids normal users" do
       post "/api/v1/firms", params:, headers: auth_headers(create(:user)), as: :json
       expect(response).to have_http_status(:forbidden)
+    end
+
+    it "requires a current subscription" do
+      unsubscribed = create(:user, :firm_admin)
+      create(:subscription, :expired, user: unsubscribed)
+
+      post "/api/v1/firms", params:, headers: auth_headers(unsubscribed), as: :json
+
+      expect(response).to have_http_status(:forbidden)
+      expect(json.dig("error", "code")).to eq("subscription_required")
+    end
+
+    it "enforces the plan's max_firms" do
+      create(:firm, owner:, category:) # plan allows 1
+
+      post "/api/v1/firms", params:, headers: auth_headers(owner), as: :json
+
+      expect(json.dig("error", "code")).to eq("subscription_required")
+    end
+  end
+
+  describe "visibility after subscription expiry" do
+    it "hides active firms whose owner subscription expired" do
+      firm = create(:firm, name: "Expired owner", category:)
+      firm.owner.subscriptions.update_all(ends_at: 1.minute.ago)
+
+      get "/api/v1/firms"
+
+      expect(json["data"]).to be_empty
     end
   end
 

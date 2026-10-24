@@ -10,6 +10,15 @@ module ErrorHandling
       render_error(:unprocessable_content, "validation_failed", details: e.record.errors.to_hash(true))
     end
 
+    # Race on a unique index (e.g. same transfer reference submitted twice at once).
+    rescue_from ActiveRecord::RecordNotUnique do
+      render_error(:conflict, "duplicate")
+    end
+
+    rescue_from Subscriptions::ReviewError do
+      render_error(:unprocessable_content, "invalid_state")
+    end
+
     rescue_from ActionController::ParameterMissing do |e|
       render_error(:bad_request, "bad_request", details: { param: e.param })
     end

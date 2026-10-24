@@ -8,12 +8,21 @@ ar:
       validation_failed: "البيانات المدخلة غير صحيحة."
       bad_request: "بيانات ناقصة أو غير صحيحة."
       cannot_delete: "لا يمكن حذف هذا العنصر."
+      subscription_required: "تحتاج إلى اشتراك فعّال به أماكن متاحة لإضافة منشأة."
+      pending_subscription_exists: "لديك طلب اشتراك قيد المراجعة بالفعل."
+      invalid_state: "تمت مراجعة هذا الاشتراك بالفعل."
+      duplicate: "هذا العنصر موجود بالفعل."
+  payment_methods:
+    instapay: "إنستاباي"
+    vodafone_cash: "فودافون كاش"
   activerecord:
     models:
       user: "مستخدم"
       category: "قسم"
       firm: "منشأة"
       article: "خبر"
+      subscription_plan: "باقة اشتراك"
+      subscription: "اشتراك"
     attributes:
       user:
         name: "الاسم"
@@ -33,3 +42,14 @@ ar:
         title: "العنوان"
         body: "المحتوى"
         kind: "النوع"
+      subscription_plan:
+        name: "اسم الباقة"
+        price_cents: "السعر"
+        duration_days: "المدة بالأيام"
+        max_firms: "أقصى عدد للمنشآت"
+      subscription:
+        subscription_plan: "الباقة"
+        payment_method: "طريقة الدفع"
+        transaction_reference: "رقم العملية"
+        payer_phone: "رقم المحوِّل"
+        notes: "ملاحظات"

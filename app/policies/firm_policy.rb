@@ -19,12 +19,12 @@ class FirmPolicy < ApplicationPolicy
   end
 
   class Scope < ApplicationPolicy::Scope
-    # Public: active firms. Owners also see their own pending/suspended firms.
+    # Public: visible firms. Owners also see all of their own firms.
     def resolve
       return scope.all if super_admin?
-      return scope.active if user.nil?
+      return scope.visible if user.nil?
 
-      scope.active.or(scope.where(owner_id: user.id))
+      scope.visible.or(scope.where(owner_id: user.id))
     end
   end
 end

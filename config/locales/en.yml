@@ -8,3 +8,10 @@ en:
       validation_failed: "Validation failed."
       bad_request: "Missing or invalid parameters."
       cannot_delete: "This record cannot be deleted."
+      subscription_required: "You need an active subscription with free firm slots to add a firm."
+      pending_subscription_exists: "You already have a subscription request under review."
+      invalid_state: "This subscription has already been reviewed."
+      duplicate: "This record already exists."
+  payment_methods:
+    instapay: "InstaPay"
+    vodafone_cash: "Vodafone Cash"

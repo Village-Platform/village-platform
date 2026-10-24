@@ -2,12 +2,13 @@ class User < ApplicationRecord
   has_secure_password
 
   # user        -> normal village resident
-  # firm_admin  -> firm owner, can add/manage own firms (subscription-gated later)
+  # firm_admin  -> firm owner, can add/manage own firms while subscribed
   # super_admin -> developers / platform admins
   enum :role, { user: 0, firm_admin: 1, super_admin: 2 }, default: :user, validate: true
 
   has_many :firms, foreign_key: :owner_id, inverse_of: :owner, dependent: :restrict_with_error
   has_many :articles, foreign_key: :author_id, inverse_of: :author, dependent: :restrict_with_error
+  has_many :subscriptions, dependent: :restrict_with_error
 
   normalizes :phone, with: ->(phone) { phone.to_s.gsub(/[^\d+]/, "") }
   normalizes :email, with: ->(email) { email.strip.downcase.presence }
@@ -19,5 +20,17 @@ class User < ApplicationRecord
 
   def can_manage_firms?
     firm_admin? || super_admin?
+  end
+
+  def current_subscription
+    subscriptions.current.includes(:subscription_plan).order(:ends_at).first
+  end
+
+  # Super admins are unlimited; firm admins need a current subscription with free slots.
+  def can_add_firm?
+    return true if super_admin?
+
+    subscription = current_subscription
+    subscription.present? && firms.count < subscription.subscription_plan.max_firms
   end
 end

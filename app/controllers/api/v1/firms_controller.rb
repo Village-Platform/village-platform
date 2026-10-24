@@ -23,6 +23,8 @@ module Api
 
       def create
         authorize Firm
+        return render_error(:forbidden, "subscription_required") unless current_user.can_add_firm?
+
         firm = current_user.firms.create!(permitted_attributes(Firm))
         render_record(firm, FirmSerializer, status: :created)
       end
