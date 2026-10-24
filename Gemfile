@@ -6,6 +6,7 @@ gem "puma", ">= 5.0"
 gem "bootsnap", require: false
 gem "propshaft" # asset pipeline for the admin dashboard CSS
 gem "tzinfo-data", platforms: %i[ windows jruby ]
+gem "image_processing", "~> 1.2"
 
 # Auth & authorization
 gem "bcrypt", "~> 3.1.7"
