@@ -11,3 +11,7 @@
 .env.*
 !.env.example
 /coverage
+
+# Ignore key files for decrypting credentials and more.
+/config/*.key
+
