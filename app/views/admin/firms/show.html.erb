@@ -1,0 +1,42 @@
+<% content_for :title, @firm.name %>
+<div class="page-header">
+  <h1><%= @firm.name %> <%= enum_badge(Firm, :status, @firm.status) %></h1>
+  <div class="actions" style="display:flex;gap:8px">
+    <% unless @firm.active? %>
+      <%= button_to "اعتماد", approve_admin_firm_path(@firm), method: :patch, class: "btn" %>
+    <% end %>
+    <% unless @firm.suspended? %>
+      <%= button_to "إيقاف", suspend_admin_firm_path(@firm), method: :patch, class: "btn btn-danger",
+            form: { data: { confirm: "إيقاف المنشأة وإخفاؤها من التطبيق؟" } } %>
+    <% end %>
+    <%= link_to "تعديل", edit_admin_firm_path(@firm), class: "btn btn-ghost" %>
+    <%= button_to "حذف", admin_firm_path(@firm), method: :delete, class: "btn btn-ghost",
+          form: { data: { confirm: "حذف المنشأة نهائيًا؟" } } %>
+  </div>
+</div>
+
+<section class="card">
+  <dl class="details">
+    <dt>ظاهرة للجمهور</dt>
+    <dd>
+      <%= yes_no_badge(@visible) %>
+      <% unless @visible %>
+        <small>(تظهر فقط إذا كانت مفعّلة واشتراك المالك ساري)</small>
+      <% end %>
+    </dd>
+    <dt>القسم</dt><dd><%= @firm.category.name %></dd>
+    <dt>المالك</dt><dd><%= link_to @firm.owner.name, admin_user_path(@firm.owner) %> — <span class="ltr"><%= @firm.owner.phone %></span></dd>
+    <dt>الهاتف</dt><dd class="ltr"><%= @firm.phone.presence || "—" %></dd>
+    <dt>واتساب</dt><dd class="ltr"><%= @firm.whatsapp.presence || "—" %></dd>
+    <dt>العنوان</dt><dd><%= @firm.address.presence || "—" %></dd>
+    <dt>مواعيد العمل</dt><dd><%= @firm.working_hours.presence || "—" %></dd>
+    <dt>الموقع</dt>
+    <dd>
+      <% if @firm.latitude && @firm.longitude %>
+        <%= link_to "#{@firm.latitude}, #{@firm.longitude}", "https://maps.google.com/?q=#{@firm.latitude},#{@firm.longitude}", target: "_blank", rel: "noopener", class: "ltr" %>
+      <% else %>—<% end %>
+    </dd>
+    <dt>الوصف</dt><dd><%= simple_format(@firm.description.presence || "—") %></dd>
+    <dt>تاريخ الإضافة</dt><dd><%= fmt_time(@firm.created_at) %></dd>
+  </dl>
+</section>

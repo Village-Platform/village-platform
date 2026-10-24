@@ -1,0 +1,31 @@
+<% content_for :title, "باقات الاشتراك" %>
+<div class="page-header">
+  <h1>باقات الاشتراك</h1>
+  <%= link_to "إضافة باقة", new_admin_subscription_plan_path, class: "btn btn-gold" %>
+</div>
+<div class="table-wrap">
+  <% if @plans.any? %>
+    <table>
+      <thead><tr><th>الترتيب</th><th>الباقة</th><th>السعر</th><th>المدة</th><th>أقصى منشآت</th><th>مفعّلة</th><th></th></tr></thead>
+      <tbody>
+        <% @plans.each do |plan| %>
+          <tr>
+            <td><%= plan.position %></td>
+            <td><%= plan.name %></td>
+            <td><%= egp(plan.price_cents) %></td>
+            <td><%= plan.duration_days %> يوم</td>
+            <td><%= plan.max_firms %></td>
+            <td><%= yes_no_badge(plan.active) %></td>
+            <td class="actions">
+              <%= link_to "تعديل", edit_admin_subscription_plan_path(plan), class: "btn btn-ghost btn-sm" %>
+              <%= button_to "حذف", admin_subscription_plan_path(plan), method: :delete, class: "btn btn-danger btn-sm",
+                    form: { data: { confirm: "حذف الباقة؟ الباقات المشتراة لا تُحذف، أوقفها بدلاً من ذلك." } } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="empty">لا توجد باقات.</p>
+  <% end %>
+</div>

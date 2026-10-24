@@ -31,7 +31,7 @@ module AghourServices
     config.i18n.fallbacks = [:en]
 
     # The JSON API controllers inherit ActionController::API, but the app is not api_only,
-    # because the Avo admin dashboard needs cookies, sessions, flash and assets.
+    # because the admin dashboard (/admin) needs cookies, sessions, flash and assets.
     config.api_only = false
 
     config.generators do |g|

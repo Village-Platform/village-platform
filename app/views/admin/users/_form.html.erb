@@ -1,0 +1,19 @@
+<%= form_with model: [:admin, user], class: "form card" do |f| %>
+  <%= render "admin/shared/errors", record: user %>
+  <div class="field"><%= f.label :name, "الاسم" %><%= f.text_field :name, required: true %></div>
+  <div class="field"><%= f.label :phone, "رقم الهاتف" %><%= f.telephone_field :phone, required: true %></div>
+  <div class="field"><%= f.label :email, "البريد الإلكتروني" %><%= f.email_field :email %></div>
+  <div class="field">
+    <%= f.label :role, "الصلاحية" %><%= f.select :role, enum_options(User, :role) %>
+    <div class="hint">صاحب المنشأة يُمنح تلقائيًا عند اعتماد اشتراكه.</div>
+  </div>
+  <div class="field">
+    <%= f.label :password, "كلمة المرور" %>
+    <%= f.password_field :password, autocomplete: "new-password", required: user.new_record? %>
+    <% if user.persisted? %><div class="hint">اتركها فارغة للإبقاء على كلمة المرور الحالية.</div><% end %>
+  </div>
+  <div class="form-actions">
+    <%= f.submit "حفظ", class: "btn btn-gold" %>
+    <%= link_to "إلغاء", user.persisted? ? admin_user_path(user) : admin_users_path, class: "btn btn-ghost" %>
+  </div>
+<% end %>

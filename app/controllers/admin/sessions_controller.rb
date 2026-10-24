@@ -1,5 +1,5 @@
 module Admin
-  # Login page for the Avo dashboard. Only super admins can sign in.
+  # Login page for the dashboard. Only super admins can sign in.
   class SessionsController < ActionController::Base
     layout "admin_auth"
 
@@ -9,7 +9,7 @@ module Admin
     around_action :use_arabic
 
     def new
-      redirect_to "/admin" if AdminSession.find_admin(session)
+      redirect_to admin_root_path if AdminSession.find_admin(session)
     end
 
     def create
@@ -18,7 +18,7 @@ module Admin
       if user&.super_admin? && user.authenticate(params[:password].to_s)
         reset_session # prevent session fixation
         AdminSession.sign_in(session, user)
-        redirect_to "/admin"
+        redirect_to admin_root_path
       else
         flash.now[:alert] = I18n.t("admin.sessions.invalid")
         render :new, status: :unprocessable_content

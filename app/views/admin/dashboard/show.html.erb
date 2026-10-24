@@ -1,0 +1,81 @@
+<% content_for :title, "الرئيسية" %>
+<div class="page-header"><h1>أهلاً <%= current_admin.name %></h1></div>
+
+<div class="stats">
+  <div class="stat attention"><div class="value"><%= @stats[:pending_subscriptions] %></div><div class="label">اشتراكات قيد المراجعة</div></div>
+  <div class="stat"><div class="value"><%= @stats[:current_subscriptions] %></div><div class="label">اشتراكات سارية</div></div>
+  <div class="stat attention"><div class="value"><%= @stats[:pending_firms] %></div><div class="label">منشآت قيد المراجعة</div></div>
+  <div class="stat"><div class="value"><%= @stats[:visible_firms] %></div><div class="label">منشآت ظاهرة للجمهور</div></div>
+  <div class="stat"><div class="value"><%= @stats[:users] %></div><div class="label">المستخدمون</div></div>
+  <div class="stat"><div class="value"><%= @stats[:published_articles] %></div><div class="label">أخبار منشورة</div></div>
+</div>
+
+<div class="grid grid-2">
+  <section class="card">
+    <h2>طلبات اشتراك تنتظر المراجعة</h2>
+    <% if @pending.any? %>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>صاحب الطلب</th><th>الباقة</th><th>المبلغ</th><th>التاريخ</th></tr></thead>
+          <tbody>
+            <% @pending.each do |s| %>
+              <tr>
+                <td><%= link_to s.user.name, admin_subscription_path(s) %></td>
+                <td><%= s.subscription_plan.name %></td>
+                <td><%= egp(s.amount_cents) %></td>
+                <td><%= fmt_date(s.created_at) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p class="empty">لا توجد طلبات جديدة.</p>
+    <% end %>
+  </section>
+
+  <section class="card">
+    <h2>اشتراكات تنتهي خلال ٧ أيام</h2>
+    <% if @expiring.any? %>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>صاحب المنشأة</th><th>الباقة</th><th>ينتهي في</th><th>متبقي</th></tr></thead>
+          <tbody>
+            <% @expiring.each do |s| %>
+              <tr>
+                <td><%= link_to s.user.name, admin_subscription_path(s) %></td>
+                <td><%= s.subscription_plan.name %></td>
+                <td><%= fmt_date(s.ends_at) %></td>
+                <td><%= s.days_left %> يوم</td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p class="empty">لا يوجد.</p>
+    <% end %>
+  </section>
+
+  <section class="card">
+    <h2>منشآت تنتظر الاعتماد</h2>
+    <% if @pending_firms.any? %>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>المنشأة</th><th>القسم</th><th>المالك</th></tr></thead>
+          <tbody>
+            <% @pending_firms.each do |firm| %>
+              <tr>
+                <td><%= link_to firm.name, admin_firm_path(firm) %></td>
+                <td><%= firm.category.name %></td>
+                <td><%= firm.owner.name %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p class="empty">لا يوجد.</p>
+    <% end %>
+  </section>
+</div>

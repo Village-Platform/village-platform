@@ -1,0 +1,46 @@
+<% content_for :title, "الاشتراكات" %>
+<div class="page-header"><h1>الاشتراكات</h1></div>
+
+<%= form_with url: admin_subscriptions_path, method: :get, class: "filters" do |f| %>
+  <div class="field">
+    <%= f.label :q, "بحث" %>
+    <%= f.search_field :q, value: params[:q], placeholder: "رقم العملية أو الهاتف أو الاسم" %>
+  </div>
+  <div class="field">
+    <%= f.label :status, "الحالة" %>
+    <%= f.select :status, options_for_select(enum_options(Subscription, :status), params[:status]), include_blank: "الكل" %>
+  </div>
+  <div class="field">
+    <%= f.label :payment_method, "طريقة الدفع" %>
+    <%= f.select :payment_method, options_for_select(enum_options(Subscription, :payment_method), params[:payment_method]), include_blank: "الكل" %>
+  </div>
+  <%= f.submit "تصفية", class: "btn" %>
+<% end %>
+
+<div class="table-wrap">
+  <% if @subscriptions.any? %>
+    <table>
+      <thead>
+        <tr><th>#</th><th>صاحب الطلب</th><th>الباقة</th><th>المبلغ</th><th>الدفع</th><th>رقم العملية</th><th>الحالة</th><th>الوضع</th><th>التاريخ</th></tr>
+      </thead>
+      <tbody>
+        <% @subscriptions.each do |s| %>
+          <tr>
+            <td><%= link_to s.id, admin_subscription_path(s) %></td>
+            <td><%= link_to s.user.name, admin_subscription_path(s) %><br><small class="ltr"><%= s.user.phone %></small></td>
+            <td><%= s.subscription_plan.name %></td>
+            <td><%= egp(s.amount_cents) %></td>
+            <td><%= enum_label(Subscription, :payment_method, s.payment_method) %></td>
+            <td class="ltr"><%= s.transaction_reference %></td>
+            <td><%= enum_badge(Subscription, :status, s.status) %></td>
+            <td><%= enum_badge(Subscription, :state, s.state) %></td>
+            <td><%= fmt_date(s.created_at) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="empty">لا توجد نتائج.</p>
+  <% end %>
+</div>
+<%= render "admin/shared/pagination", meta: @meta %>

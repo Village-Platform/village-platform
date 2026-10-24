@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= [content_for(:title), t("admin.app_name")].compact.join(" · ") %></title>
+  <%= csrf_meta_tags %>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <%= stylesheet_link_tag "admin" %>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <% if File.exist?(Rails.public_path.join("brand/logo.png")) %>
+          <img src="/brand/logo.png" alt="">
+        <% end %>
+        <strong>أجهور الكبرى</strong>
+        <small>لوحة التحكم</small>
+      </div>
+      <nav>
+        <%= nav_link "الرئيسية", admin_root_path, exact: true %>
+        <%= nav_link "الاشتراكات", admin_subscriptions_path %>
+        <%= nav_link "المنشآت", admin_firms_path %>
+        <%= nav_link "الأقسام", admin_categories_path %>
+        <%= nav_link "الأخبار", admin_articles_path %>
+        <%= nav_link "باقات الاشتراك", admin_subscription_plans_path %>
+        <%= nav_link "المستخدمون", admin_users_path %>
+      </nav>
+      <div class="sidebar-footer">
+        <span><%= current_admin.name %></span>
+        <%= button_to "تسجيل الخروج", admin_logout_path, method: :delete, class: "btn btn-ghost btn-sm" %>
+      </div>
+    </aside>
+
+    <main class="content">
+      <% flash.each do |type, message| %>
+        <div class="flash flash-<%= type %>"><%= message %></div>
+      <% end %>
+      <%= yield %>
+    </main>
+  </div>
+
+  <script>
+    // Confirm dialogs for forms with data-confirm (no JS framework needed).
+    document.addEventListener("submit", function (event) {
+      var message = event.target.dataset.confirm;
+      if (message && !window.confirm(message)) event.preventDefault();
+    });
+  </script>
+</body>
+</html>

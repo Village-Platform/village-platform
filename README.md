@@ -8,7 +8,7 @@ The native Android app consumes it. Kept simple on purpose; extend step by step.
 - Ruby 4.0.1, Rails 8.1, PostgreSQL
 - Auth: `has_secure_password` (bcrypt) + JWT bearer tokens (30 days)
 - Authorization: Pundit
-- Admin dashboard: Avo 4 Community at `/admin` (Arabic, right-to-left)
+- Admin dashboard: plain Rails views at `/admin` (Arabic, right-to-left)
 - Tests: RSpec + FactoryBot
 - Locale: Arabic by default (`Accept-Language: en` for English)
 
@@ -82,20 +82,25 @@ curl localhost:3000/api/v1/me -H "Authorization: Bearer <token>"
 
 Open `http://localhost:3000/admin/login` and sign in with the seeded super admin.
 
-- Built with [Avo 4](https://docs.avohq.io/4.0/) Community (free). Arabic UI, right-to-left automatically.
-- Only `super_admin` users can sign in. The session lasts 12 hours; login is rate-limited.
-  Access is re-checked on every request, so a demoted admin loses access at once.
-- Brand: dark green accent. Put `logo.png`, `logomark.png` and `favicon.ico` in `public/brand/`
-  and uncomment the lines in `config/initializers/avo.rb`.
-- Sections: الاشتراكات (review queue, start page), المنشآت, الأقسام, الأخبار, باقات الاشتراك, المستخدمون.
-- Actions:
-  - Subscriptions: **اعتماد الاشتراك** / **رفض الاشتراك** (with reason). They use the same services as the API,
-    so renewal stacking, role promotion and notifications behave the same.
-  - Firms: **اعتماد المنشأة** / **إيقاف المنشأة**.
-- The payment screenshot shows on the subscription page.
+- Built in-house with plain Rails views (ERB + one CSS file, `app/assets/stylesheets/admin.css`).
+  No admin gem, no JavaScript framework, nothing to license.
+- Arabic, right-to-left, dark green and gold. Works on phone screens too.
+- Only `super_admin` users can sign in. The session lasts 12 hours, login is rate-limited,
+  and access is re-checked on every request (a demoted admin loses access at once).
+- Logo: put `logo.png` in `public/brand/`; it shows on the login page and sidebar.
 
-Note: per-resource Pundit authorization, dashboards with charts, and the custom menu are paid Avo add-ons.
-They are not needed while only super admins use the dashboard.
+| Page | What you can do |
+|------|-----------------|
+| الرئيسية | Counters, pending subscription requests, subscriptions ending within 7 days, firms waiting for approval |
+| الاشتراكات | Filter / search, view details and the payment screenshot, approve or reject with a reason |
+| المنشآت | Filter / search, add, edit, approve, suspend, delete; shows whether the firm is visible to the public |
+| الأقسام | Add, edit, order, enable/disable (can't delete a category that has firms) |
+| الأخبار | Draft, publish now or schedule; filter by kind |
+| باقات الاشتراك | Prices in EGP, duration, max firms (purchased plans can only be deactivated) |
+| المستخدمون | Search, change role, reset password, see subscriptions and firms |
+
+Approve / reject use the same services as the API, so renewal stacking, role promotion and notifications
+behave the same everywhere.
 
 ## Subscriptions (firm owners)
 

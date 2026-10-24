@@ -1,0 +1,17 @@
+<%= form_with model: [:admin, plan], class: "form card" do |f| %>
+  <%= render "admin/shared/errors", record: plan %>
+  <div class="field"><%= f.label :name, "اسم الباقة" %><%= f.text_field :name, required: true %></div>
+  <div class="field">
+    <%= f.label :price, "السعر (جنيه)" %>
+    <%= f.number_field :price, value: plan.price_cents && plan.price_cents / 100.0, step: 0.01, min: 0, required: true %>
+  </div>
+  <div class="field"><%= f.label :duration_days, "المدة (يوم)" %><%= f.number_field :duration_days, min: 1, required: true %></div>
+  <div class="field"><%= f.label :max_firms, "أقصى عدد منشآت" %><%= f.number_field :max_firms, min: 1, required: true %></div>
+  <div class="field"><%= f.label :position, "الترتيب" %><%= f.number_field :position, min: 0 %></div>
+  <div class="field"><%= f.label :description, "الوصف" %><%= f.text_area :description, rows: 3 %></div>
+  <div class="field checkbox"><%= f.check_box :active %><%= f.label :active, "مفعّلة (متاحة للاشتراك)" %></div>
+  <div class="form-actions">
+    <%= f.submit "حفظ", class: "btn btn-gold" %>
+    <%= link_to "إلغاء", admin_subscription_plans_path, class: "btn btn-ghost" %>
+  </div>
+<% end %>

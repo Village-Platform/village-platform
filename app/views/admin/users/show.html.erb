@@ -1,0 +1,64 @@
+<% content_for :title, @user.name %>
+<div class="page-header">
+  <h1><%= @user.name %> <%= enum_badge(User, :role, @user.role) %></h1>
+  <%= link_to "تعديل", edit_admin_user_path(@user), class: "btn btn-ghost" %>
+</div>
+
+<div class="grid grid-2">
+  <section class="card">
+    <h2>البيانات</h2>
+    <dl class="details">
+      <dt>الهاتف</dt><dd class="ltr"><%= @user.phone %></dd>
+      <dt>البريد</dt><dd class="ltr"><%= @user.email.presence || "—" %></dd>
+      <dt>تاريخ التسجيل</dt><dd><%= fmt_time(@user.created_at) %></dd>
+      <dt>الاشتراك الحالي</dt>
+      <dd>
+        <% if @current_subscription %>
+          <%= @current_subscription.subscription_plan.name %> — حتى <%= fmt_date(@current_subscription.ends_at) %>
+          (<%= @current_subscription.days_left %> يوم)
+        <% else %>
+          <%= badge("لا يوجد") %>
+        <% end %>
+      </dd>
+    </dl>
+  </section>
+
+  <section class="card">
+    <h2>المنشآت</h2>
+    <% if @firms.any? %>
+      <ul>
+        <% @firms.each do |firm| %>
+          <li><%= link_to firm.name, admin_firm_path(firm) %> — <%= firm.category.name %> <%= enum_badge(Firm, :status, firm.status) %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="empty">لا توجد منشآت.</p>
+    <% end %>
+  </section>
+</div>
+
+<section class="card" style="margin-top:16px">
+  <h2>سجل الاشتراكات</h2>
+  <% if @subscriptions.any? %>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>الباقة</th><th>المبلغ</th><th>الحالة</th><th>الوضع</th><th>من</th><th>إلى</th></tr></thead>
+        <tbody>
+          <% @subscriptions.each do |s| %>
+            <tr>
+              <td><%= link_to s.id, admin_subscription_path(s) %></td>
+              <td><%= s.subscription_plan.name %></td>
+              <td><%= egp(s.amount_cents) %></td>
+              <td><%= enum_badge(Subscription, :status, s.status) %></td>
+              <td><%= enum_badge(Subscription, :state, s.state) %></td>
+              <td><%= fmt_date(s.starts_at) %></td>
+              <td><%= fmt_date(s.ends_at) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p class="empty">لا توجد اشتراكات.</p>
+  <% end %>
+</section>

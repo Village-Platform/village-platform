@@ -1,0 +1,36 @@
+<% content_for :title, "المستخدمون" %>
+<div class="page-header">
+  <h1>المستخدمون</h1>
+  <%= link_to "إضافة مستخدم", new_admin_user_path, class: "btn btn-gold" %>
+</div>
+
+<%= form_with url: admin_users_path, method: :get, class: "filters" do |f| %>
+  <div class="field"><%= f.label :q, "بحث" %><%= f.search_field :q, value: params[:q], placeholder: "الاسم أو الهاتف أو البريد" %></div>
+  <div class="field">
+    <%= f.label :role, "الصلاحية" %>
+    <%= f.select :role, options_for_select(enum_options(User, :role), params[:role]), include_blank: "الكل" %>
+  </div>
+  <%= f.submit "تصفية", class: "btn" %>
+<% end %>
+
+<div class="table-wrap">
+  <% if @users.any? %>
+    <table>
+      <thead><tr><th>الاسم</th><th>الهاتف</th><th>البريد</th><th>الصلاحية</th><th>تاريخ التسجيل</th></tr></thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= link_to user.name, admin_user_path(user) %></td>
+            <td class="ltr"><%= user.phone %></td>
+            <td class="ltr"><%= user.email.presence || "—" %></td>
+            <td><%= enum_badge(User, :role, user.role) %></td>
+            <td><%= fmt_date(user.created_at) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="empty">لا توجد نتائج.</p>
+  <% end %>
+</div>
+<%= render "admin/shared/pagination", meta: @meta %>

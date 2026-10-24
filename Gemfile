@@ -4,16 +4,13 @@ gem "rails", "~> 8.1.3"
 gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
 gem "bootsnap", require: false
-gem "propshaft" # asset pipeline, required by Avo
+gem "propshaft" # asset pipeline for the admin dashboard CSS
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 # Auth & authorization
 gem "bcrypt", "~> 3.1.7"
 gem "jwt", "~> 3.1"
 gem "pundit", "~> 2.5"
-
-# Admin dashboard (Community edition, free) — mounted at /admin
-gem "avo", ">= 4.3"
 
 # API helpers
 gem "rack-cors"

@@ -10,9 +10,8 @@ RSpec.describe "Admin dashboard login", type: :request do
     expect(response.body).to include('dir="rtl"')
   end
 
-  it "redirects guests from the dashboard to the login page" do
-    get "/admin/resources/subscriptions"
-
+  it "redirects guests to the login page" do
+    get "/admin"
     expect(response).to redirect_to("/admin/login")
   end
 
@@ -20,7 +19,7 @@ RSpec.describe "Admin dashboard login", type: :request do
     post "/admin/login", params: { phone: super_admin.phone, password: "password123" }
     expect(response).to redirect_to("/admin")
 
-    get "/admin/resources/subscriptions"
+    get "/admin"
     expect(response).to have_http_status(:ok)
   end
 
@@ -30,7 +29,7 @@ RSpec.describe "Admin dashboard login", type: :request do
     post "/admin/login", params: { phone: owner.phone, password: "password123" }
 
     expect(response).to have_http_status(:unprocessable_content)
-    get "/admin/resources/subscriptions"
+    get "/admin"
     expect(response).to redirect_to("/admin/login")
   end
 
@@ -40,27 +39,27 @@ RSpec.describe "Admin dashboard login", type: :request do
   end
 
   it "expires the session after 12 hours" do
-    post "/admin/login", params: { phone: super_admin.phone, password: "password123" }
+    sign_in_admin(super_admin)
 
     travel 13.hours do
-      get "/admin/resources/subscriptions"
+      get "/admin"
       expect(response).to redirect_to("/admin/login")
     end
   end
 
   it "loses access when demoted" do
-    post "/admin/login", params: { phone: super_admin.phone, password: "password123" }
+    sign_in_admin(super_admin)
     super_admin.update!(role: :user)
 
-    get "/admin/resources/subscriptions"
+    get "/admin"
     expect(response).to redirect_to("/admin/login")
   end
 
   it "signs out" do
-    post "/admin/login", params: { phone: super_admin.phone, password: "password123" }
+    sign_in_admin(super_admin)
     delete "/admin/logout"
 
-    get "/admin/resources/subscriptions"
+    get "/admin"
     expect(response).to redirect_to("/admin/login")
   end
 end
