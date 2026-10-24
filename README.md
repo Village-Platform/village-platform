@@ -161,7 +161,7 @@ builds the image on every deploy and sends all traffic to it.
 |-------|------------------------|
 | App | `Dockerfile.vercel` (Ruby 4.0.1, Puma on `PORT`=3000, non-root) |
 | Database | Neon PostgreSQL from the Vercel Marketplace (sets `DATABASE_URL` and `DATABASE_URL_UNPOOLED`) |
-| Migrations / seeds | `bin/docker-entrypoint` runs `db:prepare` on start: migrates, and seeds an empty database |
+| Migrations / seeds | `bin/docker-entrypoint` runs `db:prepare_locked` on start: migrates, and seeds an empty database. An advisory lock makes containers that start together take turns |
 | Files | `database` Active Storage service: screenshots are kept in PostgreSQL (`stored_files`), served by signed 5-minute URLs |
 | Daily reminders | Vercel Cron calls `GET /internal/cron/subscription_reminders` at 07:00 UTC (`vercel.json`), protected by `CRON_SECRET` |
 | Background jobs | `:async` inside the container (fine for the current small jobs) |
