@@ -25,6 +25,22 @@ bundle exec rspec
 
 Seeded super admin: `SUPER_ADMIN_PHONE` / `SUPER_ADMIN_PASSWORD` from `.env`.
 
+### Demo data (development)
+
+`bin/rails db:seed` also loads `db/seeds/demo.rb` in development (or anywhere with `SEED_DEMO=1`).
+All names and numbers are fictional. Running it again creates nothing new.
+
+- 8 categories with icon keys used by the Android app.
+- 10 firm owners (`01090000001` … `01090000010`, password `password123`), each with a current
+  subscription; one ends in 3 days so it shows on the dashboard.
+- 21 firms across all categories (2 pending, 1 suspended), plus one firm owned by the super admin.
+- A pending subscription request (`01090000020`) and a rejected one (`01090000021`) for the review queue,
+  and a normal user (`01090000022`).
+- 13 articles: news, announcements and articles, one draft and one scheduled for later.
+- Firm locations are placed around an approximate village center (`center_lat` / `center_lng` in the file).
+
+To start fresh: `bin/rails db:reset` (drops and recreates the development database, then seeds).
+
 ## Roles
 
 | Role          | Can do                                                        |

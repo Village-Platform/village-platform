@@ -10,15 +10,22 @@ if admin.new_record?
   admin.save!
 end
 
+# `icon` keys are mapped to symbols by the Android app (doctor, pharmacy, restaurant, ...).
 [
-  { name: "أطباء",        position: 1 },
-  { name: "صيدليات",      position: 2 },
-  { name: "مطاعم",        position: 3 },
-  { name: "محلات تجارية", position: 4 },
-  { name: "حرفيون",       position: 5 },
-  { name: "مدارس",        position: 6 }
+  { name: "أطباء",        position: 1, icon: "doctor",     description: "عيادات وأطباء القرية" },
+  { name: "صيدليات",      position: 2, icon: "pharmacy",   description: "صيدليات ومستلزمات طبية" },
+  { name: "مطاعم",        position: 3, icon: "restaurant", description: "مطاعم وكافيهات ومأكولات" },
+  { name: "محلات تجارية", position: 4, icon: "shop",       description: "بقالة وسوبر ماركت وملابس وأدوات" },
+  { name: "حرفيون",       position: 5, icon: "craft",      description: "سباكة وكهرباء ونجارة وصيانة" },
+  { name: "مدارس",        position: 6, icon: "school",     description: "مدارس وحضانات ومراكز دروس" },
+  { name: "مخابز",        position: 7, icon: "bakery",     description: "مخابز بلدي وأفرنجي وحلويات" },
+  { name: "مواصلات",      position: 8, icon: "transport",  description: "مواقف ومكاتب نقل وتوصيل" }
 ].each do |attrs|
-  Category.find_or_create_by!(name: attrs[:name]) { |c| c.position = attrs[:position] }
+  category = Category.find_or_initialize_by(name: attrs[:name])
+  category.position = attrs[:position] if category.new_record?
+  category.icon ||= attrs[:icon]
+  category.description ||= attrs[:description]
+  category.save!
 end
 
 Article.find_or_create_by!(title: "مرحباً بكم في تطبيق أجهور الكبرى") do |a|
@@ -37,4 +44,10 @@ end
   SubscriptionPlan.find_or_create_by!(name: attrs[:name]) { |p| p.assign_attributes(attrs) }
 end
 
-puts "Seeded: #{User.count} users, #{Category.count} categories, #{Article.count} articles, #{SubscriptionPlan.count} plans"
+# Demo data (owners, firms, news) for development and testing only.
+# Never runs in production unless SEED_DEMO=1 is set on purpose.
+if Rails.env.development? || ENV["SEED_DEMO"] == "1"
+  load Rails.root.join("db/seeds/demo.rb")
+end
+
+puts "Seeded: #{User.count} users, #{Category.count} categories, #{Article.count} articles, #{SubscriptionPlan.count} plans, #{Firm.count} firms, #{Subscription.count} subscriptions"
