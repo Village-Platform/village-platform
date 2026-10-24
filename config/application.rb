@@ -30,8 +30,9 @@ module AghourServices
     config.i18n.default_locale = :ar
     config.i18n.fallbacks = [:en]
 
-    # Only loads a smaller set of middleware suitable for API only apps.
-    config.api_only = true
+    # The JSON API controllers inherit ActionController::API, but the app is not api_only,
+    # because the Avo admin dashboard needs cookies, sessions, flash and assets.
+    config.api_only = false
 
     config.generators do |g|
       g.test_framework :rspec

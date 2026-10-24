@@ -1,0 +1,58 @@
+ar:
+  admin:
+    app_name: "أجهور الكبرى — لوحة التحكم"
+    sessions:
+      subtitle: "تسجيل دخول مديري النظام"
+      phone: "رقم الهاتف"
+      password: "كلمة المرور"
+      submit: "دخول"
+      invalid: "بيانات الدخول غير صحيحة أو ليس لديك صلاحية."
+      signed_out: "تم تسجيل الخروج."
+      too_many_attempts: "محاولات كثيرة، حاول مرة أخرى بعد قليل."
+    actions:
+      done: "تم تنفيذ الإجراء على %{count} عنصر."
+      skipped: "تم تخطي %{count} عنصر لأنه ليس قيد المراجعة."
+  avo:
+    resource_translations:
+      user:
+        zero: "المستخدمون"
+        one: "مستخدم"
+        two: "مستخدمان"
+        few: "مستخدمون"
+        many: "مستخدمًا"
+        other: "المستخدمون"
+      category:
+        zero: "الأقسام"
+        one: "قسم"
+        two: "قسمان"
+        few: "أقسام"
+        many: "قسمًا"
+        other: "الأقسام"
+      firm:
+        zero: "المنشآت"
+        one: "منشأة"
+        two: "منشأتان"
+        few: "منشآت"
+        many: "منشأة"
+        other: "المنشآت"
+      article:
+        zero: "الأخبار"
+        one: "خبر"
+        two: "خبران"
+        few: "أخبار"
+        many: "خبرًا"
+        other: "الأخبار"
+      subscription_plan:
+        zero: "باقات الاشتراك"
+        one: "باقة"
+        two: "باقتان"
+        few: "باقات"
+        many: "باقة"
+        other: "باقات الاشتراك"
+      subscription:
+        zero: "الاشتراكات"
+        one: "اشتراك"
+        two: "اشتراكان"
+        few: "اشتراكات"
+        many: "اشتراكًا"
+        other: "الاشتراكات"

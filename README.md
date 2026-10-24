@@ -8,6 +8,7 @@ The native Android app consumes it. Kept simple on purpose; extend step by step.
 - Ruby 4.0.1, Rails 8.1, PostgreSQL
 - Auth: `has_secure_password` (bcrypt) + JWT bearer tokens (30 days)
 - Authorization: Pundit
+- Admin dashboard: Avo 4 Community at `/admin` (Arabic, right-to-left)
 - Tests: RSpec + FactoryBot
 - Locale: Arabic by default (`Accept-Language: en` for English)
 
@@ -77,6 +78,25 @@ curl -X POST localhost:3000/api/v1/auth/login \
 curl localhost:3000/api/v1/me -H "Authorization: Bearer <token>"
 ```
 
+## Admin dashboard
+
+Open `http://localhost:3000/admin/login` and sign in with the seeded super admin.
+
+- Built with [Avo 4](https://docs.avohq.io/4.0/) Community (free). Arabic UI, right-to-left automatically.
+- Only `super_admin` users can sign in. The session lasts 12 hours; login is rate-limited.
+  Access is re-checked on every request, so a demoted admin loses access at once.
+- Brand: dark green accent. Put `logo.png`, `logomark.png` and `favicon.ico` in `public/brand/`
+  and uncomment the lines in `config/initializers/avo.rb`.
+- Sections: الاشتراكات (review queue, start page), المنشآت, الأقسام, الأخبار, باقات الاشتراك, المستخدمون.
+- Actions:
+  - Subscriptions: **اعتماد الاشتراك** / **رفض الاشتراك** (with reason). They use the same services as the API,
+    so renewal stacking, role promotion and notifications behave the same.
+  - Firms: **اعتماد المنشأة** / **إيقاف المنشأة**.
+- The payment screenshot shows on the subscription page.
+
+Note: per-resource Pundit authorization, dashboards with charts, and the custom menu are paid Avo add-ons.
+They are not needed while only super admins use the dashboard.
+
 ## Subscriptions (firm owners)
 
 1. Owner opens `GET /payment_methods` and `GET /subscription_plans`, pays via InstaPay or Vodafone Cash.
@@ -109,8 +129,7 @@ bin/rails notifications:subscription_reminders
 
 ## Next steps (planned)
 
-1. Admin dashboard (server-rendered, Arabic RTL, dark green & gold)
-2. Images via Active Storage (firm logos, category icons, article covers)
-3. Token revocation / refresh tokens
-4. Push notifications (FCM) — deliver the existing notifications + news
-5. Dockerfile + deployment
+1. Images via Active Storage (firm logos, category icons, article covers)
+2. Token revocation / refresh tokens
+3. Push notifications (FCM) — deliver the existing notifications + news
+4. Dockerfile + deployment

@@ -69,3 +69,33 @@ ar:
         payer_phone: "رقم المحوِّل"
         notes: "ملاحظات"
         payment_screenshot: "صورة التحويل"
+  enums:
+    user:
+      role:
+        user: "مستخدم"
+        firm_admin: "صاحب منشأة"
+        super_admin: "مدير النظام"
+    firm:
+      status:
+        pending: "قيد المراجعة"
+        active: "مفعّلة"
+        suspended: "موقوفة"
+    article:
+      kind:
+        news: "خبر"
+        article: "مقال"
+        announcement: "إعلان"
+    subscription:
+      status:
+        pending: "قيد المراجعة"
+        active: "مقبول"
+        rejected: "مرفوض"
+      payment_method:
+        instapay: "إنستاباي"
+        vodafone_cash: "فودافون كاش"
+      state:
+        pending: "قيد المراجعة"
+        rejected: "مرفوض"
+        scheduled: "مجدول (تجديد)"
+        current: "ساري"
+        expired: "منتهي"

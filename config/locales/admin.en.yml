@@ -1,0 +1,14 @@
+en:
+  admin:
+    app_name: "Aghour Services — Admin"
+    sessions:
+      subtitle: "Super admin sign in"
+      phone: "Phone"
+      password: "Password"
+      submit: "Sign in"
+      invalid: "Invalid credentials or not allowed."
+      signed_out: "Signed out."
+      too_many_attempts: "Too many attempts, try again shortly."
+    actions:
+      done: "Done for %{count} record(s)."
+      skipped: "Skipped %{count} record(s) that are not pending."

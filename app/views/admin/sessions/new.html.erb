@@ -1,0 +1,21 @@
+<div class="brand">
+  <% if File.exist?(Rails.public_path.join("brand/logo.png")) %>
+    <img src="/brand/logo.png" alt="<%= t("admin.app_name") %>">
+  <% end %>
+  <h1><%= t("admin.app_name") %></h1>
+  <p><%= t("admin.sessions.subtitle") %></p>
+</div>
+
+<% flash.each do |type, message| %>
+  <div class="flash <%= type %>"><%= message %></div>
+<% end %>
+
+<%= form_with url: admin_login_path, method: :post do |f| %>
+  <%= f.label :phone, t("admin.sessions.phone") %>
+  <%= f.telephone_field :phone, required: true, autocomplete: "username", autofocus: true %>
+
+  <%= f.label :password, t("admin.sessions.password") %>
+  <%= f.password_field :password, required: true, autocomplete: "current-password" %>
+
+  <%= f.button t("admin.sessions.submit"), type: "submit" %>
+<% end %>

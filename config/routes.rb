@@ -2,6 +2,12 @@ Rails.application.routes.draw do
   # Health check for load balancers and uptime monitors.
   get "up" => "rails/health#show", as: :rails_health_check
 
+  # Admin dashboard (Avo). Login routes must come before mount_avo.
+  get    "admin/login",  to: "admin/sessions#new",     as: :admin_login
+  post   "admin/login",  to: "admin/sessions#create"
+  delete "admin/logout", to: "admin/sessions#destroy", as: :admin_logout
+  mount_avo
+
   namespace :api do
     namespace :v1 do
       post "auth/register", to: "auth#register"

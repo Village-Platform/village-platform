@@ -10,6 +10,9 @@ Rails.application.configure do
   # Render exception templates for rescuable exceptions and raise for other exceptions.
   config.action_dispatch.show_exceptions = :rescuable
 
+  # Disable request forgery protection in test environment.
+  config.action_controller.allow_forgery_protection = false
+
   config.active_support.deprecation = :stderr
   config.action_controller.raise_on_missing_callback_actions = true
 end
