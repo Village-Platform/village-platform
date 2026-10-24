@@ -1,30 +1,24 @@
-<% content_for :title, @firm.name %>
-<div class="page-header">
-  <h1><%= @firm.name %> <%= enum_badge(Firm, :status, @firm.status) %></h1>
-  <div class="actions" style="display:flex;gap:8px">
-    <% unless @firm.active? %>
-      <%= button_to "اعتماد", approve_admin_firm_path(@firm), method: :patch, class: "btn" %>
-    <% end %>
-    <% unless @firm.suspended? %>
-      <%= button_to "إيقاف", suspend_admin_firm_path(@firm), method: :patch, class: "btn btn-danger",
-            form: { data: { confirm: "إيقاف المنشأة وإخفاؤها من التطبيق؟" } } %>
-    <% end %>
-    <%= link_to "تعديل", edit_admin_firm_path(@firm), class: "btn btn-ghost" %>
-    <%= button_to "حذف", admin_firm_path(@firm), method: :delete, class: "btn btn-ghost",
-          form: { data: { confirm: "حذف المنشأة نهائيًا؟" } } %>
-  </div>
-</div>
+<%= page_header @firm.name, :firms, subtitle: @firm.category.name do %>
+  <%= enum_badge(Firm, :status, @firm.status) %>
+  <% unless @firm.active? %>
+    <%= button_to approve_admin_firm_path(@firm), method: :patch, class: "btn" do %><%= icon(:check, size: 18) %> اعتماد<% end %>
+  <% end %>
+  <% unless @firm.suspended? %>
+    <%= button_to suspend_admin_firm_path(@firm), method: :patch, class: "btn btn-ghost",
+          form: { data: { confirm: "إيقاف المنشأة وإخفاؤها من التطبيق؟" } } do %><%= icon(:close, size: 18) %> إيقاف<% end %>
+  <% end %>
+  <%= link_to edit_admin_firm_path(@firm), class: "btn btn-ghost" do %><%= icon(:edit, size: 18) %> تعديل<% end %>
+  <%= button_to admin_firm_path(@firm), method: :delete, class: "btn btn-danger",
+        form: { data: { confirm: "حذف المنشأة نهائيًا؟" } } do %><%= icon(:trash, size: 18) %> حذف<% end %>
+<% end %>
 
 <section class="card">
   <dl class="details">
     <dt>ظاهرة للجمهور</dt>
     <dd>
       <%= yes_no_badge(@visible) %>
-      <% unless @visible %>
-        <small>(تظهر فقط إذا كانت مفعّلة واشتراك المالك ساري)</small>
-      <% end %>
+      <% unless @visible %><small>تظهر فقط إذا كانت مفعّلة واشتراك المالك ساري.</small><% end %>
     </dd>
-    <dt>القسم</dt><dd><%= @firm.category.name %></dd>
     <dt>المالك</dt><dd><%= link_to @firm.owner.name, admin_user_path(@firm.owner) %> — <span class="ltr"><%= @firm.owner.phone %></span></dd>
     <dt>الهاتف</dt><dd class="ltr"><%= @firm.phone.presence || "—" %></dd>
     <dt>واتساب</dt><dd class="ltr"><%= @firm.whatsapp.presence || "—" %></dd>
@@ -33,7 +27,9 @@
     <dt>الموقع</dt>
     <dd>
       <% if @firm.latitude && @firm.longitude %>
-        <%= link_to "#{@firm.latitude}, #{@firm.longitude}", "https://maps.google.com/?q=#{@firm.latitude},#{@firm.longitude}", target: "_blank", rel: "noopener", class: "ltr" %>
+        <%= link_to "https://maps.google.com/?q=#{@firm.latitude},#{@firm.longitude}", target: "_blank", rel: "noopener" do %>
+          <%= icon(:map, size: 18) %> فتح على الخريطة
+        <% end %>
       <% else %>—<% end %>
     </dd>
     <dt>الوصف</dt><dd><%= simple_format(@firm.description.presence || "—") %></dd>

@@ -1,11 +1,9 @@
-<% content_for :title, "المنشآت" %>
-<div class="page-header">
-  <h1>المنشآت</h1>
-  <%= link_to "إضافة منشأة", new_admin_firm_path, class: "btn btn-gold" %>
-</div>
+<%= page_header "المنشآت", :firms, subtitle: "الأطباء والمطاعم والمحلات وكل خدمات القرية" do %>
+  <%= link_to new_admin_firm_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إضافة منشأة<% end %>
+<% end %>
 
 <%= form_with url: admin_firms_path, method: :get, class: "filters" do |f| %>
-  <div class="field"><%= f.label :q, "بحث" %><%= f.search_field :q, value: params[:q], placeholder: "اسم المنشأة" %></div>
+  <div class="field search"><%= f.label :q, "بحث" %><%= f.search_field :q, value: params[:q], placeholder: "اسم المنشأة" %></div>
   <div class="field">
     <%= f.label :status, "الحالة" %>
     <%= f.select :status, options_for_select(enum_options(Firm, :status), params[:status]), include_blank: "الكل" %>
@@ -14,7 +12,7 @@
     <%= f.label :category_id, "القسم" %>
     <%= f.select :category_id, options_from_collection_for_select(@categories, :id, :name, params[:category_id]), include_blank: "الكل" %>
   </div>
-  <%= f.submit "تصفية", class: "btn" %>
+  <%= button_tag type: "submit", class: "btn", name: nil do %><%= icon(:search, size: 18) %> تصفية<% end %>
 <% end %>
 
 <div class="table-wrap">
@@ -24,7 +22,7 @@
       <tbody>
         <% @firms.each do |firm| %>
           <tr>
-            <td><%= link_to firm.name, admin_firm_path(firm) %></td>
+            <td><%= link_to firm.name, admin_firm_path(firm), class: "cell-main" %><span class="cell-sub ltr"><%= firm.phone %></span></td>
             <td><%= firm.category.name %></td>
             <td><%= firm.owner.name %></td>
             <td><%= enum_badge(Firm, :status, firm.status) %></td>
@@ -34,17 +32,17 @@
                 <%= button_to "اعتماد", approve_admin_firm_path(firm), method: :patch, class: "btn btn-sm" %>
               <% end %>
               <% unless firm.suspended? %>
-                <%= button_to "إيقاف", suspend_admin_firm_path(firm), method: :patch, class: "btn btn-danger btn-sm",
+                <%= button_to "إيقاف", suspend_admin_firm_path(firm), method: :patch, class: "btn btn-ghost btn-sm",
                       form: { data: { confirm: "إيقاف المنشأة وإخفاؤها من التطبيق؟" } } %>
               <% end %>
-              <%= link_to "تعديل", edit_admin_firm_path(firm), class: "btn btn-ghost btn-sm" %>
+              <%= link_to edit_admin_firm_path(firm), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 16) %><% end %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
   <% else %>
-    <p class="empty">لا توجد نتائج.</p>
+    <%= empty_state("لا توجد نتائج.") %>
   <% end %>
 </div>
 <%= render "admin/shared/pagination", meta: @meta %>

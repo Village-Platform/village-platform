@@ -1,13 +1,15 @@
 <%= form_with model: [:admin, article], class: "form card" do |f| %>
   <%= render "admin/shared/errors", record: article %>
-  <div class="field"><%= f.label :title, "العنوان" %><%= f.text_field :title, required: true %></div>
+  <div class="form-grid">
+  <div class="field full"><%= f.label :title, "العنوان" %><%= f.text_field :title, required: true %></div>
   <div class="field"><%= f.label :kind, "النوع" %><%= f.select :kind, enum_options(Article, :kind) %></div>
   <div class="field">
     <%= f.label :published_at, "تاريخ النشر" %>
     <%= f.datetime_local_field :published_at %>
     <div class="hint">اتركه فارغًا ليبقى مسودة. تاريخ مستقبلي = نشر مجدول.</div>
   </div>
-  <div class="field"><%= f.label :body, "المحتوى" %><%= f.text_area :body, rows: 12, required: true %></div>
+  <div class="field full"><%= f.label :body, "المحتوى" %><%= f.text_area :body, rows: 12, required: true %></div>
+  </div>
   <div class="form-actions">
     <%= f.submit "حفظ", class: "btn btn-gold" %>
     <%= link_to "إلغاء", admin_articles_path, class: "btn btn-ghost" %>

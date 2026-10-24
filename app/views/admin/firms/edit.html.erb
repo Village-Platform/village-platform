@@ -1,3 +1,2 @@
-<% content_for :title, "تعديل منشأة" %>
-<div class="page-header"><h1>تعديل: <%= @firm.name_was %></h1></div>
+<%= page_header "تعديل: #{@firm.name_was}", :firms %>
 <%= render "form", firm: @firm %>

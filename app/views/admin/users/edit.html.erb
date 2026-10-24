@@ -1,3 +1,2 @@
-<% content_for :title, "تعديل مستخدم" %>
-<div class="page-header"><h1>تعديل: <%= @user.name_was %></h1></div>
+<%= page_header "تعديل: #{@user.name_was}", :users %>
 <%= render "form", user: @user %>

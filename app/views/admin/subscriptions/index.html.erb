@@ -1,8 +1,7 @@
-<% content_for :title, "الاشتراكات" %>
-<div class="page-header"><h1>الاشتراكات</h1></div>
+<%= page_header "الاشتراكات", :subscriptions, subtitle: "طلبات أصحاب المنشآت عبر إنستاباي وفودافون كاش" %>
 
 <%= form_with url: admin_subscriptions_path, method: :get, class: "filters" do |f| %>
-  <div class="field">
+  <div class="field search">
     <%= f.label :q, "بحث" %>
     <%= f.search_field :q, value: params[:q], placeholder: "رقم العملية أو الهاتف أو الاسم" %>
   </div>
@@ -14,20 +13,20 @@
     <%= f.label :payment_method, "طريقة الدفع" %>
     <%= f.select :payment_method, options_for_select(enum_options(Subscription, :payment_method), params[:payment_method]), include_blank: "الكل" %>
   </div>
-  <%= f.submit "تصفية", class: "btn" %>
+  <%= button_tag type: "submit", class: "btn", name: nil do %><%= icon(:search, size: 18) %> تصفية<% end %>
 <% end %>
 
 <div class="table-wrap">
   <% if @subscriptions.any? %>
     <table>
       <thead>
-        <tr><th>#</th><th>صاحب الطلب</th><th>الباقة</th><th>المبلغ</th><th>الدفع</th><th>رقم العملية</th><th>الحالة</th><th>الوضع</th><th>التاريخ</th></tr>
+        <tr><th>#</th><th>صاحب الطلب</th><th>الباقة</th><th>المبلغ</th><th>الدفع</th><th>رقم العملية</th><th>الحالة</th><th>الوضع</th><th>التاريخ</th><th></th></tr>
       </thead>
       <tbody>
         <% @subscriptions.each do |s| %>
           <tr>
-            <td><%= link_to s.id, admin_subscription_path(s) %></td>
-            <td><%= link_to s.user.name, admin_subscription_path(s) %><br><small class="ltr"><%= s.user.phone %></small></td>
+            <td><%= s.id %></td>
+            <td><%= link_to s.user.name, admin_subscription_path(s), class: "cell-main" %><span class="cell-sub ltr"><%= s.user.phone %></span></td>
             <td><%= s.subscription_plan.name %></td>
             <td><%= egp(s.amount_cents) %></td>
             <td><%= enum_label(Subscription, :payment_method, s.payment_method) %></td>
@@ -35,12 +34,13 @@
             <td><%= enum_badge(Subscription, :status, s.status) %></td>
             <td><%= enum_badge(Subscription, :state, s.state) %></td>
             <td><%= fmt_date(s.created_at) %></td>
+            <td><%= link_to (s.pending? ? "مراجعة" : "عرض"), admin_subscription_path(s), class: "btn btn-sm #{s.pending? ? 'btn-gold' : 'btn-ghost'}" %></td>
           </tr>
         <% end %>
       </tbody>
     </table>
   <% else %>
-    <p class="empty">لا توجد نتائج.</p>
+    <%= empty_state("لا توجد نتائج.") %>
   <% end %>
 </div>
 <%= render "admin/shared/pagination", meta: @meta %>

@@ -1,0 +1,19 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#053024">
+<meta name="robots" content="noindex, nofollow">
+<%= csrf_meta_tags %>
+<link rel="icon" href="/brand/web/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="/brand/web/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/brand/web/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<%# Image paths live here (not in admin.css) so the asset pipeline never rewrites them. %>
+<style>
+  :root {
+    --img-scene: url("/brand/web/scene.jpg");
+    --img-silhouette: url("/brand/web/splash-bottom.jpg");
+  }
+</style>
+<%= stylesheet_link_tag "admin" %>

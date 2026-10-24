@@ -1,13 +1,15 @@
 <%= form_with model: [:admin, category], class: "form card" do |f| %>
   <%= render "admin/shared/errors", record: category %>
-  <div class="field"><%= f.label :name, "اسم القسم" %><%= f.text_field :name, required: true %></div>
-  <div class="field"><%= f.label :description, "الوصف" %><%= f.text_area :description, rows: 3 %></div>
+  <div class="form-grid">
+  <div class="field full"><%= f.label :name, "اسم القسم" %><%= f.text_field :name, required: true %></div>
+  <div class="field full"><%= f.label :description, "الوصف" %><%= f.text_area :description, rows: 3 %></div>
   <div class="field">
     <%= f.label :icon, "الأيقونة" %><%= f.text_field :icon %>
     <div class="hint">اسم أيقونة يستخدمها تطبيق أندرويد (مثل doctor, pharmacy).</div>
   </div>
   <div class="field"><%= f.label :position, "الترتيب" %><%= f.number_field :position, min: 0 %></div>
-  <div class="field checkbox"><%= f.check_box :active %><%= f.label :active, "مفعّل (ظاهر في التطبيق)" %></div>
+  <div class="field checkbox full"><%= f.check_box :active %><%= f.label :active, "مفعّل (ظاهر في التطبيق)" %></div>
+  </div>
   <div class="form-actions">
     <%= f.submit "حفظ", class: "btn btn-gold" %>
     <%= link_to "إلغاء", admin_categories_path, class: "btn btn-ghost" %>

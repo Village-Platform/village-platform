@@ -1,16 +1,14 @@
-<% content_for :title, "الأخبار" %>
-<div class="page-header">
-  <h1>الأخبار والإعلانات</h1>
-  <%= link_to "إضافة خبر", new_admin_article_path, class: "btn btn-gold" %>
-</div>
+<%= page_header "الأخبار والإعلانات", :articles, subtitle: "تظهر لكل مستخدمي التطبيق" do %>
+  <%= link_to new_admin_article_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إضافة خبر<% end %>
+<% end %>
 
 <%= form_with url: admin_articles_path, method: :get, class: "filters" do |f| %>
-  <div class="field"><%= f.label :q, "بحث" %><%= f.search_field :q, value: params[:q], placeholder: "العنوان" %></div>
+  <div class="field search"><%= f.label :q, "بحث" %><%= f.search_field :q, value: params[:q], placeholder: "العنوان" %></div>
   <div class="field">
     <%= f.label :kind, "النوع" %>
     <%= f.select :kind, options_for_select(enum_options(Article, :kind), params[:kind]), include_blank: "الكل" %>
   </div>
-  <%= f.submit "تصفية", class: "btn" %>
+  <%= button_tag type: "submit", class: "btn", name: nil do %><%= icon(:search, size: 18) %> تصفية<% end %>
 <% end %>
 
 <div class="table-wrap">
@@ -20,7 +18,7 @@
       <tbody>
         <% @articles.each do |article| %>
           <tr>
-            <td><%= link_to article.title, edit_admin_article_path(article) %></td>
+            <td><%= link_to truncate(article.title, length: 60), edit_admin_article_path(article), class: "cell-main" %></td>
             <td><%= enum_badge(Article, :kind, article.kind) %></td>
             <td>
               <% if article.published_at.nil? %>
@@ -33,16 +31,16 @@
             </td>
             <td><%= article.author.name %></td>
             <td class="actions">
-              <%= link_to "تعديل", edit_admin_article_path(article), class: "btn btn-ghost btn-sm" %>
-              <%= button_to "حذف", admin_article_path(article), method: :delete, class: "btn btn-danger btn-sm",
-                    form: { data: { confirm: "حذف الخبر؟" } } %>
+              <%= link_to edit_admin_article_path(article), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 16) %><% end %>
+              <%= button_to admin_article_path(article), method: :delete, class: "btn btn-ghost btn-sm", title: "حذف",
+                    form: { data: { confirm: "حذف الخبر؟" } } do %><%= icon(:trash, size: 16) %><% end %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
   <% else %>
-    <p class="empty">لا توجد أخبار.</p>
+    <%= empty_state("لا توجد أخبار بعد.") %>
   <% end %>
 </div>
 <%= render "admin/shared/pagination", meta: @meta %>

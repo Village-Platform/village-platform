@@ -1,3 +1,2 @@
-<% content_for :title, "تعديل قسم" %>
-<div class="page-header"><h1>تعديل: <%= @category.name_was %></h1></div>
+<%= page_header "تعديل: #{@category.name_was}", :categories %>
 <%= render "form", category: @category %>

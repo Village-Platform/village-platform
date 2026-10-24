@@ -45,9 +45,35 @@ module Admin
       time ? l(time.to_date, format: "%Y-%m-%d") : "—"
     end
 
-    def nav_link(label, path, exact: false)
+    def nav_link(label, path, icon_name, exact: false, count: nil)
       active = exact ? request.path == path : request.path.start_with?(path)
-      link_to label, path, class: [ "nav-link", ("active" if active) ]
+      link_to path, class: [ "nav-link", ("active" if active) ], "aria-current": (active ? "page" : nil) do
+        safe_join([ icon(icon_name), tag.span(label), (tag.span(count, class: "nav-count") if count.to_i.positive?) ].compact)
+      end
+    end
+
+    # <%= page_header "الأقسام", :categories, subtitle: "..." do %> buttons <% end %>
+    def page_header(title, icon_name, subtitle: nil, &block)
+      content_for(:title, title) unless content_for?(:title)
+      actions = block ? tag.div(capture(&block), class: "header-actions") : nil
+
+      tag.div(class: "page-header") do
+        heading = tag.div(class: "title") do
+          tag.span(icon(icon_name, size: 22), class: "icon-tile") +
+            tag.div { tag.h1(title) + (subtitle ? tag.p(subtitle) : "".html_safe) }
+        end
+        safe_join([ heading, actions ].compact)
+      end
+    end
+
+    def initials(name)
+      name.to_s.split.first(2).map { |part| part[0] }.join
+    end
+
+    def empty_state(message)
+      tag.div(class: "empty") do
+        safe_join([ image_tag("/brand/web/mark.png", alt: "", class: "empty-mark"), tag.p(message) ])
+      end
     end
 
     # Keeps current filters when building links (pagination, etc.)

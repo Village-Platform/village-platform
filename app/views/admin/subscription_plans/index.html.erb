@@ -1,8 +1,6 @@
-<% content_for :title, "باقات الاشتراك" %>
-<div class="page-header">
-  <h1>باقات الاشتراك</h1>
-  <%= link_to "إضافة باقة", new_admin_subscription_plan_path, class: "btn btn-gold" %>
-</div>
+<%= page_header "باقات الاشتراك", :plans, subtitle: "ما يدفعه أصحاب المنشآت لإظهار منشآتهم" do %>
+  <%= link_to new_admin_subscription_plan_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إضافة باقة<% end %>
+<% end %>
 <div class="table-wrap">
   <% if @plans.any? %>
     <table>
@@ -11,21 +9,21 @@
         <% @plans.each do |plan| %>
           <tr>
             <td><%= plan.position %></td>
-            <td><%= plan.name %></td>
+            <td class="cell-main"><%= plan.name %></td>
             <td><%= egp(plan.price_cents) %></td>
             <td><%= plan.duration_days %> يوم</td>
             <td><%= plan.max_firms %></td>
             <td><%= yes_no_badge(plan.active) %></td>
             <td class="actions">
-              <%= link_to "تعديل", edit_admin_subscription_plan_path(plan), class: "btn btn-ghost btn-sm" %>
-              <%= button_to "حذف", admin_subscription_plan_path(plan), method: :delete, class: "btn btn-danger btn-sm",
-                    form: { data: { confirm: "حذف الباقة؟ الباقات المشتراة لا تُحذف، أوقفها بدلاً من ذلك." } } %>
+              <%= link_to edit_admin_subscription_plan_path(plan), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 16) %><% end %>
+              <%= button_to admin_subscription_plan_path(plan), method: :delete, class: "btn btn-ghost btn-sm", title: "حذف",
+                    form: { data: { confirm: "حذف الباقة؟ الباقات المشتراة لا تُحذف، أوقفها بدلاً من ذلك." } } do %><%= icon(:trash, size: 16) %><% end %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
   <% else %>
-    <p class="empty">لا توجد باقات.</p>
+    <%= empty_state("لا توجد باقات بعد.") %>
   <% end %>
 </div>

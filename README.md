@@ -87,7 +87,10 @@ Open `http://localhost:3000/admin/login` and sign in with the seeded super admin
 - Arabic, right-to-left, dark green and gold. Works on phone screens too.
 - Only `super_admin` users can sign in. The session lasts 12 hours, login is rate-limited,
   and access is re-checked on every request (a demoted admin loses access at once).
-- Logo: put `logo.png` in `public/brand/`; it shows on the login page and sidebar.
+- Brand images: originals in `public/brand/` (logo, cover, splash, village photo). The dashboard uses
+  web-optimized copies in `public/brand/web/` (logo, light logo mark for dark backgrounds, favicons,
+  village scenery for the login page and dashboard banner, village silhouette for the sidebar).
+  Regenerate them with ImageMagick if the originals change (see the commit that added them).
 
 | Page | What you can do |
 |------|-----------------|

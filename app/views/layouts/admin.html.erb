@@ -1,52 +1,71 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= [content_for(:title), t("admin.app_name")].compact.join(" · ") %></title>
-  <%= csrf_meta_tags %>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-  <%= stylesheet_link_tag "admin" %>
+  <%= render "admin/shared/head" %>
 </head>
 <body>
   <div class="shell">
-    <aside class="sidebar">
-      <div class="brand">
-        <% if File.exist?(Rails.public_path.join("brand/logo.png")) %>
-          <img src="/brand/logo.png" alt="">
-        <% end %>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <img src="/brand/web/mark-light.png" alt="" width="84" height="74">
         <strong>أجهور الكبرى</strong>
-        <small>لوحة التحكم</small>
+        <span>لوحة تحكم تطبيق القرية</span>
       </div>
-      <nav>
-        <%= nav_link "الرئيسية", admin_root_path, exact: true %>
-        <%= nav_link "الاشتراكات", admin_subscriptions_path %>
-        <%= nav_link "المنشآت", admin_firms_path %>
-        <%= nav_link "الأقسام", admin_categories_path %>
-        <%= nav_link "الأخبار", admin_articles_path %>
-        <%= nav_link "باقات الاشتراك", admin_subscription_plans_path %>
-        <%= nav_link "المستخدمون", admin_users_path %>
+
+      <nav aria-label="القائمة الرئيسية">
+        <%= nav_link "الرئيسية", admin_root_path, :home, exact: true %>
+        <div class="nav-section">المراجعة</div>
+        <%= nav_link "الاشتراكات", admin_subscriptions_path, :subscriptions, count: Subscription.pending.count %>
+        <%= nav_link "المنشآت", admin_firms_path, :firms, count: Firm.pending.count %>
+        <div class="nav-section">المحتوى</div>
+        <%= nav_link "الأقسام", admin_categories_path, :categories %>
+        <%= nav_link "الأخبار", admin_articles_path, :articles %>
+        <div class="nav-section">الإعدادات</div>
+        <%= nav_link "باقات الاشتراك", admin_subscription_plans_path, :plans %>
+        <%= nav_link "المستخدمون", admin_users_path, :users %>
       </nav>
+
       <div class="sidebar-footer">
-        <span><%= current_admin.name %></span>
-        <%= button_to "تسجيل الخروج", admin_logout_path, method: :delete, class: "btn btn-ghost btn-sm" %>
+        <span class="avatar"><%= initials(current_admin.name) %></span>
+        <div class="who">
+          <strong><%= current_admin.name %></strong>
+          <small>مدير النظام</small>
+        </div>
+        <%= button_to admin_logout_path, method: :delete, class: "icon-btn", title: "تسجيل الخروج",
+              form: { data: { confirm: "تسجيل الخروج؟" } } do %>
+          <%= icon(:logout) %>
+        <% end %>
       </div>
     </aside>
+    <div class="backdrop" data-nav-close></div>
 
-    <main class="content">
-      <% flash.each do |type, message| %>
-        <div class="flash flash-<%= type %>"><%= message %></div>
-      <% end %>
-      <%= yield %>
-    </main>
+    <div class="main">
+      <header class="topbar">
+        <span class="brand-mini"><img src="/brand/web/mark-light.png" alt="" width="36" height="32"> أجهور الكبرى</span>
+        <button type="button" class="icon-btn" data-nav-toggle aria-controls="sidebar" aria-label="القائمة"><%= icon(:menu) %></button>
+      </header>
+
+      <main class="content">
+        <% flash.each do |type, message| %>
+          <div class="flash flash-<%= type %>" role="status">
+            <%= icon(type.to_s == "notice" ? :check : :close) %><%= message %>
+          </div>
+        <% end %>
+        <%= yield %>
+      </main>
+    </div>
   </div>
 
   <script>
-    // Confirm dialogs for forms with data-confirm (no JS framework needed).
+    // Confirm dialogs for forms with data-confirm, and the mobile menu. No JS framework needed.
     document.addEventListener("submit", function (event) {
       var message = event.target.dataset.confirm;
       if (message && !window.confirm(message)) event.preventDefault();
+    });
+    document.addEventListener("click", function (event) {
+      if (event.target.closest("[data-nav-toggle]")) document.body.classList.toggle("nav-open");
+      if (event.target.closest("[data-nav-close]")) document.body.classList.remove("nav-open");
     });
   </script>
 </body>

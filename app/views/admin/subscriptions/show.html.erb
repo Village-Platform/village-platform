@@ -1,13 +1,37 @@
 <% s = @subscription %>
-<% content_for :title, "اشتراك ##{s.id}" %>
-<div class="page-header">
-  <h1>طلب اشتراك #<%= s.id %> <%= enum_badge(Subscription, :status, s.status) %></h1>
-  <%= link_to "رجوع للقائمة", admin_subscriptions_path, class: "btn btn-ghost" %>
-</div>
+<%= page_header "طلب اشتراك ##{s.id}", :subscriptions, subtitle: "#{s.user.name} — #{s.subscription_plan.name}" do %>
+  <%= enum_badge(Subscription, :status, s.status) %>
+  <%= link_to admin_subscriptions_path, class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 18) %> رجوع<% end %>
+<% end %>
 
-<div class="grid grid-2">
+<% if s.pending? %>
+  <section class="card review-box">
+    <div class="card-header"><h2>المراجعة</h2></div>
+    <p>تأكد من وصول تحويل <strong><%= egp(s.amount_cents) %></strong> عبر
+      <strong><%= enum_label(Subscription, :payment_method, s.payment_method) %></strong>
+      برقم العملية <strong class="ltr"><%= s.transaction_reference %></strong> قبل الاعتماد.</p>
+    <div class="grid grid-2">
+      <div>
+        <%= button_to approve_admin_subscription_path(s), method: :patch, class: "btn btn-gold",
+              form: { data: { confirm: "اعتماد هذا الاشتراك؟ سيتم تفعيله وإشعار صاحب المنشأة." } } do %>
+          <%= icon(:check) %> اعتماد الاشتراك
+        <% end %>
+        <p><small>يبدأ الاشتراك فورًا، أو بعد انتهاء الاشتراك الحالي إن وُجد.</small></p>
+      </div>
+      <%= form_with url: reject_admin_subscription_path(s), method: :patch, data: { confirm: "رفض هذا الطلب؟" } do |f| %>
+        <div class="field">
+          <%= f.label :reason, "سبب الرفض" %>
+          <%= f.text_area :reason, required: true, rows: 2, placeholder: "مثال: لم يصل التحويل" %>
+        </div>
+        <%= button_tag type: "submit", class: "btn btn-danger" do %><%= icon(:close) %> رفض الطلب<% end %>
+      <% end %>
+    </div>
+  </section>
+<% end %>
+
+<div class="grid grid-2 mt">
   <section class="card">
-    <h2>التفاصيل</h2>
+    <div class="card-header"><h2>التفاصيل</h2></div>
     <dl class="details">
       <dt>صاحب الطلب</dt><dd><%= link_to s.user.name, admin_user_path(s.user) %> — <span class="ltr"><%= s.user.phone %></span></dd>
       <dt>الباقة</dt><dd><%= s.subscription_plan.name %> (<%= s.subscription_plan.duration_days %> يوم، حتى <%= s.subscription_plan.max_firms %> منشأة)</dd>
@@ -30,33 +54,13 @@
   </section>
 
   <section class="card">
-    <h2>صورة التحويل</h2>
+    <div class="card-header"><h2>صورة التحويل</h2></div>
     <% if s.payment_screenshot.attached? %>
-      <a href="<%= screenshot_admin_subscription_path(s) %>" target="_blank" rel="noopener">
-        <img class="screenshot" src="<%= screenshot_admin_subscription_path(s) %>" alt="صورة التحويل">
+      <a href="<%= screenshot_admin_subscription_path(s) %>" target="_blank" rel="noopener" title="فتح بالحجم الكامل">
+        <img class="screenshot" src="<%= screenshot_admin_subscription_path(s) %>" alt="صورة التحويل" loading="lazy">
       </a>
     <% else %>
-      <p class="empty">لم يرفق صاحب الطلب صورة.</p>
+      <%= empty_state("لم يرفق صاحب الطلب صورة.") %>
     <% end %>
   </section>
 </div>
-
-<% if s.pending? %>
-  <section class="card" style="margin-top:16px">
-    <h2>المراجعة</h2>
-    <p>تأكد من وصول التحويل في <%= enum_label(Subscription, :payment_method, s.payment_method) %> بنفس رقم العملية والمبلغ قبل الاعتماد.</p>
-    <div class="grid grid-2">
-      <div>
-        <%= button_to "اعتماد الاشتراك", approve_admin_subscription_path(s), method: :patch, class: "btn btn-gold",
-              form: { data: { confirm: "اعتماد هذا الاشتراك؟ سيتم تفعيله وإشعار صاحب المنشأة." } } %>
-      </div>
-      <%= form_with url: reject_admin_subscription_path(s), method: :patch, data: { confirm: "رفض هذا الطلب؟" } do |f| %>
-        <div class="field">
-          <%= f.label :reason, "سبب الرفض" %>
-          <%= f.text_area :reason, required: true, rows: 3 %>
-        </div>
-        <%= f.submit "رفض الطلب", class: "btn btn-danger" %>
-      <% end %>
-    </div>
-  </section>
-<% end %>
