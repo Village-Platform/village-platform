@@ -20,7 +20,22 @@ module Subscriptions
         )
       end
 
+      notify_owner
       @subscription
+    end
+
+    private
+
+    def notify_owner
+      Notifier.notify(
+        user: @subscription.user,
+        kind: :subscription_rejected,
+        dedupe_key: "subscription:#{@subscription.id}:rejected",
+        data: { subscription_id: @subscription.id },
+        reason: @reason
+      )
+    rescue StandardError => e
+      Rails.logger.error("[Subscriptions::Reject] notification failed subscription_id=#{@subscription.id} #{e.class}: #{e.message}")
     end
   end
 end

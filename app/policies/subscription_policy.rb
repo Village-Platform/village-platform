@@ -5,7 +5,7 @@ class SubscriptionPolicy < ApplicationPolicy
   def review?  = super_admin?
 
   def permitted_attributes
-    %i[subscription_plan_id payment_method transaction_reference payer_phone notes]
+    %i[subscription_plan_id payment_method transaction_reference payer_phone notes payment_screenshot]
   end
 
   class Scope < ApplicationPolicy::Scope

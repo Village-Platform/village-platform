@@ -1,5 +1,6 @@
 class SubscriptionSerializer
-  # Expects :subscription_plan (and :user for admin lists) to be preloaded on collections.
+  # Expects :subscription_plan, the screenshot attachment (and :user for admin lists)
+  # to be preloaded on collections.
   def self.render(subscription, include_user: false)
     data = {
       id: subscription.id,
@@ -17,6 +18,8 @@ class SubscriptionSerializer
       transaction_reference: subscription.transaction_reference,
       payer_phone: subscription.payer_phone,
       notes: subscription.notes,
+      has_payment_screenshot: subscription.payment_screenshot.attached?,
+      days_left: subscription.days_left,
       starts_at: subscription.starts_at,
       ends_at: subscription.ends_at,
       reviewed_at: subscription.reviewed_at,

@@ -54,8 +54,12 @@ Seeded super admin: `SUPER_ADMIN_PHONE` / `SUPER_ADMIN_PASSWORD` from `.env`.
 | GET    | `/subscription_plans[/:id]`        | public        |
 | POST/PATCH/DELETE | `/subscription_plans[/:id]` | super_admin |
 | GET    | `/subscriptions[/:id]`             | user (own)    |
-| POST   | `/subscriptions`                   | user          |
+| POST   | `/subscriptions` (JSON or multipart with `payment_screenshot`) | user |
+| GET    | `/subscriptions/:id/payment_screenshot` | user (own) |
+| GET    | `/notifications?unread=true`       | user          |
+| PATCH  | `/notifications/:id/read`, `/notifications/read_all` | user |
 | GET    | `/admin/subscriptions?status=pending`, `/admin/subscriptions/:id` | super_admin |
+| GET    | `/admin/subscriptions/:id/payment_screenshot` | super_admin |
 | PATCH  | `/admin/subscriptions/:id/approve` | super_admin   |
 | PATCH  | `/admin/subscriptions/:id/reject` (`reason`) | super_admin |
 | GET    | `/up`                              | health check  |
@@ -84,11 +88,29 @@ curl localhost:3000/api/v1/me -H "Authorization: Bearer <token>"
 
 Safety: one pending request per user, and a transfer reference can't be reused (DB unique indexes).
 
+### Payment screenshot
+
+Optional on `POST /subscriptions` as `subscription[payment_screenshot]` (multipart/form-data):
+PNG, JPEG or WEBP, max 5MB. Files are stored with Active Storage (`storage/` locally).
+The screenshot is never public: `GET .../payment_screenshot` checks access, then redirects
+to a URL that expires after 5 minutes.
+
+### Notifications and expiry reminders
+
+In-app notifications are created when a subscription is approved or rejected, and by a daily job:
+7 days and 1 day before expiry, and once after expiry. Owners who already renewed are skipped,
+and every reminder has a dedupe key, so running the job twice sends nothing new.
+
+```bash
+bin/rails notifications:subscription_reminders
+# crontab example (every day at 09:00 Cairo time):
+# 0 9 * * * cd /path/to/aghour_services && RAILS_ENV=production bin/rails notifications:subscription_reminders
+```
+
 ## Next steps (planned)
 
-1. Payment screenshot upload (Active Storage) + expiry reminders
-2. Admin dashboard (server-rendered, Arabic RTL, dark green & gold)
-3. Images via Active Storage (firm logos, category icons, article covers)
-4. Token revocation / refresh tokens
-5. Push notifications (FCM) for news
-6. Dockerfile + deployment
+1. Admin dashboard (server-rendered, Arabic RTL, dark green & gold)
+2. Images via Active Storage (firm logos, category icons, article covers)
+3. Token revocation / refresh tokens
+4. Push notifications (FCM) — deliver the existing notifications + news
+5. Dockerfile + deployment

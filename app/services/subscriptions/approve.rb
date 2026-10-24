@@ -29,7 +29,24 @@ module Subscriptions
         user.update!(role: :firm_admin) if user.user?
       end
 
+      notify_owner
       @subscription
+    end
+
+    private
+
+    # Outside the transaction: a failed notification must never undo an approval.
+    def notify_owner
+      Notifier.notify(
+        user: @subscription.user,
+        kind: :subscription_approved,
+        dedupe_key: "subscription:#{@subscription.id}:approved",
+        data: { subscription_id: @subscription.id },
+        plan: @subscription.subscription_plan.name,
+        ends_at: I18n.l(@subscription.ends_at.to_date, locale: I18n.default_locale)
+      )
+    rescue StandardError => e
+      Rails.logger.error("[Subscriptions::Approve] notification failed subscription_id=#{@subscription.id} #{e.class}: #{e.message}")
     end
   end
 end

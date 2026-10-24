@@ -12,6 +12,21 @@ ar:
       pending_subscription_exists: "لديك طلب اشتراك قيد المراجعة بالفعل."
       invalid_state: "تمت مراجعة هذا الاشتراك بالفعل."
       duplicate: "هذا العنصر موجود بالفعل."
+      invalid_image_type: "يجب أن تكون صورة بصيغة PNG أو JPEG أو WEBP"
+      file_too_large: "يجب أن يكون حجمها أقل من %{size}"
+  notifications:
+    subscription_approved:
+      title: "تم تفعيل اشتراكك"
+      body: "اشتراكك في باقة %{plan} فعّال حتى %{ends_at}. يمكنك الآن إضافة منشأتك."
+    subscription_rejected:
+      title: "تم رفض طلب الاشتراك"
+      body: "تم رفض طلب الاشتراك للسبب التالي: %{reason}"
+    subscription_expiring:
+      title: "اشتراكك على وشك الانتهاء"
+      body: "ينتهي اشتراكك في باقة %{plan} خلال %{days} يوم. جدّد الاشتراك ليظل نشاطك ظاهراً."
+    subscription_expired:
+      title: "انتهى اشتراكك"
+      body: "انتهى اشتراكك في باقة %{plan} وتم إخفاء منشأتك. جدّد الاشتراك لإظهارها مرة أخرى."
   payment_methods:
     instapay: "إنستاباي"
     vodafone_cash: "فودافون كاش"
@@ -53,3 +68,4 @@ ar:
         transaction_reference: "رقم العملية"
         payer_phone: "رقم المحوِّل"
         notes: "ملاحظات"
+        payment_screenshot: "صورة التحويل"

@@ -16,6 +16,7 @@ RSpec.describe "Admin Subscriptions API", type: :request do
         expect(subscription.reload.ends_at).to eq(30.days.from_now)
         expect(subscription.reviewed_by).to eq(super_admin)
         expect(owner.reload).to be_firm_admin
+        expect(owner.notifications.last).to be_subscription_approved
       end
     end
 
@@ -50,6 +51,7 @@ RSpec.describe "Admin Subscriptions API", type: :request do
       expect(json.dig("data", "status")).to eq("rejected")
       expect(json.dig("data", "rejection_reason")).to eq("Transfer not found")
       expect(owner.reload).to be_user
+      expect(owner.notifications.last.body).to include("Transfer not found")
     end
 
     it "requires a reason" do
