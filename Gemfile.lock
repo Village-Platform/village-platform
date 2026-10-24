@@ -316,6 +316,7 @@ DEPENDENCIES
   rails-i18n (~> 8.0)
   rspec-rails (~> 8.0)
   rubocop-rails-omakase
+  ruby-vips
   tzinfo-data
 
 CHECKSUMS
