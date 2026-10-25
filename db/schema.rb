@@ -15,24 +15,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120001) do
   enable_extension "pg_catalog.plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
-    t.string "name", null: false
-    t.bigint "record_id", null: false
-    t.string "record_type", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
-    t.bigint "byte_size", null: false
-    t.string "checksum"
-    t.string "content_type"
-    t.datetime "created_at", null: false
-    t.string "filename", null: false
     t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
     t.text "metadata"
     t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -44,11 +44,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120001) do
 
   create_table "articles", force: :cascade do |t|
     t.bigint "author_id", null: false
+    t.string "title", null: false
     t.text "body", null: false
-    t.datetime "created_at", null: false
     t.integer "kind", default: 0, null: false
     t.datetime "published_at"
-    t.string "title", null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_articles_on_author_id"
     t.index ["kind", "published_at"], name: "index_articles_on_kind_and_published_at"
@@ -56,31 +56,31 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120001) do
   end
 
   create_table "categories", force: :cascade do |t|
-    t.boolean "active", default: true, null: false
-    t.datetime "created_at", null: false
+    t.string "name", null: false
     t.text "description"
     t.string "icon"
-    t.string "name", null: false
     t.integer "position", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["active", "position"], name: "index_categories_on_active_and_position"
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
   create_table "firms", force: :cascade do |t|
-    t.string "address"
     t.bigint "category_id", null: false
-    t.datetime "created_at", null: false
+    t.bigint "owner_id", null: false
+    t.string "name", null: false
     t.text "description"
+    t.string "phone"
+    t.string "whatsapp"
+    t.string "address"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
-    t.string "name", null: false
-    t.bigint "owner_id", null: false
-    t.string "phone"
-    t.integer "status", default: 0, null: false
-    t.datetime "updated_at", null: false
-    t.string "whatsapp"
     t.string "working_hours"
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["category_id", "status"], name: "index_firms_on_category_id_and_status"
     t.index ["category_id"], name: "index_firms_on_category_id"
     t.index ["owner_id"], name: "index_firms_on_owner_id"
@@ -88,36 +88,36 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120001) do
   end
 
   create_table "notifications", force: :cascade do |t|
-    t.text "body", null: false
-    t.datetime "created_at", null: false
-    t.jsonb "data", default: {}, null: false
-    t.string "dedupe_key"
-    t.integer "kind", null: false
-    t.datetime "read_at"
-    t.string "title", null: false
-    t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.integer "kind", null: false
+    t.string "title", null: false
+    t.text "body", null: false
+    t.jsonb "data", default: {}, null: false
+    t.datetime "read_at"
+    t.string "dedupe_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["dedupe_key"], name: "index_notifications_on_dedupe_key", unique: true, where: "(dedupe_key IS NOT NULL)"
     t.index ["user_id", "created_at"], name: "index_notifications_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_notifications_unread_by_user", where: "(read_at IS NULL)"
   end
 
   create_table "stored_files", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.binary "data", null: false
     t.string "key", null: false
+    t.binary "data", null: false
+    t.datetime "created_at", null: false
     t.index ["key"], name: "index_stored_files_on_key", unique: true
   end
 
   create_table "subscription_plans", force: :cascade do |t|
-    t.boolean "active", default: true, null: false
-    t.datetime "created_at", null: false
+    t.string "name", null: false
     t.text "description"
+    t.integer "price_cents", null: false
     t.integer "duration_days", null: false
     t.integer "max_firms", default: 1, null: false
-    t.string "name", null: false
     t.integer "position", default: 0, null: false
-    t.integer "price_cents", null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_subscription_plans_on_name", unique: true
     t.check_constraint "duration_days > 0", name: "subscription_plans_duration_positive"
@@ -126,21 +126,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120001) do
   end
 
   create_table "subscriptions", force: :cascade do |t|
-    t.integer "amount_cents", null: false
-    t.datetime "created_at", null: false
-    t.datetime "ends_at"
-    t.text "notes"
-    t.string "payer_phone"
-    t.integer "payment_method", null: false
-    t.text "rejection_reason"
-    t.datetime "reviewed_at"
-    t.bigint "reviewed_by_id"
-    t.datetime "starts_at"
-    t.integer "status", default: 0, null: false
-    t.bigint "subscription_plan_id", null: false
-    t.string "transaction_reference", null: false
-    t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.bigint "subscription_plan_id", null: false
+    t.bigint "reviewed_by_id"
+    t.integer "status", default: 0, null: false
+    t.integer "payment_method", null: false
+    t.integer "amount_cents", null: false
+    t.string "transaction_reference", null: false
+    t.string "payer_phone"
+    t.text "notes"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+    t.datetime "reviewed_at"
+    t.text "rejection_reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["payment_method", "transaction_reference"], name: "index_subscriptions_on_payment_reference", unique: true
     t.index ["reviewed_by_id"], name: "index_subscriptions_on_reviewed_by_id"
     t.index ["status", "ends_at"], name: "index_subscriptions_on_status_and_ends_at"
@@ -151,12 +151,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120001) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.string "email"
     t.string "name", null: false
-    t.string "password_digest", null: false
     t.string "phone", null: false
+    t.string "email"
+    t.string "password_digest", null: false
     t.integer "role", default: 0, null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true, where: "(email IS NOT NULL)"
     t.index ["phone"], name: "index_users_on_phone", unique: true

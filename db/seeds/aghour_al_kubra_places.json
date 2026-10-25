@@ -1,1437 +1,950 @@
-{
-  "metadata": {
-    "schema_version": "1.0",
-    "target": {
-      "name_ar": "أجهور الكبرى",
-      "name_en": "Aghour Al Kubra",
-      "district": "Toukh",
-      "governorate": "Al-Qalyubia",
-      "country": "Egypt"
-    },
-    "collected_on": "2026-10-25",
-    "timezone": "Africa/Cairo",
-    "source": "Google Maps public search results and individual place pages",
-    "coverage": "partial_not_exhaustive",
-    "complete_inventory": false,
-    "method": "Searched village and multiple place categories in Google Maps; read visible result cards and 53 individual place pages. Parsed place-pin coordinates from the observed listing links. Excluded distant search results; kept two explicitly adjacent-village records separately. No API or phone verification.",
-    "limitations": [
-      "Google Maps displayed a limited-view notice. This is not an exhaustive export of every place or every Google field.",
-      "Village administrative boundaries were not independently verified. Address locality conflicts are marked per record.",
-      "Public user-contributed names, categories, pins, phone numbers, ratings and opening times may be inaccurate or outdated.",
-      "Null means unavailable or not captured, not that the place has no such information.",
-      "Hours summaries are snapshots; weekly schedules were not collected. Do not treat them as permanent schedules.",
-      "Website values are links listed on Google Maps, not independently verified official websites.",
-      "Potential duplicates with distinct Google place IDs are retained and flagged."
-    ],
-    "coordinate_reference_system": "WGS84 / EPSG:4326",
-    "phone_format": "International string with leading +, where published; null when unavailable",
-    "search_topics": [
-      "village",
-      "restaurants",
-      "pharmacies",
-      "hospitals and clinics",
-      "schools",
-      "mosques",
-      "shops",
-      "postal and government services",
-      "cafes",
-      "banks",
-      "sports and gyms",
-      "doctors",
-      "supermarkets",
-      "medical laboratories",
-      "services"
-    ],
-    "counts": {
-      "places": 51,
-      "nearby_places_outside_target": 2,
-      "places_with_coordinates": 51,
-      "places_with_phone": 21,
-      "places_with_website": 3
-    },
-    "category_counts": {
-      "Pharmacy": 10,
-      "Hospital": 3,
-      "General education school": 1,
-      "Primary school": 1,
-      "Girls' high school": 1,
-      "Preparatory school": 1,
-      "Boys' high school": 1,
-      "Mosque": 7,
-      "Electronics store": 1,
-      "Store": 2,
-      "Organic food store": 1,
-      "Motorcycle parts store": 1,
-      "Grocery store": 3,
-      "General store": 1,
-      "Jewelry store": 1,
-      "Post office": 1,
-      "Pizza restaurant": 1,
-      "Barbecue restaurant": 1,
-      "Coffee shop": 2,
-      "Restaurant": 1,
-      "Creperie": 1,
-      "Cafe": 1,
-      "Gym": 1,
-      "Sports club": 1,
-      "Supermarket": 5,
-      "Doctor": 1
-    }
-  },
-  "places": [
-    {
-      "id": "ChIJOTUZEbZvWBQRDJeV263S504",
-      "name": "صيدليات العمري [ اجهور الكبري ]",
-      "category": "Pharmacy",
-      "latitude": 30.2989638,
-      "longitude": 31.1431545,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+[
+  {
+    "name": "صيدليات العمري [ اجهور الكبري ]",
+    "details": {
+      "category": "صيدلية",
       "address": "أول شارع الشكارة, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 13731, Egypt",
-      "phone": "+201008501029",
-      "phone_display": "+20 10 08501029",
-      "website": "https://www.facebook.com/profile.php?id=100076216776472&mibextid=ZbWKwL",
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B5%D9%8A%D8%AF%D9%84%D9%8A%D8%A7%D8%AA+%D8%A7%D9%84%D8%B9%D9%85%D8%B1%D9%8A+%5B+%D8%A7%D8%AC%D9%87%D9%88%D8%B1+%D8%A7%D9%84%D9%83%D8%A8%D8%B1%D9%8A+%5D%E2%80%AD/data=!4m7!3m6!1s0x14586fb611193539:0x4ee7d2addb95970c!8m2!3d30.2989638!4d31.1431545!16s%2Fg%2F11vqhppryj!19sChIJOTUZEbZvWBQRDJeV263S504?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJOTUZEbZvWBQRDJeV263S504",
-      "plus_code": "74XV+H7 Toukh, Egypt",
-      "rating": null,
-      "review_count": 0,
-      "opening_hours_summary": "Closes soon · 2 AM · Reopens 9 AM",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "صيدليات العمري [ اجهور الكبري ]\nصيدليات العمري [ اجهور الكبري ]\nNo reviews\nPharmacy · أول شارع الشكارة\nCloses soon · 2 AM · Reopens 9 AM · +20 10 08501029"
+      "description": null
     },
-    {
-      "id": "ChIJ4TJrwwpvWBQRWIdlLtBQqk4",
-      "name": "صيدليه الدكتورة أيه الدسوقي",
-      "category": "Pharmacy",
-      "latitude": 30.3039571,
-      "longitude": 31.1472565,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2989638,
+    "longitude": 31.1431545,
+    "phone": "+201008501029",
+    "facebook": "https://www.facebook.com/profile.php?id=100076216776472&mibextid=ZbWKwL"
+  },
+  {
+    "name": "صيدليه الدكتورة أيه الدسوقي",
+    "details": {
+      "category": "صيدلية",
       "address": "داير الناحية, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433505, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B5%D9%8A%D8%AF%D9%84%D9%8A%D9%87+%D8%A7%D9%84%D8%AF%D9%83%D8%AA%D9%88%D8%B1%D8%A9+%D8%A3%D9%8A%D9%87+%D8%A7%D9%84%D8%AF%D8%B3%D9%88%D9%82%D9%8A%E2%80%AD/data=!4m7!3m6!1s0x14586f0ac36b32e1:0x4eaa50d02e658758!8m2!3d30.3039571!4d31.1472565!16s%2Fg%2F11rvcpnmb5!19sChIJ4TJrwwpvWBQRWIdlLtBQqk4?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJ4TJrwwpvWBQRWIdlLtBQqk4",
-      "plus_code": "843W+HW Toukh, Egypt",
-      "rating": 5.0,
-      "review_count": 2,
-      "opening_hours_summary": "Closes soon · 2 AM · Reopens 7 AM",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "صيدليه الدكتورة أيه الدسوقي\nصيدليه الدكتورة أيه الدسوقي\n5.0(2)\nPharmacy · داير الناحية\nCloses soon · 2 AM · Reopens 7 AM"
+      "description": null
     },
-    {
-      "id": "ChIJOezxj7NvWBQRtM5O9v3agxA",
-      "name": "صيدليه د نجاة شاهين",
-      "category": "Pharmacy",
-      "latitude": 30.3021385,
-      "longitude": 31.1424001,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3039571,
+    "longitude": 31.1472565,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "صيدليه د نجاة شاهين",
+    "details": {
+      "category": "صيدلية",
       "address": "842R+VX2, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433087, Egypt",
-      "phone": "+201224142434",
-      "phone_display": "+20 12 24142434",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B5%D9%8A%D8%AF%D9%84%D9%8A%D9%87+%D8%AF+%D9%86%D8%AC%D8%A7%D8%A9+%D8%B4%D8%A7%D9%87%D9%8A%D9%86%E2%80%AD/data=!4m7!3m6!1s0x14586fb38ff1ec39:0x1083dafdf64eceb4!8m2!3d30.3021385!4d31.1424001!16s%2Fg%2F11fk1ng9qz!19sChIJOezxj7NvWBQRtM5O9v3agxA?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJOezxj7NvWBQRtM5O9v3agxA",
-      "plus_code": null,
-      "rating": 4.0,
-      "review_count": 5,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [
-        "Another similarly named pharmacy has a different Google place ID and pin; possible duplicate or branch, not merged."
-      ],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "صيدليه د نجاة شاهين\nصيدليه د نجاة شاهين\n4.0(5)\nPharmacy · 842R+VX2\n+20 12 24142434"
+      "description": null
     },
-    {
-      "id": "ChIJGUdtLgBvWBQRUMNgZsEaNVY",
-      "name": "صيدليه الدكتوره نجاه شاهين",
-      "category": "Pharmacy",
-      "latitude": 30.3002343,
-      "longitude": 31.1466571,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3021385,
+    "longitude": 31.1424001,
+    "phone": "+201224142434",
+    "facebook": null
+  },
+  {
+    "name": "صيدليه الدكتوره نجاه شاهين",
+    "details": {
+      "category": "صيدلية",
       "address": "842W+4M9, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433250, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B5%D9%8A%D8%AF%D9%84%D9%8A%D9%87+%D8%A7%D9%84%D8%AF%D9%83%D8%AA%D9%88%D8%B1%D9%87+%D9%86%D8%AC%D8%A7%D9%87+%D8%B4%D8%A7%D9%87%D9%8A%D9%86%E2%80%AD/data=!4m7!3m6!1s0x14586f002e6d4719:0x56351ac16660c350!8m2!3d30.3002343!4d31.1466571!16s%2Fg%2F11z5nd5xyt!19sChIJGUdtLgBvWBQRUMNgZsEaNVY?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJGUdtLgBvWBQRUMNgZsEaNVY",
-      "plus_code": null,
-      "rating": null,
-      "review_count": 0,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [
-        "Another similarly named pharmacy has a different Google place ID and pin; possible duplicate or branch, not merged."
-      ],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "صيدليه الدكتوره نجاه شاهين\nصيدليه الدكتوره نجاه شاهين\nNo reviews\nPharmacy · 842W+4M9"
+      "description": null
     },
-    {
-      "id": "ChIJ4dbUGZdvWBQRGa9lAl08RsM",
-      "name": "صيدليه د/احمد حسنين",
-      "category": "Pharmacy",
-      "latitude": 30.2973343,
-      "longitude": 31.1274715,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3002343,
+    "longitude": 31.1466571,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "صيدليه د/احمد حسنين",
+    "details": {
+      "category": "صيدلية",
       "address": "Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433070, Egypt",
-      "phone": "+20132432550",
-      "phone_display": "+20 13 2432550",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B5%D9%8A%D8%AF%D9%84%D9%8A%D9%87+%D8%AF%2F%D8%A7%D8%AD%D9%85%D8%AF+%D8%AD%D8%B3%D9%86%D9%8A%D9%86%E2%80%AD/data=!4m7!3m6!1s0x14586f9719d4d6e1:0xc3463c5d0265af19!8m2!3d30.2973343!4d31.1274715!16s%2Fg%2F11hzjj0hw4!19sChIJ4dbUGZdvWBQRGa9lAl08RsM?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJ4dbUGZdvWBQRGa9lAl08RsM",
-      "plus_code": "74WG+WX Toukh, Egypt",
-      "rating": 4.7,
-      "review_count": 3,
-      "opening_hours_summary": "Closed · Opens 8 AM",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "صيدليه د/احمد حسنين\nصيدليه د/احمد حسنين\n4.7(3)\nPharmacy\nClosed · Opens 8 AM · +20 13 2432550"
+      "description": null
     },
-    {
-      "id": "ChIJ72v5mwFvWBQR9Ql0sw_LWjI",
-      "name": "صيدليه د احمد مزروع",
-      "category": "Pharmacy",
-      "latitude": 30.2991894,
-      "longitude": 31.1464201,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
-      "address": "شارع داير الناحية, Dandana, Toukh, Al-Qalyubia Governorate 6433058, Egypt",
-      "phone": "+20132430444",
-      "phone_display": "+20 13 2430444",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B5%D9%8A%D8%AF%D9%84%D9%8A%D9%87+%D8%AF+%D8%A7%D8%AD%D9%85%D8%AF+%D9%85%D8%B2%D8%B1%D9%88%D8%B9%E2%80%AD/data=!4m7!3m6!1s0x14586f019bf96bef:0x325acb0fb37409f5!8m2!3d30.2991894!4d31.1464201!16s%2Fg%2F11g4jdvblc!19sChIJ72v5mwFvWBQR9Ql0sw_LWjI?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJ72v5mwFvWBQR9Ql0sw_LWjI",
-      "plus_code": "74XW+MH Toukh, Egypt",
-      "rating": 4.4,
-      "review_count": 8,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_pin_locality_conflict",
-      "verification_notes": [
-        "Google address says Dandana although the pin is in the Aghour Al Kubra search area; verify locality."
-      ],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "صيدليه د احمد مزروع\nصيدليه د احمد مزروع\n4.4(8)\nPharmacy · شارع داير الناحية\nOpen 24 hours · +20 13 2430444"
-    },
-    {
-      "id": "ChIJZfDKGGFvWBQR2X7z7dHN7hs",
-      "name": "صيدلية د.ريم طه الجمل",
-      "category": "Pharmacy",
-      "latitude": 30.2976845,
-      "longitude": 31.1480764,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2973343,
+    "longitude": 31.1274715,
+    "phone": "+20132432550",
+    "facebook": null
+  },
+  {
+    "name": "صيدلية د.ريم طه الجمل",
+    "details": {
+      "category": "صيدلية",
       "address": "شارع جامع أبو دشيش, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 13731, Egypt",
-      "phone": "+201222713503",
-      "phone_display": "+20 12 22713503",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B5%D9%8A%D8%AF%D9%84%D9%8A%D8%A9+%D8%AF.%D8%B1%D9%8A%D9%85+%D8%B7%D9%87+%D8%A7%D9%84%D8%AC%D9%85%D9%84%E2%80%AD/data=!4m7!3m6!1s0x14586f6118caf065:0x1beecdd1edf37ed9!8m2!3d30.2976845!4d31.1480764!16s%2Fg%2F11rtr0zp4p!19sChIJZfDKGGFvWBQR2X7z7dHN7hs?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJZfDKGGFvWBQR2X7z7dHN7hs",
-      "plus_code": "74XX+36 Toukh, Egypt",
-      "rating": null,
-      "review_count": 0,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "صيدلية د.ريم طه الجمل\nصيدلية د.ريم طه الجمل\nNo reviews\nPharmacy · شارع جامع أبو دشيش\nOpen 24 hours · +20 12 22713503"
+      "description": null
     },
-    {
-      "id": "ChIJWWKtDgBvWBQRD3Phdi1AQlw",
-      "name": "صيدلية دكتور أحمد مزروع 2",
-      "category": "Pharmacy",
-      "latitude": 30.3023337,
-      "longitude": 31.1479778,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2976845,
+    "longitude": 31.1480764,
+    "phone": "+201222713503",
+    "facebook": null
+  },
+  {
+    "name": "صيدلية دكتور أحمد مزروع 2",
+    "details": {
+      "category": "صيدلية",
       "address": "842X+W5Q, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433343, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B5%D9%8A%D8%AF%D9%84%D9%8A%D8%A9+%D8%AF%D9%83%D8%AA%D9%88%D8%B1+%D8%A3%D8%AD%D9%85%D8%AF+%D9%85%D8%B2%D8%B1%D9%88%D8%B9+2%E2%80%AD/data=!4m7!3m6!1s0x14586f000ead6259:0x5c42402d76e1730f!8m2!3d30.3023337!4d31.1479778!16s%2Fg%2F11myj4_c5f!19sChIJWWKtDgBvWBQRD3Phdi1AQlw?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJWWKtDgBvWBQRD3Phdi1AQlw",
-      "plus_code": null,
-      "rating": null,
-      "review_count": 0,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "صيدلية دكتور أحمد مزروع 2\nصيدلية دكتور أحمد مزروع 2\nNo reviews\nPharmacy · 842X+W5Q"
+      "description": null
     },
-    {
-      "id": "ChIJ3_5EJ4FvWBQRid-OPgKJK2w",
-      "name": "صيدلية احمد محمد السيد ندا",
-      "category": "Pharmacy",
-      "latitude": 30.3008697,
-      "longitude": 31.1525783,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3023337,
+    "longitude": 31.1479778,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "صيدلية احمد محمد السيد ندا",
+    "details": {
+      "category": "صيدلية",
       "address": "8523+82W، Unnamed Road, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433332, Egypt",
-      "phone": "+201224039155",
-      "phone_display": "+20 12 24039155",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B5%D9%8A%D8%AF%D9%84%D9%8A%D8%A9+%D8%A7%D8%AD%D9%85%D8%AF+%D9%85%D8%AD%D9%85%D8%AF+%D8%A7%D9%84%D8%B3%D9%8A%D8%AF+%D9%86%D8%AF%D8%A7%E2%80%AD/data=!4m7!3m6!1s0x14586f812744fedf:0x6c2b89023e8edf89!8m2!3d30.3008697!4d31.1525783!16s%2Fg%2F11h0_j5628!19sChIJ3_5EJ4FvWBQRid-OPgKJK2w?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJ3_5EJ4FvWBQRid-OPgKJK2w",
-      "plus_code": null,
-      "rating": 5.0,
-      "review_count": 2,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "صيدلية احمد محمد السيد ندا\nصيدلية احمد محمد السيد ندا\n5.0(2)\nPharmacy · 8523+82W، Unnamed Road\n+20 12 24039155"
+      "description": null
     },
-    {
-      "id": "ChIJMQ-xQwBvWBQRyOgTBh2BnUU",
-      "name": "صيدلية د.عاطف ابو عرب",
-      "category": "Pharmacy",
-      "latitude": 30.3002827,
-      "longitude": 31.149639,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3008697,
+    "longitude": 31.1525783,
+    "phone": "+201224039155",
+    "facebook": null
+  },
+  {
+    "name": "صيدلية د.عاطف ابو عرب",
+    "details": {
+      "category": "صيدلية",
       "address": "842X+4V6, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433320, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B5%D9%8A%D8%AF%D9%84%D9%8A%D8%A9+%D8%AF.%D8%B9%D8%A7%D8%B7%D9%81+%D8%A7%D8%A8%D9%88+%D8%B9%D8%B1%D8%A8%E2%80%AD/data=!4m7!3m6!1s0x14586f0043b10f31:0x459d811d0613e8c8!8m2!3d30.3002827!4d31.149639!16s%2Fg%2F11x6jmczhd!19sChIJMQ-xQwBvWBQRyOgTBh2BnUU?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJMQ-xQwBvWBQRyOgTBh2BnUU",
-      "plus_code": null,
-      "rating": null,
-      "review_count": 0,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [
-        "Pin coordinates are shared with other listings in this dataset; verify the exact entrance before navigation."
-      ],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "صيدلية د.عاطف ابو عرب\nصيدلية د.عاطف ابو عرب\nNo reviews\nPharmacy · 842X+4V6"
+      "description": "لم يعتمد موقع دقيق: الدبوس المنشور يتكرر لمجموعة أماكن مختلفة؛ يلزم تأكيد موقع المحل."
     },
-    {
-      "id": "ChIJ5SIaETFuWBQR6NMeO7gHaSg",
-      "name": "الصفا والمروة التخصصى",
-      "category": "Hospital",
-      "latitude": 30.2959839,
-      "longitude": 31.1328734,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": null,
+    "longitude": null,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "الصفا والمروة التخصصى",
+    "details": {
+      "category": "مستشفى / خدمة طبية",
       "address": "74WM+94X, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433018, Egypt",
-      "phone": "+20132434494",
-      "phone_display": "+20 13 2434494",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%A7%D9%84%D8%B5%D9%81%D8%A7+%D9%88%D8%A7%D9%84%D9%85%D8%B1%D9%88%D8%A9+%D8%A7%D9%84%D8%AA%D8%AE%D8%B5%D8%B5%D9%89%E2%80%AD/data=!4m7!3m6!1s0x14586e31111a22e5:0x286907b83b1ed3e8!8m2!3d30.2959839!4d31.1328734!16s%2Fg%2F11cnbp_y1f!19sChIJ5SIaETFuWBQR6NMeO7gHaSg?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJ5SIaETFuWBQR6NMeO7gHaSg",
-      "plus_code": null,
-      "rating": 4.5,
-      "review_count": 10,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "الصفا والمروة التخصصى\nالصفا والمروة التخصصى\n4.5(10)\nHospital ·  · 74WM+94X\nOpen 24 hours · +20 13 2434494"
+      "description": null
     },
-    {
-      "id": "ChIJoSpTTABvWBQRMap8-zpelE8",
-      "name": "مستشفى التأمين الصحي",
-      "category": "Hospital",
-      "latitude": 30.3045781,
-      "longitude": 31.145507,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2959839,
+    "longitude": 31.1328734,
+    "phone": "+20132434494",
+    "facebook": null
+  },
+  {
+    "name": "مستشفى التأمين الصحي",
+    "details": {
+      "category": "مستشفى / خدمة طبية",
       "address": "843W+V2R, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433514, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%B3%D8%AA%D8%B4%D9%81%D9%89+%D8%A7%D9%84%D8%AA%D8%A3%D9%85%D9%8A%D9%86+%D8%A7%D9%84%D8%B5%D8%AD%D9%8A%E2%80%AD/data=!4m7!3m6!1s0x14586f004c532aa1:0x4f945e3afb7caa31!8m2!3d30.3045781!4d31.145507!16s%2Fg%2F11wj81455p!19sChIJoSpTTABvWBQRMap8-zpelE8?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJoSpTTABvWBQRMap8-zpelE8",
-      "plus_code": null,
-      "rating": null,
-      "review_count": 0,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مستشفى التأمين الصحي\nمستشفى التأمين الصحي\nNo reviews\nHospital ·  · 843W+V2R"
+      "description": null
     },
-    {
-      "id": "ChIJo8KQ4x5uWBQR62PhWYNGmw0",
-      "name": "Dr. Ayman wondrous clinic",
-      "category": "Hospital",
-      "latitude": 30.3015007,
-      "longitude": 31.1513911,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3045781,
+    "longitude": 31.145507,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "Dr. Ayman wondrous clinic",
+    "details": {
+      "category": "مستشفى / خدمة طبية",
       "address": "شارع الفتاحين, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 13731, Egypt",
-      "phone": "+201225929828",
-      "phone_display": "+20 12 25929828",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/Dr.+Ayman+wondrous+clinic/data=!4m7!3m6!1s0x14586e1ee390c2a3:0xd9b468359e163eb!8m2!3d30.3015007!4d31.1513911!16s%2Fg%2F11dymnrt6l!19sChIJo8KQ4x5uWBQR62PhWYNGmw0?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJo8KQ4x5uWBQR62PhWYNGmw0",
-      "plus_code": "8522+JH Toukh, Egypt",
-      "rating": 4.5,
-      "review_count": 2,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "Dr. Ayman wondrous clinic\nDr. Ayman wondrous clinic\n4.5(2)\nHospital · شارع الفتاحين\nOpen 24 hours · +20 12 25929828"
+      "description": null
     },
-    {
-      "id": "ChIJVTrj-SBuWBQRZ04Axh90UXk",
-      "name": "مدرسه اجهور الكبرى النوذجية 1",
-      "category": "General education school",
-      "latitude": 30.30474,
-      "longitude": 31.1450038,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3015007,
+    "longitude": 31.1513911,
+    "phone": "+201225929828",
+    "facebook": null
+  },
+  {
+    "name": "مدرسه اجهور الكبرى النوذجية 1",
+    "details": {
+      "category": "مدرسة تعليم عام",
       "address": "843W+V2R, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433514, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%AF%D8%B1%D8%B3%D9%87+%D8%A7%D8%AC%D9%87%D9%88%D8%B1+%D8%A7%D9%84%D9%83%D8%A8%D8%B1%D9%89+%D8%A7%D9%84%D9%86%D9%88%D8%B0%D8%AC%D9%8A%D8%A9+1%E2%80%AD/data=!4m7!3m6!1s0x14586e20f9e33a55:0x7951741fc6004e67!8m2!3d30.30474!4d31.1450038!16s%2Fg%2F11gc0_bnqg!19sChIJVTrj-SBuWBQRZ04Axh90UXk?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJVTrj-SBuWBQRZ04Axh90UXk",
-      "plus_code": null,
-      "rating": null,
-      "review_count": 0,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مدرسه اجهور الكبرى النوذجية 1\nمدرسه اجهور الكبرى النوذجية 1\nNo reviews\nGeneral education school · 843W+V2R"
+      "description": null
     },
-    {
-      "id": "ChIJAxi-_yBuWBQRcVU_h7lCONU",
-      "name": "مدرسة مؤسسة اجهور الكبرى",
-      "category": "Primary school",
-      "latitude": 30.3041022,
-      "longitude": 31.145172,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.30474,
+    "longitude": 31.1450038,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مدرسة مؤسسة اجهور الكبرى",
+    "details": {
+      "category": "مدرسة ابتدائية",
       "address": "843W+J3V, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433510, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": "https://madaresegypt.com/ar/Item/23790/%D9%85%D8%AF%D8%B1%D8%B3%D8%A9-%D9%85%D8%A4%D8%B3%D8%B3%D8%A9-%D8%A7%D8%AC%D9%87%D9%88%D8%B1-%D8%A7%D9%84%D9%83%D8%A8%D8%B1%D9%89-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D8%AF%D8%A7%D8%A6%D9%8A%D8%A9",
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%AF%D8%B1%D8%B3%D8%A9+%D9%85%D8%A4%D8%B3%D8%B3%D8%A9+%D8%A7%D8%AC%D9%87%D9%88%D8%B1+%D8%A7%D9%84%D9%83%D8%A8%D8%B1%D9%89%E2%80%AD/data=!4m7!3m6!1s0x14586e20ffbe1803:0xd53842b9873f5571!8m2!3d30.3041022!4d31.145172!16s%2Fg%2F11f15jx_k8!19sChIJAxi-_yBuWBQRcVU_h7lCONU?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJAxi-_yBuWBQRcVU_h7lCONU",
-      "plus_code": null,
-      "rating": null,
-      "review_count": 0,
-      "opening_hours_summary": "Closed · Opens 7 AM",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مدرسة مؤسسة اجهور الكبرى\nمدرسة مؤسسة اجهور الكبرى\nNo reviews\nPrimary school · 843W+J3V\nClosed · Opens 7 AM"
+      "description": null
     },
-    {
-      "id": "ChIJmctJ5CBuWBQRxAg2WZ73iY4",
-      "name": "مدرسة اجهور الكبرى الثانوية بنات",
-      "category": "Girls' high school",
-      "latitude": 30.3047014,
-      "longitude": 31.1443041,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3041022,
+    "longitude": 31.145172,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مدرسة اجهور الكبرى الثانوية بنات",
+    "details": {
+      "category": "مدرسة ثانوية بنات",
       "address": "843V+VPM, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433514, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%AF%D8%B1%D8%B3%D8%A9+%D8%A7%D8%AC%D9%87%D9%88%D8%B1+%D8%A7%D9%84%D9%83%D8%A8%D8%B1%D9%89+%D8%A7%D9%84%D8%AB%D8%A7%D9%86%D9%88%D9%8A%D8%A9+%D8%A8%D9%86%D8%A7%D8%AA%E2%80%AD/data=!4m7!3m6!1s0x14586e20e449cb99:0x8e89f79e593608c4!8m2!3d30.3047014!4d31.1443041!16s%2Fg%2F11fzssdq03!19sChIJmctJ5CBuWBQRxAg2WZ73iY4?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJmctJ5CBuWBQRxAg2WZ73iY4",
-      "plus_code": null,
-      "rating": null,
-      "review_count": 0,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مدرسة اجهور الكبرى الثانوية بنات\nمدرسة اجهور الكبرى الثانوية بنات\nNo reviews\nGirls' high school ·  · 843V+VPM"
+      "description": "تابعة لإدارة قها التعليمية بمحافظة القليوبية."
     },
-    {
-      "id": "ChIJGW9_k-FvWBQRdVsz8yKuswU",
-      "name": "مدرسة أجهور الكبرى الإعدادية بنين",
-      "category": "Preparatory school",
-      "latitude": 30.2998048,
-      "longitude": 31.1498308,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3047014,
+    "longitude": 31.1443041,
+    "phone": null,
+    "facebook": "https://www.facebook.com/p/مدرسة-أجهور-الكبرى-الثانوية-بنات-100057568483387/"
+  },
+  {
+    "name": "مدرسة أجهور الكبرى الإعدادية بنين",
+    "details": {
+      "category": "مدرسة إعدادية",
       "address": "74XX+WWG, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433320, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%AF%D8%B1%D8%B3%D8%A9+%D8%A3%D8%AC%D9%87%D9%88%D8%B1+%D8%A7%D9%84%D9%83%D8%A8%D8%B1%D9%89+%D8%A7%D9%84%D8%A5%D8%B9%D8%AF%D8%A7%D8%AF%D9%8A%D8%A9+%D8%A8%D9%86%D9%8A%D9%86%E2%80%AD/data=!4m7!3m6!1s0x14586fe1937f6f19:0x5b3ae22f3335b75!8m2!3d30.2998048!4d31.1498308!16s%2Fg%2F11fvjz_kdx!19sChIJGW9_k-FvWBQRdVsz8yKuswU?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJGW9_k-FvWBQRdVsz8yKuswU",
-      "plus_code": null,
-      "rating": null,
-      "review_count": 0,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مدرسة أجهور الكبرى الإعدادية بنين\nمدرسة أجهور الكبرى الإعدادية بنين\nNo reviews\nPreparatory school ·  · 74XX+WWG"
+      "description": null
     },
-    {
-      "id": "ChIJJ5T4KCJuWBQR07pknRvgBP8",
-      "name": "مدرسة أجهور الكبرى الثانوية بنين",
-      "category": "Boys' high school",
-      "latitude": 30.3010694,
-      "longitude": 31.1458302,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2998048,
+    "longitude": 31.1498308,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مدرسة أجهور الكبرى الثانوية بنين",
+    "details": {
+      "category": "مدرسة ثانوية بنين",
       "address": "Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433252, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%AF%D8%B1%D8%B3%D8%A9+%D8%A3%D8%AC%D9%87%D9%88%D8%B1+%D8%A7%D9%84%D9%83%D8%A8%D8%B1%D9%89+%D8%A7%D9%84%D8%AB%D8%A7%D9%86%D9%88%D9%8A%D8%A9+%D8%A8%D9%86%D9%8A%D9%86%E2%80%AD/data=!4m7!3m6!1s0x14586e2228f89427:0xff04e01b9d64bad3!8m2!3d30.3010694!4d31.1458302!16s%2Fg%2F11f1nckl85!19sChIJJ5T4KCJuWBQR07pknRvgBP8?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJJ5T4KCJuWBQR07pknRvgBP8",
-      "plus_code": "842W+C8 Toukh, Egypt",
-      "rating": null,
-      "review_count": 0,
-      "opening_hours_summary": "Temporarily closed",
-      "weekly_opening_hours": null,
-      "business_status": "temporarily_closed",
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مدرسة أجهور الكبرى الثانوية بنين\nمدرسة أجهور الكبرى الثانوية بنين\nNo reviews\nBoys' high school · \nTemporarily closed"
+      "description": "مدرسة ثانوية عامة تابعة لإدارة قها التعليمية؛ مصنفة مغلقة مؤقتًا على Google Maps وقت المراجعة."
     },
-    {
-      "id": "ChIJ1Yf7rRhuWBQRQQNStRu6kXA",
-      "name": "الجامع الكبير",
-      "category": "Mosque",
-      "latitude": 30.2992238,
-      "longitude": 31.1466314,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3010694,
+    "longitude": 31.1458302,
+    "phone": null,
+    "facebook": "https://www.facebook.com/p/مدرسة-أجهور-الكبري-الثانوية-بنين-100064086215098/"
+  },
+  {
+    "name": "الجامع الكبير",
+    "details": {
+      "category": "مسجد",
       "address": "Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433058, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%A7%D9%84%D8%AC%D8%A7%D9%85%D8%B9+%D8%A7%D9%84%D9%83%D8%A8%D9%8A%D8%B1%E2%80%AD/data=!4m7!3m6!1s0x14586e18adfb87d5:0x7091ba1bb5520341!8m2!3d30.2992238!4d31.1466314!16s%2Fg%2F11c37ywmf4!19sChIJ1Yf7rRhuWBQRQQNStRu6kXA?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJ1Yf7rRhuWBQRQQNStRu6kXA",
-      "plus_code": "74XW+MM Toukh, Egypt",
-      "rating": 4.7,
-      "review_count": 110,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "الجامع الكبير\nالجامع الكبير\n4.7(110)\nMosque"
+      "description": null
     },
-    {
-      "id": "ChIJ-yZT5gNxWBQR7gABkQ1ztnM",
-      "name": "مسجد عبد الله بن مسعود",
-      "category": "Mosque",
-      "latitude": 30.3076256,
-      "longitude": 31.1424626,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2992238,
+    "longitude": 31.1466314,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مسجد عبد الله بن مسعود",
+    "details": {
+      "category": "مسجد",
       "address": "845R+3X4، الحرية، أجهور الكبرى، طوخ، القليوبية،, Toukh, 6433518, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%B3%D8%AC%D8%AF+%D8%B9%D8%A8%D8%AF+%D8%A7%D9%84%D9%84%D9%87+%D8%A8%D9%86+%D9%85%D8%B3%D8%B9%D9%88%D8%AF%E2%80%AD/data=!4m7!3m6!1s0x14587103e65326fb:0x73b6730d910100ee!8m2!3d30.3076256!4d31.1424626!16s%2Fg%2F11fj2r5fn2!19sChIJ-yZT5gNxWBQR7gABkQ1ztnM?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJ-yZT5gNxWBQR7gABkQ1ztnM",
-      "plus_code": null,
-      "rating": 4.6,
-      "review_count": 22,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مسجد عبد الله بن مسعود\nمسجد عبد الله بن مسعود\n4.6(22)\nMosque · 845R+3X4، الحرية، أجهور الكبرى، طوخ، القليوبية،\nOpen 24 hours"
+      "description": null
     },
-    {
-      "id": "ChIJSyk87tBvWBQR-wol_AFPB_Q",
-      "name": "مسجد الدبابرة",
-      "category": "Mosque",
-      "latitude": 30.3014547,
-      "longitude": 31.1485101,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3076256,
+    "longitude": 31.1424626,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مسجد الدبابرة",
+    "details": {
+      "category": "مسجد",
       "address": "842X+HCJ, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433266, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%B3%D8%AC%D8%AF+%D8%A7%D9%84%D8%AF%D8%A8%D8%A7%D8%A8%D8%B1%D8%A9%E2%80%AD/data=!4m7!3m6!1s0x14586fd0ee3c294b:0xf4074f01fc250afb!8m2!3d30.3014547!4d31.1485101!16s%2Fg%2F11gmfxz8bz!19sChIJSyk87tBvWBQR-wol_AFPB_Q?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJSyk87tBvWBQR-wol_AFPB_Q",
-      "plus_code": null,
-      "rating": 4.7,
-      "review_count": 40,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مسجد الدبابرة\nمسجد الدبابرة\n4.7(40)\nMosque · 842X+HCJ\nOpen 24 hours"
+      "description": null
     },
-    {
-      "id": "ChIJ2WUQbpFvWBQRqSQzDbzLznA",
-      "name": "مسجد( المجمع الاسلامي)",
-      "category": "Mosque",
-      "latitude": 30.3011299,
-      "longitude": 31.1523258,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3014547,
+    "longitude": 31.1485101,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مسجد( المجمع الاسلامي)",
+    "details": {
+      "category": "مسجد",
       "address": "8522+FW4, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433354, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%B3%D8%AC%D8%AF%28+%D8%A7%D9%84%D9%85%D8%AC%D9%85%D8%B9+%D8%A7%D9%84%D8%A7%D8%B3%D9%84%D8%A7%D9%85%D9%8A%29%E2%80%AD/data=!4m7!3m6!1s0x14586f916e1065d9:0x70cecbbc0d3324a9!8m2!3d30.3011299!4d31.1523258!16s%2Fg%2F11pb0mdf6y!19sChIJ2WUQbpFvWBQRqSQzDbzLznA?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJ2WUQbpFvWBQRqSQzDbzLznA",
-      "plus_code": null,
-      "rating": 4.5,
-      "review_count": 20,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مسجد( المجمع الاسلامي)\nمسجد( المجمع الاسلامي)\n4.5(20)\nMosque · 8522+FW4\nOpen 24 hours"
+      "description": null
     },
-    {
-      "id": "ChIJFzHEgZNvWBQRNutwlGFqv0o",
-      "name": "مسجد الرحمة",
-      "category": "Mosque",
-      "latitude": 30.2986967,
-      "longitude": 31.1409321,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3011299,
+    "longitude": 31.1523258,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مسجد الرحمة",
+    "details": {
+      "category": "مسجد",
       "address": "74XR+F9F, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433026, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%B3%D8%AC%D8%AF+%D8%A7%D9%84%D8%B1%D8%AD%D9%85%D8%A9%E2%80%AD/data=!4m7!3m6!1s0x14586f9381c43117:0x4abf6a619470eb36!8m2!3d30.2986967!4d31.1409321!16s%2Fg%2F11gmchxw9k!19sChIJFzHEgZNvWBQRNutwlGFqv0o?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJFzHEgZNvWBQRNutwlGFqv0o",
-      "plus_code": null,
-      "rating": 4.6,
-      "review_count": 31,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مسجد الرحمة\nمسجد الرحمة\n4.6(31)\nMosque · 74XR+F9F"
+      "description": null
     },
-    {
-      "id": "ChIJ8ysSg-FvWBQR0eNN_VyRW9U",
-      "name": "مسجد الفتاحين",
-      "category": "Mosque",
-      "latitude": 30.3030364,
-      "longitude": 31.1511878,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2986967,
+    "longitude": 31.1409321,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مسجد الفتاحين",
+    "details": {
+      "category": "مسجد",
       "address": "8532+6F8, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433358, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%B3%D8%AC%D8%AF+%D8%A7%D9%84%D9%81%D8%AA%D8%A7%D8%AD%D9%8A%D9%86%E2%80%AD/data=!4m7!3m6!1s0x14586fe183122bf3:0xd55b915cfd4de3d1!8m2!3d30.3030364!4d31.1511878!16s%2Fg%2F11p73c41tr!19sChIJ8ysSg-FvWBQR0eNN_VyRW9U?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJ8ysSg-FvWBQR0eNN_VyRW9U",
-      "plus_code": null,
-      "rating": 4.7,
-      "review_count": 15,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مسجد الفتاحين\nمسجد الفتاحين\n4.7(15)\nMosque · 8532+6F8"
+      "description": null
     },
-    {
-      "id": "ChIJG-sdt8tvWBQRo-LH1J-OP3Q",
-      "name": "مسجد النور",
-      "category": "Mosque",
-      "latitude": 30.2977057,
-      "longitude": 31.1513525,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3030364,
+    "longitude": 31.1511878,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مسجد النور",
+    "details": {
+      "category": "مسجد",
       "address": "75X2+3GQ, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433310, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%B3%D8%AC%D8%AF+%D8%A7%D9%84%D9%86%D9%88%D8%B1%E2%80%AD/data=!4m7!3m6!1s0x14586fcbb71deb1b:0x743f8e9fd4c7e2a3!8m2!3d30.2977057!4d31.1513525!16s%2Fg%2F11ll5z51n2!19sChIJG-sdt8tvWBQRo-LH1J-OP3Q?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJG-sdt8tvWBQRo-LH1J-OP3Q",
-      "plus_code": null,
-      "rating": 5.0,
-      "review_count": 6,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مسجد النور\nمسجد النور\n5.0(6)\nMosque · 75X2+3GQ"
+      "description": null
     },
-    {
-      "id": "ChIJ3dluQjtvWBQRIHaAjRQiqcI",
-      "name": "محل زهرة اجهور الكبرى لجميع انواع الأدوات الكهربائية والسلع المنزلية",
-      "category": "Electronics store",
-      "latitude": 30.2992129,
-      "longitude": 31.1460336,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2977057,
+    "longitude": 31.1513525,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "محل زهرة اجهور الكبرى لجميع انواع الأدوات الكهربائية والسلع المنزلية",
+    "details": {
+      "category": "أجهزة وأدوات كهربائية",
       "address": "74XW+MCM, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433058, Egypt",
-      "phone": "+201273527413",
-      "phone_display": "+20 12 73527413",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%AD%D9%84+%D8%B2%D9%87%D8%B1%D8%A9+%D8%A7%D8%AC%D9%87%D9%88%D8%B1+%D8%A7%D9%84%D9%83%D8%A8%D8%B1%D9%89+%D9%84%D8%AC%D9%85%D9%8A%D8%B9+%D8%A7%D9%86%D9%88%D8%A7%D8%B9+%D8%A7%D9%84%D8%A3%D8%AF%D9%88%D8%A7%D8%AA+%D8%A7%D9%84%D9%83%D9%87%D8%B1%D8%A8%D8%A7%D8%A6%D9%8A%D8%A9+%D9%88%D8%A7%D9%84%D8%B3%D9%84%D8%B9+%D8%A7%D9%84%D9%85%D9%86%D8%B2%D9%84%D9%8A%D8%A9%E2%80%AD/data=!4m7!3m6!1s0x14586f3b426ed9dd:0xc2a922148d807620!8m2!3d30.2992129!4d31.1460336!16s%2Fg%2F11kp9cbhnx!19sChIJ3dluQjtvWBQRIHaAjRQiqcI?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJ3dluQjtvWBQRIHaAjRQiqcI",
-      "plus_code": null,
-      "rating": 4.0,
-      "review_count": 4,
-      "opening_hours_summary": "Closed · Opens 8 AM",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "محل زهرة اجهور الكبرى لجميع انواع الأدوات الكهربائية والسلع المنزلية\nمحل زهرة اجهور الكبرى لجميع انواع الأدوات الكهربائية والسلع المنزلية\n4.0(4)\nElectronics store · 74XW+MCM\nClosed · Opens 8 AM · +20 12 73527413"
+      "description": null
     },
-    {
-      "id": "ChIJN_lftLlvWBQReF0ofaQGKV4",
-      "name": "اجهور الكبيره",
-      "category": "Store",
-      "latitude": 30.2964433,
-      "longitude": 31.1511726,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
-      "address": "75W2+HFF بجوار صيدليه الدكتور احمد البربري، سوق, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%A7%D8%AC%D9%87%D9%88%D8%B1+%D8%A7%D9%84%D9%83%D8%A8%D9%8A%D8%B1%D9%87%E2%80%AD/data=!4m7!3m6!1s0x14586fb9b45ff937:0x5e2906a47d285d78!8m2!3d30.2964433!4d31.1511726!16s%2Fg%2F11k3hv6c1w!19sChIJN_lftLlvWBQReF0ofaQGKV4?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJN_lftLlvWBQReF0ofaQGKV4",
-      "plus_code": null,
-      "rating": 4.2,
-      "review_count": 6,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "local_search_result_requires_boundary_verification",
-      "verification_notes": [
-        "Generic listing name; verify the business identity."
-      ],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "اجهور الكبيره\nاجهور الكبيره\n4.2(6)\nStore · 75W2+HFF بجوار صيدليه الدكتور احمد البربري، سوق"
-    },
-    {
-      "id": "ChIJ9Wl8nkZvWBQRu2_sG0t3Qu4",
-      "name": "سترو - منفذ أجهور الكبري",
-      "category": "Organic food store",
-      "latitude": 30.2967337,
-      "longitude": 31.1485928,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2992129,
+    "longitude": 31.1460336,
+    "phone": "+201273527413",
+    "facebook": null
+  },
+  {
+    "name": "سترو - منفذ أجهور الكبري",
+    "details": {
+      "category": "متجر أغذية",
       "address": "74WX+MCW, شارع السد ، أجهور الكبري ، طوخ ، قليوبية ، مصر, Toukh, Al-Qalyubia Governorate 13731, Egypt",
-      "phone": "+201099766065",
-      "phone_display": "+20 10 99766065",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B3%D8%AA%D8%B1%D9%88+-+%D9%85%D9%86%D9%81%D8%B0+%D8%A3%D8%AC%D9%87%D9%88%D8%B1+%D8%A7%D9%84%D9%83%D8%A8%D8%B1%D9%8A%E2%80%AD/data=!4m7!3m6!1s0x14586f469e7c69f5:0xee42774b1bec6fbb!8m2!3d30.2967337!4d31.1485928!16s%2Fg%2F11fn95c43j!19sChIJ9Wl8nkZvWBQRu2_sG0t3Qu4?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJ9Wl8nkZvWBQRu2_sG0t3Qu4",
-      "plus_code": null,
-      "rating": 5.0,
-      "review_count": 3,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "local_search_result_requires_boundary_verification",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "سترو - منفذ أجهور الكبري\nسترو - منفذ أجهور الكبري\n5.0(3)\nOrganic food store · 74WX+MCW, شارع السد ، أجهور الكبري ، طوخ ، قليوبية ، مصر\n+20 10 99766065"
+      "description": null
     },
-    {
-      "id": "ChIJNa_cuuFvWBQR179E13b-clc",
-      "name": "معرض اجهور الكبرى لقطع غيار الموتسيكلات",
-      "category": "Motorcycle parts store",
-      "latitude": 30.297818,
-      "longitude": 31.1474502,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2967337,
+    "longitude": 31.1485928,
+    "phone": "+201099766065",
+    "facebook": null
+  },
+  {
+    "name": "معرض اجهور الكبرى لقطع غيار الموتسيكلات",
+    "details": {
+      "category": "قطع غيار دراجات نارية",
       "address": "74XW+4XG بجوار مركز شباب, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433235, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%B9%D8%B1%D8%B6+%D8%A7%D8%AC%D9%87%D9%88%D8%B1+%D8%A7%D9%84%D9%83%D8%A8%D8%B1%D9%89+%D9%84%D9%82%D8%B7%D8%B9+%D8%BA%D9%8A%D8%A7%D8%B1+%D8%A7%D9%84%D9%85%D9%88%D8%AA%D8%B3%D9%8A%D9%83%D9%84%D8%A7%D8%AA%E2%80%AD/data=!4m7!3m6!1s0x14586fe1badcaf35:0x5772fe76d744bfd7!8m2!3d30.297818!4d31.1474502!16s%2Fg%2F11tmsp8n4l!19sChIJNa_cuuFvWBQR179E13b-clc?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJNa_cuuFvWBQR179E13b-clc",
-      "plus_code": null,
-      "rating": 5.0,
-      "review_count": 2,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [
-        "Pin coordinates are shared with other listings in this dataset; verify the exact entrance before navigation."
-      ],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "معرض اجهور الكبرى لقطع غيار الموتسيكلات\nمعرض اجهور الكبرى لقطع غيار الموتسيكلات\n5.0(2)\nMotorcycle parts store · 74XW+4XG بجوار مركز شباب"
+      "description": null
     },
-    {
-      "id": "ChIJB11hkR5uWBQRvs9LUk6oDQc",
-      "name": "Cazion Market",
-      "category": "Grocery store",
-      "latitude": 30.301123,
-      "longitude": 31.1527998,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.297818,
+    "longitude": 31.1474502,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "Cazion Market",
+    "details": {
+      "category": "بقالة وسوبر ماركت",
       "address": "8523+C4V، Unnamed Road،, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/Cazion+Market/data=!4m7!3m6!1s0x14586e1e91615d07:0x70da84e524bcfbe!8m2!3d30.301123!4d31.1527998!16s%2Fg%2F11gbl305px!19sChIJB11hkR5uWBQRvs9LUk6oDQc?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJB11hkR5uWBQRvs9LUk6oDQc",
-      "plus_code": null,
-      "rating": 4.0,
-      "review_count": 237,
-      "opening_hours_summary": "Closed · Opens 9 AM",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "Cazion Market\nCazion Market\n4.0(237)\nGrocery store · 8523+C4V، Unnamed Road،\nClosed · Opens 9 AM"
+      "description": null
     },
-    {
-      "id": "ChIJHR1mk8BvWBQRER6sdeS_JLw",
-      "name": "ابو غربيه لتجاره الادوات الكهربائيه",
-      "category": "Store",
-      "latitude": 30.2975019,
-      "longitude": 31.1512298,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.301123,
+    "longitude": 31.1527998,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "ابو غربيه لتجاره الادوات الكهربائيه",
+    "details": {
+      "category": "متجر",
       "address": "75X2+2F5، أجهور الكبرى،, Toukh, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%A7%D8%A8%D9%88+%D8%BA%D8%B1%D8%A8%D9%8A%D9%87+%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D9%87+%D8%A7%D9%84%D8%A7%D8%AF%D9%88%D8%A7%D8%AA+%D8%A7%D9%84%D9%83%D9%87%D8%B1%D8%A8%D8%A7%D8%A6%D9%8A%D9%87%E2%80%AD/data=!4m7!3m6!1s0x14586fc093661d1d:0xbc24bfe475ac1e11!8m2!3d30.2975019!4d31.1512298!16s%2Fg%2F11rtx78yt9!19sChIJHR1mk8BvWBQRER6sdeS_JLw?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJHR1mk8BvWBQRER6sdeS_JLw",
-      "plus_code": null,
-      "rating": 5.0,
-      "review_count": 1,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "ابو غربيه لتجاره الادوات الكهربائيه\nابو غربيه لتجاره الادوات الكهربائيه\n5.0(1)\nStore · 75X2+2F5، أجهور الكبرى،"
+      "description": null
     },
-    {
-      "id": "ChIJp8_wxP5vWBQRqbVYKOZoEkE",
-      "name": "محلات أبو رجب",
-      "category": "General store",
-      "latitude": 30.2977074,
-      "longitude": 31.148391,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2975019,
+    "longitude": 31.1512298,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "محلات أبو رجب",
+    "details": {
+      "category": "متجر سلع عامة",
       "address": "74XX+39J, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433232, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%AD%D9%84%D8%A7%D8%AA+%D8%A3%D8%A8%D9%88+%D8%B1%D8%AC%D8%A8%E2%80%AD/data=!4m7!3m6!1s0x14586ffec4f0cfa7:0x411268e62858b5a9!8m2!3d30.2977074!4d31.148391!16s%2Fg%2F11pydrrjqm!19sChIJp8_wxP5vWBQRqbVYKOZoEkE?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJp8_wxP5vWBQRqbVYKOZoEkE",
-      "plus_code": null,
-      "rating": 4.8,
-      "review_count": 5,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "محلات أبو رجب\nمحلات أبو رجب\n4.8(5)\nGeneral store · 74XX+39J\nOpen 24 hours"
+      "description": null
     },
-    {
-      "id": "ChIJdUwmGf1xWBQR7QVoYlB54fI",
-      "name": "مجوهرات الدغري",
-      "category": "Jewelry store",
-      "latitude": 30.304541,
-      "longitude": 31.1611284,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2977074,
+    "longitude": 31.148391,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مجوهرات الدغري",
+    "details": {
+      "category": "مجوهرات",
       "address": "kobra rood, Aghour Al, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate, Egypt",
-      "phone": "+201022405007",
-      "phone_display": "+20 10 22405007",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%AC%D9%88%D9%87%D8%B1%D8%A7%D8%AA+%D8%A7%D9%84%D8%AF%D8%BA%D8%B1%D9%8A%E2%80%AD/data=!4m7!3m6!1s0x145871fd19264c75:0xf2e17950626805ed!8m2!3d30.304541!4d31.1611284!16s%2Fg%2F11c0rms4pd!19sChIJdUwmGf1xWBQR7QVoYlB54fI?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJdUwmGf1xWBQR7QVoYlB54fI",
-      "plus_code": "8536+RF Toukh, Egypt",
-      "rating": 3.8,
-      "review_count": 48,
-      "opening_hours_summary": "Closed · Opens 3 PM",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مجوهرات الدغري\nمجوهرات الدغري\n3.8(48)\nJewelry store · kobra rood, Aghour Al\nClosed · Opens 3 PM · +20 10 22405007"
+      "description": null
     },
-    {
-      "id": "ChIJxQeSBTJvWBQRV-xZRqHQa7U",
-      "name": "مكتب بريد اجهور الكبرى",
-      "category": "Post office",
-      "latitude": 30.3042377,
-      "longitude": 31.1439701,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.304541,
+    "longitude": 31.1611284,
+    "phone": "+201022405007",
+    "facebook": null
+  },
+  {
+    "name": "مكتب بريد اجهور الكبرى",
+    "details": {
+      "category": "مكتب بريد",
       "address": "843V+MHX، Unnamed Road, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433510, Egypt",
-      "phone": "+201227034450",
-      "phone_display": "+20 12 27034450",
-      "website": "https://www.egyptcodebase.com/ar/%D8%A7%D8%AC%D9%87%D9%88%D8%B1-%D8%A7%D9%84%D9%83%D8%A8%D8%B1%D9%89",
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D9%83%D8%AA%D8%A8+%D8%A8%D8%B1%D9%8A%D8%AF+%D8%A7%D8%AC%D9%87%D9%88%D8%B1+%D8%A7%D9%84%D9%83%D8%A8%D8%B1%D9%89%E2%80%AD/data=!4m7!3m6!1s0x14586f32059207c5:0xb56bd0a14659ec57!8m2!3d30.3042377!4d31.1439701!16s%2Fg%2F11h_1kc2mb!19sChIJxQeSBTJvWBQRV-xZRqHQa7U?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJxQeSBTJvWBQRV-xZRqHQa7U",
-      "plus_code": null,
-      "rating": 4.7,
-      "review_count": 6,
-      "opening_hours_summary": "Closed · Opens 8 PM",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [
-        "Google lists Opens 8 PM; this unusual post-office time needs confirmation. Phone is copied from Google and has not been called."
-      ],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مكتب بريد اجهور الكبرى\nمكتب بريد اجهور الكبرى\n4.7(6)\nPost office · 843V+MHX، Unnamed Road\nClosed · Opens 8 PM · +20 12 27034450"
+      "description": null
     },
-    {
-      "id": "ChIJJQPv7lFvWBQRqJfc9uS7ofs",
-      "name": "بيتزا حوا",
-      "category": "Pizza restaurant",
-      "latitude": 30.3012035,
-      "longitude": 31.1531568,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3042377,
+    "longitude": 31.1439701,
+    "phone": "+201227034450",
+    "facebook": null
+  },
+  {
+    "name": "بيتزا حوا",
+    "details": {
+      "category": "مطعم بيتزا",
       "address": "8523+F7M، Unnamed Road، أجهور الكبرى بجـوار المجمـع الاسلامـى، أجهور الكبرى، مركز طوخ،, Egypt",
-      "phone": "+201276692619",
-      "phone_display": "+20 12 76692619",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%A8%D9%8A%D8%AA%D8%B2%D8%A7+%D8%AD%D9%88%D8%A7%E2%80%AD/data=!4m7!3m6!1s0x14586f51eeef0325:0xfba1bbe4f6dc97a8!8m2!3d30.3012035!4d31.1531568!16s%2Fg%2F11rsf5dqlc!19sChIJJQPv7lFvWBQRqJfc9uS7ofs?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJJQPv7lFvWBQRqJfc9uS7ofs",
-      "plus_code": null,
-      "rating": 3.8,
-      "review_count": 33,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "بيتزا حوا\nبيتزا حوا\n3.8(33)\nPizza restaurant · 8523+F7M، Unnamed Road، أجهور الكبرى بجـوار المجمـع الاسلامـى، أجهور الكبرى، مركز طوخ،"
+      "description": null
     },
-    {
-      "id": "ChIJjZIbietvWBQRgFsOoJ4nGNw",
-      "name": "مشويات..ولاد البلد",
-      "category": "Barbecue restaurant",
-      "latitude": 30.2971568,
-      "longitude": 31.150915,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3012035,
+    "longitude": 31.1531568,
+    "phone": "+201276692619",
+    "facebook": null
+  },
+  {
+    "name": "مشويات..ولاد البلد",
+    "details": {
+      "category": "مطعم مشويات",
       "address": "Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433303, Egypt",
-      "phone": "+201208543235",
-      "phone_display": "+20 12 08543235",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%B4%D9%88%D9%8A%D8%A7%D8%AA..%D9%88%D9%84%D8%A7%D8%AF+%D8%A7%D9%84%D8%A8%D9%84%D8%AF%E2%80%AD/data=!4m7!3m6!1s0x14586feb891b928d:0xdc18279ea00e5b80!8m2!3d30.2971568!4d31.150915!16s%2Fg%2F11rgrzgcl5!19sChIJjZIbietvWBQRgFsOoJ4nGNw?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJjZIbietvWBQRgFsOoJ4nGNw",
-      "plus_code": "75W2+V9 Toukh, Egypt",
-      "rating": 4.6,
-      "review_count": 8,
-      "opening_hours_summary": "Open · Closes 4 AM · Reopens 2 PM",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مشويات..ولاد البلد\nمشويات..ولاد البلد\n4.6(8)\nBarbecue restaurant\nOpen · Closes 4 AM · Reopens 2 PM"
+      "description": null
     },
-    {
-      "id": "ChIJTT6Q78hvWBQRD9uE4-49lHU",
-      "name": "Doos X",
-      "category": "Coffee shop",
-      "latitude": 30.298804,
-      "longitude": 31.1523808,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2971568,
+    "longitude": 31.150915,
+    "phone": "+201208543235",
+    "facebook": null
+  },
+  {
+    "name": "Doos X",
+    "details": {
+      "category": "مقهى",
       "address": "75X2+GXC, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433314, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/Doos+X/data=!4m7!3m6!1s0x14586fc8ef903e4d:0x75943deee384db0f!8m2!3d30.298804!4d31.1523808!16s%2Fg%2F11lrmnm2zn!19sChIJTT6Q78hvWBQRD9uE4-49lHU?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJTT6Q78hvWBQRD9uE4-49lHU",
-      "plus_code": null,
-      "rating": 4.7,
-      "review_count": 65,
-      "opening_hours_summary": "Open · Closes 4 AM · Reopens 10 AM",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "Doos X\nDoos X\n4.7(65)\nCoffee shop · 75X2+GXC\nOpen · Closes 4 AM · Reopens 10 AM"
+      "description": null
     },
-    {
-      "id": "ChIJmYmUCQBvWBQRMkowPNe1zEA",
-      "name": "مطعم البرنس",
-      "category": "Restaurant",
-      "latitude": 30.2997189,
-      "longitude": 31.1495764,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.298804,
+    "longitude": 31.1523808,
+    "phone": null,
+    "facebook": "https://www.facebook.com/ministore578/"
+  },
+  {
+    "name": "مطعم البرنس",
+    "details": {
+      "category": "مطعم",
       "address": "74XX+VRP, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433246, Egypt",
-      "phone": "+201271223869",
-      "phone_display": "+20 12 71223869",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%B7%D8%B9%D9%85+%D8%A7%D9%84%D8%A8%D8%B1%D9%86%D8%B3%E2%80%AD/data=!4m7!3m6!1s0x14586f0009948999:0x40ccb5d73c304a32!8m2!3d30.2997189!4d31.1495764!16s%2Fg%2F11p2873fzl!19sChIJmYmUCQBvWBQRMkowPNe1zEA?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJmYmUCQBvWBQRMkowPNe1zEA",
-      "plus_code": null,
-      "rating": null,
-      "review_count": 0,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [
-        "A second Google listing with the same name and coordinates was observed (place ID ChIJ1zk1OgBvWBQR0syP4ooz0ho); possible duplicate."
-      ],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مطعم البرنس\nمطعم البرنس\nNo reviews\nRestaurant · 74XX+VRP\nOpen 24 hours"
+      "description": "لم يعتمد موقع دقيق: الدبوس المنشور يتكرر لمجموعة أماكن مختلفة؛ يلزم تأكيد موقع المحل."
     },
-    {
-      "id": "ChIJ73IP_YpvWBQRUgMYxTgnqXI",
-      "name": "كريب هت",
-      "category": "Creperie",
-      "latitude": 30.2970376,
-      "longitude": 31.1466662,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": null,
+    "longitude": null,
+    "phone": "+201271223869",
+    "facebook": null
+  },
+  {
+    "name": "كريب هت",
+    "details": {
+      "category": "مطعم كريب",
       "address": "Unnamed Road, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433045, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%83%D8%B1%D9%8A%D8%A8+%D9%87%D8%AA%E2%80%AD/data=!4m7!3m6!1s0x14586f8afd0f72ef:0x72a92738c5180352!8m2!3d30.2970376!4d31.1466662!16s%2Fg%2F11gyd02t0c!19sChIJ73IP_YpvWBQRUgMYxTgnqXI?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJ73IP_YpvWBQRUgMYxTgnqXI",
-      "plus_code": "74WW+RM Toukh, Egypt",
-      "rating": 3.7,
-      "review_count": 20,
-      "opening_hours_summary": "Open · Closes 3 AM · Reopens 10 AM",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "كريب هت\nكريب هت\n3.7(20)\nCreperie · Unnamed Road\nOpen · Closes 3 AM · Reopens 10 AM"
+      "description": null
     },
-    {
-      "id": "ChIJe4WADdZxWBQR1DT4xtRWDJo",
-      "name": "كافيه أسامه اسبوت",
-      "category": "Coffee shop",
-      "latitude": 30.3041715,
-      "longitude": 31.163917,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
-      "address": "بجوار المعهد الدينى, Toukh, Al-Qalyubia Governorate 13511, Egypt",
-      "phone": "+201200261716",
-      "phone_display": "+20 12 00261716",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%83%D8%A7%D9%81%D9%8A%D9%87+%D8%A3%D8%B3%D8%A7%D9%85%D9%87+%D8%A7%D8%B3%D8%A8%D9%88%D8%AA%E2%80%AD/data=!4m7!3m6!1s0x145871d60d80857b:0x9a0c56d4c6f834d4!8m2!3d30.3041715!4d31.163917!16s%2Fg%2F11s6j2p54m!19sChIJe4WADdZxWBQR1DT4xtRWDJo?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJe4WADdZxWBQR1DT4xtRWDJo",
-      "plus_code": "8537+MH Toukh, Egypt",
-      "rating": 4.4,
-      "review_count": 13,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "local_search_result_requires_boundary_verification",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "كافيه أسامه اسبوت\nكافيه أسامه اسبوت\n4.4(13)\nCoffee shop ·  · بجوار المعهد الدينى\nOpen 24 hours"
-    },
-    {
-      "id": "ChIJ25Ra-BhuWBQRq_ZiwKvjak0",
-      "name": "Andalus Cafeteria",
-      "category": "Cafe",
-      "latitude": 30.2975763,
-      "longitude": 31.1505102,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2970376,
+    "longitude": 31.1466662,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "Andalus Cafeteria",
+    "details": {
+      "category": "كافتيريا",
       "address": "75X2+26J, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433310, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/Andalus+Cafeteria/data=!4m7!3m6!1s0x14586e18f85a94db:0x4d6ae3abc062f6ab!8m2!3d30.2975763!4d31.1505102!16s%2Fg%2F11dxb12z72!19sChIJ25Ra-BhuWBQRq_ZiwKvjak0?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJ25Ra-BhuWBQRq_ZiwKvjak0",
-      "plus_code": null,
-      "rating": 4.0,
-      "review_count": 80,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "Andalus Cafeteria\nAndalus Cafeteria\n4.0(80)\nCafe ·  · 75X2+26J"
+      "description": null
     },
-    {
-      "id": "ChIJt_QI6OVvWBQRwz2jMn8qAKg",
-      "name": "مركز شباب أجهور الكبرى",
-      "category": "Gym",
-      "latitude": 30.297818,
-      "longitude": 31.1474502,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2975763,
+    "longitude": 31.1505102,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مركز شباب أجهور الكبرى",
+    "details": {
+      "category": "مركز شباب",
       "address": "أجهور الكبرى، طوخ،, Toukh, Al-Qalyubia Governorate, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%B1%D9%83%D8%B2+%D8%B4%D8%A8%D8%A7%D8%A8+%D8%A3%D8%AC%D9%87%D9%88%D8%B1+%D8%A7%D9%84%D9%83%D8%A8%D8%B1%D9%89%E2%80%AD/data=!4m7!3m6!1s0x14586fe5e808f4b7:0xa8002a7f32a33dc3!8m2!3d30.297818!4d31.1474502!16s%2Fg%2F11f9wtkzq0!19sChIJt_QI6OVvWBQRwz2jMn8qAKg?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJt_QI6OVvWBQRwz2jMn8qAKg",
-      "plus_code": "74XW+4X Toukh, Egypt",
-      "rating": 4.3,
-      "review_count": 27,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [
-        "Pin coordinates are shared with other listings in this dataset; verify the exact entrance before navigation."
-      ],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مركز شباب أجهور الكبرى\nمركز شباب أجهور الكبرى\n4.3(27)\nGym · أجهور الكبرى، طوخ،\nOpen 24 hours"
+      "description": "رابط فيسبوك لصفحة رواد مركز شباب أجهور الكبرى."
     },
-    {
-      "id": "ChIJL56soJdvWBQRMK7A7_vIQSM",
-      "name": "قنديل جيم",
-      "category": "Sports club",
-      "latitude": 30.3010781,
-      "longitude": 31.1531295,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.297818,
+    "longitude": 31.1474502,
+    "phone": null,
+    "facebook": "https://www.facebook.com/YouthCenterOjhoralkobra/"
+  },
+  {
+    "name": "قنديل جيم",
+    "details": {
+      "category": "نادي رياضي",
       "address": "Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433332, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%82%D9%86%D8%AF%D9%8A%D9%84+%D8%AC%D9%8A%D9%85%E2%80%AD/data=!4m7!3m6!1s0x14586f97a0ac9e2f:0x2341c8fbefc0ae30!8m2!3d30.3010781!4d31.1531295!16s%2Fg%2F11q9d9byhl!19sChIJL56soJdvWBQRMK7A7_vIQSM?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJL56soJdvWBQRMK7A7_vIQSM",
-      "plus_code": "8523+C7 Toukh, Egypt",
-      "rating": null,
-      "review_count": 0,
-      "opening_hours_summary": "Closed · Opens 4:30 PM",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "قنديل جيم\nقنديل جيم\nNo reviews\nSports club\nClosed · Opens 4:30 PM"
+      "description": null
     },
-    {
-      "id": "ChIJZV8qerdvWBQRWOGuOoGD-Xw",
-      "name": "سوبر ماركت اليوم",
-      "category": "Supermarket",
-      "latitude": 30.3002827,
-      "longitude": 31.149639,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.3010781,
+    "longitude": 31.1531295,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "سوبر ماركت اليوم",
+    "details": {
+      "category": "سوبر ماركت",
       "address": "أجهور الكبرى، مركز طوخ، اجهور الكبري, Al-Qalyubia Governorate, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B3%D9%88%D8%A8%D8%B1+%D9%85%D8%A7%D8%B1%D9%83%D8%AA+%D8%A7%D9%84%D9%8A%D9%88%D9%85%E2%80%AD/data=!4m7!3m6!1s0x14586fb77a2a5f65:0x7cf983813aaee158!8m2!3d30.3002827!4d31.149639!16s%2Fg%2F11qyps9586!19sChIJZV8qerdvWBQRWOGuOoGD-Xw?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJZV8qerdvWBQRWOGuOoGD-Xw",
-      "plus_code": "842X+4V Toukh, Egypt",
-      "rating": 4.4,
-      "review_count": 9,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [
-        "Pin coordinates are shared with other listings in this dataset; verify the exact entrance before navigation."
-      ],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "سوبر ماركت اليوم\nسوبر ماركت اليوم\n4.4(9)\nSupermarket ·  · أجهور الكبرى، مركز طوخ\nOpen 24 hours"
+      "description": "لم يعتمد موقع دقيق: الدبوس المنشور يتكرر لمجموعة أماكن مختلفة؛ يلزم تأكيد موقع المحل."
     },
-    {
-      "id": "ChIJ6fJ8CulvWBQRVBEIdU8KrEM",
-      "name": "سوبر ماركت ماركت يحيا البري",
-      "category": "Grocery store",
-      "latitude": 30.2992902,
-      "longitude": 31.1447034,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": null,
+    "longitude": null,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "سوبر ماركت ماركت يحيا البري",
+    "details": {
+      "category": "بقالة وسوبر ماركت",
       "address": "الحرية، أجهور الكبرى، طوخ، القليوبية،، اجهور الكبري, Al-Qalyubia Governorate, Egypt",
-      "phone": "+201227369241",
-      "phone_display": "+20 12 27369241",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B3%D9%88%D8%A8%D8%B1+%D9%85%D8%A7%D8%B1%D9%83%D8%AA+%D9%85%D8%A7%D8%B1%D9%83%D8%AA+%D9%8A%D8%AD%D9%8A%D8%A7+%D8%A7%D9%84%D8%A8%D8%B1%D9%8A%E2%80%AD/data=!4m7!3m6!1s0x14586fe90a7cf2e9:0x43ac0a4f75081154!8m2!3d30.2992902!4d31.1447034!16s%2Fg%2F11fnf5s7tr!19sChIJ6fJ8CulvWBQRVBEIdU8KrEM?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJ6fJ8CulvWBQRVBEIdU8KrEM",
-      "plus_code": "74XV+PV Toukh, Egypt",
-      "rating": 4.4,
-      "review_count": 77,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "سوبر ماركت ماركت يحيا البري\nسوبر ماركت ماركت يحيا البري\n4.4(77)\nGrocery store · الحرية، أجهور الكبرى، طوخ، القليوبية،، اجهور الكبري\nOpen 24 hours · +20 12 27369241"
+      "description": null
     },
-    {
-      "id": "ChIJ10V7YiNvWBQRxYCmBf_HZWU",
-      "name": "سوبر ماركت الاسرة",
-      "category": "Supermarket",
-      "latitude": 30.2999245,
-      "longitude": 31.1458758,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2992902,
+    "longitude": 31.1447034,
+    "phone": "+201227369241",
+    "facebook": null
+  },
+  {
+    "name": "سوبر ماركت الاسرة",
+    "details": {
+      "category": "سوبر ماركت",
       "address": "74XW+X96, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433086, Egypt",
-      "phone": "+201273958324",
-      "phone_display": "+20 12 73958324",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B3%D9%88%D8%A8%D8%B1+%D9%85%D8%A7%D8%B1%D9%83%D8%AA+%D8%A7%D9%84%D8%A7%D8%B3%D8%B1%D8%A9%E2%80%AD/data=!4m7!3m6!1s0x14586f23627b45d7:0x6565c7ff05a680c5!8m2!3d30.2999245!4d31.1458758!16s%2Fg%2F11j0bhy_vt!19sChIJ10V7YiNvWBQRxYCmBf_HZWU?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJ10V7YiNvWBQRxYCmBf_HZWU",
-      "plus_code": null,
-      "rating": 4.7,
-      "review_count": 17,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "سوبر ماركت الاسرة\nسوبر ماركت الاسرة\n4.7(17)\nSupermarket · 74XW+X96\n+20 12 73958324"
+      "description": null
     },
-    {
-      "id": "ChIJt0s1Sz1uWBQRNK8zx_Tfyus",
-      "name": "سوبر ماركت وليد الزيات",
-      "category": "Supermarket",
-      "latitude": 30.2957433,
-      "longitude": 31.1469601,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2999245,
+    "longitude": 31.1458758,
+    "phone": "+201273958324",
+    "facebook": "https://www.facebook.com/share/Fp4Q1cwqoR39f78D/?mibextid=K35XfP"
+  },
+  {
+    "name": "سوبر ماركت وليد الزيات",
+    "details": {
+      "category": "سوبر ماركت",
       "address": "Unnamed Road, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B3%D9%88%D8%A8%D8%B1+%D9%85%D8%A7%D8%B1%D9%83%D8%AA+%D9%88%D9%84%D9%8A%D8%AF+%D8%A7%D9%84%D8%B2%D9%8A%D8%A7%D8%AA%E2%80%AD/data=!4m7!3m6!1s0x14586e3d4b354bb7:0xebcadff4c733af34!8m2!3d30.2957433!4d31.1469601!16s%2Fg%2F11g6vf84sh!19sChIJt0s1Sz1uWBQRNK8zx_Tfyus?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJt0s1Sz1uWBQRNK8zx_Tfyus",
-      "plus_code": "74WW+7Q Toukh, Egypt",
-      "rating": 3.8,
-      "review_count": 102,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "سوبر ماركت وليد الزيات\nسوبر ماركت وليد الزيات\n3.8(102)\nSupermarket ·  · Unnamed Road\nOpen 24 hours"
+      "description": null
     },
-    {
-      "id": "ChIJubn3JldvWBQR_rgMgph1VnM",
-      "name": "سوبر ماركت",
-      "category": "Supermarket",
-      "latitude": 30.3002827,
-      "longitude": 31.149639,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
-      "address": "842X+4V6, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433320, Egypt",
-      "phone": null,
-      "phone_display": null,
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B3%D9%88%D8%A8%D8%B1+%D9%85%D8%A7%D8%B1%D9%83%D8%AA%E2%80%AD/data=!4m7!3m6!1s0x14586f5726f7b9b9:0x73567598820cb8fe!8m2!3d30.3002827!4d31.149639!16s%2Fg%2F11smts58gj!19sChIJubn3JldvWBQR_rgMgph1VnM?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJubn3JldvWBQR_rgMgph1VnM",
-      "plus_code": null,
-      "rating": null,
-      "review_count": 0,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [
-        "Generic listing name; verify the business identity.",
-        "Pin coordinates are shared with other listings in this dataset; verify the exact entrance before navigation."
-      ],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "سوبر ماركت\nسوبر ماركت\nNo reviews\nSupermarket · 842X+4V6"
-    },
-    {
-      "id": "ChIJZbUPSFVvWBQR_dYJoSCptbs",
-      "name": "ماركت الايمان محمد ابوشوارب",
-      "category": "Supermarket",
-      "latitude": 30.2979178,
-      "longitude": 31.1465062,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2957433,
+    "longitude": 31.1469601,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "ماركت الايمان محمد ابوشوارب",
+    "details": {
+      "category": "سوبر ماركت",
       "address": "Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433055, Egypt",
-      "phone": "+201273921839",
-      "phone_display": "+20 12 73921839",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%A7%D8%B1%D9%83%D8%AA+%D8%A7%D9%84%D8%A7%D9%8A%D9%85%D8%A7%D9%86+%D9%85%D8%AD%D9%85%D8%AF+%D8%A7%D8%A8%D9%88%D8%B4%D9%88%D8%A7%D8%B1%D8%A8%E2%80%AD/data=!4m7!3m6!1s0x14586f55480fb565:0xbbb5a920a109d6fd!8m2!3d30.2979178!4d31.1465062!16s%2Fg%2F11tp6rnmzn!19sChIJZbUPSFVvWBQR_dYJoSCptbs?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJZbUPSFVvWBQR_dYJoSCptbs",
-      "plus_code": "74XW+5J Toukh, Egypt",
-      "rating": 5.0,
-      "review_count": 3,
-      "opening_hours_summary": "Open · Closes 6 AM · Reopens 1 PM",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "ماركت الايمان محمد ابوشوارب\nماركت الايمان محمد ابوشوارب\n5.0(3)\nSupermarket\nOpen · Closes 6 AM · Reopens 1 PM · +20 12 73921839"
+      "description": null
     },
-    {
-      "id": "ChIJpXx8w2RvWBQRKyIJ1W-9t8U",
-      "name": "سوبر ماركت العفيفي",
-      "category": "Grocery store",
-      "latitude": 30.2993012,
-      "longitude": 31.1451399,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2979178,
+    "longitude": 31.1465062,
+    "phone": "+201273921839",
+    "facebook": null
+  },
+  {
+    "name": "سوبر ماركت العفيفي",
+    "details": {
+      "category": "بقالة وسوبر ماركت",
       "address": "الحرية، أجهور الكبرى، مركز طوخ،، القليوبية،, Egypt",
-      "phone": "+201020216667",
-      "phone_display": "+20 10 20216667",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D8%B3%D9%88%D8%A8%D8%B1+%D9%85%D8%A7%D8%B1%D9%83%D8%AA+%D8%A7%D9%84%D8%B9%D9%81%D9%8A%D9%81%D9%8A%E2%80%AD/data=!4m7!3m6!1s0x14586f64c37c7ca5:0xc5b7bd6fd509222b!8m2!3d30.2993012!4d31.1451399!16s%2Fg%2F11h7pxjvf6!19sChIJpXx8w2RvWBQRKyIJ1W-9t8U?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJpXx8w2RvWBQRKyIJ1W-9t8U",
-      "plus_code": "74XW+P3 Toukh, Egypt",
-      "rating": 4.0,
-      "review_count": 2,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "سوبر ماركت العفيفي\nسوبر ماركت العفيفي\n4.0(2)\nGrocery store · الحرية، أجهور الكبرى، مركز طوخ،، القليوبية،\nOpen 24 hours · +20 10 20216667"
+      "description": null
     },
-    {
-      "id": "ChIJyYTCD0JvWBQRA1k1n4HvxnE",
-      "name": "مركز النور للأشعة والتحاليل الطبية باجهور",
-      "category": "Doctor",
-      "latitude": 30.2978041,
-      "longitude": 31.1511034,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
+    "latitude": 30.2993012,
+    "longitude": 31.1451399,
+    "phone": "+201020216667",
+    "facebook": null
+  },
+  {
+    "name": "مركز النور للأشعة والتحاليل الطبية باجهور",
+    "details": {
+      "category": "أشعة وتحاليل طبية",
       "address": "75X2+4CH, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433310, Egypt",
-      "phone": "+201201491450",
-      "phone_display": "+20 12 01491450",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D8%B1%D9%83%D8%B2+%D8%A7%D9%84%D9%86%D9%88%D8%B1+%D9%84%D9%84%D8%A3%D8%B4%D8%B9%D8%A9+%D9%88%D8%A7%D9%84%D8%AA%D8%AD%D8%A7%D9%84%D9%8A%D9%84+%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%A9+%D8%A8%D8%A7%D8%AC%D9%87%D9%88%D8%B1%E2%80%AD/data=!4m7!3m6!1s0x14586f420fc284c9:0x71c6ef819f355903!8m2!3d30.2978041!4d31.1511034!16s%2Fg%2F11gjvsvqk8!19sChIJyYTCD0JvWBQRA1k1n4HvxnE?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJyYTCD0JvWBQRA1k1n4HvxnE",
-      "plus_code": null,
-      "rating": 4.0,
-      "review_count": 2,
-      "opening_hours_summary": null,
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "address_mentions_aghour_al_kubra",
-      "verification_notes": [],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مركز النور للأشعة والتحاليل الطبية باجهور\nمركز النور للأشعة والتحاليل الطبية باجهور\n4.0(2)\nDoctor · 75X2+4CH\n+20 12 01491450"
-    }
-  ],
-  "nearby_places_outside_target": [
-    {
-      "id": "ChIJQc_-yypxWBQRX0aMeOLnYrY",
-      "name": "مكانك صدام",
-      "category": "Buffet restaurant",
-      "latitude": 30.3038037,
-      "longitude": 31.1696485,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
-      "address": "Qarqashandah, Toukh, Al-Qalyubia Governorate 6433192, Egypt",
-      "phone": "+201200655102",
-      "phone_display": "+20 12 00655102",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%85%D9%83%D8%A7%D9%86%D9%83+%D8%B5%D8%AF%D8%A7%D9%85%E2%80%AD/data=!4m7!3m6!1s0x1458712acbfecf41:0xb662e7e2788c465f!8m2!3d30.3038037!4d31.1696485!16s%2Fg%2F11n7_xj576!19sChIJQc_-yypxWBQRX0aMeOLnYrY?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJQc_-yypxWBQRX0aMeOLnYrY",
-      "plus_code": "8539+GV Toukh, Egypt",
-      "rating": 4.6,
-      "review_count": 14,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "outside_target_village_qarqashandah",
-      "verification_notes": [
-        "Nearby search result; address places it in Qarqashandah, not Aghour Al Kubra."
-      ],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "مكانك صدام\nمكانك صدام\n4.6(14)\nBuffet restaurant\nOpen 24 hours"
+      "description": null
     },
-    {
-      "id": "ChIJU9skLetxWBQRf2neMDY2r2A",
-      "name": "كافيه الفرعون المصري",
-      "category": "Coffee shop",
-      "latitude": 30.3097636,
-      "longitude": 31.1653282,
-      "coordinate_source": "Google Maps listing URL !3d/!4d place pin (not map viewport)",
-      "address": "Qarqashandah, Toukh, Al-Qalyubia Governorate 6434050, Egypt",
-      "phone": "+201201109719",
-      "phone_display": "+20 12 01109719",
-      "website": null,
-      "google_maps_url": "https://www.google.com/maps/place/%D9%83%D8%A7%D9%81%D9%8A%D9%87+%D8%A7%D9%84%D9%81%D8%B1%D8%B9%D9%88%D9%86+%D8%A7%D9%84%D9%85%D8%B5%D8%B1%D9%8A%E2%80%AD/data=!4m7!3m6!1s0x145871eb2d24db53:0x60af363630de697f!8m2!3d30.3097636!4d31.1653282!16s%2Fg%2F11h7g31vzz!19sChIJU9skLetxWBQRf2neMDY2r2A?authuser=0&hl=en&g_ep=EgoyMDI2MTAyMC4wIJJjKgBIAVAD&rclk=1",
-      "google_place_id": "ChIJU9skLetxWBQRf2neMDY2r2A",
-      "plus_code": "8558+W4 Toukh, Egypt",
-      "rating": 4.4,
-      "review_count": 40,
-      "opening_hours_summary": "Open 24 hours",
-      "weekly_opening_hours": null,
-      "business_status": null,
-      "scope_status": "outside_target_village_qarqashandah",
-      "verification_notes": [
-        "Nearby search result; address places it in Qarqashandah, not Aghour Al Kubra."
-      ],
-      "source": "Google Maps",
-      "retrieved_on": "2026-10-25",
-      "search_result_text": "كافيه الفرعون المصري\nكافيه الفرعون المصري\n4.4(40)\nCoffee shop · \nOpen 24 hours"
-    }
-  ]
-}
+    "latitude": 30.2978041,
+    "longitude": 31.1511034,
+    "phone": "+201201491450",
+    "facebook": null
+  },
+  {
+    "name": "عياده الهدي البيطريه",
+    "details": {
+      "category": "عيادة بيطرية",
+      "address": "75W2+P82، السد, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433303, Egypt",
+      "description": null
+    },
+    "latitude": 30.2967525,
+    "longitude": 31.1507616,
+    "phone": "+201210910739",
+    "facebook": null
+  },
+  {
+    "name": "مقابر قرية اجهور الكبرى",
+    "details": {
+      "category": "مقابر",
+      "address": "74XR+842, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433026, Egypt",
+      "description": null
+    },
+    "latitude": 30.2982661,
+    "longitude": 31.1402657,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مركز شفائي للعلاج الطبيعي والتأهيل والتغذية العلاجيه",
+    "details": {
+      "category": "عيادة طبية",
+      "address": "75X2+GXC, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433314, Egypt",
+      "description": null
+    },
+    "latitude": 30.2987504,
+    "longitude": 31.1518742,
+    "phone": "+201020715023",
+    "facebook": null
+  },
+  {
+    "name": "عياده الدكتور أحمد حامد النجار لزراعه وتقويم وتجميل الاسنان",
+    "details": {
+      "category": "عيادة أسنان",
+      "address": "Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433310, Egypt",
+      "description": null
+    },
+    "latitude": 30.2976788,
+    "longitude": 31.150312,
+    "phone": "+201030044534",
+    "facebook": null
+  },
+  {
+    "name": "مركز البكري للعلاج الطبيعي",
+    "details": {
+      "category": "عيادة طبية",
+      "address": "شارع سيدي عبدالعزيز, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 13000, Egypt",
+      "description": null
+    },
+    "latitude": 30.2960535,
+    "longitude": 31.1468401,
+    "phone": "+201000453846",
+    "facebook": null
+  },
+  {
+    "name": "عيادة د. محمد طه الزرابيني",
+    "details": {
+      "category": "عيادة طبية",
+      "address": "Unnamed Road, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate, Egypt",
+      "description": null
+    },
+    "latitude": 30.298432,
+    "longitude": 31.1500563,
+    "phone": "+201206813650",
+    "facebook": null
+  },
+  {
+    "name": "عيادة اسنان الدكتورة هبه محمود الدغرى",
+    "details": {
+      "category": "عيادة أسنان",
+      "address": "74XW+MJP, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433058, Egypt",
+      "description": null
+    },
+    "latitude": 30.2992149,
+    "longitude": 31.1465749,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "المجمع الإسلامي",
+    "details": {
+      "category": "مستشفى / خدمة طبية",
+      "address": "842X+259, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433251, Egypt",
+      "description": null
+    },
+    "latitude": 30.3000345,
+    "longitude": 31.1479902,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "عيادة دكتور احمد طارق حسب الله (طبيب اسنان)",
+    "details": {
+      "category": "عيادة أسنان",
+      "address": "أجهور الكبرى، طوخ،, Toukh, Al-Qalyubia Governorate, Egypt",
+      "description": null
+    },
+    "latitude": 30.3011815,
+    "longitude": 31.1472797,
+    "phone": "+201125422696",
+    "facebook": "https://www.facebook.com/%D8%B9%D9%8A%D8%A7%D8%AF%D8%A7%D8%AA-%D8%AF-%D8%A3%D8%AD%D9%85%D8%AF-%D8%B7%D8%A7%D8%B1%D9%82-%D9%84%D8%AA%D9%82%D9%88%D9%8A%D9%85-%D9%88%D8%AA%D8%AC%D9%85%D9%8A%D9%84-%D8%A7%D9%84%D8%A3%D8%B3%D9%86%D8%A7%D9%86-247762512499400/"
+  },
+  {
+    "name": "حضانة رؤي أجهور الكبري",
+    "details": {
+      "category": "مركز حضانات أطفال (مصنف خدمة طبية على الخريطة)",
+      "address": "74XX+WR7, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433246, Egypt",
+      "description": null
+    },
+    "latitude": 30.2997965,
+    "longitude": 31.1495375,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "عقبة للثوب العربي",
+    "details": {
+      "category": "ملابس",
+      "address": "Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433055, Egypt",
+      "description": null
+    },
+    "latitude": 30.2984112,
+    "longitude": 31.1468938,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "سنتر بندقه ملابس اطفال",
+    "details": {
+      "category": "ملابس",
+      "address": "أجهور الكبرى، شارع السد، بجوار مسجد النجار، أمام صيدلية دكتور جميل شعيب.",
+      "description": null
+    },
+    "latitude": 30.296935,
+    "longitude": 31.149339,
+    "phone": "+201288721771",
+    "facebook": "https://www.facebook.com/Hor.Kids/videos/"
+  },
+  {
+    "name": "سنتر روما للملابس",
+    "details": {
+      "category": "ملابس",
+      "address": "8522+67Q, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433350, Egypt",
+      "description": null
+    },
+    "latitude": 30.3005982,
+    "longitude": 31.1507422,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "Andalus Company (Authorized Distributor Orange) Grand Ojhor",
+    "details": {
+      "category": "هواتف محمولة وإكسسوارات",
+      "address": "شارع السد, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 13731, Egypt",
+      "description": null
+    },
+    "latitude": 30.2971086,
+    "longitude": 31.1498841,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "الياسين لخدمات المحمول",
+    "details": {
+      "category": "هواتف محمولة وإكسسوارات",
+      "address": "75W2+V2P, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433233, Egypt",
+      "description": null
+    },
+    "latitude": 30.2972178,
+    "longitude": 31.1500868,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "كنج",
+    "details": {
+      "category": "هواتف محمولة وإكسسوارات",
+      "address": "74XW+PFC, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433058, Egypt",
+      "description": null
+    },
+    "latitude": 30.299314,
+    "longitude": 31.146137,
+    "phone": "+201226356229",
+    "facebook": null
+  },
+  {
+    "name": "صلاح حجازي",
+    "details": {
+      "category": "صيانة هواتف محمولة",
+      "address": "Unnamed Road, أجهور الكبرى، مركز طوخ، القليوبية، أجهور الكبري, Toukh, Al-Qalyubia Governorate, Egypt",
+      "description": "لم يعتمد موقع دقيق: الدبوس المنشور يتكرر لمجموعة أماكن مختلفة؛ يلزم تأكيد موقع المحل."
+    },
+    "latitude": null,
+    "longitude": null,
+    "phone": "+201140731998",
+    "facebook": null
+  },
+  {
+    "name": "مخبز الاسرة",
+    "details": {
+      "category": "مخبز",
+      "address": "74XW+X9C, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433086, Egypt",
+      "description": null
+    },
+    "latitude": 30.2999257,
+    "longitude": 31.1458842,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مكـــــــتبة المــــــدينة",
+    "details": {
+      "category": "مكتبة",
+      "address": "842W+V72, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433252, Egypt",
+      "description": null
+    },
+    "latitude": 30.302145,
+    "longitude": 31.145639,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مكتبة جعفر",
+    "details": {
+      "category": "مكتبة",
+      "address": "74WX+W43, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433231, Egypt",
+      "description": null
+    },
+    "latitude": 30.2972645,
+    "longitude": 31.1478009,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مكتبة فكرة",
+    "details": {
+      "category": "مكتبة",
+      "address": "842X+CVM, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433320, Egypt",
+      "description": null
+    },
+    "latitude": 30.3010995,
+    "longitude": 31.1496801,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مكتبة ابوعبده",
+    "details": {
+      "category": "مكتبة عامة",
+      "address": "842X+4V6, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433320, Egypt",
+      "description": "لم يعتمد موقع دقيق: الدبوس المنشور يتكرر لمجموعة أماكن مختلفة؛ يلزم تأكيد موقع المحل. مصنفة مغلقة مؤقتًا على Google Maps وقت المراجعة."
+    },
+    "latitude": null,
+    "longitude": null,
+    "phone": "+201281148567",
+    "facebook": null
+  },
+  {
+    "name": "الوحده المحليه بقريه اجهور الكبرى",
+    "details": {
+      "category": "وحدة محلية",
+      "address": "843W+J3V, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433510, Egypt",
+      "description": null
+    },
+    "latitude": 30.30417,
+    "longitude": 31.1451318,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "نقطة إطفاء اجهور الكبرى",
+    "details": {
+      "category": "نقطة إطفاء",
+      "address": "843V+MH4, El-Horeya, Aghour Al Kubra, Toukh, Al-Qalyubia Governorate 6433510, Egypt",
+      "description": null
+    },
+    "latitude": 30.304132,
+    "longitude": 31.1439553,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "فحم السلطان",
+    "details": {
+      "category": "توريد فحم",
+      "address": "الحرية، أجهور الكبرى، طوخ،, Toukh, Al-Qalyubia Governorate, Egypt",
+      "description": null
+    },
+    "latitude": 30.3110796,
+    "longitude": 31.1397794,
+    "phone": "+201203391441",
+    "facebook": null
+  },
+  {
+    "name": "عيادة الدكتور محمود صبحي",
+    "details": {
+      "category": "عيادة طبية",
+      "address": "842X+4V6 المجمع الاسلامي, منزل الاستاذ صبحى جعفر، السد, Aghour Al Kubra, Egypt",
+      "description": "لم يعتمد موقع دقيق: الدبوس المنشور يتكرر لمجموعة أماكن مختلفة؛ يلزم تأكيد موقع المحل."
+    },
+    "latitude": null,
+    "longitude": null,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "محل الحاج صلاح الغمري",
+    "details": {
+      "category": "محل تجاري",
+      "address": "أجهور الكبرى، مركز طوخ،, Toukh, Al-Qalyubia Governorate, Egypt",
+      "description": null
+    },
+    "latitude": 30.2983694,
+    "longitude": 31.148836,
+    "phone": "+201092369841",
+    "facebook": "https://m.facebook.com/100006602105805/"
+  },
+  {
+    "name": "مسجد الرسالة المحمدية",
+    "details": {
+      "category": "مسجد",
+      "address": "74RW+8GP، Ajhur Al Kubra, أجهور الكبرى، مركز طوخ، القليوبية،، أجهور الكبرى، مركز طوخ، القليوبية،, Toukh, 6433032, Egypt",
+      "description": null
+    },
+    "latitude": 30.290848,
+    "longitude": 31.146337,
+    "phone": null,
+    "facebook": null
+  },
+  {
+    "name": "مطعم السلطان",
+    "details": {
+      "category": "مطعم",
+      "address": "أجهور الكبرى، شارع السد، بجوار مسجد النجار.",
+      "description": "العنوان منشور للمكان في أجهور الكبرى؛ لم تتوفر إحداثيات دقيقة موثوقة."
+    },
+    "latitude": null,
+    "longitude": null,
+    "phone": "+201224742860",
+    "facebook": "https://www.facebook.com/p/مطعم-السلطان-100067557462472/"
+  },
+  {
+    "name": "مطعم ابوشبانة اجهور",
+    "details": {
+      "category": "مطعم",
+      "address": "أجهور الكبرى، أمام فرن الحاج فوزي البكش.",
+      "description": "العنوان منشور للمكان في أجهور الكبرى؛ لم تتوفر إحداثيات دقيقة موثوقة."
+    },
+    "latitude": null,
+    "longitude": null,
+    "phone": "+201212243012",
+    "facebook": "https://www.facebook.com/p/مطعم-ابوشبانة-اجهور-61592815407290/"
+  },
+  {
+    "name": "BIG BOSS - فرع أجهور الكبرى",
+    "details": {
+      "category": "ملابس شبابي",
+      "address": "أجهور الكبرى، بجوار مدرسة الصنايع.",
+      "description": "العنوان منشور للمكان في أجهور الكبرى؛ لم تتوفر إحداثيات دقيقة موثوقة."
+    },
+    "latitude": null,
+    "longitude": null,
+    "phone": "+201201923819",
+    "facebook": "https://www.facebook.com/p/BIG-BOSS-100063924678701/"
+  },
+  {
+    "name": "اكسسوارات الشاعر",
+    "details": {
+      "category": "هواتف محمولة وإكسسوارات",
+      "address": "أجهور الكبرى، طوخ، القليوبية.",
+      "description": "العنوان منشور للمكان في أجهور الكبرى؛ لم تتوفر إحداثيات دقيقة موثوقة."
+    },
+    "latitude": null,
+    "longitude": null,
+    "phone": "+20132432593",
+    "facebook": null
+  }
+]

@@ -7,7 +7,10 @@ gem "bootsnap", require: false
 gem "propshaft" # asset pipeline for the admin dashboard CSS
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "image_processing", "~> 1.2"
-gem "ruby-vips"
+
+group :production do
+  gem "ruby-vips"
+end
 
 # Auth & authorization
 gem "bcrypt", "~> 3.1.7"
