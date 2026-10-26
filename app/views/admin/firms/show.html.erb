@@ -1,4 +1,4 @@
-<%= page_header @firm.name, :firms, subtitle: @firm.category.name do %>
+<%= page_header @firm.name, subtitle: @firm.category.name do %>
   <%= enum_badge(Firm, :status, @firm.status) %>
   <% unless @firm.active? %>
     <%= button_to approve_admin_firm_path(@firm), method: :patch, class: "btn" do %><%= icon(:check, size: 18) %> اعتماد<% end %>

@@ -1,4 +1,4 @@
-<%= page_header "الأخبار والإعلانات", :articles, subtitle: "تظهر لكل مستخدمي التطبيق" do %>
+<%= page_header "الأخبار والإعلانات", subtitle: "تظهر لكل مستخدمي التطبيق" do %>
   <%= link_to new_admin_article_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إضافة خبر<% end %>
 <% end %>
 
@@ -24,9 +24,9 @@
               <% if article.published_at.nil? %>
                 <%= badge("مسودة") %>
               <% elsif article.published? %>
-                <%= badge("منشور", "success") %> <small><%= fmt_date(article.published_at) %></small>
+                <%= badge("منشور", "green") %> <small><%= fmt_date(article.published_at) %></small>
               <% else %>
-                <%= badge("مجدول", "info") %> <small><%= fmt_time(article.published_at) %></small>
+                <%= badge("مجدول", "gold") %> <small><%= fmt_time(article.published_at) %></small>
               <% end %>
             </td>
             <td><%= article.author.name %></td>

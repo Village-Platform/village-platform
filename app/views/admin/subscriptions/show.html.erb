@@ -1,5 +1,5 @@
 <% s = @subscription %>
-<%= page_header "طلب اشتراك ##{s.id}", :subscriptions, subtitle: "#{s.user.name} — #{s.subscription_plan.name}" do %>
+<%= page_header "طلب اشتراك ##{s.id}", subtitle: "#{s.user.name} — #{s.subscription_plan.name}" do %>
   <%= enum_badge(Subscription, :status, s.status) %>
   <%= link_to admin_subscriptions_path, class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 18) %> رجوع<% end %>
 <% end %>

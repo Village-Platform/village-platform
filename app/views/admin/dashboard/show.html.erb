@@ -86,7 +86,7 @@
                 <td><%= link_to s.user.name, admin_user_path(s.user), class: "cell-main" %></td>
                 <td><%= s.subscription_plan.name %></td>
                 <td><%= fmt_date(s.ends_at) %></td>
-                <td><%= badge("#{s.days_left} يوم", s.days_left <= 1 ? "danger" : "warning") %></td>
+                <td><%= badge("#{s.days_left} يوم", s.days_left <= 1 ? "red" : "gold") %></td>
               </tr>
             <% end %>
           </tbody>

@@ -8,29 +8,36 @@
   <div class="shell">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-brand">
-        <img src="/brand/web/mark-light.png" alt="" width="84" height="74">
-        <strong>أجهور الكبرى</strong>
-        <span>لوحة تحكم تطبيق القرية</span>
+        <%= brand_mark(size: 36) %>
+        <div>
+          <strong>أجهور الكبرى</strong>
+          <span>لوحة الإدارة</span>
+        </div>
       </div>
 
       <nav aria-label="القائمة الرئيسية">
-        <%= nav_link "الرئيسية", admin_root_path, :home, exact: true %>
-        <div class="nav-section">المراجعة</div>
-        <%= nav_link "الاشتراكات", admin_subscriptions_path, :subscriptions, count: Subscription.pending.count %>
-        <%= nav_link "المنشآت", admin_firms_path, :firms, count: Firm.pending.count %>
-        <div class="nav-section">المحتوى</div>
-        <%= nav_link "الأقسام", admin_categories_path, :categories %>
-        <%= nav_link "الأخبار", admin_articles_path, :articles %>
-        <div class="nav-section">الإعدادات</div>
-        <%= nav_link "باقات الاشتراك", admin_subscription_plans_path, :plans %>
-        <%= nav_link "المستخدمون", admin_users_path, :users %>
+        <%= nav_group "عام" do %>
+          <%= nav_link "لوحة التحكم", admin_root_path, :home, exact: true %>
+        <% end %>
+        <%= nav_group "المحتوى" do %>
+          <%= nav_link "التصنيفات", admin_categories_path, :categories %>
+          <%= nav_link "الأنشطة", admin_firms_path, :firms, count: Firm.pending.count %>
+          <%= nav_link "الأخبار والمقالات", admin_articles_path, :articles %>
+        <% end %>
+        <%= nav_group "الأشخاص" do %>
+          <%= nav_link "المستخدمون", admin_users_path, :users %>
+        <% end %>
+        <%= nav_group "المالية" do %>
+          <%= nav_link "الباقات والأسعار", admin_subscription_plans_path, :plans %>
+          <%= nav_link "الاشتراكات", admin_subscriptions_path, :subscriptions, count: Subscription.pending.count %>
+        <% end %>
       </nav>
 
       <div class="sidebar-footer">
         <span class="avatar"><%= initials(current_admin.name) %></span>
         <div class="who">
           <strong><%= current_admin.name %></strong>
-          <small>مدير النظام</small>
+          <small>صلاحيات كاملة</small>
         </div>
         <%= button_to admin_logout_path, method: :delete, class: "icon-btn", title: "تسجيل الخروج",
               form: { data: { confirm: "تسجيل الخروج؟" } } do %>
@@ -42,8 +49,18 @@
 
     <div class="main">
       <header class="topbar">
-        <span class="brand-mini"><img src="/brand/web/mark-light.png" alt="" width="36" height="32"> أجهور الكبرى</span>
-        <button type="button" class="icon-btn" data-nav-toggle aria-controls="sidebar" aria-label="القائمة"><%= icon(:menu) %></button>
+        <button type="button" class="icon-btn md:hidden" data-nav-toggle aria-controls="sidebar" aria-label="القائمة">
+          <%= icon(:menu) %>
+        </button>
+        <div class="page-title">
+          <h1><%= content_for(:title) %></h1>
+          <% if content_for?(:subtitle) %><p><%= content_for(:subtitle) %></p><% end %>
+        </div>
+        <%# The design's topbar search is cross-entity; only firm search exists, so it says so. %>
+        <%= form_with url: admin_firms_path, method: :get, class: "topbar-search" do |f| %>
+          <%= f.search_field :q, placeholder: "ابحث عن نشاط…", "aria-label": "ابحث عن نشاط" %>
+        <% end %>
+        <%= theme_toggle %>
       </header>
 
       <main class="content">

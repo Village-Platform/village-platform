@@ -1,11 +1,11 @@
 module Admin
   module UiHelper
+    # The design has four tones. Anything not listed falls back to gray.
     TONES = {
-      "pending" => "warning", "active" => "success", "rejected" => "danger", "suspended" => "danger",
-      "current" => "success", "scheduled" => "info", "expired" => "muted",
-      "super_admin" => "success", "firm_admin" => "warning", "user" => "muted",
-      "news" => "info", "article" => "muted", "announcement" => "warning",
-      true => "success", false => "muted"
+      "active" => "green", "current" => "green", "super_admin" => "green", true => "green",
+      "pending" => "gold", "scheduled" => "gold", "firm_admin" => "gold", "announcement" => "gold",
+      "rejected" => "red", "suspended" => "red",
+      "expired" => "gray", "user" => "gray", "news" => "gray", "article" => "gray", false => "gray"
     }.freeze
 
     def enum_label(model, attribute, value)
@@ -19,16 +19,21 @@ module Admin
       model.public_send(attribute.to_s.pluralize).keys.map { |key| [ enum_label(model, attribute, key), key ] }
     end
 
-    def badge(text, tone = "muted")
+    def badge(text, tone = "gray")
       tag.span(text, class: "badge badge-#{tone}")
     end
 
     def enum_badge(model, attribute, value)
-      badge(enum_label(model, attribute, value), TONES.fetch(value.to_s, "muted"))
+      badge(enum_label(model, attribute, value), TONES.fetch(value.to_s, "gray"))
     end
 
     def yes_no_badge(value)
       badge(value ? "نعم" : "لا", TONES[!!value])
+    end
+
+    # Read-only inline toggle, for a boolean a row only reports.
+    def switch(value)
+      tag.span(tag.span("", class: "switch-knob"), class: [ "switch", ("switch-on" if value) ])
     end
 
     def egp(cents)
@@ -45,6 +50,10 @@ module Admin
       time ? l(time.to_date, format: "%Y-%m-%d") : "—"
     end
 
+    def nav_group(label, &block)
+      safe_join([ tag.p(label, class: "nav-section"), capture(&block) ])
+    end
+
     def nav_link(label, path, icon_name, exact: false, count: nil)
       active = exact ? request.path == path : request.path.start_with?(path)
       link_to path, class: [ "nav-link", ("active" if active) ], "aria-current": (active ? "page" : nil) do
@@ -52,18 +61,36 @@ module Admin
       end
     end
 
-    # <%= page_header "الأقسام", :categories, subtitle: "..." do %> buttons <% end %>
-    def page_header(title, icon_name, subtitle: nil, &block)
+    # The title and subtitle belong to the topbar now; the block becomes the actions row.
+    # <%= page_header "التصنيفات", subtitle: "..." do %> buttons <% end %>
+    def page_header(title, subtitle: nil, &block)
       content_for(:title, title) unless content_for?(:title)
-      actions = block ? tag.div(capture(&block), class: "header-actions") : nil
+      content_for(:subtitle, subtitle) if subtitle.present? && !content_for?(:subtitle)
+      return "".html_safe unless block
 
-      tag.div(class: "page-header") do
-        heading = tag.div(class: "title") do
-          tag.span(icon(icon_name, size: 22), class: "icon-tile") +
-            tag.div { tag.h1(title) + (subtitle ? tag.p(subtitle) : "".html_safe) }
-        end
-        safe_join([ heading, actions ].compact)
+      tag.div(capture(&block), class: "actions-row")
+    end
+
+    # Both marks ship on every page; CSS shows the one that suits the active theme.
+    # An <img> cannot swap source by media query, and the server does not know the
+    # OS preference when no cookie has been set.
+    def brand_mark(size: 36)
+      tag.span(class: "brand-mark") do
+        safe_join([
+          image_tag("/brand/web/mark.png", alt: "", width: size, height: size, class: "on-light"),
+          image_tag("/brand/web/mark-light.png", alt: "", width: size, height: size, class: "on-dark")
+        ])
       end
+    end
+
+    def theme_toggle
+      current = cookies[:admin_theme]
+      buttons = [ [ "light", "☀", "الوضع النهاري" ], [ "dark", "☾", "الوضع الليلي" ] ].map do |value, glyph, label|
+        button_to glyph, admin_theme_path, method: :patch, params: { theme: value },
+                  class: [ "seg-btn", ("seg-on" if current == value) ], title: label,
+                  aria: { label: label }
+      end
+      tag.div(safe_join(buttons), class: "seg")
     end
 
     # No cookie means "follow the operating system", which the stylesheet handles with a
@@ -81,7 +108,7 @@ module Admin
 
     def empty_state(message)
       tag.div(class: "empty") do
-        safe_join([ image_tag("/brand/web/mark.png", alt: "", class: "empty-mark"), tag.p(message) ])
+        safe_join([ brand_mark(size: 56), tag.p(message) ])
       end
     end
 

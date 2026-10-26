@@ -1,4 +1,4 @@
-<%= page_header @user.name, :users, subtitle: @user.phone do %>
+<%= page_header @user.name, subtitle: @user.phone do %>
   <%= enum_badge(User, :role, @user.role) %>
   <%= link_to edit_admin_user_path(@user), class: "btn btn-ghost" do %><%= icon(:edit, size: 18) %> تعديل<% end %>
 <% end %>

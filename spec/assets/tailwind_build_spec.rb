@@ -22,7 +22,7 @@ RSpec.describe "Tailwind build" do
     expect(compact).to include(":root:not([data-theme=light])")
   end
 
-  it "omits preflight so admin.css still applies" do
-    expect(css).not_to include("-webkit-text-size-adjust")
+  it "includes preflight now that it owns the reset" do
+    expect(css).to include("-webkit-text-size-adjust")
   end
 end
