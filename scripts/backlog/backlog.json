@@ -1,0 +1,3054 @@
+[
+  {
+    "id": "E0",
+    "repo": "village-platform",
+    "title": "[Phase 0] Multi-village foundation",
+    "epic": true,
+    "parent": null,
+    "milestone": "Phase 0 · Multi-village foundation",
+    "phase": "P0",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "next",
+    "status": "epic",
+    "areas": [
+      "tenancy"
+    ],
+    "body": "## Goal\n\nEvery village's data is isolated, and the app and dashboard resolve the village on each request.\n\n## Business rules\n\n- Only a super admin works across villages.\n- The same phone or email can register in two villages as two separate accounts.\n- Stored file keys are prefixed with the village id.\n\n## Definition of done\n\n- [ ] A request without a village returns 400.\n- [ ] The cross-village isolation spec passes.\n- [ ] `db:migrate` and `db:seed` work from an empty database.\n\n## Issues\n\n- [x] {{P0-01}}\n- [ ] {{P0-02}}\n- [ ] {{P0-03}}\n- [ ] {{P0-04}}\n- [ ] {{P0-05}}\n- [ ] {{P0-06}}\n- [ ] {{P0-07}}\n- [ ] {{P0-08}}\n\n---\n_Backlog id `E0` · Phase 0 · Multi-village foundation_"
+  },
+  {
+    "id": "E1",
+    "repo": "village-platform",
+    "title": "[Phase 1] Users, roles & profile",
+    "epic": true,
+    "parent": null,
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "now",
+    "status": "epic",
+    "areas": [
+      "api",
+      "security"
+    ],
+    "body": "## Goal\n\nSecure sign-up and sign-in, role-based access, and a self-service profile (photo, language, theme).\n\n## Business rules\n\n- Forgot-password always returns the same response, so it does not reveal who is registered.\n- A user edits only their own profile, even an admin.\n- Changing the password needs the current password.\n- Language and theme are stored on the account; a guest uses the device settings.\n- Error `code` values never change; only the message is translated.\n\n## Definition of done\n\n- [ ] A token used after logout returns 401.\n- [ ] A wrong-type or oversized image is rejected.\n- [ ] A suspended user cannot sign in.\n- [ ] The same error returns in Arabic and English with the same code.\n\n## Issues\n\n- [x] {{P1-01}}\n- [ ] {{P1-02}}\n- [ ] {{P1-03}}\n- [ ] {{P1-04}}\n- [ ] {{P1-05}}\n- [ ] {{P1-06}}\n- [x] {{P1-07}}\n- [ ] {{P1-08}}\n- [ ] {{P1-09}}\n- [ ] {{P1-10}}\n- [ ] {{P1-11}}\n- [ ] {{P1-12}}\n- [ ] {{P1-13}}\n- [ ] {{P1-14}}\n- [x] {{P1-15}}\n\n---\n_Backlog id `E1` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "E2",
+    "repo": "village-platform",
+    "title": "[Phase 2] Notifications foundation",
+    "epic": true,
+    "parent": null,
+    "milestone": "Phase 2 · Notifications foundation",
+    "phase": "P2",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "next",
+    "status": "epic",
+    "areas": [
+      "notifications"
+    ],
+    "body": "## Goal\n\nThe notification plumbing is ready, so any feature adds its notification in one line.\n\n## Business rules\n\n- A notification keeps a stable destination even if the target is deleted later (the server falls back).\n- Users can mute kinds, except payment and security kinds.\n- A broadcast never creates one row per user inside the request.\n\n## Definition of done\n\n- [ ] A test notification appears in the inbox and is marked read when opened.\n- [ ] The unread counter updates after reading.\n- [ ] Unit and request specs cover the notifier and the API.\n\n## Issues\n\n- [ ] {{P2-01}}\n- [x] {{P2-02}}\n- [ ] {{P2-03}}\n- [ ] {{P2-04}}\n- [ ] {{P2-05}}\n- [ ] {{P2-06}}\n- [ ] {{P2-07}}\n- [ ] {{P2-08}}\n- [ ] {{P2-09}}\n- [ ] {{P2-10}}\n- [ ] {{P2-11}}\n- [ ] {{P2-12}}\n\n---\n_Backlog id `E2` · Phase 2 · Notifications foundation_"
+  },
+  {
+    "id": "E3",
+    "repo": "village-platform",
+    "title": "[Phase 3] Categories & firms catalog",
+    "epic": true,
+    "parent": null,
+    "milestone": "Phase 3 · Categories & firms catalog",
+    "phase": "P3",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "next",
+    "status": "epic",
+    "areas": [
+      "catalog"
+    ],
+    "body": "## Goal\n\nA complete directory of firms with details, working hours, location, search, filters and admin review.\n\n## Business rules\n\n- Any user can request a firm; the requester becomes its owner.\n- An approved firm is public; today that also requires the owner's current subscription (see P5-02).\n- A rejection needs a written reason; editing a rejected firm sends it back to pending.\n\n## Definition of done\n\n- [ ] The open-now filter is correct in the village time zone.\n- [ ] A firm with missing required custom fields is accepted at first and rejected once those fields are edited.\n- [ ] Approving or rejecting a firm sends a notification.\n\n## Issues\n\n- [x] {{P3-01}}\n- [x] {{P3-02}}\n- [ ] {{P3-03}}\n- [ ] {{P3-04}}\n- [ ] {{P3-05}}\n- [ ] {{P3-06}}\n- [ ] {{P3-07}}\n- [ ] {{P3-08}}\n- [ ] {{P3-09}}\n- [ ] {{P3-10}}\n- [ ] {{P3-11}}\n- [ ] {{P3-12}}\n\n---\n_Backlog id `E3` · Phase 3 · Categories & firms catalog_"
+  },
+  {
+    "id": "E4",
+    "repo": "village-platform",
+    "title": "[Phase 4] Multi-owner firms",
+    "epic": true,
+    "parent": null,
+    "milestone": "Phase 4 · Multi-owner firms",
+    "phase": "P4",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "later",
+    "status": "epic",
+    "areas": [
+      "catalog",
+      "security"
+    ],
+    "body": "## Goal\n\nA firm owner can invite partners, and each partner edits only the firms they belong to.\n\n## Business rules\n\n- `owner` can edit, invite and manage members; `manager` edits data and (later) media only.\n- An invited person who is not registered receives the invitation after signing up with the same phone.\n- A user can belong to several firms.\n- The billing owner (`firms.owner_id`) keeps paying; members do not need a subscription (see P4-01).\n\n## Definition of done\n\n- [ ] A manager cannot invite or touch billing.\n- [ ] The last owner cannot be removed.\n- [ ] An owner of firm A cannot edit firm B.\n\n## Issues\n\n- [ ] {{P4-01}}\n- [ ] {{P4-02}}\n- [ ] {{P4-03}}\n- [ ] {{P4-04}}\n- [ ] {{P4-05}}\n- [ ] {{P4-06}}\n\n---\n_Backlog id `E4` · Phase 4 · Multi-owner firms_"
+  },
+  {
+    "id": "E5",
+    "repo": "village-platform",
+    "title": "[Phase 5] Plans & entitlements",
+    "epic": true,
+    "parent": null,
+    "milestone": "Phase 5 · Plans & entitlements",
+    "phase": "P5",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "next",
+    "status": "epic",
+    "areas": [
+      "payments",
+      "api"
+    ],
+    "body": "## Goal\n\nOne place decides what a firm may do, based on its owner's plan.\n\n## Business rules\n\n- A subscription belongs to the owner (user), so entitlements are resolved per owner.\n- Plans with active subscriptions are never deleted, only deactivated.\n- The price is copied into the subscription when it is requested (already done: `amount_cents`).\n\n## Definition of done\n\n- [ ] The same owner gets different limits before and after subscribing.\n- [ ] No `if plan.name == ...` outside the entitlements service.\n\n## Issues\n\n- [x] {{P5-01}}\n- [ ] {{P5-02}}\n- [ ] {{P5-03}}\n- [ ] {{P5-04}}\n- [ ] {{P5-05}}\n- [ ] {{P5-06}}\n\n---\n_Backlog id `E5` · Phase 5 · Plans & entitlements_"
+  },
+  {
+    "id": "E6",
+    "repo": "village-platform",
+    "title": "[Phase 6] Payments & subscription lifecycle",
+    "epic": true,
+    "parent": null,
+    "milestone": "Phase 6 · Payments & subscription lifecycle",
+    "phase": "P6",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "next",
+    "status": "epic",
+    "areas": [
+      "payments"
+    ],
+    "body": "## Goal\n\nAn owner pays by InstaPay or Vodafone Cash, an admin verifies the money, and the subscription renews and expires correctly.\n\n## Business rules\n\n- Nothing activates automatically from the app; a person verifies the transfer.\n- A rejected request stays in the history; the owner can send a new one.\n- Automation later: evaluate a provider that supports e-wallets and check its terms first.\n\n## Definition of done\n\n- [x] The same transfer reference is never accepted twice\n- [ ] A subscription ends on time and the features lock after the grace period.\n- [x] Approving a request twice activates it once\n\n## Issues\n\n- [x] {{P6-01}}\n- [x] {{P6-02}}\n- [x] {{P6-03}}\n- [ ] {{P6-04}}\n- [ ] {{P6-05}}\n- [ ] {{P6-06}}\n- [ ] {{P6-07}}\n- [ ] {{P6-08}}\n- [ ] {{P6-09}}\n\n---\n_Backlog id `E6` · Phase 6 · Payments & subscription lifecycle_"
+  },
+  {
+    "id": "E7",
+    "repo": "village-platform",
+    "title": "[Phase 7] Photos & videos",
+    "epic": true,
+    "parent": null,
+    "milestone": "Phase 7 · Photos & videos",
+    "phase": "P7",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "later",
+    "status": "epic",
+    "areas": [
+      "media"
+    ],
+    "body": "## Goal\n\nOnly subscribers can add photos and videos, uploaded safely and lightly, with limits from the plan.\n\n## Business rules\n\n- Uploading without the entitlement returns 402.\n- Deleting is always allowed, even after the subscription ends.\n- A video is not shown publicly until processing finishes.\n\n## Definition of done\n\n- [ ] A video above the plan limit is rejected before the upload finishes.\n- [ ] A video appears after processing with a thumbnail.\n- [ ] A firm whose subscription ended shows no media publicly, and renewal restores it.\n\n## Issues\n\n- [ ] {{P7-01}}\n- [ ] {{P7-02}}\n- [ ] {{P7-03}}\n- [ ] {{P7-04}}\n- [ ] {{P7-05}}\n- [ ] {{P7-06}}\n- [ ] {{P7-07}}\n- [ ] {{P7-08}}\n- [ ] {{P7-09}}\n\n---\n_Backlog id `E7` · Phase 7 · Photos & videos_"
+  },
+  {
+    "id": "E8",
+    "repo": "village-platform",
+    "title": "[Phase 8] Priority & subscriber benefits",
+    "epic": true,
+    "parent": null,
+    "milestone": "Phase 8 · Priority & subscriber benefits",
+    "phase": "P8",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "later",
+    "status": "epic",
+    "areas": [
+      "catalog",
+      "payments"
+    ],
+    "body": "## Goal\n\nSubscribers appear first in a fair way and get visible benefits.\n\n## Business rules\n\n- Priority goes to subscribers, but rotates daily so the top spots are not permanently taken.\n- A firm shown with priority is always labelled as featured.\n- Sorting by nearest or by rating is not affected by the subscription.\n\n## Definition of done\n\n- [ ] The recommended order differs from day to day inside the same plan tier.\n- [ ] Statistics are locked for plans without that feature.\n\n## Issues\n\n- [ ] {{P8-01}}\n- [ ] {{P8-02}}\n- [ ] {{P8-03}}\n- [ ] {{P8-04}}\n- [ ] {{P8-05}}\n- [ ] {{P8-06}}\n- [ ] {{P8-07}}\n\n---\n_Backlog id `E8` · Phase 8 · Priority & subscriber benefits_"
+  },
+  {
+    "id": "E9",
+    "repo": "village-platform",
+    "title": "[Phase 9] Push notifications & deep links",
+    "epic": true,
+    "parent": null,
+    "milestone": "Phase 9 · Push notifications & deep links",
+    "phase": "P9",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "later",
+    "status": "epic",
+    "areas": [
+      "notifications",
+      "android"
+    ],
+    "body": "## Goal\n\nA notification reaches the phone, and tapping it opens the right screen even when the app is closed.\n\n## Business rules\n\n- The payload carries a version; the app ignores destinations it does not know and opens the notifications screen.\n- Opening a notification marks it read and records the open time.\n- A push never carries sensitive details; the app fetches them from the API after opening.\n\n## Definition of done\n\n- [ ] A push received in the background opens the intended screen.\n- [ ] A notification for a deleted item opens the notifications screen without a crash.\n- [ ] An invalid token is removed from the table.\n\n## Issues\n\n- [ ] {{P9-01}}\n- [ ] {{P9-02}}\n- [ ] {{P9-03}}\n- [ ] {{P9-04}}\n- [ ] {{P9-05}}\n- [ ] {{P9-06}}\n- [ ] {{P9-07}}\n- [ ] {{P9-08}}\n\n---\n_Backlog id `E9` · Phase 9 · Push notifications & deep links_"
+  },
+  {
+    "id": "E10",
+    "repo": "village-platform",
+    "title": "[Phase 10] News, events & reviews",
+    "epic": true,
+    "parent": null,
+    "milestone": "Phase 10 · News, events & reviews",
+    "phase": "P10",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "later",
+    "status": "epic",
+    "areas": [
+      "content",
+      "catalog"
+    ],
+    "body": "## Goal\n\nVillage content (news, announcements, events) written by admins, and reviews of firms.\n\n## Business rules\n\n- Only admins write content.\n- A firm's rating ignores reviews that were hidden.\n- Nobody reviews a firm they own; one review per user per firm.\n\n## Definition of done\n\n- [ ] A published news item sends one broadcast.\n- [ ] The average rating updates after adding and deleting a review.\n\n## Issues\n\n- [x] {{P10-01}}\n- [ ] {{P10-02}}\n- [ ] {{P10-03}}\n- [ ] {{P10-04}}\n- [ ] {{P10-05}}\n- [ ] {{P10-06}}\n- [ ] {{P10-07}}\n- [ ] {{P10-08}}\n\n---\n_Backlog id `E10` · Phase 10 · News, events & reviews_"
+  },
+  {
+    "id": "E11",
+    "repo": "village-platform",
+    "title": "[Phase 11] Admin dashboard",
+    "epic": true,
+    "parent": null,
+    "milestone": "Phase 11 · Admin dashboard",
+    "phase": "P11",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "next",
+    "status": "epic",
+    "areas": [
+      "admin"
+    ],
+    "body": "## Goal\n\nAdmins run everything from an Arabic and English dashboard with the village identity, in light and dark.\n\n## Business rules\n\n- A village admin sees only their village; a super admin sees all.\n- Every sensitive action is recorded (see P6-08).\n\n## Definition of done\n\n- [ ] A village admin of A cannot see B.\n- [x] Approving a subscription from the dashboard activates it and notifies the owner\n- [ ] Every page renders in Arabic and English, light and dark.\n\n## Issues\n\n- [x] {{P11-01}}\n- [x] {{P11-02}}\n- [x] {{P11-03}}\n- [x] {{P11-04}}\n- [ ] {{P11-05}}\n- [ ] {{P11-06}}\n- [ ] {{P11-07}}\n- [ ] {{P11-08}}\n- [ ] {{P11-09}}\n- [ ] {{P11-10}}\n- [ ] {{P11-11}}\n- [ ] {{P11-12}}\n\n---\n_Backlog id `E11` · Phase 11 · Admin dashboard_"
+  },
+  {
+    "id": "E12",
+    "repo": "village-platform",
+    "title": "[Phase 12] API contract & Android",
+    "epic": true,
+    "parent": null,
+    "milestone": "Phase 12 · API contract & Android",
+    "phase": "P12",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "later",
+    "status": "epic",
+    "areas": [
+      "android",
+      "api"
+    ],
+    "body": "## Goal\n\nThe app talks to the backend through a documented contract, with push, deep links, RTL and theming.\n\n## Business rules\n\n- A breaking API change ships as a new version (`/v2`).\n- Network errors show clear Arabic messages.\n\n## Definition of done\n\n- [ ] Every screen works against the real API.\n- [ ] Opening a notification with the app closed lands on the right screen.\n\n## Issues\n\n- [ ] {{P12-01}}\n\nThe Android tasks of this phase are tracked in {{A-E}}.\n\n---\n_Backlog id `E12` · Phase 12 · API contract & Android_"
+  },
+  {
+    "id": "E13",
+    "repo": "village-platform",
+    "title": "[Phase 13] Hardening & launch",
+    "epic": true,
+    "parent": null,
+    "milestone": "Phase 13 · Hardening & launch",
+    "phase": "P13",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "next",
+    "status": "epic",
+    "areas": [
+      "infra",
+      "security"
+    ],
+    "body": "## Goal\n\nThe system is safe, monitored and recoverable before real owners rely on it.\n\n## Business rules\n\n- No secrets in the repository; configuration comes from environment variables.\n- Deleting an account removes personal data but keeps financial history.\n\n## Definition of done\n\n- [ ] CI is green and required on `main`.\n- [ ] A database backup has been restored successfully at least once.\n- [ ] Brakeman reports no high-confidence warnings.\n\n## Issues\n\n- [ ] {{P13-01}}\n- [ ] {{P13-02}}\n- [ ] {{P13-03}}\n- [ ] {{P13-04}}\n- [ ] {{P13-05}}\n- [ ] {{P13-06}}\n- [x] {{P13-07}}\n- [ ] {{P13-08}}\n- [ ] {{P13-09}}\n- [ ] {{P13-11}}\n\n---\n_Backlog id `E13` · Phase 13 · Hardening & launch_"
+  },
+  {
+    "id": "ED",
+    "repo": "village-platform",
+    "title": "[Data] Aghour data & content",
+    "epic": true,
+    "parent": null,
+    "milestone": "Aghour data & content",
+    "phase": "D",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "now",
+    "status": "epic",
+    "areas": [
+      "data"
+    ],
+    "body": "## Goal\n\nThe directory shows real, correct places and the first real owners and content are in place.\n\n## Business rules\n\n- Imported places are owned by the super admin so they are visible without a subscription. When the real owner joins, move the firm to their account from the dashboard (the owner must be a registered `firm_admin`).\n- Uncertain places are imported as `pending`; temporarily closed ones as `suspended`.\n\n## Definition of done\n\n- [ ] Pending places are reviewed and either approved or removed.\n- [ ] Every pharmacy, clinic and hospital has a phone number or a note why not.\n- [ ] Ten real owners are onboarded.\n\n## Issues\n\n- [ ] {{D-01}}\n- [ ] {{D-02}}\n- [ ] {{D-03}}\n- [ ] {{D-04}}\n- [ ] {{D-05}}\n- [ ] {{D-06}}\n- [ ] {{D-07}}\n- [ ] {{D-08}}\n\n---\n_Backlog id `ED` · Aghour data & content_"
+  },
+  {
+    "id": "ES",
+    "repo": "village-platform",
+    "title": "[Setup] Project setup & tracking",
+    "epic": true,
+    "parent": null,
+    "milestone": "Project setup & tracking",
+    "phase": "S",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "now",
+    "status": "epic",
+    "areas": [
+      "infra"
+    ],
+    "body": "## Goal\n\nThe repository, board and team conventions are ready, so work is tracked the same way every time.\n\n## Definition of done\n\n- [ ] The board shows all open issues by milestone and status.\n- [ ] Pull requests need CI and a review before they merge.\n\n## Issues\n\n- [ ] {{S-01}}\n- [ ] {{S-02}}\n- [ ] {{S-03}}\n- [ ] {{S-04}}\n- [ ] {{S-05}}\n\n---\n_Backlog id `ES` · Project setup & tracking_"
+  },
+  {
+    "id": "P0-01",
+    "repo": "village-platform",
+    "title": "[P0-01] Rails 8.1 API bootstrap, tooling and deployment",
+    "epic": false,
+    "parent": "E0",
+    "milestone": "Phase 0 · Multi-village foundation",
+    "phase": "P0",
+    "type": "chore",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "infra"
+    ],
+    "body": "## Summary\n\nThe project skeleton from the roadmap already exists. `acts_as_tenant` and `noticed` are intentionally not installed yet (see P0-02 and P2-01).\n\n## Tasks\n\n- [x] Rails 8.1, Ruby 4.0.1, PostgreSQL, API-only\n- [x] RSpec + FactoryBot (about 100 examples)\n- [x] Pundit, JWT, bcrypt\n- [x] Rubocop (omakase) and Brakeman installed\n- [x] Docker image and Vercel deployment with Neon Postgres\n- [x] Arabic default locale and Cairo time zone\n\n## Already in the repository\n\n- `Gemfile`\n- `config/application.rb`\n- `Dockerfile.vercel`\n- `vercel.json`\n- `bin/docker-entrypoint`\n- `lib/tasks/db_prepare_locked.rake`\n\n---\n_Backlog id `P0-01` · Phase 0 · Multi-village foundation_"
+  },
+  {
+    "id": "P0-02",
+    "repo": "village-platform",
+    "title": "[P0-02] Decide the tenancy model: one village per deployment, or a shared multi-village database",
+    "epic": false,
+    "parent": "E0",
+    "milestone": "Phase 0 · Multi-village foundation",
+    "phase": "P0",
+    "type": "decision",
+    "priority": "p0",
+    "size": "S",
+    "horizon": "now",
+    "status": "todo",
+    "areas": [
+      "tenancy"
+    ],
+    "body": "## Summary\n\nThe roadmap assumes **tenant = village** (one backend serving several villages). The code today serves one village. The choice changes how much work Phase 0 is, so decide before building anything.\n\n**Options**\n- **A. One deployment per village** (separate Vercel project and database). No code changes; each village has its own admin and data. Costs more to operate as villages grow.\n- **B. Shared database with `village_id`** (the roadmap). One deployment, central super admin. Needs P0-03 to P0-08 and touches every table.\n- **C. Stay single-village** until a second village is actually planned.\n\n**Recommendation:** C now, designed so B is possible later. Pick B only if a second village is planned within about six months.\n\n## Tasks\n\n- [ ] Confirm whether a second village is planned, and when\n- [ ] Pick A, B or C and record it in `docs/adr/0001-tenancy.md`\n- [ ] If A or C: close P0-03 to P0-08 as not planned, and review P6-05, P11-07\n\n## Acceptance criteria\n\n- [ ] ADR merged\n- [ ] Dependent issues updated or closed\n\n## Blocks\n\n- {{P0-03}}\n- {{P1-06}}\n- {{P11-07}}\n\n---\n_Backlog id `P0-02` · Phase 0 · Multi-village foundation_"
+  },
+  {
+    "id": "P0-03",
+    "repo": "village-platform",
+    "title": "[P0-03] Add the `villages` table and backfill the default village (أجهور الكبرى)",
+    "epic": false,
+    "parent": "E0",
+    "milestone": "Phase 0 · Multi-village foundation",
+    "phase": "P0",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "tenancy",
+      "api"
+    ],
+    "body": "## Summary\n\nCreate the tenant table and one default row so existing data keeps working. Locale and time zone are global settings today (`ar`, `Cairo`); they become per-village attributes.\n\n## Tasks\n\n- [ ] `villages`: name_ar, name_en, slug (unique), locale, time_zone, active, settings (jsonb)\n- [ ] Seed the default village in `db/seeds.rb` (idempotent)\n- [ ] `Village.default` helper used by the backfill migrations\n- [ ] Read locale and time zone from the current village (fall back to the global config)\n\n## Acceptance criteria\n\n- [ ] Seeding twice creates one village\n- [ ] Existing app behaviour is unchanged for the default village\n\n## Depends on\n\n- {{P0-02}}\n\n## Blocks\n\n- {{P0-04}}\n\n---\n_Backlog id `P0-03` · Phase 0 · Multi-village foundation_"
+  },
+  {
+    "id": "P0-04",
+    "repo": "village-platform",
+    "title": "[P0-04] Add `village_id` to tenant-owned tables and make unique indexes per village",
+    "epic": false,
+    "parent": "E0",
+    "milestone": "Phase 0 · Multi-village foundation",
+    "phase": "P0",
+    "type": "feature",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "tenancy"
+    ],
+    "body": "## Summary\n\nTables: users, categories, firms, articles, subscription_plans, subscriptions, notifications. Migrations run automatically on boot (`db:prepare_locked`), so each one must be safe to run while the old code still serves traffic.\n\n## Tasks\n\n- [ ] Add `village_id` nullable, backfill with the default village, then set NOT NULL + foreign key\n- [ ] Unique per village: users.phone, users.email, categories.name, subscription_plans.name\n- [ ] Unique per village: subscriptions payment reference (payment_method + transaction_reference) and notifications.dedupe_key\n- [ ] Update factories and seeds\n\n## Acceptance criteria\n\n- [ ] Migration runs on a copy of production data\n- [ ] The same phone can exist in two villages\n\n## Depends on\n\n- {{P0-03}}\n\n## Blocks\n\n- {{P0-05}}\n\n---\n_Backlog id `P0-04` · Phase 0 · Multi-village foundation_"
+  },
+  {
+    "id": "P0-05",
+    "repo": "village-platform",
+    "title": "[P0-05] Scope every query to the current village (`Current.village`)",
+    "epic": false,
+    "parent": "E0",
+    "milestone": "Phase 0 · Multi-village foundation",
+    "phase": "P0",
+    "type": "feature",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "tenancy",
+      "api",
+      "admin"
+    ],
+    "body": "## Summary\n\nChoose between the `acts_as_tenant` gem and small in-house default scopes, then make a missing tenant fail loudly instead of leaking data.\n\n## Tasks\n\n- [ ] Pick the mechanism (gem or `Current` + default scope) and note it in the ADR\n- [ ] Require a tenant: a query without one raises\n- [ ] Policy scopes, serializers and admin controllers use the scoped models\n- [ ] `SubscriptionExpiryRemindersJob` and rake tasks loop over villages\n\n## Acceptance criteria\n\n- [ ] No model query runs without a village except in explicit super-admin code\n\n## Depends on\n\n- {{P0-04}}\n\n## Blocks\n\n- {{P0-06}}\n- {{P0-07}}\n- {{P0-08}}\n- {{P1-06}}\n- {{P2-11}}\n\n---\n_Backlog id `P0-05` · Phase 0 · Multi-village foundation_"
+  },
+  {
+    "id": "P0-06",
+    "repo": "village-platform",
+    "title": "[P0-06] Resolve the village on each request (header for the app, host for the dashboard)",
+    "epic": false,
+    "parent": "E0",
+    "milestone": "Phase 0 · Multi-village foundation",
+    "phase": "P0",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "tenancy",
+      "api",
+      "admin"
+    ],
+    "body": "## Tasks\n\n- [ ] API: `X-Village` header (slug), 400 when missing or unknown\n- [ ] Dashboard: subdomain or host mapping, with a fallback for local development\n- [ ] Public endpoints without a user (categories, firms, articles) also need the header\n\n## Acceptance criteria\n\n- [ ] Unknown village returns a clear error with the standard envelope\n\n## Depends on\n\n- {{P0-05}}\n\n## Blocks\n\n- {{P0-08}}\n- {{P11-07}}\n- {{P12-03}}\n\n---\n_Backlog id `P0-06` · Phase 0 · Multi-village foundation_"
+  },
+  {
+    "id": "P0-07",
+    "repo": "village-platform",
+    "title": "[P0-07] Bind JWTs to a village",
+    "epic": false,
+    "parent": "E0",
+    "milestone": "Phase 0 · Multi-village foundation",
+    "phase": "P0",
+    "type": "feature",
+    "priority": "p2",
+    "size": "S",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "tenancy",
+      "security"
+    ],
+    "body": "## Summary\n\nTokens currently carry only `sub`. Add the village id (together with the token version from P1-02) so a token from one village cannot be used in another.\n\n## Tasks\n\n- [ ] Add `vid` to the JWT payload; reject when it differs from the request village\n- [ ] Old tokens without `vid` are accepted for the default village during a transition period\n\n## Acceptance criteria\n\n- [ ] A token from village A returns 401 on village B\n\n## Depends on\n\n- {{P0-05}}\n- {{P1-02}}\n\n---\n_Backlog id `P0-07` · Phase 0 · Multi-village foundation_"
+  },
+  {
+    "id": "P0-08",
+    "repo": "village-platform",
+    "title": "[P0-08] Cross-village isolation specs",
+    "epic": false,
+    "parent": "E0",
+    "milestone": "Phase 0 · Multi-village foundation",
+    "phase": "P0",
+    "type": "chore",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "tenancy",
+      "tests"
+    ],
+    "body": "## Tasks\n\n- [ ] A user of village A cannot read or write firms, articles, subscriptions or notifications of village B\n- [ ] Admin pages only show the current village\n- [ ] Jobs only process the village they run for\n\n## Acceptance criteria\n\n- [ ] Spec matrix is green in CI\n\n## Depends on\n\n- {{P0-05}}\n- {{P0-06}}\n\n---\n_Backlog id `P0-08` · Phase 0 · Multi-village foundation_"
+  },
+  {
+    "id": "P1-01",
+    "repo": "village-platform",
+    "title": "[P1-01] Phone + password auth with bearer JWT",
+    "epic": false,
+    "parent": "E1",
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "api",
+      "security"
+    ],
+    "body": "## Summary\n\nSign-up and sign-in work. Token revocation is still missing and is tracked in P1-02.\n\n## Tasks\n\n- [x] `POST /auth/register` (name, phone, optional email, password) returns a token\n- [x] `POST /auth/login` by phone\n- [x] HS256 token, 30 days, secret from `secret_key_base`\n- [x] Role cannot be set at registration (only a super admin changes roles)\n- [x] Phone normalized and unique; password 8 to 72 characters\n\n## Already in the repository\n\n- `app/controllers/api/v1/auth_controller.rb`\n- `app/services/json_web_token.rb`\n- `app/models/user.rb`\n- `spec/requests/api/v1/auth_spec.rb`\n\n---\n_Backlog id `P1-01` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "P1-02",
+    "repo": "village-platform",
+    "title": "[P1-02] Token revocation: token version, logout, invalidate on password change",
+    "epic": false,
+    "parent": "E1",
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "feature",
+    "priority": "p1",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "api",
+      "security"
+    ],
+    "body": "## Summary\n\nTokens are valid for 30 days and cannot be revoked (also listed under \"Next steps\" in the README).\n\n**Proposal:** add `users.token_version` (integer) and put it in the token (`tv`). Logout and password change increment it, so every older token stops working. Per-device sessions and refresh tokens can come later if needed.\n\n## Tasks\n\n- [ ] Migration: `users.token_version` default 0\n- [ ] Include `tv` when issuing; compare in `Authentication#user_from_token`\n- [ ] `POST /auth/logout` (increments the version)\n- [ ] Password change or admin password reset also increments it\n- [ ] Specs: old token after logout, after password change\n\n## Acceptance criteria\n\n- [ ] A token issued before logout returns 401\n- [ ] A new login works immediately\n\n## Blocks\n\n- {{P0-07}}\n- {{P1-04}}\n\n---\n_Backlog id `P1-02` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "P1-03",
+    "repo": "village-platform",
+    "title": "[P1-03] Choose how to recover a password when accounts are phone-first",
+    "epic": false,
+    "parent": "E1",
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "decision",
+    "priority": "p2",
+    "size": "S",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "security",
+      "api"
+    ],
+    "body": "## Summary\n\nAccounts are identified by phone number; email is optional, so an email link cannot reach everyone.\n\n**Options**\n- **A. Admin-assisted reset.** Already possible from the dashboard (users page). No code, but needs a person.\n- **B. Email link** for users who have an email. Cheap, but not universal.\n- **C. SMS / WhatsApp code.** Works for everyone; needs a provider and a per-message cost.\n\n**Recommendation:** keep A, add B, consider C only if support requests grow.\n\n## Tasks\n\n- [ ] Choose and write the decision in the issue\n- [ ] Create the implementation task (P1-04) with the chosen scope\n\n## Acceptance criteria\n\n- [ ] Decision recorded\n\n## Blocks\n\n- {{P1-04}}\n\n---\n_Backlog id `P1-03` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "P1-04",
+    "repo": "village-platform",
+    "title": "[P1-04] Implement password reset (forgot and reset endpoints)",
+    "epic": false,
+    "parent": "E1",
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "api",
+      "security"
+    ],
+    "body": "## Tasks\n\n- [ ] `POST /auth/forgot_password` always returns the same response\n- [ ] `POST /auth/reset_password` with a token that expires in 2 hours and dies when the password changes (`generates_token_for`)\n- [ ] Rate limit both endpoints\n- [ ] Ar/en email copy if the email channel is chosen\n\n## Acceptance criteria\n\n- [ ] Unknown phone and known phone get an identical response\n- [ ] Reset invalidates old tokens (P1-02)\n\n## Depends on\n\n- {{P1-03}}\n- {{P1-02}}\n\n---\n_Backlog id `P1-04` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "P1-05",
+    "repo": "village-platform",
+    "title": "[P1-05] Roles and Pundit authorization",
+    "epic": false,
+    "parent": "E1",
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "chore",
+    "priority": "p2",
+    "size": "S",
+    "horizon": "next",
+    "status": "partial",
+    "areas": [
+      "api",
+      "security"
+    ],
+    "body": "## Summary\n\nRoles and policies exist. Nothing enforces that every action is authorized, so a new endpoint can ship without a policy check.\n\n## Tasks\n\n- [x] Roles `user`, `firm_admin`, `super_admin`\n- [x] Policies for article, category, firm, subscription, subscription plan, user (+ firm policy scope)\n- [ ] Add `verify_authorized` / `verify_policy_scoped` (with explicit skips for public and auth endpoints)\n\n## Acceptance criteria\n\n- [ ] A controller action without `authorize` fails the test suite\n\n## Already in the repository\n\n- `app/policies/`\n- `app/models/user.rb`\n\n---\n_Backlog id `P1-05` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "P1-06",
+    "repo": "village-platform",
+    "title": "[P1-06] Add the village `admin` role and expose an `effective_role` to the app",
+    "epic": false,
+    "parent": "E1",
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "api",
+      "admin",
+      "tenancy"
+    ],
+    "body": "## Summary\n\nRoles today: `user`, `firm_admin` (stored, promoted when the first subscription is approved), `super_admin`. The roadmap has four roles: user, firm owner, village admin, super admin.\n\n**Proposal:** keep the stored `firm_admin` (the subscription flow depends on it), add `admin` (manages one village), keep `super_admin` for the platform, and let the API return `effective_role` for the app.\n\n## Tasks\n\n- [ ] Add `admin` to the enum and update every policy\n- [ ] Dashboard sign-in allows `admin` for its own village, `super_admin` for all\n- [ ] `effective_role` in `UserSerializer`\n\n## Acceptance criteria\n\n- [ ] An admin of village A cannot see village B\n\n## Depends on\n\n- {{P0-02}}\n- {{P0-05}}\n\n---\n_Backlog id `P1-06` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "P1-07",
+    "repo": "village-platform",
+    "title": "[P1-07] Profile: GET/PATCH /me (name, email, password)",
+    "epic": false,
+    "parent": "E1",
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "feature",
+    "priority": "p2",
+    "size": "S",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "api"
+    ],
+    "body": "## Summary\n\nBase profile endpoints exist. Avatar, bio and preferences are separate issues; the password change needs a security fix (P1-10).\n\n## Tasks\n\n- [x] `GET /me` and `PATCH /me`\n- [x] Name and email validation\n\n## Already in the repository\n\n- `app/controllers/api/v1/me_controller.rb`\n- `app/serializers/user_serializer.rb`\n\n---\n_Backlog id `P1-07` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "P1-08",
+    "repo": "village-platform",
+    "title": "[P1-08] Avatar upload (Active Storage) with type and size checks",
+    "epic": false,
+    "parent": "E1",
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "api",
+      "media"
+    ],
+    "body": "## Summary\n\nJPEG, PNG or WebP, max 5 MB, resized with variants (`ruby-vips` and `image_processing` are already installed). Files currently live in the `database` storage service (Postgres); that is fine for small avatars but should move with P7-01.\n\n## Tasks\n\n- [ ] `has_one_attached :avatar` with content-type and size validation\n- [ ] `PUT /me/avatar` (multipart) and `DELETE /me/avatar`\n- [ ] `avatar_url` in `UserSerializer` (signed, expiring URL like screenshots)\n- [ ] Request spec incl. oversized and wrong type\n\n## Acceptance criteria\n\n- [ ] A 6 MB image or a PDF is rejected with the standard error envelope\n\n---\n_Backlog id `P1-08` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "P1-09",
+    "repo": "village-platform",
+    "title": "[P1-09] Profile: bio field and phone-change policy",
+    "epic": false,
+    "parent": "E1",
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "feature",
+    "priority": "p3",
+    "size": "XS",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "api"
+    ],
+    "body": "## Summary\n\nThe phone is the login identifier, so changing it must not be a plain field update.\n\n## Tasks\n\n- [ ] Add `bio` (max 200 characters) to the profile\n- [ ] Decide and document how a phone number is changed (contact admin, or re-verification)\n\n## Acceptance criteria\n\n- [ ] Bio saved and returned; phone cannot be changed through PATCH /me\n\n---\n_Backlog id `P1-09` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "P1-10",
+    "repo": "village-platform",
+    "title": "[P1-10] Security: PATCH /me changes the password without asking for the current one",
+    "epic": false,
+    "parent": "E1",
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "bug",
+    "priority": "p0",
+    "size": "XS",
+    "horizon": "now",
+    "status": "todo",
+    "areas": [
+      "security",
+      "api"
+    ],
+    "body": "## Summary\n\n`MeController#me_params` permits `password` and `password_confirmation`, and `update!` saves them. Anyone holding a valid token (for example a stolen phone) can set a new password and lock the owner out.\n\n## Tasks\n\n- [ ] Require `current_password` when `password` is present; return a clear error code\n- [ ] Specs for missing, wrong and correct current password\n- [ ] After P1-02, a successful change also revokes other tokens\n\n## Acceptance criteria\n\n- [ ] Changing the password without the current one returns 422\n\n## Already in the repository\n\n- `app/controllers/api/v1/me_controller.rb`\n\n---\n_Backlog id `P1-10` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "P1-11",
+    "repo": "village-platform",
+    "title": "[P1-11] Suspend users (`suspended_at`): block sign-in and API access",
+    "epic": false,
+    "parent": "E1",
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "api",
+      "admin",
+      "security"
+    ],
+    "body": "## Tasks\n\n- [ ] Migration: `users.suspended_at`\n- [ ] Block login and every authenticated request with a stable code (`account_suspended`)\n- [ ] Dashboard: suspend and reinstate on the user page\n- [ ] Dashboard session check also blocks suspended admins\n\n## Acceptance criteria\n\n- [ ] A suspended user's existing token stops working at once\n\n---\n_Backlog id `P1-11` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "P1-12",
+    "repo": "village-platform",
+    "title": "[P1-12] Rate limiting for API sign-in and sign-up, backed by a shared cache",
+    "epic": false,
+    "parent": "E1",
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "feature",
+    "priority": "p1",
+    "size": "M",
+    "horizon": "now",
+    "status": "partial",
+    "areas": [
+      "security",
+      "api"
+    ],
+    "body": "## Summary\n\nThe dashboard login already uses Rails' built-in `rate_limit`. The API login and register endpoints have none. Production uses `:memory_store`, so counters are per process and reset on every cold start; with several containers they are not shared.\n\n## Tasks\n\n- [x] Dashboard login: 10 attempts per 3 minutes\n- [ ] Add `rate_limit` to `auth#login` and `auth#register` (per IP and per phone)\n- [ ] Use a store shared by all containers (for example Solid Cache or the database) in production\n\n## Acceptance criteria\n\n- [ ] The 11th login attempt in the window returns 429 with the standard error envelope\n\n## Blocks\n\n- {{P13-02}}\n\n## Already in the repository\n\n- `app/controllers/admin/sessions_controller.rb`\n- `config/environments/production.rb`\n\n---\n_Backlog id `P1-12` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "P1-13",
+    "repo": "village-platform",
+    "title": "[P1-13] Store language and theme preference on the user",
+    "epic": false,
+    "parent": "E1",
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "feature",
+    "priority": "p2",
+    "size": "S",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "api",
+      "i18n"
+    ],
+    "body": "## Tasks\n\n- [ ] Migration: `locale` (`ar`/`en`, default `ar`) and `theme_preference` (`light`/`dark`/`system`, default `system`)\n- [ ] Permit both in `PATCH /me`, return them in `UserSerializer`, validate inclusion\n\n## Acceptance criteria\n\n- [ ] Values persist and are validated\n\n## Blocks\n\n- {{P1-14}}\n- {{P2-09}}\n- {{P12-09}}\n\n---\n_Backlog id `P1-13` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "P1-14",
+    "repo": "village-platform",
+    "title": "[P1-14] Resolve request language: user preference, then Accept-Language, then default",
+    "epic": false,
+    "parent": "E1",
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "feature",
+    "priority": "p2",
+    "size": "XS",
+    "horizon": "next",
+    "status": "partial",
+    "areas": [
+      "api",
+      "i18n"
+    ],
+    "body": "## Tasks\n\n- [x] `Accept-Language` (`ar` default, `en`) via `around_action :switch_locale`\n- [ ] Signed-in users use `users.locale` first\n\n## Depends on\n\n- {{P1-13}}\n\n## Already in the repository\n\n- `app/controllers/application_controller.rb`\n\n---\n_Backlog id `P1-14` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "P1-15",
+    "repo": "village-platform",
+    "title": "[P1-15] Stable error envelope with translated messages",
+    "epic": false,
+    "parent": "E1",
+    "milestone": "Phase 1 · Users, roles & profile",
+    "phase": "P1",
+    "type": "chore",
+    "priority": "p2",
+    "size": "S",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "api",
+      "i18n"
+    ],
+    "body": "## Summary\n\nEvery API error returns `{ error: { code, message, details } }`. The message is translated, the `code` is not. A check for missing translation keys is tracked in P13-09.\n\n## Tasks\n\n- [x] Envelope and codes in `ErrorHandling`\n- [x] `config/locales/ar.yml` and `en.yml`\n\n## Already in the repository\n\n- `app/controllers/concerns/error_handling.rb`\n- `config/locales/ar.yml`\n- `config/locales/en.yml`\n\n---\n_Backlog id `P1-15` · Phase 1 · Users, roles & profile_"
+  },
+  {
+    "id": "P2-01",
+    "repo": "village-platform",
+    "title": "[P2-01] Notifications: keep the in-house model or adopt the Noticed gem?",
+    "epic": false,
+    "parent": "E2",
+    "milestone": "Phase 2 · Notifications foundation",
+    "phase": "P2",
+    "type": "decision",
+    "priority": "p1",
+    "size": "S",
+    "horizon": "now",
+    "status": "todo",
+    "areas": [
+      "notifications"
+    ],
+    "body": "## Summary\n\nThe roadmap suggested Noticed (the gem you mentioned). The repo already has its own `Notification` model and `Notifier` service: dedupe key, jsonb `data`, four kinds, in-app API, and the daily reminder job.\n\n**Options**\n- **A. Keep and extend the in-house model.** No migration of existing rows, no new dependency. Push delivery (P9) is a small service on top.\n- **B. Adopt Noticed.** Gives delivery-method abstractions (database, FCM, email) and a standard API, but adds two tables, a gem, and a data migration.\n\n**Recommendation:** A. Revisit B only if several delivery channels are needed.\n\n## Tasks\n\n- [ ] Choose A or B\n- [ ] Write `docs/adr/0002-notifications.md`\n- [ ] If B: add a migration plan issue for existing rows\n\n## Acceptance criteria\n\n- [ ] ADR merged and the dependent issues (P2-04, P9-02) updated\n\n## Blocks\n\n- {{P2-04}}\n- {{P9-01}}\n\n---\n_Backlog id `P2-01` · Phase 2 · Notifications foundation_"
+  },
+  {
+    "id": "P2-02",
+    "repo": "village-platform",
+    "title": "[P2-02] In-app inbox API and idempotent notifier",
+    "epic": false,
+    "parent": "E2",
+    "milestone": "Phase 2 · Notifications foundation",
+    "phase": "P2",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "notifications",
+      "api"
+    ],
+    "body": "## Summary\n\nInbox listing, read state and the unread count (in the list response `meta`) work. Destinations, preferences and a lightweight counter endpoint are separate issues.\n\n## Tasks\n\n- [x] `GET /notifications` with `unread=true` and pagination\n- [x] `PATCH /notifications/:id/read` and `read_all`\n- [x] `meta.unread_count` in every list response\n- [x] `Notifier.notify` with `dedupe_key`; a duplicate key never creates twice\n- [x] Kinds: subscription approved, rejected, expiring, expired\n- [x] Arabic and English copy for those kinds\n\n## Already in the repository\n\n- `app/models/notification.rb`\n- `app/services/notifier.rb`\n- `app/controllers/api/v1/notifications_controller.rb`\n- `spec/requests/api/v1/notifications_spec.rb`\n\n---\n_Backlog id `P2-02` · Phase 2 · Notifications foundation_"
+  },
+  {
+    "id": "P2-03",
+    "repo": "village-platform",
+    "title": "[P2-03] Lightweight unread counter endpoint for the app badge",
+    "epic": false,
+    "parent": "E2",
+    "milestone": "Phase 2 · Notifications foundation",
+    "phase": "P2",
+    "type": "feature",
+    "priority": "p3",
+    "size": "XS",
+    "horizon": "next",
+    "status": "partial",
+    "areas": [
+      "notifications",
+      "api"
+    ],
+    "body": "## Summary\n\nThe list endpoint already returns `meta.unread_count`, so the app can read it today. A dedicated endpoint avoids loading a page of rows just to draw a badge.\n\n## Tasks\n\n- [x] Unread count available as `meta.unread_count` on `GET /notifications`\n- [ ] `GET /notifications/unread_count` returns `{ data: { count } }` without rows\n\n## Acceptance criteria\n\n- [ ] Count drops after `read` and `read_all`\n\n## Blocks\n\n- {{P12-06}}\n\n## Already in the repository\n\n- `app/controllers/api/v1/notifications_controller.rb`\n\n---\n_Backlog id `P2-03` · Phase 2 · Notifications foundation_"
+  },
+  {
+    "id": "P2-04",
+    "repo": "village-platform",
+    "title": "[P2-04] Notification destinations and `POST /notifications/:id/open`",
+    "epic": false,
+    "parent": "E2",
+    "milestone": "Phase 2 · Notifications foundation",
+    "phase": "P2",
+    "type": "feature",
+    "priority": "p1",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "notifications",
+      "api"
+    ],
+    "body": "## Summary\n\nEvery notification carries a destination the app can open: `{ screen, params, deep_link }` plus a version `v`. It is stored in the existing `data` jsonb. `open` marks the notification read and returns the final destination.\n\n## Tasks\n\n- [ ] Define the destination shape (see `docs/notifications/event-catalog.md`)\n- [ ] Add destinations to the four existing kinds (for example `subscription_detail` with the subscription id)\n- [ ] `POST /notifications/:id/open` marks read and returns the destination\n- [ ] Include `destination` in `NotificationSerializer`\n\n## Acceptance criteria\n\n- [ ] Opening twice is safe (idempotent)\n- [ ] Someone else's notification returns 404\n\n## Depends on\n\n- {{P2-01}}\n\n## Blocks\n\n- {{P4-06}}\n- {{P6-06}}\n- {{P7-08}}\n- {{P9-02}}\n- {{P9-07}}\n- {{P9-08}}\n- {{P10-07}}\n- {{P12-06}}\n\n---\n_Backlog id `P2-04` · Phase 2 · Notifications foundation_"
+  },
+  {
+    "id": "P2-05",
+    "repo": "village-platform",
+    "title": "[P2-05] Notification preferences (mute kinds, locked kinds)",
+    "epic": false,
+    "parent": "E2",
+    "milestone": "Phase 2 · Notifications foundation",
+    "phase": "P2",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "notifications",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] Table `notification_preferences` (user, kind, enabled)\n- [ ] `GET/PATCH /notification_preferences`\n- [ ] Payment and security kinds cannot be muted\n- [ ] `Notifier` skips muted kinds for delivery but keeps the inbox row for locked kinds\n\n## Acceptance criteria\n\n- [ ] Muting a kind stops it from being pushed\n\n## Blocks\n\n- {{P9-05}}\n\n---\n_Backlog id `P2-05` · Phase 2 · Notifications foundation_"
+  },
+  {
+    "id": "P2-06",
+    "repo": "village-platform",
+    "title": "[P2-06] Device registry for push tokens (`devices`)",
+    "epic": false,
+    "parent": "E2",
+    "milestone": "Phase 2 · Notifications foundation",
+    "phase": "P2",
+    "type": "feature",
+    "priority": "p1",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "notifications",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] Table `devices` (user, token unique, platform, app_version, locale, last_seen_at)\n- [ ] `POST /devices` (upsert by token, moves the token if another user signs in on the same phone)\n- [ ] `DELETE /devices/:token` on sign-out\n- [ ] Remove devices not seen for 60 days (fits the daily cron)\n\n## Acceptance criteria\n\n- [ ] One token belongs to one user at a time\n\n## Blocks\n\n- {{P9-01}}\n\n---\n_Backlog id `P2-06` · Phase 2 · Notifications foundation_"
+  },
+  {
+    "id": "P2-07",
+    "repo": "village-platform",
+    "title": "[P2-07] Decide where background work runs (the container sleeps after 5 minutes idle)",
+    "epic": false,
+    "parent": "E2",
+    "milestone": "Phase 2 · Notifications foundation",
+    "phase": "P2",
+    "type": "decision",
+    "priority": "p1",
+    "size": "S",
+    "horizon": "now",
+    "status": "todo",
+    "areas": [
+      "infra",
+      "notifications"
+    ],
+    "body": "## Summary\n\nThe README states the Vercel container sleeps after 5 minutes without traffic, jobs use `:async`, and the daily reminder runs from Vercel Cron. A long-lived worker (Sidekiq in the roadmap) cannot run there. Push fan-out (P2-08, P9) needs a plan.\n\n**Options**\n- **A. Outbox table + Cron.** Deliveries are rows; a cron-triggered endpoint processes a batch per tick. Works on the current hosting; latency of a minute or more.\n- **B. Always-on worker** (Render, Fly or Railway) with Solid Queue on Postgres. Real-time delivery; a second service to run.\n- **C. Move the whole app** to a host with workers.\n\n**Recommendation:** A for the first push release, B when volume or latency requires it.\n\n## Tasks\n\n- [ ] Choose A, B or C\n- [ ] Record it in `docs/adr/0003-background-jobs.md`\n\n## Acceptance criteria\n\n- [ ] ADR merged; P2-08, P9-07 and P13-02 reference it\n\n## Blocks\n\n- {{P2-08}}\n- {{P7-05}}\n- {{P9-01}}\n- {{P9-06}}\n- {{P13-01}}\n\n---\n_Backlog id `P2-07` · Phase 2 · Notifications foundation_"
+  },
+  {
+    "id": "P2-08",
+    "repo": "village-platform",
+    "title": "[P2-08] Broadcast fan-out job with batched inserts",
+    "epic": false,
+    "parent": "E2",
+    "milestone": "Phase 2 · Notifications foundation",
+    "phase": "P2",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "notifications",
+      "infra"
+    ],
+    "body": "## Tasks\n\n- [ ] Job that creates inbox rows in batches (`insert_all`) for a village-wide message\n- [ ] Idempotent with a dedupe key per broadcast\n- [ ] Runs through the mechanism chosen in P2-07\n\n## Acceptance criteria\n\n- [ ] Publishing a news item does not slow the request\n- [ ] Running the job twice creates nothing new\n\n## Depends on\n\n- {{P2-07}}\n\n## Blocks\n\n- {{P8-07}}\n- {{P9-04}}\n- {{P10-03}}\n- {{P11-06}}\n\n---\n_Backlog id `P2-08` · Phase 2 · Notifications foundation_"
+  },
+  {
+    "id": "P2-09",
+    "repo": "village-platform",
+    "title": "[P2-09] Render notification text in each recipient's language",
+    "epic": false,
+    "parent": "E2",
+    "milestone": "Phase 2 · Notifications foundation",
+    "phase": "P2",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "notifications",
+      "i18n"
+    ],
+    "body": "## Summary\n\n`Notifier` renders title and body once, in the default locale (Arabic), and stores the text. An English user reads Arabic. Store the kind and parameters, and translate when sending and when listing.\n\n## Tasks\n\n- [ ] Keep `kind` + params in `data`; render title/body in the recipient's locale\n- [ ] Backward compatible for existing rows\n\n## Acceptance criteria\n\n- [ ] The same notification reads in Arabic for one user and English for another\n\n## Depends on\n\n- {{P1-13}}\n\n---\n_Backlog id `P2-09` · Phase 2 · Notifications foundation_"
+  },
+  {
+    "id": "P2-10",
+    "repo": "village-platform",
+    "title": "[P2-10] Notification copy for every kind in ar.yml and en.yml",
+    "epic": false,
+    "parent": "E2",
+    "milestone": "Phase 2 · Notifications foundation",
+    "phase": "P2",
+    "type": "chore",
+    "priority": "p3",
+    "size": "XS",
+    "horizon": "later",
+    "status": "partial",
+    "areas": [
+      "notifications",
+      "i18n"
+    ],
+    "body": "## Tasks\n\n- [x] Copy for the four current kinds in Arabic and English\n- [ ] Add copy for each new kind as its feature lands (see the event catalog)\n\n## Already in the repository\n\n- `config/locales/ar.yml`\n- `config/locales/en.yml`\n\n---\n_Backlog id `P2-10` · Phase 2 · Notifications foundation_"
+  },
+  {
+    "id": "P2-11",
+    "repo": "village-platform",
+    "title": "[P2-11] Isolation specs for notifications (no cross-village delivery)",
+    "epic": false,
+    "parent": "E2",
+    "milestone": "Phase 2 · Notifications foundation",
+    "phase": "P2",
+    "type": "chore",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "notifications",
+      "tenancy",
+      "tests"
+    ],
+    "body": "## Acceptance criteria\n\n- [ ] A notification for a user of village B can never be created from village A\n\n## Depends on\n\n- {{P0-05}}\n\n---\n_Backlog id `P2-11` · Phase 2 · Notifications foundation_"
+  },
+  {
+    "id": "P2-12",
+    "repo": "village-platform",
+    "title": "[P2-12] Notification event catalog and payload contract",
+    "epic": false,
+    "parent": "E2",
+    "milestone": "Phase 2 · Notifications foundation",
+    "phase": "P2",
+    "type": "docs",
+    "priority": "p2",
+    "size": "S",
+    "horizon": "now",
+    "status": "todo",
+    "areas": [
+      "notifications",
+      "docs"
+    ],
+    "body": "## Summary\n\nWrite down the event list (recipient, channels, destination, phase) and the payload shared by the backend and the Android app in `docs/notifications/event-catalog.md`. The file does not exist yet; the roadmap artifact has the draft content.\n\n---\n_Backlog id `P2-12` · Phase 2 · Notifications foundation_"
+  },
+  {
+    "id": "P3-01",
+    "repo": "village-platform",
+    "title": "[P3-01] Categories: CRUD in API and dashboard",
+    "epic": false,
+    "parent": "E3",
+    "milestone": "Phase 3 · Categories & firms catalog",
+    "phase": "P3",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "catalog",
+      "api",
+      "admin"
+    ],
+    "body": "## Summary\n\nCustom fields per category (`fields_schema`) are not built yet; see P3-06.\n\n## Tasks\n\n- [x] Name, description, icon key (used by the Android app), position, active flag\n- [x] Public list of active categories; only a super admin changes them\n- [x] A category with firms cannot be deleted\n- [x] Dashboard pages: add, edit, order, enable/disable\n\n## Already in the repository\n\n- `app/models/category.rb`\n- `app/controllers/api/v1/categories_controller.rb`\n- `app/controllers/admin/categories_controller.rb`\n- `db/seeds.rb`\n\n---\n_Backlog id `P3-01` · Phase 3 · Categories & firms catalog_"
+  },
+  {
+    "id": "P3-02",
+    "repo": "village-platform",
+    "title": "[P3-02] Firms: CRUD, moderation status, visibility rule and search",
+    "epic": false,
+    "parent": "E3",
+    "milestone": "Phase 3 · Categories & firms catalog",
+    "phase": "P3",
+    "type": "feature",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "catalog",
+      "api",
+      "admin"
+    ],
+    "body": "## Summary\n\nThe base catalog works. Rejection with a reason, structured hours and notifications are separate issues.\n\n## Tasks\n\n- [x] Name, description, address, phone, WhatsApp, latitude, longitude, working hours (text)\n- [x] Status `pending`, `active`, `suspended`; approve and suspend in the dashboard\n- [x] Public only when active and the owner has a current subscription (super-admin firms always)\n- [x] Filters: `category_id`, `q` (name), `mine`; pagination up to 50\n- [x] Owner or super admin can edit or delete; only a super admin changes the status\n\n## Already in the repository\n\n- `app/models/firm.rb`\n- `app/policies/firm_policy.rb`\n- `app/controllers/api/v1/firms_controller.rb`\n- `app/controllers/admin/firms_controller.rb`\n- `spec/requests/api/v1/firms_spec.rb`\n\n---\n_Backlog id `P3-02` · Phase 3 · Categories & firms catalog_"
+  },
+  {
+    "id": "P3-03",
+    "repo": "village-platform",
+    "title": "[P3-03] Structured working hours (intervals per day, closed days, 24 hours)",
+    "epic": false,
+    "parent": "E3",
+    "milestone": "Phase 3 · Categories & firms catalog",
+    "phase": "P3",
+    "type": "feature",
+    "priority": "p1",
+    "size": "L",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "api",
+      "admin"
+    ],
+    "body": "## Summary\n\n`firms.working_hours` is a free-text string today (\"يوميًا ٥م - ١٠م\"). The app cannot compute \"open now\" from it.\n\n## Tasks\n\n- [ ] jsonb schema: per weekday one or more `{ from, to }`, `closed`, `open_24h`\n- [ ] Validation and a small value object\n- [ ] Migrate existing text: keep it as `working_hours_note` and leave the structured field empty\n- [ ] Admin form and API accept and return the structured value\n\n## Acceptance criteria\n\n- [ ] Invalid intervals (overlap, `to` before `from`) are rejected\n\n## Blocks\n\n- {{P3-04}}\n- {{D-05}}\n\n---\n_Backlog id `P3-03` · Phase 3 · Categories & firms catalog_"
+  },
+  {
+    "id": "P3-04",
+    "repo": "village-platform",
+    "title": "[P3-04] `open_now` computed in the village time zone",
+    "epic": false,
+    "parent": "E3",
+    "milestone": "Phase 3 · Categories & firms catalog",
+    "phase": "P3",
+    "type": "feature",
+    "priority": "p1",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] `Firm#open_now?` using the village time zone (Cairo today)\n- [ ] Return `open_now` in `FirmSerializer`\n- [ ] Filter `GET /firms?open_now=true`\n- [ ] Handle intervals that cross midnight\n\n## Acceptance criteria\n\n- [ ] Specs with frozen time around opening, closing and midnight\n\n## Depends on\n\n- {{P3-03}}\n\n---\n_Backlog id `P3-04` · Phase 3 · Categories & firms catalog_"
+  },
+  {
+    "id": "P3-05",
+    "repo": "village-platform",
+    "title": "[P3-05] Nearest-first sorting and distance filter",
+    "epic": false,
+    "parent": "E3",
+    "milestone": "Phase 3 · Categories & firms catalog",
+    "phase": "P3",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "api"
+    ],
+    "body": "## Summary\n\nHaversine in SQL is enough at village scale (hundreds of firms); PostGIS is not needed yet. Ten imported places have no coordinates (see D-03); they sort last.\n\n## Tasks\n\n- [ ] `sort=nearest&lat=&lng=`, optional `radius_km`\n- [ ] Return `distance_km` when coordinates are given\n- [ ] Firms without coordinates sort last\n\n## Acceptance criteria\n\n- [ ] Order is correct for a known set of points\n\n---\n_Backlog id `P3-05` · Phase 3 · Categories & firms catalog_"
+  },
+  {
+    "id": "P3-06",
+    "repo": "village-platform",
+    "title": "[P3-06] Category custom fields (`fields_schema`) and firm `metadata`",
+    "epic": false,
+    "parent": "E3",
+    "milestone": "Phase 3 · Categories & firms catalog",
+    "phase": "P3",
+    "type": "feature",
+    "priority": "p3",
+    "size": "L",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "api",
+      "admin"
+    ],
+    "body": "## Summary\n\nLets each category define its own fields (a doctor's specialty, a restaurant's delivery) without a migration. Field types: text, number, boolean, select; values live in `firms.metadata` and are validated against the category schema.\n\n## Tasks\n\n- [ ] `categories.fields_schema` (jsonb) and `firms.metadata` (jsonb, GIN index)\n- [ ] Validate schema shape (unique keys, select needs options)\n- [ ] Validate metadata: unknown keys, types; required fields enforced on update, not on first creation\n- [ ] Dashboard editor for the schema; API returns it with the category\n\n## Acceptance criteria\n\n- [ ] Changing a category schema does not break existing firms\n\n## Blocks\n\n- {{P3-11}}\n\n---\n_Backlog id `P3-06` · Phase 3 · Categories & firms catalog_"
+  },
+  {
+    "id": "P3-07",
+    "repo": "village-platform",
+    "title": "[P3-07] Firm review flow: reject with a reason, and notifications",
+    "epic": false,
+    "parent": "E3",
+    "milestone": "Phase 3 · Categories & firms catalog",
+    "phase": "P3",
+    "type": "feature",
+    "priority": "p1",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "admin",
+      "notifications"
+    ],
+    "body": "## Summary\n\nThe dashboard can approve and suspend a firm. It cannot reject one with a reason, nobody is notified when a firm is submitted, and the owner is not told the outcome.\n\n## Tasks\n\n- [ ] Add status `rejected` and `rejection_reason`\n- [ ] Dashboard action: reject with a required reason\n- [ ] Editing a rejected firm sets it back to `pending`\n- [ ] Notify super admins when a firm is submitted (new kind)\n- [ ] Notify the owner when approved or rejected (with the reason)\n\n## Acceptance criteria\n\n- [ ] Owner sees the reason in the app notification\n\n---\n_Backlog id `P3-07` · Phase 3 · Categories & firms catalog_"
+  },
+  {
+    "id": "P3-08",
+    "repo": "village-platform",
+    "title": "[P3-08] Firm analytics events (views, calls, WhatsApp, directions)",
+    "epic": false,
+    "parent": "E3",
+    "milestone": "Phase 3 · Categories & firms catalog",
+    "phase": "P3",
+    "type": "feature",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "api"
+    ],
+    "body": "## Summary\n\nCapture only. The owner-facing statistics are P8-03.\n\n## Tasks\n\n- [ ] Table `firm_events` (firm, kind, created_at, optional user) with an index on (firm, kind, created_at)\n- [ ] `POST /firms/:id/events` for call, WhatsApp and directions taps; views counted on `show`\n- [ ] Daily rollup to keep the table small\n\n## Acceptance criteria\n\n- [ ] A burst of identical events from one device is counted once per minute\n\n## Blocks\n\n- {{P8-03}}\n\n---\n_Backlog id `P3-08` · Phase 3 · Categories & firms catalog_"
+  },
+  {
+    "id": "P3-09",
+    "repo": "village-platform",
+    "title": "[P3-09] Decide how translated content is stored (Arabic and English)",
+    "epic": false,
+    "parent": "E3",
+    "milestone": "Phase 3 · Categories & firms catalog",
+    "phase": "P3",
+    "type": "decision",
+    "priority": "p2",
+    "size": "S",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "i18n",
+      "catalog"
+    ],
+    "body": "## Summary\n\nCategory, firm, plan and article text needs Arabic and English.\n\n**Options**\n- **A. jsonb columns per field** (for example `name_i18n`). Simple, no gem.\n- **B. Mobility gem** with the jsonb backend. Cleaner model API, one more dependency.\n- **C. Separate translation tables.** Most flexible, most joins.\n\n**Recommendation:** A or B. Arabic is the source language; if the English text is missing the API returns the Arabic.\n\n## Tasks\n\n- [ ] Choose and record it in `docs/adr/0004-translated-content.md`\n\n## Acceptance criteria\n\n- [ ] P3-10, P5-06, P10-08 reference the decision\n\n## Blocks\n\n- {{P3-10}}\n- {{P3-11}}\n- {{P5-06}}\n- {{P10-08}}\n\n---\n_Backlog id `P3-09` · Phase 3 · Categories & firms catalog_"
+  },
+  {
+    "id": "P3-10",
+    "repo": "village-platform",
+    "title": "[P3-10] Bilingual name and description for categories and firms",
+    "epic": false,
+    "parent": "E3",
+    "milestone": "Phase 3 · Categories & firms catalog",
+    "phase": "P3",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "i18n",
+      "catalog",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] Add the translated columns and backfill Arabic from the current values\n- [ ] API returns the language from the request (P1-14); falls back to Arabic\n- [ ] Dashboard forms get one tab per language\n\n## Acceptance criteria\n\n- [ ] A firm without English text still shows its Arabic text in English mode\n\n## Depends on\n\n- {{P3-09}}\n\n## Blocks\n\n- {{P11-11}}\n\n---\n_Backlog id `P3-10` · Phase 3 · Categories & firms catalog_"
+  },
+  {
+    "id": "P3-11",
+    "repo": "village-platform",
+    "title": "[P3-11] Bilingual labels for category custom fields",
+    "epic": false,
+    "parent": "E3",
+    "milestone": "Phase 3 · Categories & firms catalog",
+    "phase": "P3",
+    "type": "feature",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "i18n",
+      "catalog"
+    ],
+    "body": "## Tasks\n\n- [ ] `label` in `fields_schema` carries both languages\n- [ ] The API returns the requested language\n\n## Depends on\n\n- {{P3-06}}\n- {{P3-09}}\n\n---\n_Backlog id `P3-11` · Phase 3 · Categories & firms catalog_"
+  },
+  {
+    "id": "P3-12",
+    "repo": "village-platform",
+    "title": "[P3-12] Arabic-aware search (normalized letters, both languages)",
+    "epic": false,
+    "parent": "E3",
+    "milestone": "Phase 3 · Categories & firms catalog",
+    "phase": "P3",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "api",
+      "i18n"
+    ],
+    "body": "## Summary\n\nSearch is `name ILIKE %q%`. \"احمد\" does not find \"أحمد\", \"مدرسه\" does not find \"مدرسة\". Normalize the same way on both sides (أ/إ/آ → ا, ة → ه, ى → ي, strip tatweel and diacritics) and search the name and description.\n\n## Tasks\n\n- [ ] Normalization function shared by the model and a stored/indexed normalized column (or an index on the expression)\n- [ ] Search both Arabic and English names once P3-10 lands\n\n## Acceptance criteria\n\n- [ ] Spelling variants of the same word return the same firms\n\n---\n_Backlog id `P3-12` · Phase 3 · Categories & firms catalog_"
+  },
+  {
+    "id": "P4-01",
+    "repo": "village-platform",
+    "title": "[P4-01] Decide who pays and who counts as owner when a firm has several owners",
+    "epic": false,
+    "parent": "E4",
+    "milestone": "Phase 4 · Multi-owner firms",
+    "phase": "P4",
+    "type": "decision",
+    "priority": "p2",
+    "size": "S",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "payments"
+    ],
+    "body": "## Summary\n\nSubscriptions belong to a **user**, and `Firm.visible` checks the owner's subscription. With co-owners we must decide whose subscription counts.\n\n**Proposal:** keep `firms.owner_id` as the billing owner. Memberships add editors. A firm is visible if its billing owner is subscribed. This leaves the subscription code and the `visible` scope unchanged.\n\n## Tasks\n\n- [ ] Confirm the proposal, or choose 'any owner subscribed'\n\n## Acceptance criteria\n\n- [ ] Decision recorded; P4-02 to P4-05 follow it\n\n## Blocks\n\n- {{P4-02}}\n\n---\n_Backlog id `P4-01` · Phase 4 · Multi-owner firms_"
+  },
+  {
+    "id": "P4-02",
+    "repo": "village-platform",
+    "title": "[P4-02] Firm memberships (owner / manager) and backfill from `owner_id`",
+    "epic": false,
+    "parent": "E4",
+    "milestone": "Phase 4 · Multi-owner firms",
+    "phase": "P4",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "security"
+    ],
+    "body": "## Tasks\n\n- [ ] Table `firm_memberships` (firm, user, role, invited_by, joined_at), unique (firm, user)\n- [ ] Backfill one `owner` membership per existing firm\n- [ ] Creating a firm creates the owner membership\n\n## Acceptance criteria\n\n- [ ] Every existing firm has exactly one owner membership after the migration\n\n## Depends on\n\n- {{P4-01}}\n\n## Blocks\n\n- {{P4-03}}\n- {{P4-04}}\n- {{P4-05}}\n\n---\n_Backlog id `P4-02` · Phase 4 · Multi-owner firms_"
+  },
+  {
+    "id": "P4-03",
+    "repo": "village-platform",
+    "title": "[P4-03] Invitations by phone with codes, expiry and accept flow",
+    "epic": false,
+    "parent": "E4",
+    "milestone": "Phase 4 · Multi-owner firms",
+    "phase": "P4",
+    "type": "feature",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] Table `firm_invitations` (firm, invited phone, role, code, expires_at, status)\n- [ ] Create, list, cancel, accept and decline endpoints\n- [ ] Accepting turns the invitation into a membership; expired codes are rejected\n- [ ] An invitation to an unregistered phone is matched after sign-up\n\n## Acceptance criteria\n\n- [ ] A code works once and only before it expires\n\n## Depends on\n\n- {{P4-02}}\n\n## Blocks\n\n- {{P4-06}}\n\n---\n_Backlog id `P4-03` · Phase 4 · Multi-owner firms_"
+  },
+  {
+    "id": "P4-04",
+    "repo": "village-platform",
+    "title": "[P4-04] Firm policy and scope based on membership",
+    "epic": false,
+    "parent": "E4",
+    "milestone": "Phase 4 · Multi-owner firms",
+    "phase": "P4",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "security",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] `FirmPolicy` checks membership and role instead of `owner_id`\n- [ ] `permitted_attributes` differ by role\n- [ ] `mine=true` and the policy scope include member firms\n\n## Acceptance criteria\n\n- [ ] Policy specs for owner, manager, outsider and super admin\n\n## Depends on\n\n- {{P4-02}}\n\n---\n_Backlog id `P4-04` · Phase 4 · Multi-owner firms_"
+  },
+  {
+    "id": "P4-05",
+    "repo": "village-platform",
+    "title": "[P4-05] Member management: change role, remove, leave, last-owner guard",
+    "epic": false,
+    "parent": "E4",
+    "milestone": "Phase 4 · Multi-owner firms",
+    "phase": "P4",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] Endpoints to list, change role and remove members; a member can leave\n- [ ] A firm always keeps at least one owner (model validation and DB-level safety)\n- [ ] Dashboard firm page lists members\n\n## Acceptance criteria\n\n- [ ] Removing or demoting the last owner returns 422\n\n## Depends on\n\n- {{P4-02}}\n\n---\n_Backlog id `P4-05` · Phase 4 · Multi-owner firms_"
+  },
+  {
+    "id": "P4-06",
+    "repo": "village-platform",
+    "title": "[P4-06] Notifications for invitations and membership changes",
+    "epic": false,
+    "parent": "E4",
+    "milestone": "Phase 4 · Multi-owner firms",
+    "phase": "P4",
+    "type": "feature",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "notifications",
+      "catalog"
+    ],
+    "body": "## Tasks\n\n- [ ] Kinds: invitation received, accepted, added, removed\n- [ ] Destinations: invitations screen and the firm's members screen\n\n## Depends on\n\n- {{P4-03}}\n- {{P2-04}}\n\n---\n_Backlog id `P4-06` · Phase 4 · Multi-owner firms_"
+  },
+  {
+    "id": "P5-01",
+    "repo": "village-platform",
+    "title": "[P5-01] Subscription plans: model, API and dashboard",
+    "epic": false,
+    "parent": "E5",
+    "milestone": "Phase 5 · Plans & entitlements",
+    "phase": "P5",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "payments",
+      "api",
+      "admin"
+    ],
+    "body": "## Summary\n\nPlans have a price, a duration and a `max_firms` limit. Media and priority limits are added in P5-03.\n\n## Tasks\n\n- [x] `price_cents`, `duration_days`, `max_firms`, `active`, `position` with DB check constraints\n- [x] Public list; super admin creates, edits, activates and orders (API and dashboard)\n- [x] Purchased plans can only be deactivated\n- [x] Seeds: monthly, quarterly, yearly\n\n## Already in the repository\n\n- `app/models/subscription_plan.rb`\n- `app/controllers/admin/subscription_plans_controller.rb`\n- `app/controllers/api/v1/subscription_plans_controller.rb`\n- `db/seeds.rb`\n\n---\n_Backlog id `P5-01` · Phase 5 · Plans & entitlements_"
+  },
+  {
+    "id": "P5-02",
+    "repo": "village-platform",
+    "title": "[P5-02] Decide: should a firm stay listed (basic info only) when its owner has no subscription?",
+    "epic": false,
+    "parent": "E5",
+    "milestone": "Phase 5 · Plans & entitlements",
+    "phase": "P5",
+    "type": "decision",
+    "priority": "p0",
+    "size": "S",
+    "horizon": "now",
+    "status": "todo",
+    "areas": [
+      "payments",
+      "catalog"
+    ],
+    "body": "## Summary\n\n**Today** a firm is public only while its owner has a current subscription (`Firm.visible`, README \"Subscriptions\").\n\n**Your latest requirement** says owners cannot add photos or videos without a subscription and subscribers get display priority. That implies unsubscribed firms are still listed, with basic data only.\n\n**Options**\n- **A. Keep today's rule** (no subscription, not listed). Strong incentive to pay; real owners can't appear until approved and paid.\n- **B. Free basic listing.** Every approved firm is listed; subscription unlocks media, priority and extras. More complete directory for villagers; weaker payment incentive.\n\n**Recommendation:** B, because a directory with few firms is not useful to villagers. It also makes the 79 imported places consistent with real owners later.\n\n## Tasks\n\n- [ ] Choose A or B\n- [ ] If B: change the `visible` scope and update README, specs and the Android app copy\n\n## Acceptance criteria\n\n- [ ] Decision recorded; P5-04, P7-09 and P8-01 follow it\n\n## Blocks\n\n- {{P5-04}}\n- {{P8-01}}\n\n---\n_Backlog id `P5-02` · Phase 5 · Plans & entitlements_"
+  },
+  {
+    "id": "P5-03",
+    "repo": "village-platform",
+    "title": "[P5-03] Extend plans with media and priority limits",
+    "epic": false,
+    "parent": "E5",
+    "milestone": "Phase 5 · Plans & entitlements",
+    "phase": "P5",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "payments",
+      "api",
+      "admin"
+    ],
+    "body": "## Tasks\n\n- [ ] Add `max_photos`, `max_videos`, `max_video_mb`, `priority_weight` and `features` (jsonb)\n- [ ] Default values keep today's plans working\n- [ ] Dashboard plan form and `SubscriptionPlanSerializer` include the new fields\n\n## Acceptance criteria\n\n- [ ] Existing plans keep working with zero media allowance until edited\n\n## Blocks\n\n- {{P5-04}}\n- {{P7-04}}\n\n---\n_Backlog id `P5-03` · Phase 5 · Plans & entitlements_"
+  },
+  {
+    "id": "P5-04",
+    "repo": "village-platform",
+    "title": "[P5-04] `Entitlements` service with free-tier defaults",
+    "epic": false,
+    "parent": "E5",
+    "milestone": "Phase 5 · Plans & entitlements",
+    "phase": "P5",
+    "type": "feature",
+    "priority": "p1",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "payments",
+      "api"
+    ],
+    "body": "## Summary\n\n`Entitlements.for(user)` returns what the owner may do: `can?(:upload_video)`, `limit(:photos)`, `badge`, `priority`, `max_firms`. Without a current subscription it returns a built-in free tier (no media, priority 0).\n\n## Tasks\n\n- [ ] Service object plus a `FREE` constant\n- [ ] Move `User#can_add_firm?` to it\n- [ ] Unit specs for no subscription, current, expired and stacked renewals\n\n## Acceptance criteria\n\n- [ ] All limits come from one class\n\n## Depends on\n\n- {{P5-02}}\n- {{P5-03}}\n\n## Blocks\n\n- {{P5-05}}\n- {{P7-06}}\n- {{P7-09}}\n- {{P8-01}}\n- {{P8-03}}\n- {{P8-04}}\n- {{P8-05}}\n\n---\n_Backlog id `P5-04` · Phase 5 · Plans & entitlements_"
+  },
+  {
+    "id": "P5-05",
+    "repo": "village-platform",
+    "title": "[P5-05] Use entitlements everywhere and return 402 with an upgrade hint",
+    "epic": false,
+    "parent": "E5",
+    "milestone": "Phase 5 · Plans & entitlements",
+    "phase": "P5",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "payments",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] Controllers and policies ask `Entitlements`, not the plan\n- [ ] A blocked action returns `402` with the standard envelope, code `plan_required` and `details.upgrade_hint`\n- [ ] `GET /me/entitlements` for the app\n\n## Acceptance criteria\n\n- [ ] The Android app can show 'upgrade to add videos' from the response alone\n\n## Depends on\n\n- {{P5-04}}\n\n## Blocks\n\n- {{P7-03}}\n\n---\n_Backlog id `P5-05` · Phase 5 · Plans & entitlements_"
+  },
+  {
+    "id": "P5-06",
+    "repo": "village-platform",
+    "title": "[P5-06] Bilingual plan name, description and feature list",
+    "epic": false,
+    "parent": "E5",
+    "milestone": "Phase 5 · Plans & entitlements",
+    "phase": "P5",
+    "type": "feature",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "i18n",
+      "payments"
+    ],
+    "body": "## Tasks\n\n- [ ] Translated name, description and feature list on `subscription_plans` (storage from P3-09)\n- [ ] API returns the requested language, Arabic as the fallback\n- [ ] Dashboard plan form: one tab per language\n\n## Acceptance criteria\n\n- [ ] A plan without English text still shows in English mode, in Arabic\n\n## Depends on\n\n- {{P3-09}}\n\n---\n_Backlog id `P5-06` · Phase 5 · Plans & entitlements_"
+  },
+  {
+    "id": "P6-01",
+    "repo": "village-platform",
+    "title": "[P6-01] Subscription request flow with payment proof",
+    "epic": false,
+    "parent": "E6",
+    "milestone": "Phase 6 · Payments & subscription lifecycle",
+    "phase": "P6",
+    "type": "feature",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "payments",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [x] `GET /payment_methods` and `GET /subscription_plans`\n- [x] `POST /subscriptions` with plan, method (InstaPay or Vodafone Cash) and transfer reference; status `pending`\n- [x] Optional payment screenshot (PNG, JPEG, WebP, up to 4 MB), served by a signed URL that expires in 5 minutes\n- [x] One pending request per user and a unique transfer reference per payment method (database indexes)\n- [x] Price copied into the subscription (`amount_cents`)\n\n## Already in the repository\n\n- `app/models/subscription.rb`\n- `app/controllers/api/v1/subscriptions_controller.rb`\n- `app/services/payment_methods.rb`\n- `spec/requests/api/v1/subscriptions_spec.rb`\n- `spec/requests/api/v1/payment_screenshots_spec.rb`\n\n---\n_Backlog id `P6-01` · Phase 6 · Payments & subscription lifecycle_"
+  },
+  {
+    "id": "P6-02",
+    "repo": "village-platform",
+    "title": "[P6-02] Admin approval and rejection (API and dashboard)",
+    "epic": false,
+    "parent": "E6",
+    "milestone": "Phase 6 · Payments & subscription lifecycle",
+    "phase": "P6",
+    "type": "feature",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "payments",
+      "admin"
+    ],
+    "body": "## Tasks\n\n- [x] Approve inside a transaction with row locks; period starts when the previous one ends (renewals stack)\n- [x] First approval promotes the user to `firm_admin`\n- [x] Reject with a reason\n- [x] Owner is notified of approval or rejection; a failed notification never undoes the review\n- [x] Dashboard list with filters, details and the screenshot\n\n## Already in the repository\n\n- `app/services/subscriptions/approve.rb`\n- `app/services/subscriptions/reject.rb`\n- `app/controllers/admin/subscriptions_controller.rb`\n- `spec/requests/admin/subscriptions_review_spec.rb`\n- `spec/requests/api/v1/admin/subscriptions_spec.rb`\n\n---\n_Backlog id `P6-02` · Phase 6 · Payments & subscription lifecycle_"
+  },
+  {
+    "id": "P6-03",
+    "repo": "village-platform",
+    "title": "[P6-03] Expiry reminders and the daily cron",
+    "epic": false,
+    "parent": "E6",
+    "milestone": "Phase 6 · Payments & subscription lifecycle",
+    "phase": "P6",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "payments",
+      "notifications",
+      "infra"
+    ],
+    "body": "## Summary\n\nExpiry is time-based, so no job is needed to expire subscriptions. A daily job sends reminders 7 days and 1 day before, and once after expiry. The roadmap also asks for 3 days; see P6-04.\n\n## Tasks\n\n- [x] `SubscriptionExpiryRemindersJob` with dedupe keys; owners who renewed are skipped\n- [x] `GET /internal/cron/subscription_reminders` protected by `CRON_SECRET`, scheduled in `vercel.json`\n- [x] `bin/rails notifications:subscription_reminders` for other hosts\n\n## Blocks\n\n- {{P6-04}}\n\n## Already in the repository\n\n- `app/jobs/subscription_expiry_reminders_job.rb`\n- `app/controllers/internal/cron_controller.rb`\n- `vercel.json`\n- `lib/tasks/notifications.rake`\n- `spec/jobs/subscription_expiry_reminders_job_spec.rb`\n- `spec/requests/internal/cron_spec.rb`\n\n---\n_Backlog id `P6-03` · Phase 6 · Payments & subscription lifecycle_"
+  },
+  {
+    "id": "P6-04",
+    "repo": "village-platform",
+    "title": "[P6-04] Add the 3-day expiry reminder",
+    "epic": false,
+    "parent": "E6",
+    "milestone": "Phase 6 · Payments & subscription lifecycle",
+    "phase": "P6",
+    "type": "feature",
+    "priority": "p3",
+    "size": "XS",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "payments",
+      "notifications"
+    ],
+    "body": "## Tasks\n\n- [ ] Send a reminder 3 days before the end (keys, copy in ar/en, spec)\n\n## Acceptance criteria\n\n- [ ] Running the job twice sends it once\n\n## Depends on\n\n- {{P6-03}}\n\n---\n_Backlog id `P6-04` · Phase 6 · Payments & subscription lifecycle_"
+  },
+  {
+    "id": "P6-05",
+    "repo": "village-platform",
+    "title": "[P6-05] Payment accounts stored in settings and editable from the dashboard",
+    "epic": false,
+    "parent": "E6",
+    "milestone": "Phase 6 · Payments & subscription lifecycle",
+    "phase": "P6",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "payments",
+      "admin"
+    ],
+    "body": "## Summary\n\nThe InstaPay address and Vodafone Cash number come from environment variables (`INSTAPAY_ADDRESS`, `VODAFONE_CASH_NUMBER`), so changing them needs a redeploy. Move them to a `settings` table (per village once P0 lands) and keep the variables as the fallback.\n\n## Tasks\n\n- [ ] `settings` table (key, value) and a small `Setting` model\n- [ ] `PaymentMethods` reads settings first, ENV second\n- [ ] Dashboard page to edit them (P11-05)\n\n## Acceptance criteria\n\n- [ ] Changing the number in the dashboard changes `GET /payment_methods` immediately\n\n## Blocks\n\n- {{P11-05}}\n\n---\n_Backlog id `P6-05` · Phase 6 · Payments & subscription lifecycle_"
+  },
+  {
+    "id": "P6-06",
+    "repo": "village-platform",
+    "title": "[P6-06] Notify admins when a new subscription request arrives",
+    "epic": false,
+    "parent": "E6",
+    "milestone": "Phase 6 · Payments & subscription lifecycle",
+    "phase": "P6",
+    "type": "feature",
+    "priority": "p1",
+    "size": "S",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "payments",
+      "notifications"
+    ],
+    "body": "## Summary\n\nToday the dashboard home shows pending requests, but nobody is notified. Add a kind for super admins with a destination that opens the request.\n\n## Tasks\n\n- [ ] New kind `subscription_requested` for every super admin\n- [ ] Destination: the admin request screen\n\n## Acceptance criteria\n\n- [ ] A new request produces one notification per admin, no duplicates\n\n## Depends on\n\n- {{P2-04}}\n\n---\n_Backlog id `P6-06` · Phase 6 · Payments & subscription lifecycle_"
+  },
+  {
+    "id": "P6-07",
+    "repo": "village-platform",
+    "title": "[P6-07] Decide and implement a grace period after expiry",
+    "epic": false,
+    "parent": "E6",
+    "milestone": "Phase 6 · Payments & subscription lifecycle",
+    "phase": "P6",
+    "type": "decision",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "payments"
+    ],
+    "body": "## Summary\n\nThe roadmap suggests about 3 days where features keep working with a reminder before locking. Today access ends exactly at `ends_at`.\n\n## Tasks\n\n- [ ] Choose the number of days (0 means no grace)\n- [ ] Implement it in `Entitlements`, not in each controller (P5-04)\n\n## Acceptance criteria\n\n- [ ] Features lock after the grace period, and renewal during it keeps them\n\n---\n_Backlog id `P6-07` · Phase 6 · Payments & subscription lifecycle_"
+  },
+  {
+    "id": "P6-08",
+    "repo": "village-platform",
+    "title": "[P6-08] Audit log for subscription reviews and sensitive admin actions",
+    "epic": false,
+    "parent": "E6",
+    "milestone": "Phase 6 · Payments & subscription lifecycle",
+    "phase": "P6",
+    "type": "feature",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "admin",
+      "security"
+    ],
+    "body": "## Summary\n\n`reviewed_by` and `reviewed_at` already say who decided. A general audit log also covers firm moderation, role changes, plan edits and password resets.\n\n## Tasks\n\n- [ ] Table `audit_logs` (actor, action, subject, changes, ip, created_at)\n- [ ] Record the actions above; viewer in the dashboard (P11-08)\n\n## Acceptance criteria\n\n- [ ] Every role change appears in the log with who and when\n\n## Blocks\n\n- {{P11-08}}\n\n---\n_Backlog id `P6-08` · Phase 6 · Payments & subscription lifecycle_"
+  },
+  {
+    "id": "P6-09",
+    "repo": "village-platform",
+    "title": "[P6-09] Revoke a mistakenly approved subscription",
+    "epic": false,
+    "parent": "E6",
+    "milestone": "Phase 6 · Payments & subscription lifecycle",
+    "phase": "P6",
+    "type": "feature",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "payments",
+      "admin"
+    ],
+    "body": "## Summary\n\nA wrong approval cannot be undone today. Add an admin action that ends the period, records the reason and notifies the owner.\n\n## Tasks\n\n- [ ] State and service for revoking (keeps history)\n- [ ] Dashboard action with a reason; owner notification\n\n## Acceptance criteria\n\n- [ ] A revoked subscription is no longer current and the firm visibility updates\n\n---\n_Backlog id `P6-09` · Phase 6 · Payments & subscription lifecycle_"
+  },
+  {
+    "id": "P7-01",
+    "repo": "village-platform",
+    "title": "[P7-01] Object storage and media pipeline (S3 or R2, CDN, ffmpeg)",
+    "epic": false,
+    "parent": "E7",
+    "milestone": "Phase 7 · Photos & videos",
+    "phase": "P7",
+    "type": "decision",
+    "priority": "p1",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "media",
+      "infra"
+    ],
+    "body": "## Summary\n\nVideos cannot live in PostgreSQL, and the Vercel image has no `ffmpeg` (needed for video thumbnails). Request bodies are limited to 4.5 MB on Vercel, so uploads must go straight to storage.\n\n**Options:** Cloudflare R2 (no egress fees, S3 API), AWS S3 + CloudFront, or another S3-compatible provider.\n\n## Tasks\n\n- [ ] Pick the provider and CDN; add its Active Storage service in `config/storage.yml`\n- [ ] Add `ffmpeg` to `Dockerfile.vercel`\n- [ ] Decide retention for orphaned uploads\n- [ ] Record it in `docs/adr/0005-media-storage.md`\n\n## Acceptance criteria\n\n- [ ] A test upload round-trips through the new service in staging\n\n## Blocks\n\n- {{P7-02}}\n- {{P7-03}}\n\n---\n_Backlog id `P7-01` · Phase 7 · Photos & videos_"
+  },
+  {
+    "id": "P7-02",
+    "repo": "village-platform",
+    "title": "[P7-02] `firm_media` table and model",
+    "epic": false,
+    "parent": "E7",
+    "milestone": "Phase 7 · Photos & videos",
+    "phase": "P7",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "media",
+      "catalog"
+    ],
+    "body": "## Tasks\n\n- [ ] `firm_media` (firm, kind image/video, position, caption, status processing/approved/rejected, uploaded_by)\n- [ ] Attachment per row; scopes for public listing\n\n## Acceptance criteria\n\n- [ ] Model specs for validations and scopes\n\n## Depends on\n\n- {{P7-01}}\n\n## Blocks\n\n- {{P7-03}}\n- {{P7-05}}\n- {{P7-06}}\n- {{P7-07}}\n- {{P7-08}}\n\n---\n_Backlog id `P7-02` · Phase 7 · Photos & videos_"
+  },
+  {
+    "id": "P7-03",
+    "repo": "village-platform",
+    "title": "[P7-03] Direct upload API (signed URL and confirm)",
+    "epic": false,
+    "parent": "E7",
+    "milestone": "Phase 7 · Photos & videos",
+    "phase": "P7",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "media",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] Endpoint that returns a signed direct-upload target after checking the entitlement and size\n- [ ] Confirm endpoint creates the `firm_media` row\n\n## Acceptance criteria\n\n- [ ] The request body never contains the file\n\n## Depends on\n\n- {{P7-01}}\n- {{P7-02}}\n- {{P5-05}}\n\n## Blocks\n\n- {{P7-04}}\n- {{P12-04}}\n\n---\n_Backlog id `P7-03` · Phase 7 · Photos & videos_"
+  },
+  {
+    "id": "P7-04",
+    "repo": "village-platform",
+    "title": "[P7-04] Allowed types, sizes and durations by plan",
+    "epic": false,
+    "parent": "E7",
+    "milestone": "Phase 7 · Photos & videos",
+    "phase": "P7",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "media",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] Images: JPEG, PNG, WebP. Video: MP4\n- [ ] Max size and duration come from the plan (`max_video_mb`)\n- [ ] Verify the real content type server-side, not only the filename\n\n## Acceptance criteria\n\n- [ ] A renamed executable is rejected\n\n## Depends on\n\n- {{P7-03}}\n- {{P5-03}}\n\n---\n_Backlog id `P7-04` · Phase 7 · Photos & videos_"
+  },
+  {
+    "id": "P7-05",
+    "repo": "village-platform",
+    "title": "[P7-05] Background processing: image variants, video thumbnail, duration, dimensions",
+    "epic": false,
+    "parent": "E7",
+    "milestone": "Phase 7 · Photos & videos",
+    "phase": "P7",
+    "type": "feature",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "media",
+      "infra"
+    ],
+    "body": "## Summary\n\nRuns in the job mechanism chosen in P2-07. The row stays `processing` and is hidden until it finishes.\n\n## Tasks\n\n- [ ] Variants with libvips (`ruby-vips` is installed)\n- [ ] Thumbnail and metadata with ffmpeg\n- [ ] Failure handling and retry; status transitions\n\n## Acceptance criteria\n\n- [ ] A processed video exposes thumbnail, duration and dimensions\n\n## Depends on\n\n- {{P7-02}}\n- {{P2-07}}\n\n---\n_Backlog id `P7-05` · Phase 7 · Photos & videos_"
+  },
+  {
+    "id": "P7-06",
+    "repo": "village-platform",
+    "title": "[P7-06] Enforce media limits through entitlements, before and after upload",
+    "epic": false,
+    "parent": "E7",
+    "milestone": "Phase 7 · Photos & videos",
+    "phase": "P7",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "media",
+      "payments"
+    ],
+    "body": "## Tasks\n\n- [ ] Count existing media per firm against `max_photos` and `max_videos`\n- [ ] Check again on confirm to avoid races\n- [ ] 402 with `plan_required` when not allowed\n\n## Acceptance criteria\n\n- [ ] Two parallel uploads cannot exceed the limit\n\n## Depends on\n\n- {{P5-04}}\n- {{P7-02}}\n\n## Blocks\n\n- {{P7-09}}\n\n---\n_Backlog id `P7-06` · Phase 7 · Photos & videos_"
+  },
+  {
+    "id": "P7-07",
+    "repo": "village-platform",
+    "title": "[P7-07] Ordering, cover image and logo",
+    "epic": false,
+    "parent": "E7",
+    "milestone": "Phase 7 · Photos & videos",
+    "phase": "P7",
+    "type": "feature",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "media",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] `PATCH /firms/:id/media/order`\n- [ ] Mark one image as the cover and one as the logo\n\n## Depends on\n\n- {{P7-02}}\n\n---\n_Backlog id `P7-07` · Phase 7 · Photos & videos_"
+  },
+  {
+    "id": "P7-08",
+    "repo": "village-platform",
+    "title": "[P7-08] Admin moderation of media and owner notification",
+    "epic": false,
+    "parent": "E7",
+    "milestone": "Phase 7 · Photos & videos",
+    "phase": "P7",
+    "type": "feature",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "media",
+      "admin",
+      "notifications"
+    ],
+    "body": "## Tasks\n\n- [ ] Dashboard: view, hide or reject media with a reason\n- [ ] Notify the owner (`media_rejected`)\n\n## Acceptance criteria\n\n- [ ] A rejected item is not public\n\n## Depends on\n\n- {{P7-02}}\n- {{P2-04}}\n\n---\n_Backlog id `P7-08` · Phase 7 · Photos & videos_"
+  },
+  {
+    "id": "P7-09",
+    "repo": "village-platform",
+    "title": "[P7-09] Behaviour when the subscription ends: keep files, hide them, restore on renewal",
+    "epic": false,
+    "parent": "E7",
+    "milestone": "Phase 7 · Photos & videos",
+    "phase": "P7",
+    "type": "feature",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "media",
+      "payments"
+    ],
+    "body": "## Summary\n\nApplies once P5-02 decides that unsubscribed firms stay listed. Files are kept, public display drops to the free tier (zero media), and renewal brings them back. Owners can always delete.\n\n## Acceptance criteria\n\n- [ ] Renewing restores the media without re-uploading\n\n## Depends on\n\n- {{P5-04}}\n- {{P7-06}}\n\n---\n_Backlog id `P7-09` · Phase 7 · Photos & videos_"
+  },
+  {
+    "id": "P8-01",
+    "repo": "village-platform",
+    "title": "[P8-01] Recommended ranking: plan tier, then daily rotation, then rating",
+    "epic": false,
+    "parent": "E8",
+    "milestone": "Phase 8 · Priority & subscriber benefits",
+    "phase": "P8",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "payments",
+      "api"
+    ],
+    "body": "## Summary\n\nOrder by plan `priority_weight` (descending), then a stable per-day shuffle (for example `md5(id || current_date)`), then rating. Nearest and top-rated sorts ignore the plan.\n\n## Tasks\n\n- [ ] `sort=recommended` in `GET /firms`\n- [ ] Index and query plan checked on a few hundred firms\n\n## Acceptance criteria\n\n- [ ] Same inputs give the same order within one day, a different order tomorrow\n\n## Depends on\n\n- {{P5-04}}\n- {{P5-02}}\n\n## Blocks\n\n- {{P8-02}}\n\n---\n_Backlog id `P8-01` · Phase 8 · Priority & subscriber benefits_"
+  },
+  {
+    "id": "P8-02",
+    "repo": "village-platform",
+    "title": "[P8-02] Featured badge and featured section on the home screen",
+    "epic": false,
+    "parent": "E8",
+    "milestone": "Phase 8 · Priority & subscriber benefits",
+    "phase": "P8",
+    "type": "feature",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] `featured` flag in the firm serializer\n- [ ] `GET /home` with featured firms, latest news and categories\n\n## Depends on\n\n- {{P8-01}}\n\n---\n_Backlog id `P8-02` · Phase 8 · Priority & subscriber benefits_"
+  },
+  {
+    "id": "P8-03",
+    "repo": "village-platform",
+    "title": "[P8-03] Owner statistics (views, calls, WhatsApp, directions)",
+    "epic": false,
+    "parent": "E8",
+    "milestone": "Phase 8 · Priority & subscriber benefits",
+    "phase": "P8",
+    "type": "feature",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "api"
+    ],
+    "body": "## Acceptance criteria\n\n- [ ] Plans without the `stats` feature get 402 with an upgrade hint\n\n## Depends on\n\n- {{P3-08}}\n- {{P5-04}}\n\n---\n_Backlog id `P8-03` · Phase 8 · Priority & subscriber benefits_"
+  },
+  {
+    "id": "P8-04",
+    "repo": "village-platform",
+    "title": "[P8-04] Firm offers with start and end dates",
+    "epic": false,
+    "parent": "E8",
+    "milestone": "Phase 8 · Priority & subscriber benefits",
+    "phase": "P8",
+    "type": "feature",
+    "priority": "p3",
+    "size": "L",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] Table `offers`, owner CRUD, public list on the firm page\n- [ ] Only plans with the `offers` feature\n\n## Depends on\n\n- {{P5-04}}\n\n## Blocks\n\n- {{P8-07}}\n\n---\n_Backlog id `P8-04` · Phase 8 · Priority & subscriber benefits_"
+  },
+  {
+    "id": "P8-05",
+    "repo": "village-platform",
+    "title": "[P8-05] Social links and a custom call-to-action button",
+    "epic": false,
+    "parent": "E8",
+    "milestone": "Phase 8 · Priority & subscriber benefits",
+    "phase": "P8",
+    "type": "feature",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "api"
+    ],
+    "body": "## Summary\n\nThe imported places already carry Facebook page links; this gives owners a place to edit them.\n\n## Depends on\n\n- {{P5-04}}\n\n---\n_Backlog id `P8-05` · Phase 8 · Priority & subscriber benefits_"
+  },
+  {
+    "id": "P8-06",
+    "repo": "village-platform",
+    "title": "[P8-06] Owner replies to reviews",
+    "epic": false,
+    "parent": "E8",
+    "milestone": "Phase 8 · Priority & subscriber benefits",
+    "phase": "P8",
+    "type": "feature",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] A firm owner or manager can reply to a review (one reply, editable)\n- [ ] Show the reply under the review and notify the reviewer\n\n## Acceptance criteria\n\n- [ ] Only members of that firm can reply\n\n## Depends on\n\n- {{P10-04}}\n\n---\n_Backlog id `P8-06` · Phase 8 · Priority & subscriber benefits_"
+  },
+  {
+    "id": "P8-07",
+    "repo": "village-platform",
+    "title": "[P8-07] Follow firms and notify followers of new offers",
+    "epic": false,
+    "parent": "E8",
+    "milestone": "Phase 8 · Priority & subscriber benefits",
+    "phase": "P8",
+    "type": "feature",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "notifications",
+      "catalog"
+    ],
+    "body": "## Tasks\n\n- [ ] Table `follows`; follow and unfollow endpoints\n- [ ] Higher plans can notify followers about a new offer\n\n## Depends on\n\n- {{P8-04}}\n- {{P2-08}}\n\n---\n_Backlog id `P8-07` · Phase 8 · Priority & subscriber benefits_"
+  },
+  {
+    "id": "P9-01",
+    "repo": "village-platform",
+    "title": "[P9-01] FCM sender (HTTP v1) with service-account authentication",
+    "epic": false,
+    "parent": "E9",
+    "milestone": "Phase 9 · Push notifications & deep links",
+    "phase": "P9",
+    "type": "feature",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "notifications",
+      "infra"
+    ],
+    "body": "## Tasks\n\n- [ ] Service object that sends to one device token or one topic through the FCM HTTP v1 API (`googleauth` for OAuth)\n- [ ] Credentials from an environment variable; never committed\n- [ ] Fake sender for specs; a no-op when credentials are missing in development\n\n## Acceptance criteria\n\n- [ ] A test message reaches a real device from staging\n\n## Depends on\n\n- {{P2-01}}\n- {{P2-06}}\n- {{P2-07}}\n\n## Blocks\n\n- {{P9-03}}\n- {{P9-04}}\n- {{P9-05}}\n- {{P9-06}}\n- {{P12-05}}\n\n---\n_Backlog id `P9-01` · Phase 9 · Push notifications & deep links_"
+  },
+  {
+    "id": "P9-02",
+    "repo": "village-platform",
+    "title": "[P9-02] Data-message payload contract shared with the app",
+    "epic": false,
+    "parent": "E9",
+    "milestone": "Phase 9 · Push notifications & deep links",
+    "phase": "P9",
+    "type": "docs",
+    "priority": "p2",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "notifications",
+      "android"
+    ],
+    "body": "## Tasks\n\n- [ ] Fields: `v`, `notification_id`, `type`, `title`, `body`, `destination { screen, params, deep_link }`, `village`, `created_at`\n- [ ] Single serializer used by the inbox API and by push\n\n## Depends on\n\n- {{P2-04}}\n\n---\n_Backlog id `P9-02` · Phase 9 · Push notifications & deep links_"
+  },
+  {
+    "id": "P9-03",
+    "repo": "village-platform",
+    "title": "[P9-03] Remove invalid device tokens reported by FCM",
+    "epic": false,
+    "parent": "E9",
+    "milestone": "Phase 9 · Push notifications & deep links",
+    "phase": "P9",
+    "type": "feature",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "notifications"
+    ],
+    "body": "## Tasks\n\n- [ ] On `UNREGISTERED` / invalid token responses delete the device row\n\n## Depends on\n\n- {{P9-01}}\n\n---\n_Backlog id `P9-03` · Phase 9 · Push notifications & deep links_"
+  },
+  {
+    "id": "P9-04",
+    "repo": "village-platform",
+    "title": "[P9-04] Village-wide broadcasts through FCM topics (one per village and language)",
+    "epic": false,
+    "parent": "E9",
+    "milestone": "Phase 9 · Push notifications & deep links",
+    "phase": "P9",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "notifications",
+      "android"
+    ],
+    "body": "## Summary\n\nTopics such as `village_1_news_ar` and `village_1_news_en`. The app subscribes and unsubscribes (`FirebaseMessaging.subscribeToTopic`); the server only sends to the topic. When the user changes language the app swaps topics.\n\n## Tasks\n\n- [ ] Topic naming helper and docs\n- [ ] Send a broadcast to the right topic per language\n- [ ] Android: manage subscriptions (tracked in P12-05)\n\n## Depends on\n\n- {{P9-01}}\n- {{P2-08}}\n\n## Blocks\n\n- {{P10-03}}\n- {{P12-05}}\n\n---\n_Backlog id `P9-04` · Phase 9 · Push notifications & deep links_"
+  },
+  {
+    "id": "P9-05",
+    "repo": "village-platform",
+    "title": "[P9-05] Respect notification preferences and optional quiet hours",
+    "epic": false,
+    "parent": "E9",
+    "milestone": "Phase 9 · Push notifications & deep links",
+    "phase": "P9",
+    "type": "feature",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "notifications"
+    ],
+    "body": "## Tasks\n\n- [ ] Skip the push for kinds the user muted (P2-05); locked kinds are always sent\n- [ ] Optional quiet hours per user, off by default\n\n## Acceptance criteria\n\n- [ ] A muted kind still appears in the inbox but is not pushed\n\n## Depends on\n\n- {{P2-05}}\n- {{P9-01}}\n\n---\n_Backlog id `P9-05` · Phase 9 · Push notifications & deep links_"
+  },
+  {
+    "id": "P9-06",
+    "repo": "village-platform",
+    "title": "[P9-06] Retries with backoff and a delivery log",
+    "epic": false,
+    "parent": "E9",
+    "milestone": "Phase 9 · Push notifications & deep links",
+    "phase": "P9",
+    "type": "feature",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "notifications",
+      "infra"
+    ],
+    "body": "## Tasks\n\n- [ ] Table `notification_deliveries` (notification, device, status, error, attempts)\n- [ ] Retry transient failures with backoff using the runner chosen in P2-07\n\n## Depends on\n\n- {{P9-01}}\n- {{P2-07}}\n\n---\n_Backlog id `P9-06` · Phase 9 · Push notifications & deep links_"
+  },
+  {
+    "id": "P9-07",
+    "repo": "village-platform",
+    "title": "[P9-07] Destination catalog and deep-link scheme",
+    "epic": false,
+    "parent": "E9",
+    "milestone": "Phase 9 · Push notifications & deep links",
+    "phase": "P9",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "notifications",
+      "android"
+    ],
+    "body": "## Summary\n\nOne list of screens and their parameters, for example `ajhour://firms/12`, shared by the backend and the app, with a spec that every notification kind maps to a known destination.\n\n## Tasks\n\n- [ ] Registry in code (`Destinations`) and the table in `docs/notifications/event-catalog.md`\n- [ ] Spec: every kind resolves to a destination\n\n## Depends on\n\n- {{P2-04}}\n\n## Blocks\n\n- {{P9-08}}\n- {{P12-05}}\n\n---\n_Backlog id `P9-07` · Phase 9 · Push notifications & deep links_"
+  },
+  {
+    "id": "P9-08",
+    "repo": "village-platform",
+    "title": "[P9-08] `open` fallback for deleted targets and old app versions",
+    "epic": false,
+    "parent": "E9",
+    "milestone": "Phase 9 · Push notifications & deep links",
+    "phase": "P9",
+    "type": "feature",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "notifications",
+      "api"
+    ],
+    "body": "## Acceptance criteria\n\n- [ ] A destination whose record no longer exists resolves to the notifications screen\n\n## Depends on\n\n- {{P2-04}}\n- {{P9-07}}\n\n---\n_Backlog id `P9-08` · Phase 9 · Push notifications & deep links_"
+  },
+  {
+    "id": "P10-01",
+    "repo": "village-platform",
+    "title": "[P10-01] Articles: CRUD, kinds, drafts and scheduled publishing",
+    "epic": false,
+    "parent": "E10",
+    "milestone": "Phase 10 · News, events & reviews",
+    "phase": "P10",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "content",
+      "api",
+      "admin"
+    ],
+    "body": "## Summary\n\nScheduling needs no job: an article is public when `published_at <= now`. Events, pinned posts and covers are tracked in P10-02.\n\n## Tasks\n\n- [x] Kinds `news`, `article`, `announcement`\n- [x] Draft (no `published_at`) and scheduled posts\n- [x] Public list and detail; only a super admin writes (API and dashboard)\n\n## Already in the repository\n\n- `app/models/article.rb`\n- `app/controllers/api/v1/articles_controller.rb`\n- `app/controllers/admin/articles_controller.rb`\n- `spec/requests/api/v1/articles_spec.rb`\n\n---\n_Backlog id `P10-01` · Phase 10 · News, events & reviews_"
+  },
+  {
+    "id": "P10-02",
+    "repo": "village-platform",
+    "title": "[P10-02] Event kind, pinned posts and cover image",
+    "epic": false,
+    "parent": "E10",
+    "milestone": "Phase 10 · News, events & reviews",
+    "phase": "P10",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "content",
+      "api",
+      "admin",
+      "media"
+    ],
+    "body": "## Tasks\n\n- [ ] Kind `event` with a required `event_at`\n- [ ] `pinned` flag; pinned first in the public list\n- [ ] Cover image through Active Storage (type and size checks)\n- [ ] Dashboard form and serializer\n\n## Acceptance criteria\n\n- [ ] Pinned posts always come first\n\n---\n_Backlog id `P10-02` · Phase 10 · News, events & reviews_"
+  },
+  {
+    "id": "P10-03",
+    "repo": "village-platform",
+    "title": "[P10-03] Broadcast on publish and event reminder the day before",
+    "epic": false,
+    "parent": "E10",
+    "milestone": "Phase 10 · News, events & reviews",
+    "phase": "P10",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "content",
+      "notifications"
+    ],
+    "body": "## Tasks\n\n- [ ] On publish (or when the scheduled time arrives) send one village broadcast\n- [ ] Reminder the day before an event, once\n- [ ] Destination: the article screen\n\n## Acceptance criteria\n\n- [ ] Running the job twice sends once\n\n## Depends on\n\n- {{P2-08}}\n- {{P9-04}}\n\n---\n_Backlog id `P10-03` · Phase 10 · News, events & reviews_"
+  },
+  {
+    "id": "P10-04",
+    "repo": "village-platform",
+    "title": "[P10-04] Firm reviews: model and API",
+    "epic": false,
+    "parent": "E10",
+    "milestone": "Phase 10 · News, events & reviews",
+    "phase": "P10",
+    "type": "feature",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] Table `reviews` (user, firm, rating 1 to 5, comment up to 1000 characters); unique per user and firm\n- [ ] `GET|POST /firms/:id/reviews`; owners cannot review their own firm\n- [ ] Policies and specs\n\n## Blocks\n\n- {{P8-06}}\n- {{P10-05}}\n- {{P10-06}}\n- {{P10-07}}\n\n---\n_Backlog id `P10-04` · Phase 10 · News, events & reviews_"
+  },
+  {
+    "id": "P10-05",
+    "repo": "village-platform",
+    "title": "[P10-05] Cache the average rating and review count on the firm",
+    "epic": false,
+    "parent": "E10",
+    "milestone": "Phase 10 · News, events & reviews",
+    "phase": "P10",
+    "type": "feature",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "catalog"
+    ],
+    "body": "## Tasks\n\n- [ ] `rating_avg` and `reviews_count`, updated after commit and recomputable by a rake task\n\n## Depends on\n\n- {{P10-04}}\n\n---\n_Backlog id `P10-05` · Phase 10 · News, events & reviews_"
+  },
+  {
+    "id": "P10-06",
+    "repo": "village-platform",
+    "title": "[P10-06] Report a review and hide it from the dashboard",
+    "epic": false,
+    "parent": "E10",
+    "milestone": "Phase 10 · News, events & reviews",
+    "phase": "P10",
+    "type": "feature",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "admin"
+    ],
+    "body": "## Tasks\n\n- [ ] `POST /reviews/:id/report`\n- [ ] Dashboard list of reported reviews with hide and restore\n\n## Depends on\n\n- {{P10-04}}\n\n---\n_Backlog id `P10-06` · Phase 10 · News, events & reviews_"
+  },
+  {
+    "id": "P10-07",
+    "repo": "village-platform",
+    "title": "[P10-07] Notify firm owners about a new review",
+    "epic": false,
+    "parent": "E10",
+    "milestone": "Phase 10 · News, events & reviews",
+    "phase": "P10",
+    "type": "feature",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "catalog",
+      "notifications"
+    ],
+    "body": "## Tasks\n\n- [ ] New kind `review_received` for every owner and manager of the firm\n- [ ] Destination: the firm's reviews screen\n\n## Acceptance criteria\n\n- [ ] One notification per review, no duplicates\n\n## Depends on\n\n- {{P10-04}}\n- {{P2-04}}\n\n---\n_Backlog id `P10-07` · Phase 10 · News, events & reviews_"
+  },
+  {
+    "id": "P10-08",
+    "repo": "village-platform",
+    "title": "[P10-08] Bilingual articles with a 'publish in Arabic only' option",
+    "epic": false,
+    "parent": "E10",
+    "milestone": "Phase 10 · News, events & reviews",
+    "phase": "P10",
+    "type": "feature",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "content",
+      "i18n"
+    ],
+    "body": "## Tasks\n\n- [ ] Translated title, excerpt and body (storage from P3-09)\n- [ ] Option 'Arabic only': English readers see the Arabic text instead of nothing\n- [ ] Dashboard form: one tab per language\n\n## Acceptance criteria\n\n- [ ] An article without English text is still visible in English mode\n\n## Depends on\n\n- {{P3-09}}\n\n---\n_Backlog id `P10-08` · Phase 10 · News, events & reviews_"
+  },
+  {
+    "id": "P11-01",
+    "repo": "village-platform",
+    "title": "[P11-01] Decision: custom Rails views instead of an admin gem",
+    "epic": false,
+    "parent": "E11",
+    "milestone": "Phase 11 · Admin dashboard",
+    "phase": "P11",
+    "type": "decision",
+    "priority": "p3",
+    "size": "XS",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "admin"
+    ],
+    "body": "## Summary\n\nDecided and implemented: plain ERB views and one stylesheet (`app/assets/stylesheets/admin.css`). The README documents it.\n\n---\n_Backlog id `P11-01` · Phase 11 · Admin dashboard_"
+  },
+  {
+    "id": "P11-02",
+    "repo": "village-platform",
+    "title": "[P11-02] Dashboard sign-in and access control",
+    "epic": false,
+    "parent": "E11",
+    "milestone": "Phase 11 · Admin dashboard",
+    "phase": "P11",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "admin",
+      "security"
+    ],
+    "body": "## Tasks\n\n- [x] Session login for `super_admin` only; 12-hour session\n- [x] Login rate limit (10 attempts per 3 minutes)\n- [x] Role re-checked on every request, so a demoted admin loses access at once\n\n## Already in the repository\n\n- `app/controllers/admin/sessions_controller.rb`\n- `app/controllers/admin/base_controller.rb`\n- `app/services/admin_session.rb`\n- `spec/requests/admin/sessions_spec.rb`\n\n---\n_Backlog id `P11-02` · Phase 11 · Admin dashboard_"
+  },
+  {
+    "id": "P11-03",
+    "repo": "village-platform",
+    "title": "[P11-03] Subscription review pages and firm approve / suspend",
+    "epic": false,
+    "parent": "E11",
+    "milestone": "Phase 11 · Admin dashboard",
+    "phase": "P11",
+    "type": "feature",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "admin",
+      "payments",
+      "catalog"
+    ],
+    "body": "## Summary\n\nRejecting a firm with a reason is tracked in P3-07.\n\n## Tasks\n\n- [x] Subscription list with filter and search, details, payment screenshot, approve and reject with a reason\n- [x] Firm list with filter and search, add, edit, approve, suspend, delete; shows whether it is publicly visible\n- [x] Home page counters, pending requests, subscriptions ending within 7 days, firms waiting for approval\n\n## Already in the repository\n\n- `app/controllers/admin/subscriptions_controller.rb`\n- `app/controllers/admin/firms_controller.rb`\n- `app/controllers/admin/dashboard_controller.rb`\n- `spec/requests/admin/pages_spec.rb`\n- `spec/requests/admin/crud_spec.rb`\n\n---\n_Backlog id `P11-03` · Phase 11 · Admin dashboard_"
+  },
+  {
+    "id": "P11-04",
+    "repo": "village-platform",
+    "title": "[P11-04] Manage categories, plans, users, roles and news",
+    "epic": false,
+    "parent": "E11",
+    "milestone": "Phase 11 · Admin dashboard",
+    "phase": "P11",
+    "type": "feature",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "admin"
+    ],
+    "body": "## Tasks\n\n- [x] Categories: add, edit, order, enable or disable\n- [x] Plans: prices in EGP, duration, max firms\n- [x] Users: search, change role, reset password, see subscriptions and firms\n- [x] News: draft, publish now or schedule, filter by kind\n\n## Already in the repository\n\n- `app/controllers/admin/`\n- `app/views/admin/`\n- `spec/requests/admin/crud_spec.rb`\n\n---\n_Backlog id `P11-04` · Phase 11 · Admin dashboard_"
+  },
+  {
+    "id": "P11-05",
+    "repo": "village-platform",
+    "title": "[P11-05] Settings page: payment accounts and support number",
+    "epic": false,
+    "parent": "E11",
+    "milestone": "Phase 11 · Admin dashboard",
+    "phase": "P11",
+    "type": "feature",
+    "priority": "p2",
+    "size": "S",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "admin",
+      "payments"
+    ],
+    "body": "## Tasks\n\n- [ ] Edit the InstaPay address, the Vodafone Cash number and the support phone\n- [ ] Validate formats; record changes in the audit log (P6-08)\n\n## Depends on\n\n- {{P6-05}}\n\n---\n_Backlog id `P11-05` · Phase 11 · Admin dashboard_"
+  },
+  {
+    "id": "P11-06",
+    "repo": "village-platform",
+    "title": "[P11-06] Manual broadcast notification from the dashboard",
+    "epic": false,
+    "parent": "E11",
+    "milestone": "Phase 11 · Admin dashboard",
+    "phase": "P11",
+    "type": "feature",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "admin",
+      "notifications"
+    ],
+    "body": "## Tasks\n\n- [ ] Form: title, body, destination, language; confirmation step\n- [ ] History of sent broadcasts\n\n## Depends on\n\n- {{P2-08}}\n\n---\n_Backlog id `P11-06` · Phase 11 · Admin dashboard_"
+  },
+  {
+    "id": "P11-07",
+    "repo": "village-platform",
+    "title": "[P11-07] Village management and village switcher for super admins",
+    "epic": false,
+    "parent": "E11",
+    "milestone": "Phase 11 · Admin dashboard",
+    "phase": "P11",
+    "type": "feature",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "admin",
+      "tenancy"
+    ],
+    "body": "## Tasks\n\n- [ ] Pages to create, edit and deactivate villages\n- [ ] A switcher that sets the current village for a super admin session\n\n## Acceptance criteria\n\n- [ ] Switching village changes every list on the dashboard\n\n## Depends on\n\n- {{P0-02}}\n- {{P0-06}}\n\n---\n_Backlog id `P11-07` · Phase 11 · Admin dashboard_"
+  },
+  {
+    "id": "P11-08",
+    "repo": "village-platform",
+    "title": "[P11-08] Audit log viewer and general statistics",
+    "epic": false,
+    "parent": "E11",
+    "milestone": "Phase 11 · Admin dashboard",
+    "phase": "P11",
+    "type": "feature",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "admin"
+    ],
+    "body": "## Tasks\n\n- [ ] Audit log page with filters (actor, action, date)\n- [ ] Counters for users, firms and subscription requests per period\n\n## Acceptance criteria\n\n- [ ] A role change shows up in the log within a minute\n\n## Depends on\n\n- {{P6-08}}\n\n---\n_Backlog id `P11-08` · Phase 11 · Admin dashboard_"
+  },
+  {
+    "id": "P11-09",
+    "repo": "village-platform",
+    "title": "[P11-09] Dashboard in English (LTR) as well as Arabic (RTL)",
+    "epic": false,
+    "parent": "E11",
+    "milestone": "Phase 11 · Admin dashboard",
+    "phase": "P11",
+    "type": "feature",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "admin",
+      "i18n"
+    ],
+    "body": "## Summary\n\n`admin.en.yml` already exists, but `Admin::BaseController` forces Arabic (`around_action :use_arabic`). Complete the English strings, switch by user preference, and make the CSS direction-neutral.\n\n## Tasks\n\n- [ ] Choose the language per admin (preference or switcher); set `lang` and `dir` on `<html>`\n- [ ] Use CSS logical properties (`margin-inline`, `text-align: start`) instead of left and right\n- [ ] Complete `admin.en.yml` and add a missing-key check (P13-09)\n\n## Acceptance criteria\n\n- [ ] Every page renders correctly in both directions\n\n## Blocks\n\n- {{P11-11}}\n- {{P11-12}}\n\n---\n_Backlog id `P11-09` · Phase 11 · Admin dashboard_"
+  },
+  {
+    "id": "P11-10",
+    "repo": "village-platform",
+    "title": "[P11-10] Light and dark theme with design tokens",
+    "epic": false,
+    "parent": "E11",
+    "milestone": "Phase 11 · Admin dashboard",
+    "phase": "P11",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "admin",
+      "i18n"
+    ],
+    "body": "## Summary\n\n`admin.css` has no dark mode today. Move colours to CSS variables under `[data-theme]`; the brand palette is dark green `#0b3727`, gold `#c28d40`, cream `#faf5ec`.\n\n## Tasks\n\n- [ ] Variables for light and dark; 'system' follows the device\n- [ ] Persist the choice (cookie, then `users.theme_preference` from P1-13)\n- [ ] Check contrast of badges and tables in both themes\n\n## Blocks\n\n- {{P11-11}}\n- {{P11-12}}\n\n---\n_Backlog id `P11-10` · Phase 11 · Admin dashboard_"
+  },
+  {
+    "id": "P11-11",
+    "repo": "village-platform",
+    "title": "[P11-11] Language and theme switcher in the top bar, and a tab per language in forms",
+    "epic": false,
+    "parent": "E11",
+    "milestone": "Phase 11 · Admin dashboard",
+    "phase": "P11",
+    "type": "feature",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "admin",
+      "i18n"
+    ],
+    "body": "## Tasks\n\n- [ ] Language and theme switcher in the top bar\n- [ ] A tab per language in the category, firm, article and plan forms\n\n## Acceptance criteria\n\n- [ ] The choice is remembered across sessions\n\n## Depends on\n\n- {{P11-09}}\n- {{P11-10}}\n- {{P3-10}}\n\n---\n_Backlog id `P11-11` · Phase 11 · Admin dashboard_"
+  },
+  {
+    "id": "P11-12",
+    "repo": "village-platform",
+    "title": "[P11-12] Page specs for the four combinations (Arabic or English, light or dark)",
+    "epic": false,
+    "parent": "E11",
+    "milestone": "Phase 11 · Admin dashboard",
+    "phase": "P11",
+    "type": "chore",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "admin",
+      "tests"
+    ],
+    "body": "## Tasks\n\n- [ ] Render each main page in the four combinations\n- [ ] Assert the right `dir`, `lang` and `data-theme`, and no missing translation\n\n## Acceptance criteria\n\n- [ ] A page with a missing English key fails the suite\n\n## Depends on\n\n- {{P11-09}}\n- {{P11-10}}\n\n---\n_Backlog id `P11-12` · Phase 11 · Admin dashboard_"
+  },
+  {
+    "id": "P12-01",
+    "repo": "village-platform",
+    "title": "[P12-01] OpenAPI description of the API with contract checks in CI",
+    "epic": false,
+    "parent": "E12",
+    "milestone": "Phase 12 · API contract & Android",
+    "phase": "P12",
+    "type": "feature",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "api",
+      "docs"
+    ],
+    "body": "## Summary\n\nThe README endpoint table is the only API description. Produce an OpenAPI 3.1 file (written by hand or generated with rswag) and validate responses against it in request specs. The error envelope is already uniform.\n\n## Tasks\n\n- [ ] Choose the approach and add `docs/api/openapi.yml` (or generated output)\n- [ ] Contract check in request specs; fail CI on drift\n- [ ] Publish the file for the Android developer\n\n## Acceptance criteria\n\n- [ ] Changing a response field without updating the contract fails CI\n\n## Blocks\n\n- {{P12-02}}\n\n---\n_Backlog id `P12-01` · Phase 12 · API contract & Android_"
+  },
+  {
+    "id": "P13-01",
+    "repo": "village-platform",
+    "title": "[P13-01] Run background jobs in production using the chosen approach",
+    "epic": false,
+    "parent": "E13",
+    "milestone": "Phase 13 · Hardening & launch",
+    "phase": "P13",
+    "type": "task",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "infra"
+    ],
+    "body": "## Tasks\n\n- [ ] Implement the decision from P2-07 (outbox + cron, or an always-on worker)\n- [ ] Schedule the daily jobs there\n\n## Depends on\n\n- {{P2-07}}\n\n---\n_Backlog id `P13-01` · Phase 13 · Hardening & launch_"
+  },
+  {
+    "id": "P13-02",
+    "repo": "village-platform",
+    "title": "[P13-02] Global rate limits, input checks and CORS tightening",
+    "epic": false,
+    "parent": "E13",
+    "milestone": "Phase 13 · Hardening & launch",
+    "phase": "P13",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "security",
+      "api"
+    ],
+    "body": "## Summary\n\n`CORS_ORIGINS=*` is the example default. Restrict it to the real origins. A native app does not need CORS; a future web client would.\n\n## Tasks\n\n- [ ] Per-IP throttling for all API endpoints with a shared store\n- [ ] Restrict `CORS_ORIGINS` in production\n- [ ] Review parameter limits (page size, payload sizes)\n\n## Depends on\n\n- {{P1-12}}\n\n---\n_Backlog id `P13-02` · Phase 13 · Hardening & launch_"
+  },
+  {
+    "id": "P13-03",
+    "repo": "village-platform",
+    "title": "[P13-03] Error tracking, job monitoring and a deeper health check",
+    "epic": false,
+    "parent": "E13",
+    "milestone": "Phase 13 · Hardening & launch",
+    "phase": "P13",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "infra"
+    ],
+    "body": "## Summary\n\n`/up` only says the process runs. Add error tracking (Sentry or an alternative), failed-job visibility and a database check.\n\n## Tasks\n\n- [ ] Pick a tracker and wire it with an environment variable\n- [ ] Uptime monitor on `/up`\n- [ ] Alert on failed cron calls\n\n---\n_Backlog id `P13-03` · Phase 13 · Hardening & launch_"
+  },
+  {
+    "id": "P13-04",
+    "repo": "village-platform",
+    "title": "[P13-04] Database backups and a restore drill",
+    "epic": false,
+    "parent": "E13",
+    "milestone": "Phase 13 · Hardening & launch",
+    "phase": "P13",
+    "type": "task",
+    "priority": "p1",
+    "size": "S",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "infra"
+    ],
+    "body": "## Tasks\n\n- [ ] Confirm the Neon retention and point-in-time recovery window\n- [ ] Restore into a scratch database and check row counts\n- [ ] Write the steps in `docs/RUNBOOK.md` (P13-11)\n\n## Acceptance criteria\n\n- [ ] A restore has been done and documented\n\n---\n_Backlog id `P13-04` · Phase 13 · Hardening & launch_"
+  },
+  {
+    "id": "P13-05",
+    "repo": "village-platform",
+    "title": "[P13-05] Enable CI (rubocop, brakeman, rspec) and make it required",
+    "epic": false,
+    "parent": "E13",
+    "milestone": "Phase 13 · Hardening & launch",
+    "phase": "P13",
+    "type": "chore",
+    "priority": "p0",
+    "size": "S",
+    "horizon": "now",
+    "status": "todo",
+    "areas": [
+      "infra",
+      "tests"
+    ],
+    "body": "## Summary\n\nThe repository has no workflows. `.github/workflows/ci.yml` is part of this kit; this issue is the rollout.\n\n## Tasks\n\n- [ ] Merge the kit and let CI run on a pull request\n- [ ] Fix or baseline any Rubocop or Brakeman findings\n- [ ] Make the `ci` check required on `main` (see S-02)\n\n## Acceptance criteria\n\n- [ ] A pull request cannot merge with failing CI\n\n## Blocks\n\n- {{S-02}}\n\n---\n_Backlog id `P13-05` · Phase 13 · Hardening & launch_"
+  },
+  {
+    "id": "P13-06",
+    "repo": "village-platform",
+    "title": "[P13-06] Light load test of the catalog and notification endpoints",
+    "epic": false,
+    "parent": "E13",
+    "milestone": "Phase 13 · Hardening & launch",
+    "phase": "P13",
+    "type": "task",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "infra",
+      "api"
+    ],
+    "body": "## Tasks\n\n- [ ] Pick the hottest endpoints: firms list, firm detail, notifications, subscriptions\n- [ ] Run a light load test against staging with village-sized data\n- [ ] Record response times and fix the slowest query\n\n## Acceptance criteria\n\n- [ ] The firms list answers in under 500 ms (95th percentile) with 200 firms\n\n---\n_Backlog id `P13-06` · Phase 13 · Hardening & launch_"
+  },
+  {
+    "id": "P13-07",
+    "repo": "village-platform",
+    "title": "[P13-07] Docker image and Vercel deployment",
+    "epic": false,
+    "parent": "E13",
+    "milestone": "Phase 13 · Hardening & launch",
+    "phase": "P13",
+    "type": "chore",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "later",
+    "status": "done",
+    "areas": [
+      "infra"
+    ],
+    "body": "## Tasks\n\n- [x] `Dockerfile.vercel` (non-root, jemalloc, assets precompiled) and `docker-compose.yml` for local Postgres\n- [x] Entrypoint prepares the database with an advisory lock\n- [x] Deployment steps and environment variables documented in the README\n\n## Already in the repository\n\n- `Dockerfile.vercel`\n- `docker-compose.yml`\n- `bin/docker-entrypoint`\n- `vercel.json`\n- `README.md`\n\n---\n_Backlog id `P13-07` · Phase 13 · Hardening & launch_"
+  },
+  {
+    "id": "P13-08",
+    "repo": "village-platform",
+    "title": "[P13-08] Privacy policy and in-app account deletion",
+    "epic": false,
+    "parent": "E13",
+    "milestone": "Phase 13 · Hardening & launch",
+    "phase": "P13",
+    "type": "feature",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "security",
+      "api",
+      "docs"
+    ],
+    "body": "## Summary\n\nNeeded to publish the app. Delete personal data, keep subscription records needed for accounting (anonymized), and revoke tokens.\n\n## Tasks\n\n- [ ] Public privacy policy page (Arabic and English)\n- [ ] `DELETE /me` with confirmation; anonymize instead of destroying records that other tables need\n- [ ] Dashboard shows deleted users as anonymized\n\n## Acceptance criteria\n\n- [ ] After deletion the phone can register again and no personal data remains\n\n---\n_Backlog id `P13-08` · Phase 13 · Hardening & launch_"
+  },
+  {
+    "id": "P13-09",
+    "repo": "village-platform",
+    "title": "[P13-09] Translation completeness check and screenshots of key screens",
+    "epic": false,
+    "parent": "E13",
+    "milestone": "Phase 13 · Hardening & launch",
+    "phase": "P13",
+    "type": "chore",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "i18n",
+      "tests"
+    ],
+    "body": "## Tasks\n\n- [ ] Add a missing/unused translation key check (for example `i18n-tasks`) to CI\n- [ ] Screenshots of the main dashboard pages in both languages and themes\n\n---\n_Backlog id `P13-09` · Phase 13 · Hardening & launch_"
+  },
+  {
+    "id": "P13-11",
+    "repo": "village-platform",
+    "title": "[P13-11] Production runbook",
+    "epic": false,
+    "parent": "E13",
+    "milestone": "Phase 13 · Hardening & launch",
+    "phase": "P13",
+    "type": "docs",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "docs",
+      "infra"
+    ],
+    "body": "## Tasks\n\n- [ ] Environment variables, cron, rollback, restore, who to contact\n- [ ] Save as `docs/RUNBOOK.md`\n\n---\n_Backlog id `P13-11` · Phase 13 · Hardening & launch_"
+  },
+  {
+    "id": "D-01",
+    "repo": "village-platform",
+    "title": "[D-01] Replace the fictional demo seed with the 79 real places",
+    "epic": false,
+    "parent": "ED",
+    "milestone": "Aghour data & content",
+    "phase": "D",
+    "type": "data",
+    "priority": "p1",
+    "size": "S",
+    "horizon": "now",
+    "status": "todo",
+    "areas": [
+      "data"
+    ],
+    "body": "## Summary\n\nThe old `demo.rb` created fictional owners, firms, news and subscriptions plus 51 places imported from Google Maps. The new seed imports only the 79 real places from the curated file. It cleans names (removes decoration), shortens addresses to the Arabic street part, and normalizes phones.\n\nThe change is in the second commit of the backlog patch together with the updated `spec/seeds_spec.rb` and README section. It could not be run in the authoring environment, so run `bundle exec rspec spec/seeds_spec.rb` before merging.\n\n## Tasks\n\n- [ ] Apply the commit, run `bin/rails db:reset` locally and open the dashboard\n- [ ] Run the whole spec suite\n- [ ] Merge; reset the staging database if it holds the old fictional data\n\n## Acceptance criteria\n\n- [ ] Seeding twice gives 79 firms, 72 active, 5 pending, 2 suspended\n- [ ] No fictional owner exists\n\n---\n_Backlog id `D-01` · Aghour data & content_"
+  },
+  {
+    "id": "D-02",
+    "repo": "village-platform",
+    "title": "[D-02] Review the 5 pending and 2 suspended places",
+    "epic": false,
+    "parent": "ED",
+    "milestone": "Aghour data & content",
+    "phase": "D",
+    "type": "data",
+    "priority": "p1",
+    "size": "S",
+    "horizon": "now",
+    "status": "todo",
+    "areas": [
+      "data",
+      "admin"
+    ],
+    "body": "## Summary\n\n**Pending (location not confirmed):** صيدلية د.عاطف ابو عرب, مطعم البرنس, سوبر ماركت اليوم, صلاح حجازي (phone repair), عيادة الدكتور محمود صبحي.\n\n**Suspended (listed as temporarily closed):** مدرسة أجهور الكبرى الثانوية بنين, مكتبة ابوعبده.\n\n## Tasks\n\n- [ ] Confirm each place exists and where it is; add coordinates (see D-03)\n- [ ] Approve it in the dashboard, or delete it\n- [ ] For the two suspended places check whether they reopened\n\n## Acceptance criteria\n\n- [ ] No place stays pending without a reason\n\n---\n_Backlog id `D-02` · Aghour data & content_"
+  },
+  {
+    "id": "D-03",
+    "repo": "village-platform",
+    "title": "[D-03] Collect coordinates for the 10 places without a map pin",
+    "epic": false,
+    "parent": "ED",
+    "milestone": "Aghour data & content",
+    "phase": "D",
+    "type": "data",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "data"
+    ],
+    "body": "## Summary\n\nThese show in lists but not on a map or in nearest-first sorting: صيدلية د.عاطف ابو عرب, مطعم البرنس, سوبر ماركت اليوم, صلاح حجازي, مكتبة ابوعبده, عيادة الدكتور محمود صبحي, مطعم السلطان, مطعم ابوشبانة اجهور, BIG BOSS - فرع أجهور الكبرى, اكسسوارات الشاعر.\n\n## Tasks\n\n- [ ] Stand at each place (or ask the owner to share a location) and record latitude and longitude\n- [ ] Update the JSON and re-run the seed, or edit the firm in the dashboard\n\n---\n_Backlog id `D-03` · Aghour data & content_"
+  },
+  {
+    "id": "D-04",
+    "repo": "village-platform",
+    "title": "[D-04] Collect phone numbers, starting with doctors and pharmacies",
+    "epic": false,
+    "parent": "ED",
+    "milestone": "Aghour data & content",
+    "phase": "D",
+    "type": "data",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "data"
+    ],
+    "body": "## Summary\n\n44 of 79 places have no phone (all 8 mosques, 6 schools, 13 shops, and others). The most useful gaps first: صيدليه الدكتورة أيه الدسوقي, صيدليه الدكتوره نجاه شاهين, صيدلية دكتور أحمد مزروع 2, صيدلية د.عاطف ابو عرب, مستشفى التأمين الصحي, عيادة اسنان الدكتورة هبه محمود الدغرى, المجمع الإسلامي, عيادة الدكتور محمود صبحي.\n\n## Tasks\n\n- [ ] Doctors and pharmacies (8)\n- [ ] Restaurants and shops with delivery\n- [ ] Schools and public services (a main office number is enough)\n\n## Acceptance criteria\n\n- [ ] Every doctor, pharmacy and hospital has a phone or a documented reason\n\n---\n_Backlog id `D-04` · Aghour data & content_"
+  },
+  {
+    "id": "D-05",
+    "repo": "village-platform",
+    "title": "[D-05] Fill opening hours for the main places",
+    "epic": false,
+    "parent": "ED",
+    "milestone": "Aghour data & content",
+    "phase": "D",
+    "type": "data",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "data"
+    ],
+    "body": "## Summary\n\nThe imported places have no hours. Collect them for pharmacies, clinics, the post office, banks and food places once the structured format exists.\n\n## Depends on\n\n- {{P3-03}}\n\n---\n_Backlog id `D-05` · Aghour data & content_"
+  },
+  {
+    "id": "D-06",
+    "repo": "village-platform",
+    "title": "[D-06] Fill category gaps: transport, craftsmen, bakeries",
+    "epic": false,
+    "parent": "ED",
+    "milestone": "Aghour data & content",
+    "phase": "D",
+    "type": "data",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "data"
+    ],
+    "body": "## Summary\n\nFrom the dataset: **مواصلات 0 places**, **حرفيون 1**, **مخابز 1**, رياضة وشباب 2. A category with no places looks broken in the app.\n\n## Tasks\n\n- [ ] Collect transport (stations, tuk-tuk and microbus points, delivery offices)\n- [ ] Collect plumbers, electricians, carpenters, mechanics\n- [ ] Collect the other bakeries and sweet shops\n- [ ] Add them to the JSON (same format) and re-run the seed\n\n---\n_Backlog id `D-06` · Aghour data & content_"
+  },
+  {
+    "id": "D-07",
+    "repo": "village-platform",
+    "title": "[D-07] Onboard the first 10 real owners",
+    "epic": false,
+    "parent": "ED",
+    "milestone": "Aghour data & content",
+    "phase": "D",
+    "type": "data",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "data",
+      "payments"
+    ],
+    "body": "## Summary\n\nPilot with owners of places already in the directory.\n\n**Flow today:** the owner registers in the app, submits a subscription request with the transfer reference, an admin approves it (the user becomes `firm_admin`), then an admin moves the firm to that owner from the firm edit page (the owner list shows `firm_admin` and `super_admin` users).\n\n## Tasks\n\n- [ ] Pick 10 owners and ask them to join\n- [ ] Help them pay and send the request; approve it\n- [ ] Transfer their firm to their account and check how it looks publicly\n- [ ] Collect feedback on the process (what confused them)\n\n## Acceptance criteria\n\n- [ ] Ten firms are owned by their real owners with a current subscription\n\n---\n_Backlog id `D-07` · Aghour data & content_"
+  },
+  {
+    "id": "D-08",
+    "repo": "village-platform",
+    "title": "[D-08] Write the first real news items and announcements",
+    "epic": false,
+    "parent": "ED",
+    "milestone": "Aghour data & content",
+    "phase": "D",
+    "type": "data",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "data",
+      "content"
+    ],
+    "body": "## Tasks\n\n- [ ] A launch announcement and how to register a firm\n- [ ] Two or three real village news items\n- [ ] Permission and credit for any photos\n\n---\n_Backlog id `D-08` · Aghour data & content_"
+  },
+  {
+    "id": "S-01",
+    "repo": "village-platform",
+    "title": "[S-01] Create the GitHub Project board (fields, views, automation)",
+    "epic": false,
+    "parent": "ES",
+    "milestone": "Project setup & tracking",
+    "phase": "S",
+    "type": "chore",
+    "priority": "p1",
+    "size": "S",
+    "horizon": "now",
+    "status": "todo",
+    "areas": [
+      "infra"
+    ],
+    "body": "## Summary\n\n`scripts/backlog/sync.rb` creates the labels, milestones, issues and the project (see `scripts/backlog/README.md`). The views and built-in workflows are set up in the web UI.\n\n## Tasks\n\n- [ ] Run `ruby scripts/backlog/sync.rb` (needs `gh auth refresh -s project`)\n- [ ] Create the views: Board, Roadmap, By phase, Blocked, My work\n- [ ] Turn on the built-in workflows (item added, closed, merged)\n\n---\n_Backlog id `S-01` · Project setup & tracking_"
+  },
+  {
+    "id": "S-02",
+    "repo": "village-platform",
+    "title": "[S-02] Protect `main`: pull requests, CI and review required",
+    "epic": false,
+    "parent": "ES",
+    "milestone": "Project setup & tracking",
+    "phase": "S",
+    "type": "chore",
+    "priority": "p1",
+    "size": "XS",
+    "horizon": "now",
+    "status": "todo",
+    "areas": [
+      "infra",
+      "security"
+    ],
+    "body": "## Tasks\n\n- [ ] Require a pull request and one approval\n- [ ] Require the `ci` status check\n- [ ] Block force pushes and deletion\n\n## Depends on\n\n- {{P13-05}}\n\n---\n_Backlog id `S-02` · Project setup & tracking_"
+  },
+  {
+    "id": "S-03",
+    "repo": "village-platform",
+    "title": "[S-03] Turn on Dependabot alerts, secret scanning and private vulnerability reporting",
+    "epic": false,
+    "parent": "ES",
+    "milestone": "Project setup & tracking",
+    "phase": "S",
+    "type": "chore",
+    "priority": "p2",
+    "size": "XS",
+    "horizon": "now",
+    "status": "todo",
+    "areas": [
+      "security"
+    ],
+    "body": "## Summary\n\nAdd `.github/dependabot.yml` and `SECURITY.md`, then turn on the alerts and scanning in the repository settings.\n\n---\n_Backlog id `S-03` · Project setup & tracking_"
+  },
+  {
+    "id": "S-04",
+    "repo": "village-platform",
+    "title": "[S-04] Add maintainers and CODEOWNERS",
+    "epic": false,
+    "parent": "ES",
+    "milestone": "Project setup & tracking",
+    "phase": "S",
+    "type": "chore",
+    "priority": "p3",
+    "size": "XS",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "infra"
+    ],
+    "body": "## Summary\n\nCreate a maintainers team and add `.github/CODEOWNERS` with it, so reviews are requested automatically.\n\n---\n_Backlog id `S-04` · Project setup & tracking_"
+  },
+  {
+    "id": "S-05",
+    "repo": "village-platform",
+    "title": "[S-05] Repository description, topics and README link to the roadmap",
+    "epic": false,
+    "parent": "ES",
+    "milestone": "Project setup & tracking",
+    "phase": "S",
+    "type": "chore",
+    "priority": "p3",
+    "size": "XS",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "docs"
+    ],
+    "body": "## Tasks\n\n- [ ] Description and topics (rails, api, village, arabic)\n- [ ] README links to the roadmap and the project board\n\n---\n_Backlog id `S-05` · Project setup & tracking_"
+  },
+  {
+    "id": "A-E",
+    "repo": "aghour-android",
+    "title": "[Android] Client for the village API (contract, push, deep links, RTL, theming)",
+    "epic": true,
+    "parent": null,
+    "milestone": "Phase 12 · API contract & Android",
+    "phase": "P12",
+    "type": "epic",
+    "priority": null,
+    "size": null,
+    "horizon": "later",
+    "status": "epic",
+    "areas": [],
+    "body": "## Goal\n\nAndroid side of Phase 12. The app talks to the backend through a documented contract, with push, deep links, RTL and theming. Backend counterpart: {{E12}}.\n\n## Business rules\n\n- A breaking API change ships as a new version (`/v2`).\n- Network errors show clear Arabic messages.\n\n## Definition of done\n\n- [ ] Every screen works against the real API.\n- [ ] Opening a notification with the app closed lands on the right screen.\n\n## Issues\n\n- [ ] {{P12-02}}\n- [ ] {{P12-03}}\n- [ ] {{P12-04}}\n- [ ] {{P12-05}}\n- [ ] {{P12-06}}\n- [ ] {{P12-07}}\n- [ ] {{P12-08}}\n- [ ] {{P12-09}}\n- [ ] {{D-09}}\n\n---\n_Backlog id `A-E` · Phase 12 · API contract & Android_"
+  },
+  {
+    "id": "P12-02",
+    "repo": "aghour-android",
+    "title": "[P12-02] Android: align Retrofit and DTOs with the current API",
+    "epic": false,
+    "parent": "A-E",
+    "milestone": "Phase 12 · API contract & Android",
+    "phase": "P12",
+    "type": "task",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [],
+    "body": "## Summary\n\nPaths, auth (phone login), list wrapper `{ data, meta }` and the error envelope `{ error: { code, message, details } }`. Release URL comes from `AGHOUR_API_URL_RELEASE`.\n\n## Depends on\n\n- {{P12-01}}\n\n---\n_Backlog id `P12-02` · Phase 12 · API contract & Android_"
+  },
+  {
+    "id": "P12-03",
+    "repo": "aghour-android",
+    "title": "[P12-03] Android: send the village header and keep the token in DataStore",
+    "epic": false,
+    "parent": "A-E",
+    "milestone": "Phase 12 · API contract & Android",
+    "phase": "P12",
+    "type": "task",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "tenancy"
+    ],
+    "body": "## Summary\n\nOnly needed if the shared multi-village option (P0-02) is chosen.\n\n## Depends on\n\n- {{P0-06}}\n\n---\n_Backlog id `P12-03` · Phase 12 · API contract & Android_"
+  },
+  {
+    "id": "P12-04",
+    "repo": "aghour-android",
+    "title": "[P12-04] Android: upload photos and videos directly to storage",
+    "epic": false,
+    "parent": "A-E",
+    "milestone": "Phase 12 · API contract & Android",
+    "phase": "P12",
+    "type": "task",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "media"
+    ],
+    "body": "## Tasks\n\n- [ ] Request a signed upload target, upload straight to storage, then confirm\n- [ ] Progress, cancel and retry; show plan limits from `GET /me/entitlements`\n\n## Acceptance criteria\n\n- [ ] A 30 MB video uploads without going through the API server\n\n## Depends on\n\n- {{P7-03}}\n\n---\n_Backlog id `P12-04` · Phase 12 · API contract & Android_"
+  },
+  {
+    "id": "P12-05",
+    "repo": "aghour-android",
+    "title": "[P12-05] Android: FCM service, notification channels, topics and deep links",
+    "epic": false,
+    "parent": "A-E",
+    "milestone": "Phase 12 · API contract & Android",
+    "phase": "P12",
+    "type": "task",
+    "priority": "p2",
+    "size": "L",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "notifications"
+    ],
+    "body": "## Tasks\n\n- [ ] `FirebaseMessagingService` builds the notification and intent from the data payload\n- [ ] Channels (payments, news, firms)\n- [ ] Deep links in the navigation graph; unknown destination opens the notifications screen\n- [ ] Subscribe to the village and language topics; swap on language change\n- [ ] Register and unregister the device token (`/devices`)\n\n## Depends on\n\n- {{P9-01}}\n- {{P9-07}}\n- {{P9-04}}\n\n---\n_Backlog id `P12-05` · Phase 12 · API contract & Android_"
+  },
+  {
+    "id": "P12-06",
+    "repo": "aghour-android",
+    "title": "[P12-06] Android: notifications screen (list, badge, read, open)",
+    "epic": false,
+    "parent": "A-E",
+    "milestone": "Phase 12 · API contract & Android",
+    "phase": "P12",
+    "type": "task",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "notifications"
+    ],
+    "body": "## Tasks\n\n- [ ] Inbox list with unread state and pull to refresh\n- [ ] Badge on the icon from `unread_count`\n- [ ] Tapping calls `open`, then navigates to the destination\n\n## Acceptance criteria\n\n- [ ] Opening a notification clears its unread dot and the badge\n\n## Depends on\n\n- {{P2-03}}\n- {{P2-04}}\n\n---\n_Backlog id `P12-06` · Phase 12 · API contract & Android_"
+  },
+  {
+    "id": "P12-07",
+    "repo": "aghour-android",
+    "title": "[P12-07] Android: RTL, Cairo font, brand colours and day/night resources",
+    "epic": false,
+    "parent": "A-E",
+    "milestone": "Phase 12 · API contract & Android",
+    "phase": "P12",
+    "type": "task",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "i18n"
+    ],
+    "body": "## Tasks\n\n- [ ] `supportsRtl`, `start`/`end` instead of left/right, mirror directional icons\n- [ ] Cairo font; brand palette in `values/colors.xml` and `values-night/colors.xml`; `Theme.Material3.DayNight`\n- [ ] Logo and splash in light and dark variants\n\n## Blocks\n\n- {{P12-09}}\n\n---\n_Backlog id `P12-07` · Phase 12 · API contract & Android_"
+  },
+  {
+    "id": "P12-08",
+    "repo": "aghour-android",
+    "title": "[P12-08] Android: Arabic and English strings, language switch, formatting, Accept-Language",
+    "epic": false,
+    "parent": "A-E",
+    "milestone": "Phase 12 · API contract & Android",
+    "phase": "P12",
+    "type": "task",
+    "priority": "p2",
+    "size": "M",
+    "horizon": "next",
+    "status": "todo",
+    "areas": [
+      "i18n"
+    ],
+    "body": "## Tasks\n\n- [ ] `strings.xml` (Arabic default) and `values-en`\n- [ ] `AppCompatDelegate.setApplicationLocales` for the in-app switch (see AndroidX docs for the persistence setting on Android 12 and older)\n- [ ] `Accept-Language` interceptor; localized numbers, dates and EGP currency\n\n## Blocks\n\n- {{P12-09}}\n\n---\n_Backlog id `P12-08` · Phase 12 · API contract & Android_"
+  },
+  {
+    "id": "P12-09",
+    "repo": "aghour-android",
+    "title": "[P12-09] Android: settings screen for language and theme, synced with the profile",
+    "epic": false,
+    "parent": "A-E",
+    "milestone": "Phase 12 · API contract & Android",
+    "phase": "P12",
+    "type": "task",
+    "priority": "p3",
+    "size": "S",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "i18n"
+    ],
+    "body": "## Tasks\n\n- [ ] Language (Arabic or English) and theme (light, dark or system) selectors\n- [ ] Save with `PATCH /me` and apply immediately\n\n## Acceptance criteria\n\n- [ ] The choice survives sign-out and reinstall (restored from the profile)\n\n## Depends on\n\n- {{P1-13}}\n- {{P12-07}}\n- {{P12-08}}\n\n---\n_Backlog id `P12-09` · Phase 12 · API contract & Android_"
+  },
+  {
+    "id": "D-09",
+    "repo": "aghour-android",
+    "title": "[D-09] Pilot release and feedback loop",
+    "epic": false,
+    "parent": "A-E",
+    "milestone": "Aghour data & content",
+    "phase": "D",
+    "type": "task",
+    "priority": "p3",
+    "size": "M",
+    "horizon": "later",
+    "status": "todo",
+    "areas": [
+      "data"
+    ],
+    "body": "## Tasks\n\n- [ ] Release the app to a small group of villagers\n- [ ] A simple feedback channel (form or WhatsApp group)\n- [ ] Review feedback weekly and turn it into issues\n\n---\n_Backlog id `D-09` · Aghour data & content_"
+  }
+]
