@@ -14,6 +14,16 @@ Every issue is a sub-issue of its phase epic. The `Depends on` / `Blocks` sectio
 issue numbers, and links across the two repositories use `owner/repo#n`. Issues that are already
 done are created and then closed as completed, so the history is still there.
 
+## Current state
+
+The issues were created on 2026-10-26 (village-platform #2–#154, aghour-android #2–#11), with
+labels, sub-issue links, cross-links and the done items closed. Two items sit at the end of the
+numbering because GitHub dropped their first create: P7-09 is #153 and P5-04 is #154 (#74 does not
+exist).
+
+Running the script now adds what is still missing: label colours, one milestone per phase on every
+issue, and the project board.
+
 ## Run it
 
 ```bash

@@ -79,13 +79,13 @@ REPOS.each do |repo|
   puts "== #{OWNER}/#{repo}"
   repo_items = ITEMS.select { |i| i["repo"] == repo }
 
-  existing_labels = api("repos/#{OWNER}/#{repo}/labels").map { |l| l["name"] }
+  existing_labels = api("repos/#{OWNER}/#{repo}/labels").to_h { |l| [ l["name"], l["color"] ] }
   repo_items.flat_map { |i| labels_for(i) }.uniq.each do |name|
-    next if existing_labels.include?(name)
+    color = LABEL_COLORS.fetch(name.split(":").first)
+    next if existing_labels[name] == color
 
     puts "  label #{name}"
-    gh("label", "create", name, "--repo", "#{OWNER}/#{repo}",
-       "--color", LABEL_COLORS.fetch(name.split(":").first), write: true)
+    gh("label", "create", name, "--repo", "#{OWNER}/#{repo}", "--color", color, "--force", write: true)
   end
 
   existing = api("repos/#{OWNER}/#{repo}/milestones?state=all").to_h { |m| [ m["title"], m["number"] ] }
@@ -139,6 +139,8 @@ ITEMS.each do |item|
   body = render(item["body"], item["repo"], issues, ITEMS)
   update = {}
   update[:body] = body if issue["body"] != body
+  milestone = milestones[[ item["repo"], item["milestone"] ]]
+  update[:milestone] = milestone if milestone && issue.dig("milestone", "number") != milestone
   update.merge!(state: "closed", state_reason: "completed") if item["status"] == "done" && issue["state"] != "closed"
   next if update.empty?
 

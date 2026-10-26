@@ -275,7 +275,7 @@
     "areas": [
       "data"
     ],
-    "body": "## Goal\n\nThe directory shows real, correct places and the first real owners and content are in place.\n\n## Business rules\n\n- Imported places are owned by the super admin so they are visible without a subscription. When the real owner joins, move the firm to their account from the dashboard (the owner must be a registered `firm_admin`).\n- Uncertain places are imported as `pending`; temporarily closed ones as `suspended`.\n\n## Definition of done\n\n- [ ] Pending places are reviewed and either approved or removed.\n- [ ] Every pharmacy, clinic and hospital has a phone number or a note why not.\n- [ ] Ten real owners are onboarded.\n\n## Issues\n\n- [ ] {{D-01}}\n- [ ] {{D-02}}\n- [ ] {{D-03}}\n- [ ] {{D-04}}\n- [ ] {{D-05}}\n- [ ] {{D-06}}\n- [ ] {{D-07}}\n- [ ] {{D-08}}\n\n---\n_Backlog id `ED` · Aghour data & content_"
+    "body": "## Goal\n\nThe directory shows real, correct places and the first real owners and content are in place.\n\n## Business rules\n\n- Imported places are owned by the super admin so they are visible without a subscription. When the real owner joins, move the firm to their account from the dashboard (the owner must be a registered `firm_admin`).\n- Doubtful places are checked by a person before they stay listed (D-02).\n\n## Definition of done\n\n- [ ] The seven doubtful places are checked and kept, suspended or removed.\n- [ ] Every pharmacy, clinic and hospital has a phone number or a note why not.\n- [ ] Ten real owners are onboarded.\n\n## Issues\n\n- [ ] {{D-01}}\n- [ ] {{D-02}}\n- [ ] {{D-03}}\n- [ ] {{D-04}}\n- [ ] {{D-05}}\n- [ ] {{D-06}}\n- [ ] {{D-07}}\n- [ ] {{D-08}}\n\n---\n_Backlog id `ED` · Aghour data & content_"
   },
   {
     "id": "ES",
@@ -2540,7 +2540,7 @@
       "infra",
       "tests"
     ],
-    "body": "## Summary\n\nThe repository has no workflows. `.github/workflows/ci.yml` is part of this kit; this issue is the rollout.\n\n## Tasks\n\n- [ ] Merge the kit and let CI run on a pull request\n- [ ] Fix or baseline any Rubocop or Brakeman findings\n- [ ] Make the `ci` check required on `main` (see S-02)\n\n## Acceptance criteria\n\n- [ ] A pull request cannot merge with failing CI\n\n## Blocks\n\n- {{S-02}}\n\n---\n_Backlog id `P13-05` · Phase 13 · Hardening & launch_"
+    "body": "## Summary\n\nThe repository has no GitHub Actions workflows yet.\n\n## Tasks\n\n- [ ] Add `.github/workflows/ci.yml` running `bin/rubocop`, `bundle exec brakeman -q --no-pager` and `bundle exec rspec` against PostgreSQL\n- [ ] Fix or baseline the Rubocop findings (2 known in `config/application.rb`) and the known spec failures\n- [ ] Make the `ci` check required on `main` (see S-02)\n\n## Acceptance criteria\n\n- [ ] A pull request cannot merge with failing CI\n\n## Blocks\n\n- {{S-02}}\n\n---\n_Backlog id `P13-05` · Phase 13 · Hardening & launch_"
   },
   {
     "id": "P13-06",
@@ -2649,11 +2649,11 @@
     "priority": "p1",
     "size": "S",
     "horizon": "now",
-    "status": "todo",
+    "status": "partial",
     "areas": [
       "data"
     ],
-    "body": "## Summary\n\nThe old `demo.rb` created fictional owners, firms, news and subscriptions plus 51 places imported from Google Maps. The new seed imports only the 79 real places from the curated file. It cleans names (removes decoration), shortens addresses to the Arabic street part, and normalizes phones.\n\nThe change is in the second commit of the backlog patch together with the updated `spec/seeds_spec.rb` and README section. It could not be run in the authoring environment, so run `bundle exec rspec spec/seeds_spec.rb` before merging.\n\n## Tasks\n\n- [ ] Apply the commit, run `bin/rails db:reset` locally and open the dashboard\n- [ ] Run the whole spec suite\n- [ ] Merge; reset the staging database if it holds the old fictional data\n\n## Acceptance criteria\n\n- [ ] Seeding twice gives 79 firms, 72 active, 5 pending, 2 suspended\n- [ ] No fictional owner exists\n\n---\n_Backlog id `D-01` · Aghour data & content_"
+    "body": "## Summary\n\n`db/seeds/demo.rb` already imports the 79 real places from `db/seeds/aghour_al_kubra_places.json`, all owned by the super admin. `spec/seeds_spec.rb` still expects the old fictional demo data, so 4 of its examples fail.\n\n## Tasks\n\n- [x] Import the real places from the curated JSON file\n- [ ] Update `spec/seeds_spec.rb` to the new data and its idempotence\n- [ ] Reset the staging database if it still holds the old fictional data\n\n## Acceptance criteria\n\n- [ ] Seeding twice creates nothing new\n- [ ] `bundle exec rspec spec/seeds_spec.rb` passes\n- [ ] No fictional owner exists\n\n---\n_Backlog id `D-01` · Aghour data & content_"
   },
   {
     "id": "D-02",
@@ -2672,7 +2672,7 @@
       "data",
       "admin"
     ],
-    "body": "## Summary\n\n**Pending (location not confirmed):** صيدلية د.عاطف ابو عرب, مطعم البرنس, سوبر ماركت اليوم, صلاح حجازي (phone repair), عيادة الدكتور محمود صبحي.\n\n**Suspended (listed as temporarily closed):** مدرسة أجهور الكبرى الثانوية بنين, مكتبة ابوعبده.\n\n## Tasks\n\n- [ ] Confirm each place exists and where it is; add coordinates (see D-03)\n- [ ] Approve it in the dashboard, or delete it\n- [ ] For the two suspended places check whether they reopened\n\n## Acceptance criteria\n\n- [ ] No place stays pending without a reason\n\n---\n_Backlog id `D-02` · Aghour data & content_"
+    "body": "## Summary\n\nThe seed imports every place as `active`. These seven need a check first.\n\n**Location not confirmed:** صيدلية د.عاطف ابو عرب, مطعم البرنس, سوبر ماركت اليوم, صلاح حجازي (phone repair), عيادة الدكتور محمود صبحي.\n\n**Listed as temporarily closed:** مدرسة أجهور الكبرى الثانوية بنين, مكتبة ابوعبده.\n\n## Tasks\n\n- [ ] Confirm each place exists and where it is; add coordinates (see D-03)\n- [ ] Keep it active, suspend it, or delete it in the dashboard\n- [ ] Optionally carry a status in the JSON so the seed imports doubtful places as `pending`\n\n## Acceptance criteria\n\n- [ ] Each of the seven places has been checked\n\n---\n_Backlog id `D-02` · Aghour data & content_"
   },
   {
     "id": "D-03",
