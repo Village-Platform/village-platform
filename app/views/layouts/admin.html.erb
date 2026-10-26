@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html <%= tag.attributes({ lang: "ar", dir: "rtl" }.merge(theme_attribute)) %>>
 <head>
   <title><%= [content_for(:title), t("admin.app_name")].compact.join(" · ") %></title>
   <%= render "admin/shared/head" %>

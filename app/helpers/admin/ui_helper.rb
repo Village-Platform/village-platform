@@ -66,6 +66,15 @@ module Admin
       end
     end
 
+    # No cookie means "follow the operating system", which the stylesheet handles with a
+    # prefers-color-scheme block; only an explicit choice pins the attribute.
+    def theme_attribute
+      theme = cookies[:admin_theme]
+      return {} unless Admin::ThemeController::THEMES.include?(theme)
+
+      { "data-theme" => theme }
+    end
+
     def initials(name)
       name.to_s.split.first(2).map { |part| part[0] }.join
     end

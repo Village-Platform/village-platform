@@ -19,6 +19,8 @@ Rails.application.routes.draw do
 
     root "dashboard#show"
 
+    patch "theme", to: "theme#update", as: :theme
+
     resources :subscriptions, only: %i[index show] do
       member do
         get :screenshot
