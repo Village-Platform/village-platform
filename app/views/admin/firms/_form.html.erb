@@ -21,7 +21,7 @@
     <div class="field full"><%= f.label :description, "الوصف" %><%= f.text_area :description %></div>
   </div>
   <div class="form-actions">
-    <%= f.submit "حفظ", class: "btn btn-gold" %>
+    <%= f.submit "حفظ", class: "btn" %>
     <%= link_to "إلغاء", firm.persisted? ? admin_firm_path(firm) : admin_firms_path, class: "btn btn-ghost" %>
   </div>
 <% end %>

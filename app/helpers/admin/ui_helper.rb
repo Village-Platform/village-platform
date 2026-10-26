@@ -50,6 +50,20 @@ module Admin
       time ? l(time.to_date, format: "%Y-%m-%d") : "—"
     end
 
+    # The design filters by enum with a tab row rather than a <select>. Other active
+    # filters ride along, so switching status does not silently drop a search.
+    def filter_tabs(param, options, all_label: "الكل")
+      current = params[param].presence
+      rows = [ [ all_label, nil ] ] + options
+
+      tag.div(class: "tabs") do
+        safe_join(rows.map { |label, value|
+          link_to label, url_for(filter_params(param => value, page: nil)),
+                  class: [ "tab", ("tab-on" if current == value) ]
+        })
+      end
+    end
+
     def nav_group(label, &block)
       safe_join([ tag.p(label, class: "nav-section"), capture(&block) ])
     end

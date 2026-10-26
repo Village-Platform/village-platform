@@ -1,7 +1,7 @@
 <% s = @subscription %>
 <%= page_header "طلب اشتراك ##{s.id}", subtitle: "#{s.user.name} — #{s.subscription_plan.name}" do %>
   <%= enum_badge(Subscription, :status, s.status) %>
-  <%= link_to admin_subscriptions_path, class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 18) %> رجوع<% end %>
+  <%= link_to admin_subscriptions_path, class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 16) %> رجوع<% end %>
 <% end %>
 
 <% if s.pending? %>
@@ -12,7 +12,7 @@
       برقم العملية <strong class="ltr"><%= s.transaction_reference %></strong> قبل الاعتماد.</p>
     <div class="grid grid-2">
       <div>
-        <%= button_to approve_admin_subscription_path(s), method: :patch, class: "btn btn-gold",
+        <%= button_to approve_admin_subscription_path(s), method: :patch, class: "btn",
               form: { data: { confirm: "اعتماد هذا الاشتراك؟ سيتم تفعيله وإشعار صاحب المنشأة." } } do %>
           <%= icon(:check) %> اعتماد الاشتراك
         <% end %>

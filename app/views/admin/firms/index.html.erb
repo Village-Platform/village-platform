@@ -1,41 +1,41 @@
-<%= page_header "المنشآت", subtitle: "الأطباء والمطاعم والمحلات وكل خدمات القرية" do %>
-  <%= link_to new_admin_firm_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إضافة منشأة<% end %>
+<%= page_header "الأنشطة", subtitle: "#{@meta[:total]} نشاطاً في #{@categories.size} تصنيفاً" do %>
+  <%= link_to new_admin_firm_path, class: "btn" do %><%= icon(:plus, size: 16) %> إضافة نشاط<% end %>
 <% end %>
 
-<%= form_with url: admin_firms_path, method: :get, class: "filters" do |f| %>
-  <div class="field search"><%= f.label :q, "بحث" %><%= f.search_field :q, value: params[:q], placeholder: "اسم المنشأة" %></div>
-  <div class="field">
-    <%= f.label :status, "الحالة" %>
-    <%= f.select :status, options_for_select(enum_options(Firm, :status), params[:status]), include_blank: "الكل" %>
-  </div>
-  <div class="field">
-    <%= f.label :category_id, "القسم" %>
-    <%= f.select :category_id, options_from_collection_for_select(@categories, :id, :name, params[:category_id]), include_blank: "الكل" %>
-  </div>
-  <%= button_tag type: "submit", class: "btn", name: nil do %><%= icon(:search, size: 18) %> تصفية<% end %>
-<% end %>
+<div class="flex flex-wrap gap-2 items-center">
+  <%= filter_tabs :status, enum_options(Firm, :status) %>
+  <div class="flex-1"></div>
+  <%= form_with url: admin_firms_path, method: :get, class: "flex flex-wrap gap-2 items-center" do |f| %>
+    <%= f.hidden_field :status, value: params[:status] %>
+    <%= f.search_field :q, value: params[:q], placeholder: "اسم النشاط", class: "w-44", "aria-label": "بحث" %>
+    <%= f.select :category_id,
+          options_from_collection_for_select(@categories, :id, :name, params[:category_id]),
+          { include_blank: "كل التصنيفات" }, { class: "w-40", "aria-label": "التصنيف" } %>
+    <%= button_tag type: "submit", class: "btn btn-ghost", name: nil, title: "تصفية" do %><%= icon(:search, size: 16) %><% end %>
+  <% end %>
+</div>
 
-<div class="table-wrap">
+<div class="tbl">
   <% if @firms.any? %>
     <table>
-      <thead><tr><th>المنشأة</th><th>القسم</th><th>المالك</th><th>الحالة</th><th>ظاهرة للجمهور</th><th></th></tr></thead>
+      <thead><tr><th>النشاط</th><th>التصنيف</th><th>المالك</th><th>ظاهر</th><th>الحالة</th><th>إجراءات</th></tr></thead>
       <tbody>
         <% @firms.each do |firm| %>
           <tr>
             <td><%= link_to firm.name, admin_firm_path(firm), class: "cell-main" %><span class="cell-sub ltr"><%= firm.phone %></span></td>
             <td><%= firm.category.name %></td>
             <td><%= firm.owner.name %></td>
+            <td><%= switch(@visible_ids.include?(firm.id)) %></td>
             <td><%= enum_badge(Firm, :status, firm.status) %></td>
-            <td><%= yes_no_badge(@visible_ids.include?(firm.id)) %></td>
             <td class="actions">
               <% unless firm.active? %>
                 <%= button_to "اعتماد", approve_admin_firm_path(firm), method: :patch, class: "btn btn-sm" %>
               <% end %>
               <% unless firm.suspended? %>
                 <%= button_to "إيقاف", suspend_admin_firm_path(firm), method: :patch, class: "btn btn-ghost btn-sm",
-                      form: { data: { confirm: "إيقاف المنشأة وإخفاؤها من التطبيق؟" } } %>
+                      form: { data: { confirm: "إيقاف النشاط وإخفاؤه من التطبيق؟" } } %>
               <% end %>
-              <%= link_to edit_admin_firm_path(firm), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 16) %><% end %>
+              <%= link_to edit_admin_firm_path(firm), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 14) %><% end %>
             </td>
           </tr>
         <% end %>

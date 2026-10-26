@@ -1,15 +1,15 @@
 <%= page_header @firm.name, subtitle: @firm.category.name do %>
   <%= enum_badge(Firm, :status, @firm.status) %>
   <% unless @firm.active? %>
-    <%= button_to approve_admin_firm_path(@firm), method: :patch, class: "btn" do %><%= icon(:check, size: 18) %> اعتماد<% end %>
+    <%= button_to approve_admin_firm_path(@firm), method: :patch, class: "btn" do %><%= icon(:check, size: 16) %> اعتماد<% end %>
   <% end %>
   <% unless @firm.suspended? %>
     <%= button_to suspend_admin_firm_path(@firm), method: :patch, class: "btn btn-ghost",
-          form: { data: { confirm: "إيقاف المنشأة وإخفاؤها من التطبيق؟" } } do %><%= icon(:close, size: 18) %> إيقاف<% end %>
+          form: { data: { confirm: "إيقاف المنشأة وإخفاؤها من التطبيق؟" } } do %><%= icon(:close, size: 16) %> إيقاف<% end %>
   <% end %>
-  <%= link_to edit_admin_firm_path(@firm), class: "btn btn-ghost" do %><%= icon(:edit, size: 18) %> تعديل<% end %>
+  <%= link_to edit_admin_firm_path(@firm), class: "btn btn-ghost" do %><%= icon(:edit, size: 16) %> تعديل<% end %>
   <%= button_to admin_firm_path(@firm), method: :delete, class: "btn btn-danger",
-        form: { data: { confirm: "حذف المنشأة نهائيًا؟" } } do %><%= icon(:trash, size: 18) %> حذف<% end %>
+        form: { data: { confirm: "حذف المنشأة نهائيًا؟" } } do %><%= icon(:trash, size: 16) %> حذف<% end %>
 <% end %>
 
 <section class="card">
@@ -28,7 +28,7 @@
     <dd>
       <% if @firm.latitude && @firm.longitude %>
         <%= link_to "https://maps.google.com/?q=#{@firm.latitude},#{@firm.longitude}", target: "_blank", rel: "noopener" do %>
-          <%= icon(:map, size: 18) %> فتح على الخريطة
+          <%= icon(:map, size: 16) %> فتح على الخريطة
         <% end %>
       <% else %>—<% end %>
     </dd>
