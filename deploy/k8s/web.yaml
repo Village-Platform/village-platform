@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: village-platform
+          # Built on the node and imported into containerd; there is no registry yet.
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: village-config
+            - secretRef:
+                name: village-env
+          env:
+            # $(VAR) expands from the secret loaded above.
+            - name: DATABASE_URL
+              value: postgres://village:$(POSTGRES_PASSWORD)@postgres:5432/aghour_services_production
+          ports:
+            - containerPort: 3000
+          # The entrypoint runs db:prepare_locked before Puma, so the first boot is slow.
+          startupProbe:
+            httpGet: { path: /up, port: 3000 }
+            periodSeconds: 5
+            failureThreshold: 60
+          readinessProbe:
+            httpGet: { path: /up, port: 3000 }
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /up, port: 3000 }
+            periodSeconds: 20
+            failureThreshold: 3
+          resources:
+            requests: { cpu: 200m, memory: 256Mi }
+            limits: { memory: 640Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  selector:
+    app: web
+  ports:
+    - port: 80
+      targetPort: 3000
+---
+# Traefik ships with k3s and listens on the node's ports 80/443.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web
+spec:
+  ingressClassName: traefik
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port:
+                  number: 80

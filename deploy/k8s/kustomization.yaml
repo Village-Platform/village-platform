@@ -1,0 +1,14 @@
+# Single-node k3s deployment. Apply with: kubectl apply -k deploy/k8s
+# The secret "village-env" is created by hand on the server (see README in this folder), never committed.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: village
+resources:
+  - namespace.yaml
+  - config.yaml
+  - postgres.yaml
+  - web.yaml
+  - cron.yaml
+images:
+  - name: village-platform
+    newTag: 1cefc58

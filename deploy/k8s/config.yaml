@@ -1,0 +1,19 @@
+# Non-secret settings. Secrets (SECRET_KEY_BASE, CRON_SECRET, POSTGRES_PASSWORD, SUPER_ADMIN_PASSWORD)
+# live in the "village-env" Secret.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: village-config
+data:
+  RAILS_ENV: production
+  RAILS_MAX_THREADS: "3"
+  RAILS_LOG_LEVEL: info
+  CORS_ORIGINS: "*"
+  SUPER_ADMIN_PHONE: "01000000000"
+  INSTAPAY_ADDRESS: yourname@instapay
+  VODAFONE_CASH_NUMBER: 010XXXXXXXX
+  # Files go to PostgreSQL (stored_files) so the web pod stays stateless.
+  ACTIVE_STORAGE_SERVICE: database
+  # No TLS yet (plain HTTP on the IP). Set both to "1" once a domain + certificate is in front.
+  # ASSUME_SSL: "1"
+  # FORCE_SSL: "1"
