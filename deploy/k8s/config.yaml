@@ -14,6 +14,8 @@ data:
   VODAFONE_CASH_NUMBER: 010XXXXXXXX
   # Files go to PostgreSQL (stored_files) so the web pod stays stateless.
   ACTIVE_STORAGE_SERVICE: database
-  # No TLS yet (plain HTTP on the IP). Set both to "1" once a domain + certificate is in front.
-  # ASSUME_SSL: "1"
-  # FORCE_SSL: "1"
+  # Cloudflare terminates TLS for aghour.dorfsys.com. ASSUME_SSL makes Rails treat every request as
+  # HTTPS (also the CronJob's in-cluster http://web call), so FORCE_SSL adds HSTS and secure cookies
+  # without redirecting.
+  ASSUME_SSL: "1"
+  FORCE_SSL: "1"

@@ -55,7 +55,8 @@ spec:
     - port: 80
       targetPort: 3000
 ---
-# Traefik ships with k3s and listens on the node's ports 80/443.
+# Traefik ships with k3s and listens on the node's ports 80/443. Cloudflare proxies the host
+# and terminates TLS; requests for any other host (e.g. the bare IP) get Traefik's 404.
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -63,7 +64,8 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - http:
+    - host: aghour.dorfsys.com
+      http:
         paths:
           - path: /
             pathType: Prefix

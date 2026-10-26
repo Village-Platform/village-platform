@@ -47,7 +47,9 @@ kubectl -n village exec postgres-0 -- pg_dump -U village aghour_services_product
 
 ## Known gaps
 
-- Plain HTTP on the IP. Add a domain + cert-manager (or Traefik's ACME) before real users, then set
-  `ASSUME_SSL` / `FORCE_SSL` in `config.yaml`. JWTs and passwords travel in clear text until then.
+- `aghour.dorfsys.com` is proxied by Cloudflare, which terminates TLS. Because `ASSUME_SSL` treats
+  every request as HTTPS, Rails never redirects plain HTTP itself: keep Cloudflare's
+  "Always Use HTTPS" on. Use SSL mode Full (strict) with a Cloudflare Origin Certificate so the
+  Cloudflare → origin leg is encrypted too, and firewall ports 80/443 to Cloudflare's IP ranges.
 - No database backups. The data is on one disk of one VM.
 - No registry: the image exists only on this node.
