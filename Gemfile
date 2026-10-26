@@ -29,3 +29,5 @@ group :development, :test do
   gem "brakeman", require: false
   gem "rubocop-rails-omakase", require: false
 end
+
+gem "tailwindcss-rails", "~> 4.7"

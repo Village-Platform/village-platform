@@ -1,0 +1,74 @@
+/* Aghour admin design system.
+   Preflight is deliberately NOT imported yet: admin.css still styles the dashboard and its
+   own reset must keep winning until the component layer lands. */
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/utilities" layer(utilities);
+
+/* Tailwind only emits utilities it can see. The helpers path is not optional: Admin::UiHelper
+   builds class names in Ruby, and they are invisible to a views-only scan. */
+@source "../../views";
+@source "../../helpers";
+
+@theme {
+  --color-page: rgb(var(--page));
+  --color-surface: rgb(var(--surface));
+  --color-surface2: rgb(var(--surface2));
+  --color-ink: rgb(var(--ink));
+  --color-muted: rgb(var(--muted));
+  --color-line: rgb(var(--line));
+  --color-gold: rgb(var(--gold));
+  --color-goldink: rgb(var(--goldink));
+  --color-brand: rgb(var(--brand));
+  --color-ok: rgb(var(--ok));
+  --color-bad: rgb(var(--bad));
+}
+
+/* Colour has exactly one definition site. Every utility above reads these channels, so a theme
+   is a swap of the channels rather than a parallel set of classes — no `dark:` variants anywhere. */
+:root {
+  --page: 255 255 255;
+  --surface: 255 255 255;
+  --surface2: 245 245 245;
+  --ink: 0 0 0;
+  --muted: 82 82 82;
+  --line: 226 226 226;
+  --gold: 194 141 64;
+  --goldink: 122 85 22;
+  --brand: 11 55 39;
+  --ok: 31 122 77;
+  --bad: 179 64 47;
+  color-scheme: light;
+}
+
+/* The :not() guard is load-bearing: without it an explicit light choice loses to a dark OS. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: 8 40 28;
+    --surface: 13 52 37;
+    --surface2: 18 64 47;
+    --ink: 244 236 217;
+    --muted: 157 181 168;
+    --line: 29 77 58;
+    --gold: 217 164 88;
+    --goldink: 232 192 126;
+    --brand: 244 236 217;
+    --ok: 95 207 147;
+    --bad: 255 141 122;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --page: 8 40 28;
+  --surface: 13 52 37;
+  --surface2: 18 64 47;
+  --ink: 244 236 217;
+  --muted: 157 181 168;
+  --line: 29 77 58;
+  --gold: 217 164 88;
+  --goldink: 232 192 126;
+  --brand: 244 236 217;
+  --ok: 95 207 147;
+  --bad: 255 141 122;
+  color-scheme: dark;
+}
