@@ -85,16 +85,15 @@ module Admin
       tag.div(capture(&block), class: "actions-row")
     end
 
-    # Both marks ship on every page; CSS shows the one that suits the active theme.
+    # Both variants ship on every page; CSS shows the one that suits the active theme.
     # An <img> cannot swap source by media query, and the server does not know the
     # OS preference when no cookie has been set.
     def brand_mark(size: 36)
-      tag.span(class: "brand-mark") do
-        safe_join([
-          image_tag("/brand/web/mark.png", alt: "", width: size, height: size, class: "on-light"),
-          image_tag("/brand/web/mark-light.png", alt: "", width: size, height: size, class: "on-dark")
-        ])
-      end
+      themed_image("mark", width: size, height: size)
+    end
+
+    def brand_logo(width: 150, height: 150)
+      themed_image("logo", width: width, height: height)
     end
 
     def theme_toggle
@@ -129,6 +128,18 @@ module Admin
     # Keeps current filters when building links (pagination, etc.)
     def filter_params(**overrides)
       request.query_parameters.symbolize_keys.merge(overrides)
+    end
+
+    private
+
+    # "<name>.png" is drawn for light surfaces, "<name>-light.png" for dark ones.
+    def themed_image(name, **attrs)
+      tag.span(class: "brand-mark") do
+        safe_join([
+          image_tag("/brand/web/#{name}.png", alt: "", class: "on-light", **attrs),
+          image_tag("/brand/web/#{name}-light.png", alt: "", class: "on-dark", **attrs)
+        ])
+      end
     end
   end
 end

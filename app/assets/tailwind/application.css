@@ -315,6 +315,7 @@
   .auth-panel { @apply grid place-items-center p-8; }
   .auth-card { @apply w-full max-w-sm; }
   .auth-card .logo { @apply block w-36 mx-auto mb-2; }
+  .auth-card .logo img { @apply w-full h-auto; }
   .auth-card h1 { @apply text-center text-base; }
   .auth-card .subtitle { @apply text-center text-muted text-xs mt-1 mb-6; }
   .auth-card .btn { @apply w-full py-3 text-sm mt-2; }

@@ -18,6 +18,7 @@ docker compose up -d db                  # PostgreSQL on host port 5434 (set DB_
 bin/setup --skip-server                  # bundle install, copy .env, db:prepare (without --skip-server it boots the server)
 bin/rails db:reset                       # drop/recreate/seed development (seeds.rb + demo.rb)
 bin/rails s
+bin/rails tailwindcss:watch              # rebuild admin CSS on change; run beside the server
 
 bundle exec rspec                        # full suite
 bundle exec rspec spec/requests/api/v1/firms_spec.rb        # one file
@@ -46,10 +47,33 @@ The app is **not** `api_only`. Both halves share the models, policies and servic
   super-admin endpoints live under `Api::V1::Admin::`.
 - **`/admin/*`** — `Admin::BaseController < ActionController::Base`. Cookie session
   (`AdminSession`, 12h TTL, re-checks `super_admin?` on every request), server-rendered ERB,
-  Arabic RTL, one hand-written stylesheet (`app/assets/stylesheets/admin.css`) and inline SVG icons
-  (`Admin::IconsHelper`). Deliberately no admin gem and no JS framework — keep it that way.
-  `Admin::SessionsController` sits outside `BaseController` (it can't require an admin) and carries
-  Rails 8 `rate_limit` plus `reset_session` against fixation.
+  Arabic RTL, Tailwind (`app/assets/tailwind/application.css` → `app/assets/builds/tailwind.css`)
+  and inline SVG icons (`Admin::IconsHelper`). Deliberately no admin gem and no JS framework —
+  keep it that way. `Admin::SessionsController` sits outside `BaseController` (it can't require an
+  admin) and carries Rails 8 `rate_limit` plus `reset_session` against fixation.
+
+### Admin design system
+
+Colour has exactly one definition site: eleven rgb channel triplets (`--gold`, `--surface`, …) in
+`application.css`, mapped once into `@theme` as `--color-*`. The themes redefine those channels
+under `[data-theme]`, so **every utility flips automatically and there are no `dark:` variants
+anywhere** — add one and you have created a second definition site. Repeated patterns are
+`@apply` components in `@layer components` (`.card`, `.btn`, `.tbl`, `.badge-*`, `.stat`, `.tab`,
+`.switch`); keep them there rather than repeating utility strings across views.
+
+Three theme states: no `admin_theme` cookie follows `prefers-color-scheme`, `light`/`dark` pin it.
+The dark block is declared twice — once guarded by `:root:not([data-theme="light"])` inside the
+media query, once as `:root[data-theme="dark"]` — and dropping that guard makes an explicit light
+choice lose to a dark OS. `Admin::ThemeController` writes the cookie against an allowlist because
+the value lands in an HTML attribute. Two rules cannot be utilities and stay hand-written: the
+`body.nav-open .sidebar` drawer and `.brand-mark` visibility, both keyed off an ancestor.
+
+Brand images come in pairs (`mark.png`/`mark-light.png`, `logo.png`/`logo-light.png`); render them
+through `brand_mark` / `brand_logo`, which ship both and let CSS pick, since an `<img>` cannot swap
+source by media query.
+
+Admin view copy says **نشاط** and **تصنيف**, not منشأة/قسم. `config/locales/*.yml` deliberately
+still says منشأة: those strings reach the Android client, where a rename is a contract change.
 
 Admin actions that change subscription state call the same `Subscriptions::Approve` / `Reject`
 services as the API, so renewal stacking, role promotion and notifications can't drift apart.
