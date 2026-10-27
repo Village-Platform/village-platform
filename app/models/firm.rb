@@ -6,7 +6,8 @@ class Firm < ApplicationRecord
   enum :status, { pending: 0, active: 1, suspended: 2 }, default: :pending, validate: true
 
   belongs_to :category
-  belongs_to :owner, class_name: "User", inverse_of: :firms
+  # Optional: a firm without an owner is managed by super admins only.
+  belongs_to :owner, class_name: "User", inverse_of: :firms, optional: true
   # Media has no meaning without its firm, so it is the one association that cascades.
   has_many :media, -> { ordered }, class_name: "FirmMedium", inverse_of: :firm, dependent: :destroy
   has_many :featured_placements, dependent: :delete_all
@@ -15,10 +16,11 @@ class Firm < ApplicationRecord
 
   scope :search, ->(term) { where("firms.name ILIKE ?", "%#{sanitize_sql_like(term)}%") }
 
-  # Public listing: approved firms whose owner is subscribed (or is a super admin).
+  # Public listing: approved firms that have no owner, or whose owner is subscribed or a super admin.
   scope :visible, -> {
     active.where(owner_id: Subscription.current.select(:user_id))
           .or(active.where(owner_id: User.super_admin.select(:id)))
+          .or(active.where(owner_id: nil))
   }
 
   # Public listing order: subscribers above the super admin's imported places, higher plan
@@ -43,6 +45,7 @@ class Firm < ApplicationRecord
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90 }, allow_nil: true
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180 }, allow_nil: true
   validate :custom_fields_match_category
+  validate :owner_can_manage_firms, if: -> { owner_id.present? && will_save_change_to_owner_id? }
 
   # [{ key, label, value }] for the category's current fields that have a value. Labels are
   # resolved here so a client can show them as plain rows. A removed field's value stays stored
@@ -73,6 +76,12 @@ class Firm < ApplicationRecord
     rescue ArgumentError
       errors.add(:custom_fields, :invalid, message: "#{key}: قيمة غير صحيحة")
     end.compact
+  end
+
+  # Only firm managers (firm admins) and super admins can own a firm; whether they may edit it
+  # right now also depends on their subscription (FirmPolicy).
+  def owner_can_manage_firms
+    errors.add(:owner, :invalid) unless owner&.can_manage_firms?
   end
 
   def custom_fields_match_category

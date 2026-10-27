@@ -4,7 +4,7 @@ module Admin
 
     CSV_COLUMNS = {
       "id" => :id.to_proc, "الاسم" => :name.to_proc, "التصنيف" => ->(f) { f.category.name },
-      "المالك" => ->(f) { f.owner.name }, "هاتف المالك" => ->(f) { f.owner.phone }, "الحالة" => :status.to_proc,
+      "المالك" => ->(f) { f.owner&.name }, "هاتف المالك" => ->(f) { f.owner&.phone }, "الحالة" => :status.to_proc,
       "الهاتف" => :phone.to_proc, "واتساب" => :whatsapp.to_proc, "العنوان" => :address.to_proc,
       "تاريخ الإضافة" => :created_at.to_proc
     }.freeze
@@ -30,7 +30,7 @@ module Admin
     end
 
     def new
-      @firm = Firm.new(status: :active, owner: current_admin)
+      @firm = Firm.new(status: :active) # no owner until one is chosen
     end
 
     def create

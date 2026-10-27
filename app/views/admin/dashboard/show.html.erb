@@ -135,7 +135,7 @@
               <tr>
                 <td><%= link_to firm.name, admin_firm_path(firm), class: "cell-main" %></td>
                 <td><%= firm.category.name %></td>
-                <td><%= firm.owner.name %></td>
+                <td><%= firm.owner&.name || "—" %></td>
                 <td><%= button_to "اعتماد", approve_admin_firm_path(firm), method: :patch, class: "btn btn-sm" %></td>
               </tr>
             <% end %>

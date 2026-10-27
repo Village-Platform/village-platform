@@ -19,7 +19,14 @@
       <%= yes_no_badge(@visible) %>
       <% unless @visible %><small>تظهر فقط إذا كانت مفعّلة واشتراك المالك ساري.</small><% end %>
     </dd>
-    <dt>المالك</dt><dd><%= link_to @firm.owner.name, admin_user_path(@firm.owner) %> — <span class="ltr"><%= @firm.owner.phone %></span></dd>
+    <dt>المالك</dt>
+    <dd>
+      <% if @firm.owner %>
+        <%= link_to @firm.owner.name, admin_user_path(@firm.owner) %> — <span class="ltr"><%= @firm.owner.phone %></span>
+      <% else %>
+        <%= badge("بدون مالك") %> <small>يديره مدير النظام.</small>
+      <% end %>
+    </dd>
     <dt>الهاتف</dt><dd class="ltr"><%= @firm.phone.presence || "—" %></dd>
     <dt>واتساب</dt><dd class="ltr"><%= @firm.whatsapp.presence || "—" %></dd>
     <dt>العنوان</dt><dd><%= @firm.address.presence || "—" %></dd>

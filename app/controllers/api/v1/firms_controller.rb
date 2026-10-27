@@ -35,7 +35,11 @@ module Api
         authorize Firm
         return render_error(:forbidden, "subscription_required") unless current_user.can_add_firm?
 
-        firm = current_user.firms.create!(permitted_attributes(Firm))
+        # The creator owns the firm; a super admin may name another owner or none (owner_id: null).
+        attrs = permitted_attributes(Firm)
+        firm = Firm.new(attrs)
+        firm.owner = current_user unless attrs.key?(:owner_id) # only super admins may send owner_id
+        firm.save!
         render_record(firm, FirmSerializer, status: :created)
       end
 

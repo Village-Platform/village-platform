@@ -36,6 +36,11 @@ class User < ApplicationRecord
     @permissions.include?(permission)
   end
 
+  # A firm manager may create and edit firms only while a subscription is current.
+  def subscribed?
+    Subscription.current.exists?(user_id: id)
+  end
+
   def can_manage_firms?
     firm_admin? || super_admin?
   end

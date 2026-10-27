@@ -35,6 +35,11 @@ module ErrorHandling
     rescue_from Pundit::NotAuthorizedError do
       current_user ? render_error(:forbidden, "forbidden") : render_error(:unauthorized, "unauthorized")
     end
+
+    # Declared after NotAuthorizedError so it wins for this subclass.
+    rescue_from SubscriptionRequired do
+      render_error(:forbidden, "subscription_required")
+    end
   end
 
   private

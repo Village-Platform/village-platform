@@ -49,8 +49,8 @@ To start fresh: `bin/rails db:reset` (drops and recreates the development databa
 | Role          | Can do                                                        |
 |---------------|---------------------------------------------------------------|
 | `user`        | Browse categories, firms, news. Default on register.          |
-| `firm_admin`  | Create and manage **own** firms while subscribed (created as `pending`). |
-| `super_admin` | Everything: categories, news, approve firms, change roles.    |
+| `firm_admin`  | Create and manage **own** firms (many, up to the plan's `max_firms`) only while subscribed; created as `pending`. After expiry: can still delete, not edit. |
+| `super_admin` | Everything: categories, news, approve firms, change roles, and every firm — including firms with no owner (`owner_id: null`), which only super admins manage. |
 | `staff`       | Dashboard only, limited to the permissions a super admin grants (review payments, moderate firms, …). API clients should treat an unknown role like `user`. |
 
 What a subscription buys is set per plan: `max_firms`, `max_images_per_firm`, `max_videos_per_firm`,

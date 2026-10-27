@@ -29,7 +29,7 @@
           <tr>
             <td><%= link_to firm.name, admin_firm_path(firm), class: "cell-main" %><span class="cell-sub ltr"><%= firm.phone %></span></td>
             <td><%= firm.category.name %></td>
-            <td><%= firm.owner.name %></td>
+            <td><%= firm.owner&.name || "—" %></td>
             <td><%= switch(@visible_ids.include?(firm.id)) %></td>
             <td><%= enum_badge(Firm, :status, firm.status) %></td>
             <td class="actions">

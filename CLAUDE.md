@@ -141,8 +141,13 @@ and `en.yml`.
 
 These are easy to break from a single file and are covered by request specs:
 
-- **Firm visibility** is not just `status: active`. `Firm.visible` = active **and** the owner holds a
-  current subscription (or is a super admin). Expiry is purely time-based — no job flips a flag.
+- **Firm visibility** is not just `status: active`. `Firm.visible` = active **and** the firm has no
+  owner, or the owner holds a current subscription, or is a super admin.
+- **Firm ownership is optional.** `owner_id` may be null: such a firm is managed by super admins only.
+  A firm manager (`firm_admin`) owns many firms (up to the plan's `max_firms`) and may edit them and
+  their media **only while subscribed** — `FirmPolicy` raises `SubscriptionRequired` (403
+  `subscription_required`) otherwise; deleting their own firm or media stays allowed. Only super admins
+  set or clear `owner_id`, and only firm admins or super admins can be owners. Expiry is purely time-based — no job flips a flag.
   Any new public listing must go through `Firm.visible` or `policy_scope(Firm)`.
 - **Subscription `status` vs `state`.** The column is `pending/active/rejected`; `#state` derives the
   user-facing `scheduled/current/expired` from `starts_at`/`ends_at`. Serializers expose both.
