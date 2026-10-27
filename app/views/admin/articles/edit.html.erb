@@ -1,2 +1,25 @@
-<%= page_header "تعديل خبر" %>
+<%= page_header "تعديل خبر" do %>
+  <%= enum_badge(Article, :review_state, @article.review_state) %>
+<% end %>
+
+<% unless @article.approved? %>
+  <section class="card">
+    <div class="card-header"><h2>مراجعة المقال</h2></div>
+    <dl class="details">
+      <dt>الكاتب</dt><dd><%= link_to @article.author.name, admin_user_path(@article.author) %></dd>
+      <dt>النشاط</dt><dd><%= @article.firm ? link_to(@article.firm.name, admin_firm_path(@article.firm)) : "—" %></dd>
+      <% if @article.rejected? %><dt>سبب الرفض</dt><dd><%= @article.rejection_reason %></dd><% end %>
+    </dl>
+    <% if @article.pending? %>
+      <div class="flex flex-wrap gap-2 items-center mt">
+        <%= button_to approve_admin_article_path(@article), method: :patch, class: "btn btn-gold" do %><%= icon(:check, size: 16) %> نشر<% end %>
+        <%= form_with url: reject_admin_article_path(@article), method: :patch, class: "flex flex-wrap gap-2 items-center" do |f| %>
+          <%= f.text_field :reason, placeholder: "سبب الرفض", required: true, maxlength: 300, class: "w-52", "aria-label": "سبب الرفض" %>
+          <%= f.button type: "submit", class: "btn btn-danger" do %><%= icon(:close, size: 16) %> رفض<% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+<% end %>
+
 <%= render "form", article: @article %>

@@ -4,7 +4,9 @@ class Notification < ApplicationRecord
     subscription_approved: 0,
     subscription_rejected: 1,
     subscription_expiring: 2,
-    subscription_expired: 3
+    subscription_expired: 3,
+    article_approved: 4,
+    article_rejected: 5
   }, validate: true
 
   belongs_to :user

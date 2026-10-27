@@ -38,7 +38,12 @@ Rails.application.routes.draw do
       resources :media, only: %i[create destroy], controller: "firm_media"
     end
     resources :categories, except: :show
-    resources :articles, except: :show
+    resources :articles, except: :show do
+      member do
+        patch :approve
+        patch :reject
+      end
+    end
     resources :subscription_plans, except: :show
     resources :users, except: :destroy
     resources :audit_events, only: :index, path: "audit"
@@ -50,6 +55,7 @@ Rails.application.routes.draw do
       post "auth/login",    to: "auth#login"
 
       resource :me, only: %i[show update], controller: "me"
+      get "me/articles", to: "articles#mine"
 
       resources :categories do
         get :icon, on: :member
@@ -74,6 +80,12 @@ Rails.application.routes.draw do
 
       namespace :admin do
         resources :users, only: %i[index update]
+        resources :articles, only: :index do
+          member do
+            patch :approve
+            patch :reject
+          end
+        end
         resources :subscriptions, only: %i[index show] do
           member do
             get :payment_screenshot

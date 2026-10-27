@@ -33,6 +33,12 @@ en:
     subscription_expired:
       title: "Your subscription has ended"
       body: "Your %{plan} subscription has ended and your firm is hidden. Renew to show it again."
+    article_approved:
+      title: "Your article is published"
+      body: "«%{title}» was approved and is now visible in the app."
+    article_rejected:
+      title: "Your article was not approved"
+      body: "«%{title}» was not approved for this reason: %{reason}"
   payment_methods:
     instapay: "InstaPay"
     vodafone_cash: "Vodafone Cash"

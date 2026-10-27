@@ -3,10 +3,15 @@
 <% end %>
 
 <div class="flex flex-wrap gap-2 items-center">
+  <%= filter_tabs :review_state, enum_options(Article, :review_state), all_label: "كل الحالات" %>
+</div>
+
+<div class="flex flex-wrap gap-2 items-center">
   <%= filter_tabs :kind, enum_options(Article, :kind) %>
   <div class="flex-1"></div>
   <%= form_with url: admin_articles_path, method: :get, class: "flex flex-wrap gap-2 items-center" do |f| %>
     <%= f.hidden_field :kind, value: params[:kind] %>
+    <%= f.hidden_field :review_state, value: params[:review_state] %>
     <%= search_combobox("articles") do |attrs| %>
       <%= f.search_field :q, value: params[:q], placeholder: "العنوان", class: "w-52", "aria-label": "بحث", **attrs %>
     <% end %>
@@ -24,7 +29,9 @@
             <td><%= link_to truncate(article.title, length: 60), edit_admin_article_path(article), class: "cell-main" %></td>
             <td><%= enum_badge(Article, :kind, article.kind) %></td>
             <td>
-              <% if article.published_at.nil? %>
+              <% if article.pending? || article.rejected? %>
+                <%= enum_badge(Article, :review_state, article.review_state) %>
+              <% elsif article.published_at.nil? %>
                 <%= badge("مسودة") %>
               <% elsif article.published? %>
                 <%= badge("منشور", "green") %> <small><%= fmt_date(article.published_at) %></small>
@@ -34,6 +41,9 @@
             </td>
             <td><%= article.author.name %></td>
             <td class="actions">
+              <% if article.pending? %>
+                <%= button_to approve_admin_article_path(article), method: :patch, class: "btn btn-sm", title: "نشر" do %><%= icon(:check, size: 16) %><% end %>
+              <% end %>
               <%= link_to edit_admin_article_path(article), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 16) %><% end %>
               <%= button_to admin_article_path(article), method: :delete, class: "btn btn-ghost btn-sm", title: "حذف",
                     form: { data: { confirm: "حذف الخبر؟" } } do %><%= icon(:trash, size: 16) %><% end %>

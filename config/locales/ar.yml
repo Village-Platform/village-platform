@@ -33,6 +33,12 @@ ar:
     subscription_expired:
       title: "انتهى اشتراكك"
       body: "انتهى اشتراكك في باقة %{plan} وتم إخفاء منشأتك. جدّد الاشتراك لإظهارها مرة أخرى."
+    article_approved:
+      title: "تم نشر مقالك"
+      body: "تمت الموافقة على «%{title}» وأصبح ظاهرًا في التطبيق."
+    article_rejected:
+      title: "لم تتم الموافقة على مقالك"
+      body: "لم تتم الموافقة على «%{title}» للسبب التالي: %{reason}"
   payment_methods:
     instapay: "إنستاباي"
     vodafone_cash: "فودافون كاش"
@@ -91,6 +97,10 @@ ar:
         news: "خبر"
         article: "مقال"
         announcement: "إعلان"
+      review_state:
+        approved: "معتمد"
+        pending: "بانتظار المراجعة"
+        rejected: "مرفوض"
     subscription:
       status:
         pending: "قيد المراجعة"

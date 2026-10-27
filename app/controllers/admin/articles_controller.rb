@@ -1,10 +1,11 @@
 module Admin
   class ArticlesController < BaseController
-    before_action :set_article, only: %i[edit update destroy]
+    before_action :set_article, only: %i[edit update destroy approve reject]
 
     def index
       scope = Article.includes(:author).order(Arel.sql("published_at DESC NULLS FIRST"), id: :desc)
       scope = scope.where(kind: params[:kind]) if Article.kinds.key?(params[:kind])
+      scope = scope.where(review_state: params[:review_state]) if Article.review_states.key?(params[:review_state])
       scope = scope.where("articles.title ILIKE ?", like(params[:q])) if params[:q].present?
       @articles, @meta = paginate(scope)
     end
@@ -34,6 +35,23 @@ module Admin
 
     def destroy
       destroy_and_redirect(@article, admin_articles_path)
+    end
+
+    def approve
+      Articles::Review.approve(article: @article, reviewer: current_admin)
+      redirect_back_or_to admin_articles_path, notice: "تم نشر المقال وإشعار كاتبه."
+    rescue Subscriptions::ReviewError
+      redirect_back_or_to admin_articles_path, alert: "تمت مراجعة هذا المقال بالفعل."
+    end
+
+    def reject
+      reason = params[:reason].to_s.strip
+      return redirect_back_or_to(edit_admin_article_path(@article), alert: "يجب كتابة سبب الرفض.") if reason.blank?
+
+      Articles::Review.reject(article: @article, reviewer: current_admin, reason:)
+      redirect_back_or_to admin_articles_path, notice: "تم رفض المقال وإشعار كاتبه."
+    rescue Subscriptions::ReviewError
+      redirect_back_or_to admin_articles_path, alert: "تمت مراجعة هذا المقال بالفعل."
     end
 
     private

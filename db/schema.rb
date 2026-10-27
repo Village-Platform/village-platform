@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_28_090003) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_28_090004) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -51,10 +51,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090003) do
     t.datetime "published_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "review_state", default: 0, null: false
+    t.string "rejection_reason", limit: 300
+    t.bigint "firm_id"
+    t.bigint "reviewed_by_id"
+    t.datetime "reviewed_at"
     t.index "lower((title)::text) gin_trgm_ops", name: "index_articles_on_title_trigram", using: :gin
     t.index ["author_id"], name: "index_articles_on_author_id"
+    t.index ["firm_id"], name: "index_articles_on_firm_id"
     t.index ["kind", "published_at"], name: "index_articles_on_kind_and_published_at"
     t.index ["published_at"], name: "index_articles_on_published_at"
+    t.index ["review_state"], name: "index_articles_pending_review", where: "(review_state = 1)"
   end
 
   create_table "audit_events", force: :cascade do |t|
@@ -217,7 +224,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090003) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "articles", "firms"
   add_foreign_key "articles", "users", column: "author_id"
+  add_foreign_key "articles", "users", column: "reviewed_by_id"
   add_foreign_key "audit_events", "users", column: "actor_id"
   add_foreign_key "firm_media", "firms"
   add_foreign_key "firms", "categories"
