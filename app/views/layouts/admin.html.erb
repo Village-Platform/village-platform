@@ -56,16 +56,11 @@
           <h1><%= content_for(:title) %></h1>
           <% if content_for?(:subtitle) %><p><%= content_for(:subtitle) %></p><% end %>
         </div>
-        <div class="topbar-search" data-admin-search-widget>
+        <%= search_combobox("all", wrapper_class: "topbar-search") do |attrs| %>
           <label class="sr-only" for="admin-global-search">بحث في النظام</label>
-          <input id="admin-global-search" class="admin-search-input" type="search"
-                 placeholder="ابحث في الأنشطة والمستخدمين والاشتراكات…"
-                 autocomplete="off" role="combobox" aria-autocomplete="list"
-                 aria-expanded="false" aria-controls="admin-global-search-results"
-                 data-admin-search data-search-url="<%= admin_search_path %>" data-search-scope="all">
-          <ul id="admin-global-search-results" class="admin-search-results" role="listbox" hidden></ul>
-          <span class="sr-only" role="status" aria-live="polite" data-search-status></span>
-        </div>
+          <%= tag.input id: "admin-global-search", class: "admin-search-input", type: "search",
+                placeholder: "ابحث في الأنشطة والمستخدمين والاشتراكات…", autocomplete: "off", **attrs %>
+        <% end %>
         <%= theme_toggle %>
       </header>
 

@@ -7,14 +7,9 @@
   <div class="flex-1"></div>
   <%= form_with url: admin_users_path, method: :get, class: "flex flex-wrap gap-2 items-center" do |f| %>
     <%= f.hidden_field :role, value: params[:role] %>
-    <div class="searchable-field">
-      <%= f.search_field :q, value: params[:q], placeholder: "الاسم أو الهاتف أو البريد", class: "w-52",
-            "aria-label": "بحث", role: "combobox", "aria-autocomplete": "list",
-            "aria-expanded": "false", "aria-controls": "users-search-results",
-            data: { admin_search: true, search_url: admin_search_path, search_scope: "users" } %>
-      <ul id="users-search-results" class="admin-search-results" role="listbox" hidden></ul>
-      <span class="sr-only" role="status" aria-live="polite" data-search-status></span>
-    </div>
+    <%= search_combobox("users") do |attrs| %>
+      <%= f.search_field :q, value: params[:q], placeholder: "الاسم أو الهاتف أو البريد", class: "w-52", "aria-label": "بحث", **attrs %>
+    <% end %>
     <%= button_tag type: "submit", class: "btn btn-ghost", name: nil, title: "تصفية" do %><%= icon(:search, size: 16) %><% end %>
   <% end %>
 </div>

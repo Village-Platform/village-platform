@@ -64,4 +64,29 @@ RSpec.describe "Admin listings", type: :request do
     get "/admin/subscription_plans"
     expect(doc.at_css("tbody .switch")).to be_present
   end
+
+  it "gives each index a combobox scoped to its own type" do
+    { "/admin/firms" => "firms", "/admin/users" => "users",
+      "/admin/subscriptions" => "subscriptions", "/admin/articles" => "articles" }.each do |path, scope|
+      get path
+
+      input = doc.at_css(".content [data-admin-search]")
+      expect(input).to be_present, "no combobox on #{path}"
+      expect(input["data-search-scope"]).to eq(scope)
+      expect(input["role"]).to eq("combobox")
+
+      listbox = doc.at_css("##{input['aria-controls']}")
+      expect(listbox).to be_present, "listbox missing on #{path}"
+      expect(listbox["role"]).to eq("listbox")
+    end
+  end
+
+  it "keeps the index search inside its filter form so Enter still filters" do
+    get "/admin/firms"
+
+    field = doc.at_css(".content .searchable-field")
+    expect(field).to be_present
+    expect(field.at_css("[data-search-status]")).to be_present
+    expect(field.ancestors("form")).to be_present
+  end
 end

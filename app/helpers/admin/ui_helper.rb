@@ -72,6 +72,27 @@ module Admin
       end
     end
 
+    # The autocomplete JS binds to every [data-admin-search], finds its listbox through
+    # aria-controls and its live-status span through the shared parent. That contract is
+    # implicit, so it lives here once rather than in five hand-written call sites.
+    def search_combobox(scope, wrapper_class: "searchable-field")
+      results_id = "#{scope}-search-results"
+      attrs = {
+        role: "combobox", "aria-autocomplete": "list", "aria-expanded": "false",
+        "aria-controls": results_id,
+        data: { admin_search: true, search_url: admin_search_path, search_scope: scope }
+      }
+
+      tag.div(class: wrapper_class) do
+        safe_join([
+          capture { yield attrs },
+          tag.ul(nil, id: results_id, class: "admin-search-results", role: "listbox", hidden: true),
+          tag.span(nil, class: "sr-only", role: "status", "aria-live": "polite",
+                   data: { search_status: true })
+        ])
+      end
+    end
+
     def nav_group(label, &block)
       safe_join([ tag.p(label, class: "nav-section"), capture(&block) ])
     end

@@ -1,7 +1,10 @@
 module Admin
   class GlobalSearch
     MIN_QUERY_LENGTH = 3
+    # A global dropdown shows six types at once and must stay shallow; when the whole
+    # dropdown is one type there is room to show more.
     PER_TYPE_LIMIT = 4
+    SCOPED_LIMIT = 8
     SCOPES = %w[firms users subscriptions articles categories plans].freeze
     Result = Data.define(:type, :title, :subtitle, :record)
 
@@ -34,7 +37,11 @@ module Admin
 
     def matching(scope, table, columns)
       conditions = columns.map { |column| "lower(#{table}.#{column}) LIKE :pattern" }.join(" OR ")
-      scope.where(conditions, pattern:).limit(PER_TYPE_LIMIT)
+      scope.where(conditions, pattern:).limit(result_limit)
+    end
+
+    def result_limit
+      @scope == "all" ? PER_TYPE_LIMIT : SCOPED_LIMIT
     end
 
     def search_firms

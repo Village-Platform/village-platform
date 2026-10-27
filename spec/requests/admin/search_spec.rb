@@ -58,6 +58,26 @@ RSpec.describe "Admin global search", type: :request do
       expect(json.map { |row| row["type"] }.uniq).to eq([ "تصنيف" ])
     end
 
+    it "returns a deeper list when scoped to a single type" do
+      category = create(:category)
+      owner = create(:user, :subscribed)
+      9.times { |i| create(:firm, category:, owner:, name: "صيدلية رقم #{i}") }
+
+      get "/admin/search", params: { q: "صيدلية", scope: "firms" }
+
+      expect(json.size).to eq(8)
+    end
+
+    it "keeps the global dropdown shallow so every type can show" do
+      category = create(:category)
+      owner = create(:user, :subscribed)
+      9.times { |i| create(:firm, category:, owner:, name: "صيدلية رقم #{i}") }
+
+      get "/admin/search", params: { q: "صيدلية" }
+
+      expect(json.size).to eq(4)
+    end
+
     it "ignores an unknown scope rather than searching everything" do
       create(:firm, name: "مطعم الريف")
 

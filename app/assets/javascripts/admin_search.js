@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
   widgets.forEach((input, widgetIndex) => {
     const results = document.getElementById(input.getAttribute("aria-controls"));
     const status = input.parentElement.querySelector("[data-search-status]");
+    // Widgets are wired in a loop; a field missing its status span would otherwise
+    // throw and take autocomplete down on every other field too.
+    const setStatus = (text) => { if (status) status.textContent = text; };
     let timer;
     let request;
     let activeIndex = -1;
@@ -84,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       results.hidden = false;
       input.setAttribute("aria-expanded", "true");
-      status.textContent = `${items.length} نتائج`;
+      setStatus(`${items.length} نتائج`);
     };
 
     input.addEventListener("input", () => {
@@ -93,17 +96,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const query = input.value.trim();
       results.replaceChildren();
       close();
-      status.textContent = "";
+      setStatus("");
 
       if (query.length < 3) {
-        if (query.length > 0) status.textContent = "أدخل ٣ أحرف على الأقل";
+        if (query.length > 0) setStatus("أدخل ٣ أحرف على الأقل");
         return;
       }
 
       timer = window.setTimeout(async () => {
         request = new AbortController();
         const params = new URLSearchParams({ q: query, scope: input.dataset.searchScope || "all" });
-        status.textContent = "جارٍ البحث…";
+        setStatus("جارٍ البحث…");
 
         try {
           const response = await fetch(`${input.dataset.searchUrl}?${params}`, {
@@ -117,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (error.name !== "AbortError") {
             results.replaceChildren();
             close();
-            status.textContent = "تعذر البحث الآن";
+            setStatus("تعذر البحث الآن");
           }
         }
       }, 220);
