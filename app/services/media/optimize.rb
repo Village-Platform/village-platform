@@ -22,8 +22,11 @@ module Media
         image = Vips::Image.new_from_file(file.path).autorot
         return @blob if meets_target?(image)
 
-        image = resize(image)
-        data = smallest_visually_lossless? ? smallest_visually_lossless(image) : lossy(image)
+        resized = resize(image)
+        data = smallest_visually_lossless? ? smallest_visually_lossless(resized) : lossy(resized)
+        # A clean original that the target format cannot beat (a tiny PNG) is kept as it is.
+        return @blob if data.bytesize >= @blob.byte_size && clean?(image)
+
         upload(data)
       end
     rescue Vips::Error => e
@@ -33,8 +36,12 @@ module Media
     private
 
     def meets_target?(image)
-      @blob.content_type == @profile.target[:format] &&
-        [ image.width, image.height ].max <= @profile.max_edge_px &&
+      @blob.content_type == @profile.target[:format] && clean?(image)
+    end
+
+    # Within the size limit and carrying no metadata (EXIF can hold the phone's GPS position).
+    def clean?(image)
+      [ image.width, image.height ].max <= @profile.max_edge_px &&
         image.get_fields.none? { |field| field.start_with?(*METADATA_PREFIXES) }
     end
 

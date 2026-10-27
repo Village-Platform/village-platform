@@ -40,6 +40,7 @@ class Category < ApplicationRecord
     return false unless path.file?
 
     icon_image.attach(io: path.open("rb"), filename: path.basename.to_s, content_type: "image/png")
+    Categories::OptimizeIcon.call(self)
     true
   end
 

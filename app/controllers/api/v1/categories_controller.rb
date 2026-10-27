@@ -37,12 +37,14 @@ module Api
         authorize Category
         category = Category.new(permitted_attributes(Category))
         audited("category.create", category) { category.save! }
+        Categories::OptimizeIcon.call(category)
         render_record(category, CategorySerializer, status: :created)
       end
 
       def update
         authorize @category
         audited("category.update", @category) { @category.update!(permitted_attributes(@category)) }
+        Categories::OptimizeIcon.call(@category)
         render_record(@category, CategorySerializer)
       end
 

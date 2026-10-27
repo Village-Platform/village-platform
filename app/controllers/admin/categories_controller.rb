@@ -14,6 +14,7 @@ module Admin
     def create
       @category = Category.new(category_params)
       if audited("category.create", @category) { @category.save }
+        Categories::OptimizeIcon.call(@category)
         redirect_to admin_categories_path, notice: "تم إضافة التصنيف."
       else
         render :new, status: :unprocessable_content
@@ -25,6 +26,7 @@ module Admin
     def update
       if audited("category.update", @category) { @category.update(category_params) }
         @category.icon_image.purge if remove_icon_image?
+        Categories::OptimizeIcon.call(@category)
         redirect_to admin_categories_path, notice: "تم حفظ التعديلات."
       else
         render :edit, status: :unprocessable_content

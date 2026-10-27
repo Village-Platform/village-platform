@@ -6,4 +6,12 @@ namespace :categories do
     attached = Category.find_each.count(&:attach_default_icon!)
     puts "Attached #{attached} category icon(s)."
   end
+
+  # Re-encodes existing icons to the category_icon media profile. Safe to run again: icons
+  # already optimized are skipped. The icon URL's `v` changes, so app and CDN caches roll over.
+  desc "Shrink category icon images to the category_icon media profile"
+  task optimize_icons: :environment do
+    optimized = Category.with_attached_icon_image.find_each.count { |category| Categories::OptimizeIcon.call(category) }
+    puts "Optimized #{optimized} category icon(s)."
+  end
 end
