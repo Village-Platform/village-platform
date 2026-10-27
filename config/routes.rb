@@ -37,7 +37,9 @@ Rails.application.routes.draw do
       end
       resources :media, only: %i[create destroy], controller: "firm_media"
     end
-    resources :categories, except: :show
+    resources :categories, except: :show do
+      resources :fields, only: %i[create destroy], controller: "category_fields"
+    end
     resources :articles, except: :show do
       member do
         patch :approve

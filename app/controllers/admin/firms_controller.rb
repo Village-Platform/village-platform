@@ -70,7 +70,7 @@ module Admin
 
     def firm_params
       params.require(:firm).permit(:name, :category_id, :owner_id, :status, :description, :phone, :whatsapp,
-                                   :address, :working_hours, :latitude, :longitude)
+                                   :address, :working_hours, :latitude, :longitude, custom_fields: {})
     end
   end
 end

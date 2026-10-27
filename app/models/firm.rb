@@ -36,7 +36,53 @@ class Firm < ApplicationRecord
     joins(owner_plan).order(Arel.sql("COALESCE(owner_plan.priority, -1) DESC"), :name, :id)
   }
 
+  before_validation :cast_custom_fields
+
   validates :name, presence: true, length: { maximum: 150 }
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90 }, allow_nil: true
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180 }, allow_nil: true
+  validate :custom_fields_match_category
+
+  # [{ key, label, value }] for the category's current fields that have a value. Labels are
+  # resolved here so a client can show them as plain rows. A removed field's value stays stored
+  # but is no longer shown; nothing is ever deleted.
+  def custom_field_values
+    category.fields.filter_map do |field|
+      value = custom_fields[field.key]
+      { key: field.key, label: field.label, value: } unless value.nil?
+    end
+  end
+
+  private
+
+  # Keeps keys the category defines (cast to their type) plus anything already stored, so a
+  # client cannot add arbitrary keys but a removed field's old value survives.
+  def cast_custom_fields
+    return unless will_save_change_to_custom_fields? && category
+
+    incoming = custom_fields.to_h.stringify_keys
+    stored = custom_fields_in_database.to_h
+    fields = category.fields.index_by(&:key)
+    self.custom_fields = incoming.each_with_object({}) do |(key, raw), result|
+      if fields[key]
+        result[key] = fields[key].cast(raw)
+      elsif stored.key?(key)
+        result[key] = stored[key]
+      end
+    rescue ArgumentError
+      errors.add(:custom_fields, :invalid, message: "#{key}: قيمة غير صحيحة")
+    end.compact
+  end
+
+  def custom_fields_match_category
+    return unless category
+
+    category.fields.each do |field|
+      value = custom_fields[field.key]
+      errors.add(:custom_fields, :blank, message: "#{field.label}: مطلوب") if field.required && value.nil?
+      if field.choice? && !value.nil? && !field.options.include?(value)
+        errors.add(:custom_fields, :inclusion, message: "#{field.label}: اختيار غير موجود")
+      end
+    end
+  end
 end

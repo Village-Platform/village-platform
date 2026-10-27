@@ -8,8 +8,10 @@ class FirmPolicy < ApplicationPolicy
   def destroy? = super_admin? || owner?
 
   # Only super admins can change the status (approve / suspend).
+  # custom_fields: { "<key>" => value } for the category's fields (see CategoryField).
   def permitted_attributes
-    super_admin? ? BASE_ATTRIBUTES + [ :status ] : BASE_ATTRIBUTES
+    attributes = BASE_ATTRIBUTES + [ { custom_fields: {} } ]
+    super_admin? ? attributes + [ :status ] : attributes
   end
 
   private

@@ -106,6 +106,12 @@ ar:
         approved: "معتمد"
         pending: "بانتظار المراجعة"
         rejected: "مرفوض"
+    category_field:
+      kind:
+        text: "نص"
+        boolean: "نعم / لا"
+        number: "رقم"
+        choice: "اختيار من قائمة"
     report:
       reason:
         wrong_info: "معلومات خاطئة"

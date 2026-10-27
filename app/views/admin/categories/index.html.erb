@@ -10,7 +10,8 @@
           <tr>
             <td><%= category.position %></td>
             <td><% if category.icon_image.attached? %><%= image_tag url_for(category.icon_image), class: "cat-icon", alt: "" %><% else %><span class="cell-sub">—</span><% end %></td>
-            <td><%= link_to category.name, admin_firms_path(category_id: category.id), class: "cell-main" %>
+            <td><% if category.parent_id %><span class="cell-sub">↳ <%= category.parent.name %></span><% end %>
+              <%= link_to category.name, admin_firms_path(category_id: category.id), class: "cell-main" %>
               <% if category.description.present? %><span class="cell-sub"><%= truncate(category.description, length: 60) %></span><% end %></td>
             <td><%= @firm_counts.fetch(category.id, 0) %></td>
             <td><%= switch(category.active) %></td>

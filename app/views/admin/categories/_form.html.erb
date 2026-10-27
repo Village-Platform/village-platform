@@ -19,6 +19,11 @@
     <%= f.label :icon, "مفتاح الأيقونة" %><%= f.text_field :icon, dir: "ltr" %>
     <div class="hint">للإصدارات القديمة من التطبيق ولاختيار الصورة الافتراضية (مثل doctor, pharmacy).</div>
   </div>
+  <div class="field">
+    <%= f.label :parent_id, "التصنيف الرئيسي" %>
+    <%= f.collection_select :parent_id, @parents, :id, :name, include_blank: "— تصنيف رئيسي —" %>
+    <div class="hint">مستوى واحد فقط: لا يمكن أن يكون للفرع فروع.</div>
+  </div>
   <div class="field"><%= f.label :position, "الترتيب" %><%= f.number_field :position, min: 0 %></div>
   <div class="field checkbox full"><%= f.check_box :active %><%= f.label :active, "مفعّل (ظاهر في التطبيق)" %></div>
   </div>

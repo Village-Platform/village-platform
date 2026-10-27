@@ -19,6 +19,23 @@
     <div class="field"><%= f.label :latitude, "خط العرض" %><%= f.number_field :latitude, step: "any" %></div>
     <div class="field"><%= f.label :longitude, "خط الطول" %><%= f.number_field :longitude, step: "any" %></div>
     <div class="field full"><%= f.label :description, "الوصف" %><%= f.text_area :description %></div>
+    <% firm.category&.fields&.each do |field| %>
+      <% name = "firm[custom_fields][#{field.key}]" %>
+      <% value = firm.custom_fields[field.key] %>
+      <div class="field">
+        <%= label_tag "custom_#{field.key}", field.label + (field.required ? " *" : "") %>
+        <% case field.kind %>
+        <% when "boolean" %>
+          <%= select_tag name, options_for_select([ [ "—", "" ], [ "نعم", "true" ], [ "لا", "false" ] ], value.to_s), id: "custom_#{field.key}" %>
+        <% when "choice" %>
+          <%= select_tag name, options_for_select(field.options, value), include_blank: "—", id: "custom_#{field.key}" %>
+        <% when "number" %>
+          <%= number_field_tag name, value, step: "any", id: "custom_#{field.key}" %>
+        <% else %>
+          <%= text_field_tag name, value, maxlength: 200, id: "custom_#{field.key}" %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
   <div class="form-actions">
     <%= f.submit "حفظ", class: "btn" %>

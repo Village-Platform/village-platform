@@ -3,9 +3,13 @@ module Admin
     requires_permission "categories.manage"
 
     before_action :set_category, only: %i[edit update destroy]
+    before_action :load_parents, only: %i[new create edit update]
 
     def index
-      @categories = Category.with_attached_icon_image.ordered
+      # Parents first, each followed by its children.
+      categories = Category.with_attached_icon_image.includes(:parent).ordered.to_a
+      children = categories.select(&:parent_id).group_by(&:parent_id)
+      @categories = categories.reject(&:parent_id).flat_map { |parent| [ parent, *children.fetch(parent.id, []) ] }
       @firm_counts = Firm.group(:category_id).count
     end
 
@@ -46,12 +50,16 @@ module Admin
     end
 
     # "Remove image" checkbox; ignored when a new image is uploaded in the same request.
+    def load_parents
+      @parents = Category.top_level.ordered.where.not(id: @category&.id)
+    end
+
     def remove_icon_image?
       params.dig(:category, :remove_icon_image) == "1" && params.dig(:category, :icon_image).blank?
     end
 
     def category_params
-      params.require(:category).permit(:name, :description, :icon, :icon_image, :position, :active)
+      params.require(:category).permit(:name, :description, :icon, :icon_image, :position, :active, :parent_id)
     end
   end
 end

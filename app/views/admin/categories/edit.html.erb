@@ -1,2 +1,38 @@
 <%= page_header "تعديل: #{@category.name_was}" %>
 <%= render "form", category: @category %>
+
+<section class="card mt">
+  <div class="card-header"><h2>حقول إضافية لأنشطة هذا التصنيف</h2></div>
+  <% if @category.fields.any? %>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>المفتاح</th><th>الاسم</th><th>النوع</th><th>الخيارات</th><th>مطلوب</th><th></th></tr></thead>
+        <tbody>
+          <% @category.fields.each do |field| %>
+            <tr>
+              <td class="ltr"><code><%= field.key %></code></td>
+              <td><%= field.label %></td>
+              <td><%= enum_label(CategoryField, :kind, field.kind) %></td>
+              <td><%= field.options.join("، ").presence || "—" %></td>
+              <td><%= switch(field.required) %></td>
+              <td class="actions">
+                <%= button_to admin_category_field_path(@category, field), method: :delete, class: "btn btn-ghost btn-sm", title: "حذف",
+                      form: { data: { confirm: "حذف الحقل؟ تبقى القيم المحفوظة لكنها لن تظهر." } } do %><%= icon(:trash, size: 16) %><% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <%= empty_state("لا توجد حقول إضافية.") %>
+  <% end %>
+  <%= form_with model: CategoryField.new, url: admin_category_fields_path(@category), scope: :category_field, class: "form-grid mt" do |f| %>
+    <div class="field"><%= f.label :key, "المفتاح (إنجليزي)" %><%= f.text_field :key, dir: "ltr", required: true, pattern: "[a-z][a-z0-9_]*", placeholder: "open_24h" %></div>
+    <div class="field"><%= f.label :label, "الاسم" %><%= f.text_field :label, required: true, placeholder: "يعمل ٢٤ ساعة" %></div>
+    <div class="field"><%= f.label :kind, "النوع" %><%= f.select :kind, enum_options(CategoryField, :kind) %></div>
+    <div class="field"><%= f.label :options, "الخيارات (للاختيار من قائمة، مفصولة بفاصلة)" %><%= f.text_field :options %></div>
+    <div class="field checkbox"><%= f.check_box :required %><%= f.label :required, "مطلوب" %></div>
+    <div class="form-actions"><%= f.submit "إضافة حقل", class: "btn btn-ghost" %></div>
+  <% end %>
+</section>

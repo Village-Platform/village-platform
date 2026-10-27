@@ -18,6 +18,7 @@ class FirmSerializer
       category: { id: firm.category.id, name: firm.category.name, icon: firm.category.icon, icon_url: firm.category.icon_url },
       cover_image_url: (FirmMediumSerializer.render(images.first)[:thumbnail_url] if images.any?),
       media_count: { images: images.size, videos: firm.media.count(&:video?) },
+      custom_fields: firm.custom_field_values,
       created_at: firm.created_at
     }
   end

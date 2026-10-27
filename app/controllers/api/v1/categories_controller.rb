@@ -4,8 +4,12 @@ module Api
       before_action :authenticate_user!, except: %i[index show icon]
       before_action :set_category, only: %i[show update destroy icon]
 
+      # GET /api/v1/categories              top-level categories (what older apps have always seen)
+      # GET /api/v1/categories?parent_id=3   the children of one category
       def index
-        records, meta = paginate(policy_scope(Category).with_attached_icon_image.ordered)
+        scope = policy_scope(Category).with_attached_icon_image.includes(:fields).ordered
+        scope = params[:parent_id].present? ? scope.where(parent_id: params[:parent_id]) : scope.top_level
+        records, meta = paginate(scope)
         render_collection(records, meta, CategorySerializer)
       end
 

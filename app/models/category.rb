@@ -6,6 +6,11 @@ class Category < ApplicationRecord
   DEFAULT_ICONS_DIR = Rails.root.join("db/seeds/category_icons")
 
   has_many :firms, dependent: :restrict_with_error
+  # One level deep only: a village directory needs groups, not a taxonomy.
+  belongs_to :parent, class_name: "Category", optional: true, counter_cache: :children_count
+  has_many :children, class_name: "Category", foreign_key: :parent_id, inverse_of: :parent,
+                      dependent: :restrict_with_error
+  has_many :fields, -> { ordered }, class_name: "CategoryField", inverse_of: :category, dependent: :destroy
 
   # The image the apps show. The `icon` string column stays: it is the key older Android
   # versions map to built-in symbols, and it picks the default image in #attach_default_icon!.
@@ -13,10 +18,17 @@ class Category < ApplicationRecord
 
   scope :active, -> { where(active: true) }
   scope :ordered, -> { order(:position, :id) }
+  scope :top_level, -> { where(parent_id: nil) }
+
+  # The category and its children, for listing a parent's firms.
+  def self.with_children_ids(id)
+    where(id:).or(where(parent_id: id)).select(:id)
+  end
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 100 }
   validates :position, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validate :icon_image_is_valid
+  validate :one_level_deep
 
   # Public, long-cached URL of the icon (relative to the API host), or nil without an image.
   # `v` changes with the image content, so clients and the CDN can cache each version forever.
@@ -45,6 +57,16 @@ class Category < ApplicationRecord
   end
 
   private
+
+  def one_level_deep
+    return if parent_id.nil?
+
+    if parent_id == id
+      errors.add(:parent, :invalid)
+    elsif parent&.parent_id.present? || (persisted? && children.exists?)
+      errors.add(:parent, "يجب أن يكون تصنيفًا رئيسيًا، ولا يمكن نقل تصنيف له فروع")
+    end
+  end
 
   def icon_image_is_valid
     return unless icon_image.attached?
