@@ -37,4 +37,35 @@
   </dl>
 </section>
 
+<section class="card mt">
+  <div class="card-header"><h2>الصور والفيديو</h2></div>
+  <% media = @firm.media.includes(file_attachment: :blob) %>
+  <% if media.any? %>
+    <div class="media-grid">
+      <% media.each do |medium| %>
+        <figure class="media-tile">
+          <% if medium.image? %>
+            <%= image_tag url_for(medium.file), alt: medium.caption.to_s, loading: "lazy" %>
+          <% else %>
+            <%= video_tag url_for(medium.file), controls: true, preload: "none" %>
+          <% end %>
+          <figcaption>
+            <%= badge(medium.image? ? "صورة" : "فيديو") %>
+            <span><%= medium.caption %></span>
+            <%= button_to admin_firm_medium_path(@firm, medium), method: :delete, class: "btn btn-ghost btn-sm", title: "حذف",
+                  form: { data: { confirm: "حذف الملف نهائيًا؟" } } do %><%= icon(:trash, size: 16) %><% end %>
+          </figcaption>
+        </figure>
+      <% end %>
+    </div>
+  <% else %>
+    <%= empty_state("لا توجد صور أو فيديو.") %>
+  <% end %>
+  <%= form_with url: admin_firm_media_path(@firm), multipart: true, class: "flex flex-wrap gap-2 items-center mt" do |f| %>
+    <%= f.file_field :file, accept: MediaProfile.fetch(:firm_image).content_types.join(","), required: true, "aria-label": "صورة" %>
+    <%= f.text_field :caption, placeholder: "وصف قصير (اختياري)", maxlength: 200, class: "w-52", "aria-label": "الوصف" %>
+    <%= f.button type: "submit", class: "btn btn-ghost" do %><%= icon(:image, size: 16) %> إضافة صورة<% end %>
+  <% end %>
+</section>
+
 <%= render "admin/shared/history", record: @firm %>

@@ -35,6 +35,7 @@ Rails.application.routes.draw do
         patch :approve
         patch :suspend
       end
+      resources :media, only: %i[create destroy], controller: "firm_media"
     end
     resources :categories, except: :show
     resources :articles, except: :show
@@ -54,7 +55,9 @@ Rails.application.routes.draw do
         get :icon, on: :member
         resources :firms, only: :index
       end
-      resources :firms
+      resources :firms do
+        resources :media, only: %i[index create update destroy], controller: "firm_media"
+      end
       resources :articles
 
       get "payment_methods", to: "payment_methods#index"

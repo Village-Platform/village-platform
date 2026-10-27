@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_28_090002) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_28_090003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -85,6 +85,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090002) do
     t.index "lower((name)::text) gin_trgm_ops", name: "index_categories_on_name_trigram", using: :gin
     t.index ["active", "position"], name: "index_categories_on_active_and_position"
     t.index ["name"], name: "index_categories_on_name", unique: true
+  end
+
+  create_table "firm_media", force: :cascade do |t|
+    t.bigint "firm_id", null: false
+    t.integer "kind", null: false
+    t.integer "position", default: 0, null: false
+    t.string "caption", limit: 200
+    t.integer "duration_s"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["firm_id", "kind", "position"], name: "index_firm_media_on_firm_id_and_kind_and_position"
+    t.check_constraint "\"position\" >= 0", name: "firm_media_position_non_negative"
+    t.check_constraint "kind = ANY (ARRAY[0, 1])", name: "firm_media_kind_known"
   end
 
   create_table "firms", force: :cascade do |t|
@@ -206,6 +219,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090002) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "articles", "users", column: "author_id"
   add_foreign_key "audit_events", "users", column: "actor_id"
+  add_foreign_key "firm_media", "firms"
   add_foreign_key "firms", "categories"
   add_foreign_key "firms", "users", column: "owner_id"
   add_foreign_key "notifications", "users"

@@ -24,6 +24,10 @@ module ErrorHandling
       render_error(:unprocessable_content, e.code, details: e.details.presence)
     end
 
+    rescue_from Media::LimitReached do
+      render_error(:forbidden, "media_limit_reached")
+    end
+
     rescue_from ActionController::ParameterMissing do |e|
       render_error(:bad_request, "bad_request", details: { param: e.param })
     end

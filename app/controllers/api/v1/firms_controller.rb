@@ -7,7 +7,7 @@ module Api
       # GET /api/v1/firms?category_id=1&q=pharmacy&mine=true
       # GET /api/v1/categories/:category_id/firms
       def index
-        scope = policy_scope(Firm).includes(category: { icon_image_attachment: :blob }).ranked
+        scope = policy_scope(Firm).includes(category: { icon_image_attachment: :blob }, media: { file_attachment: :blob }).ranked
         scope = scope.where(category_id: params[:category_id]) if params[:category_id].present?
         scope = scope.search(params[:q]) if params[:q].present?
         scope = scope.where(owner_id: current_user.id) if params[:mine].present? && current_user
