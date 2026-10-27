@@ -11,6 +11,12 @@ module Internal
       render json: { sent: }
     end
 
+    # GET /internal/cron/purge_unattached_blobs  (daily)
+    def purge_unattached_blobs
+      Current.source = "cron"
+      render json: { purged: PurgeUnattachedBlobsJob.perform_now }
+    end
+
     private
 
     def authenticate_cron!

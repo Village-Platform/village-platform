@@ -19,6 +19,11 @@ module ErrorHandling
       render_error(:unprocessable_content, "invalid_state")
     end
 
+    # An upload that does not meet its MediaProfile (type, size, duration, storage).
+    rescue_from Media::InvalidFile do |e|
+      render_error(:unprocessable_content, e.code, details: e.details.presence)
+    end
+
     rescue_from ActionController::ParameterMissing do |e|
       render_error(:bad_request, "bad_request", details: { param: e.param })
     end

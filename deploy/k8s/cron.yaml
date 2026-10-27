@@ -31,3 +31,36 @@ spec:
                 - >-
                   curl -fsS --max-time 120 -H "Authorization: Bearer $CRON_SECRET"
                   http://web/internal/cron/subscription_reminders
+---
+# Removes blobs nobody attached (abandoned direct uploads). Idempotent.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: purge-unattached-blobs
+spec:
+  schedule: "30 4 * * *"
+  timeZone: Africa/Cairo
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: curl
+              image: curlimages/curl:8.11.1
+              env:
+                - name: CRON_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      name: village-env
+                      key: CRON_SECRET
+              command:
+                - sh
+                - -c
+                - >-
+                  curl -fsS --max-time 120 -H "Authorization: Bearer $CRON_SECRET"
+                  http://web/internal/cron/purge_unattached_blobs

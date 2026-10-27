@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   # Vercel Cron jobs (protected by CRON_SECRET).
   get "internal/cron/subscription_reminders", to: "internal/cron#subscription_reminders"
+  get "internal/cron/purge_unattached_blobs", to: "internal/cron#purge_unattached_blobs"
 
   # Admin dashboard (server-rendered, Arabic RTL) — super admins only.
   namespace :admin do
@@ -57,6 +58,8 @@ Rails.application.routes.draw do
       resources :articles
 
       get "payment_methods", to: "payment_methods#index"
+      get "media_profiles", to: "media_profiles#index"
+      resources :direct_uploads, only: :create
       resources :subscription_plans
       resources :subscriptions, only: %i[index show create] do
         get :payment_screenshot, on: :member

@@ -14,6 +14,9 @@ data:
   VODAFONE_CASH_NUMBER: 010XXXXXXXX
   # Files go to PostgreSQL (stored_files) so the web pod stays stateless.
   ACTIVE_STORAGE_SERVICE: database
+  # Video needs object storage; until this is set to r2 (with the R2_* keys in the village-env
+  # Secret), video uploads answer 422 media_storage_unavailable instead of filling PostgreSQL.
+  # MEDIA_STORAGE_SERVICE: r2
   # Cloudflare terminates TLS for aghour.dorfsys.com. ASSUME_SSL makes Rails treat every request as
   # HTTPS (also the CronJob's in-cluster http://web call), so FORCE_SSL adds HSTS and secure cookies
   # without redirecting.

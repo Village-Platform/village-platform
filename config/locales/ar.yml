@@ -14,6 +14,12 @@ ar:
       duplicate: "هذا العنصر موجود بالفعل."
       invalid_image_type: "يجب أن تكون صورة بصيغة PNG أو JPEG أو WEBP"
       file_too_large: "يجب أن يكون حجمها أقل من %{size}"
+      invalid_media_type: "نوع الملف غير مسموح به."
+      media_too_long: "الفيديو أطول من المسموح به."
+      media_storage_unavailable: "رفع الفيديو غير متاح حاليًا."
+      direct_upload_unsupported: "الرفع المباشر غير متاح، أرسل الملف مع الطلب."
+      invalid_blob: "الملف المرفوع غير صالح أو انتهت صلاحيته، أعد رفعه."
+      media_limit_reached: "وصلت إلى الحد الأقصى المسموح به في باقتك."
   notifications:
     subscription_approved:
       title: "تم تفعيل اشتراكك"

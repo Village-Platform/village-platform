@@ -7,10 +7,10 @@ gem "bootsnap", require: false
 gem "propshaft" # asset pipeline for the admin dashboard CSS
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "image_processing", "~> 1.2"
-
-group :production do
-  gem "ruby-vips"
-end
+# Media::Optimize re-encodes uploads, so libvips is needed in every environment (and in CI).
+gem "ruby-vips"
+# S3-compatible object storage (Cloudflare R2) for media that must not live in PostgreSQL.
+gem "aws-sdk-s3", require: false
 
 # Auth & authorization
 gem "bcrypt", "~> 3.1.7"

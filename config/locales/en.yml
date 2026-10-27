@@ -14,6 +14,12 @@ en:
       duplicate: "This record already exists."
       invalid_image_type: "must be a PNG, JPEG or WEBP image"
       file_too_large: "must be smaller than %{size}"
+      invalid_media_type: "This file type is not allowed."
+      media_too_long: "The video is longer than allowed."
+      media_storage_unavailable: "Video uploads are not available right now."
+      direct_upload_unsupported: "Direct upload is not available; send the file with the request."
+      invalid_blob: "The uploaded file is invalid or expired; upload it again."
+      media_limit_reached: "You have reached the limit of your plan."
   notifications:
     subscription_approved:
       title: "Subscription approved"
