@@ -20,17 +20,17 @@
           <%= nav_link "لوحة التحكم", admin_root_path, :home, exact: true %>
         <% end %>
         <%= nav_group "المحتوى" do %>
-          <%= nav_link "التصنيفات", admin_categories_path, :categories %>
-          <%= nav_link "الأنشطة", admin_firms_path, :firms, count: Firm.pending.count %>
-          <%= nav_link "الأخبار والمقالات", admin_articles_path, :articles, count: Article.pending.count %>
+          <% if current_admin.can?("categories.manage") %><%= nav_link "التصنيفات", admin_categories_path, :categories %><% end %>
+          <% if current_admin.can?("firms.moderate") %><%= nav_link "الأنشطة", admin_firms_path, :firms, count: Firm.pending.count %><% end %>
+          <% if current_admin.can?("articles.moderate") %><%= nav_link "الأخبار والمقالات", admin_articles_path, :articles, count: Article.pending.count %><% end %>
         <% end %>
         <%= nav_group "الأشخاص" do %>
-          <%= nav_link "المستخدمون", admin_users_path, :users %>
-          <%= nav_link "سجل العمليات", admin_audit_events_path, :clock %>
+          <% if current_admin.can?("users.manage") %><%= nav_link "المستخدمون", admin_users_path, :users %><% end %>
+          <% if current_admin.super_admin? %><%= nav_link "سجل العمليات", admin_audit_events_path, :clock %><% end %>
         <% end %>
         <%= nav_group "المالية" do %>
-          <%= nav_link "الباقات والأسعار", admin_subscription_plans_path, :plans %>
-          <%= nav_link "الاشتراكات", admin_subscriptions_path, :subscriptions, count: Subscription.pending.count %>
+          <% if current_admin.super_admin? %><%= nav_link "الباقات والأسعار", admin_subscription_plans_path, :plans %><% end %>
+          <% if current_admin.can?("subscriptions.review") %><%= nav_link "الاشتراكات", admin_subscriptions_path, :subscriptions, count: Subscription.pending.count %><% end %>
         <% end %>
       </nav>
 
@@ -38,7 +38,7 @@
         <span class="avatar"><%= initials(current_admin.name) %></span>
         <div class="who">
           <strong><%= current_admin.name %></strong>
-          <small>صلاحيات كاملة</small>
+          <small><%= current_admin.super_admin? ? "صلاحيات كاملة" : "موظف" %></small>
         </div>
         <%= button_to admin_logout_path, method: :delete, class: "icon-btn", title: "تسجيل الخروج",
               form: { data: { confirm: "تسجيل الخروج؟" } } do %>

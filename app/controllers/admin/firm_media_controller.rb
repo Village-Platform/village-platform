@@ -1,6 +1,8 @@
 module Admin
   # Moderation of a firm's gallery: remove anything; add images (video comes from the app).
   class FirmMediaController < BaseController
+    requires_permission "firms.moderate"
+
     before_action :set_firm
 
     def create

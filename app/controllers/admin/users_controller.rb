@@ -1,6 +1,12 @@
 module Admin
   class UsersController < BaseController
+    requires_permission "users.manage"
+
     before_action :set_user, only: %i[show edit update]
+    # Staff with users.manage must not take over an admin account (reset its password) or
+    # create one: that would turn a limited permission into full control.
+    before_action :protect_admin_accounts, only: %i[edit update]
+    helper_method :assignable_roles
 
     def index
       scope = User.order(created_at: :desc, id: :desc)
@@ -23,6 +29,8 @@ module Admin
 
     def create
       @user = User.new(user_params)
+      return render(:new, status: :unprocessable_content) unless role_assignable?(@user)
+
       if audited("user.create", @user) { @user.save }
         redirect_to admin_user_path(@user), notice: "تم إضافة المستخدم."
       else
@@ -36,10 +44,12 @@ module Admin
       attrs = user_params
       attrs = attrs.except(:password) if attrs[:password].blank? # keep the current password
 
-      if @user == current_admin && attrs[:role].present? && attrs[:role] != "super_admin"
+      if @user == current_admin && attrs[:role].present? && attrs[:role] != current_admin.role
         @user.errors.add(:role, "لا يمكنك إزالة صلاحيتك بنفسك")
         return render :edit, status: :unprocessable_content
       end
+      @user.assign_attributes(attrs.slice(:role))
+      return render(:edit, status: :unprocessable_content) unless role_assignable?(@user)
 
       if audited("user.update", @user) { @user.update(attrs) }
         redirect_to admin_user_path(@user), notice: "تم حفظ التعديلات."
@@ -52,6 +62,23 @@ module Admin
 
     def set_user
       @user = User.find(params[:id])
+    end
+
+    def assignable_roles
+      current_admin.super_admin? ? User.roles.keys : User.roles.keys - User::ADMIN_ROLES
+    end
+
+    def role_assignable?(user)
+      return true if assignable_roles.include?(user.role)
+
+      user.errors.add(:role, "لا يمكنك منح هذه الصلاحية")
+      false
+    end
+
+    def protect_admin_accounts
+      return if current_admin.super_admin? || !@user.admin?
+
+      redirect_to admin_user_path(@user), alert: "لا يمكنك تعديل حساب مدير."
     end
 
     def user_params

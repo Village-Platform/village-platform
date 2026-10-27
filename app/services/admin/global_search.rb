@@ -8,13 +8,20 @@ module Admin
     SCOPES = %w[firms users subscriptions articles categories plans].freeze
     Result = Data.define(:type, :title, :subtitle, :record)
 
-    def self.call(query:, scope: "all")
-      new(query:, scope:).call
+    # Which permission each result type needs; staff only search what they may open.
+    PERMISSIONS = {
+      "firms" => "firms.moderate", "users" => "users.manage", "subscriptions" => "subscriptions.review",
+      "articles" => "articles.moderate", "categories" => "categories.manage", "plans" => :super_admin
+    }.freeze
+
+    def self.call(query:, scope: "all", admin: nil)
+      new(query:, scope:, admin:).call
     end
 
-    def initialize(query:, scope:)
+    def initialize(query:, scope:, admin: nil)
       @query = query.to_s.strip
       @scope = scope.to_s
+      @admin = admin
     end
 
     def call
@@ -28,7 +35,14 @@ module Admin
     private
 
     def search_types
-      @scope == "all" ? SCOPES : SCOPES & [ @scope ]
+      types = @scope == "all" ? SCOPES : SCOPES & [ @scope ]
+      types.select { |type| allowed?(type) }
+    end
+
+    def allowed?(type)
+      return true if @admin.nil? || @admin.super_admin?
+
+      PERMISSIONS[type] != :super_admin && @admin.can?(PERMISSIONS[type])
     end
 
     def pattern

@@ -1,5 +1,7 @@
 module Admin
   class FirmsController < BaseController
+    requires_permission "firms.moderate"
+
     before_action :set_firm, only: %i[show edit update destroy approve suspend]
     before_action :load_form_options, only: %i[new create edit update]
 

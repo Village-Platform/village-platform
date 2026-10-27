@@ -1,5 +1,7 @@
 module Admin
   class ArticlesController < BaseController
+    requires_permission "articles.moderate"
+
     before_action :set_article, only: %i[edit update destroy approve reject]
 
     def index

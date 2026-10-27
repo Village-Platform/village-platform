@@ -1,5 +1,7 @@
 module Admin
   class CategoriesController < BaseController
+    requires_permission "categories.manage"
+
     before_action :set_category, only: %i[edit update destroy]
 
     def index

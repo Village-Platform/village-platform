@@ -62,4 +62,22 @@
   <% end %>
 </section>
 
+<% if @user.staff? && current_admin.super_admin? %>
+  <section class="card mt">
+    <div class="card-header"><h2>صلاحيات الموظف</h2></div>
+    <%= form_with url: admin_user_permissions_path(@user), method: :patch do |f| %>
+      <% granted = @user.staff_permissions.pluck(:permission) %>
+      <div class="form-grid">
+        <% StaffPermission::PERMISSIONS.each do |key, label| %>
+          <div class="field checkbox">
+            <%= check_box_tag "permissions[]", key, granted.include?(key), id: "perm-#{key.parameterize}" %>
+            <%= label_tag "perm-#{key.parameterize}", label %>
+          </div>
+        <% end %>
+      </div>
+      <div class="form-actions"><%= f.submit "حفظ الصلاحيات", class: "btn btn-gold" %></div>
+    <% end %>
+  </section>
+<% end %>
+
 <%= render "admin/shared/history", record: @user %>

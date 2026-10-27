@@ -1,5 +1,7 @@
 module Admin
   class SubscriptionPlansController < BaseController
+    requires_permission :super_admin
+
     before_action :set_plan, only: %i[edit update destroy]
 
     def index

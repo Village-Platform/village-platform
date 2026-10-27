@@ -45,7 +45,9 @@ Rails.application.routes.draw do
       end
     end
     resources :subscription_plans, except: :show
-    resources :users, except: :destroy
+    resources :users, except: :destroy do
+      resource :permissions, only: :update, controller: "staff_permissions"
+    end
     resources :audit_events, only: :index, path: "audit"
   end
 

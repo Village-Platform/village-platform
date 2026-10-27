@@ -5,7 +5,7 @@
   <div class="field"><%= f.label :phone, "رقم الهاتف" %><%= f.telephone_field :phone, required: true %></div>
   <div class="field"><%= f.label :email, "البريد الإلكتروني" %><%= f.email_field :email %></div>
   <div class="field">
-    <%= f.label :role, "الصلاحية" %><%= f.select :role, enum_options(User, :role) %>
+    <%= f.label :role, "الصلاحية" %><%= f.select :role, enum_options(User, :role).select { |_, value| assignable_roles.include?(value) } %>
     <div class="hint">صاحب النشاط يُمنح تلقائيًا عند اعتماد اشتراكه.</div>
   </div>
   <div class="field">

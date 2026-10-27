@@ -1,5 +1,5 @@
 module Admin
-  # Login page for the dashboard. Only super admins can sign in.
+  # Login page for the dashboard. Only super admins and staff can sign in.
   class SessionsController < ActionController::Base
     layout "admin_auth"
 
@@ -15,7 +15,7 @@ module Admin
     def create
       user = User.find_by(phone: User.normalize_value_for(:phone, params[:phone].to_s))
 
-      if user&.super_admin? && user.authenticate(params[:password].to_s)
+      if user&.admin? && user.authenticate(params[:password].to_s)
         reset_session # prevent session fixation
         AdminSession.sign_in(session, user)
         redirect_to admin_root_path

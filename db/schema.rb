@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_28_090004) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_28_090005) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -145,6 +145,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090004) do
     t.index ["user_id"], name: "index_notifications_unread_by_user", where: "(read_at IS NULL)"
   end
 
+  create_table "staff_permissions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "permission", null: false
+    t.bigint "granted_by_id"
+    t.datetime "created_at", null: false
+    t.index ["user_id", "permission"], name: "index_staff_permissions_on_user_id_and_permission", unique: true
+  end
+
   create_table "stored_files", force: :cascade do |t|
     t.string "key", null: false
     t.binary "data", null: false
@@ -232,6 +240,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090004) do
   add_foreign_key "firms", "categories"
   add_foreign_key "firms", "users", column: "owner_id"
   add_foreign_key "notifications", "users"
+  add_foreign_key "staff_permissions", "users"
+  add_foreign_key "staff_permissions", "users", column: "granted_by_id"
   add_foreign_key "subscriptions", "subscription_plans"
   add_foreign_key "subscriptions", "users"
   add_foreign_key "subscriptions", "users", column: "reviewed_by_id"

@@ -3,7 +3,7 @@ module Admin
     # The design has four tones. Anything not listed falls back to gray.
     TONES = {
       "active" => "green", "current" => "green", "super_admin" => "green", true => "green",
-      "pending" => "gold", "scheduled" => "gold", "firm_admin" => "gold", "announcement" => "gold",
+      "pending" => "gold", "scheduled" => "gold", "firm_admin" => "gold", "staff" => "gold", "announcement" => "gold",
       "rejected" => "red", "suspended" => "red", "approved" => "green",
       "expired" => "gray", "user" => "gray", "news" => "gray", "article" => "gray", false => "gray"
     }.freeze

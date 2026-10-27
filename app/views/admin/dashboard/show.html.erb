@@ -61,6 +61,7 @@
 </div>
 
 <div class="grid grid-2">
+  <% if current_admin.can?("subscriptions.review") %>
   <section class="card">
     <div class="card-header">
       <h2>طلبات اشتراك تنتظر المراجعة</h2>
@@ -111,7 +112,9 @@
       <%= empty_state("لا توجد اشتراكات على وشك الانتهاء.") %>
     <% end %>
   </section>
+  <% end %>
 
+  <% if current_admin.can?("firms.moderate") %>
   <section class="card">
     <div class="card-header">
       <h2>أنشطة تنتظر الاعتماد</h2>
@@ -137,4 +140,5 @@
       <%= empty_state("لا توجد أنشطة جديدة.") %>
     <% end %>
   </section>
+  <% end %>
 </div>

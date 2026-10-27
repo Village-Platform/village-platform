@@ -1,7 +1,7 @@
 module Admin
   class SearchController < BaseController
     def index
-      results = GlobalSearch.call(query: params[:q], scope: params[:scope].presence || "all")
+      results = GlobalSearch.call(query: params[:q], scope: params[:scope].presence || "all", admin: current_admin)
       render json: results.map { |result| serialize(result) }
     end
 

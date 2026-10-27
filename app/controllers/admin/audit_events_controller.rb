@@ -1,6 +1,8 @@
 module Admin
   # Read-only: audit rows are never edited or deleted from the dashboard.
   class AuditEventsController < BaseController
+    requires_permission :super_admin
+
     def index
       scope = AuditEvent.includes(:actor).latest_first
       scope = scope.where(subject_type: params[:subject_type]) if params[:subject_type].present?

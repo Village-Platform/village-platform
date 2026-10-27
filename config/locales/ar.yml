@@ -87,6 +87,7 @@ ar:
         user: "مستخدم"
         firm_admin: "صاحب منشأة"
         super_admin: "مدير النظام"
+        staff: "موظف"
     firm:
       status:
         pending: "قيد المراجعة"

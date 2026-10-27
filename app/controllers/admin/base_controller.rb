@@ -1,5 +1,6 @@
 module Admin
-  # Base for all dashboard pages: Arabic, cookie session, super admins only.
+  # Base for all dashboard pages: Arabic, cookie session, super admins and staff.
+  # Each controller names the permission it needs with `requires_permission`.
   class BaseController < ActionController::Base
     include Pagination
     include Auditing
@@ -10,6 +11,12 @@ module Admin
     before_action :require_admin
 
     helper_method :current_admin
+
+    # requires_permission "firms.moderate"            — every action
+    # requires_permission :super_admin, only: :update — super admins only
+    def self.requires_permission(permission, **options)
+      before_action(**options) { require_permission!(permission) }
+    end
 
     rescue_from ActiveRecord::RecordNotFound do
       redirect_to admin_root_path, alert: "العنصر غير موجود."
@@ -29,6 +36,13 @@ module Admin
 
       reset_session
       redirect_to admin_login_path, alert: "يجب تسجيل الدخول أولاً."
+    end
+
+    def require_permission!(permission)
+      allowed = permission == :super_admin ? current_admin.super_admin? : current_admin.can?(permission)
+      return if allowed
+
+      redirect_to admin_root_path, alert: "ليس لديك صلاحية لهذه الصفحة."
     end
 
     def use_arabic(&action)

@@ -1,6 +1,8 @@
 module Admin
   # Review queue for InstaPay / Vodafone Cash transfers. Uses the same services as the API.
   class SubscriptionsController < BaseController
+    requires_permission "subscriptions.review"
+
     include ActiveStorage::SetCurrent # Disk service URLs for the screenshot redirect
 
     before_action :set_subscription, only: %i[show screenshot approve reject]
