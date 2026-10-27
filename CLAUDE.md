@@ -28,6 +28,7 @@ bin/rubocop                              # rubocop-rails-omakase; -a to autocorr
 bundle exec brakeman -q --no-pager       # security scan
 
 bin/rails notifications:subscription_reminders   # the daily job, by hand
+bin/rails categories:optimize_icons              # re-encode existing category icons (idempotent)
 ```
 
 `bin/rubocop` currently reports 2 pre-existing offenses in `config/application.rb` — don't treat a
@@ -46,11 +47,30 @@ The app is **not** `api_only`. Both halves share the models, policies and servic
   subclass `Api::V1::BaseController` (an empty subclass that exists as the API-only seam); the
   super-admin endpoints live under `Api::V1::Admin::`.
 - **`/admin/*`** — `Admin::BaseController < ActionController::Base`. Cookie session
-  (`AdminSession`, 12h TTL, re-checks `super_admin?` on every request), server-rendered ERB,
+  (`AdminSession`, 12h TTL, reloads the admin on every request), server-rendered ERB,
   Arabic RTL, Tailwind (`app/assets/tailwind/application.css` → `app/assets/builds/tailwind.css`)
   and inline SVG icons (`Admin::IconsHelper`). Deliberately no admin gem and no JS framework —
   keep it that way. `Admin::SessionsController` sits outside `BaseController` (it can't require an
   admin) and carries Rails 8 `rate_limit` plus `reset_session` against fixation.
+
+### Admin access: super admins and staff
+
+`super_admin` and `staff` can sign in. Every admin controller declares what it needs with
+`requires_permission "firms.moderate"` (or `:super_admin`); `User#can?` is true for super admins and for
+staff holding that `StaffPermission`. The permission list is fixed in `StaffPermission::PERMISSIONS`.
+A new admin controller **must** declare a permission, and new nav links / dashboard sections must be
+wrapped in the same check. Plans, settings, featured firms and the audit log are super-admin only.
+Staff with `users.manage` cannot edit admin accounts or hand out admin roles. The **API** knows nothing
+of staff: its policies still ask `super_admin?`.
+
+### Audit log
+
+Every privileged write records an append-only `AuditEvent` in the **same transaction** as the change.
+In controllers wrap the write: `audited("firm.suspend", @firm) { @firm.update!(status: :suspended) }`
+(the block's truthiness decides whether the row is written); inside services call
+`Audit.record(actor:, action:, subject:)` within the service's transaction. `destroy_and_redirect`
+already audits with a snapshot. `Current` carries source (admin/api/cron), IP and request id. Never
+audit from model callbacks — they lose the actor and fire for seeds and consoles.
 
 ### Admin design system
 
@@ -142,9 +162,38 @@ These are easy to break from a single file and are covered by request specs:
   `PaymentMethods.all` — never hardcode them.
 - **Phones are normalized** (`normalizes :phone`, digits and `+` only), so a lookup by raw input has
   to go through `User.normalize_value_for(:phone, input)` — seeds and the admin login already do.
+- **Plan entitlements.** `User#entitlements` (`Entitlements` value object) reads limits from the current
+  plan: nil means unlimited (super admin), no subscription means all zeros. Public firm lists use
+  `Firm.ranked` (subscribers above the super admin's places, then plan `priority`, then name/id) —
+  computed per query because expiry is time-based.
+- **Articles have two axes.** `published_at` (draft/scheduled/published) and `review_state`
+  (approved/pending/rejected). Subscribers' articles start pending; `Articles::Review` publishes them.
+  `Article.visible` mirrors `Firm.visible`. A subscriber's edit sends the article back to review.
+- **Categories are one level deep.** `/categories` returns top-level only by default (old apps);
+  custom field values live in `firms.custom_fields` and are cast/validated against `CategoryField`.
+  A `CategoryField` kind is `choice`, not `select` (that name clashes with Active Record).
+- **Payment destinations stay in ENV**, never in the `settings` table (`Setting::SCHEMA` is the allowlist).
 - **Nearly every association is `dependent: :restrict_with_error`.** Deletes fail loudly instead of
   cascading; surface the message (`destroy_and_redirect` in admin, `errors.api.cannot_delete` in the
   API) rather than working around the restriction.
+
+## Media uploads
+
+`MediaProfile` (registry, no table) defines each attachment kind: types, max bytes, longest edge, video
+duration and the client's encoder target; it is published at `GET /api/v1/media_profiles`. The Android
+app compresses; the server never trusts that and runs `Media::Ingest` → `Media::Validate` (type sniffed
+from the bytes, MP4 duration read by `Media::Mp4Probe` with ranged reads) → `Media::Optimize` (libvips:
+resize, strip EXIF, WEBP — skipped when the upload already meets the target). New uploads go through
+`Media::Ingest`; don't hand-roll content-type or size checks in models.
+
+- Video must not land in PostgreSQL: `Media.service_name_for` refuses an `object_storage` profile on the
+  `database` service (`media_storage_unavailable`). Set `MEDIA_STORAGE_SERVICE=r2` to enable it.
+- `POST /api/v1/direct_uploads` signs presigned uploads; a blob is accepted back only from the same user
+  and for the same profile (metadata `uploader_id` / `profile`).
+- Plan limits are taken under a row lock (firm for media, author for articles); `Media::LimitReached`
+  is answered `403 media_limit_reached`.
+- `ruby-vips` is in every bundle group now, so **libvips must be installed locally** for tests.
+- `Firm has_many :media, dependent: :destroy` is the one deliberate cascade.
 
 ## Storage
 
@@ -228,5 +277,6 @@ and range-based scopes (`where(starts_at: ..Time.current)`).
 - The daily job runs via Vercel Cron hitting `GET /internal/cron/subscription_reminders`, guarded by
   a `CRON_SECRET` bearer token compared with `secure_compare` (`Internal::CronController`).
   Active Job uses the `:async` adapter in-process — there is no separate worker.
-- `ruby-vips` is in the `:production` group only (libvips is installed in `Dockerfile.vercel`), so
-  image variants can't be exercised locally without installing it.
+- libvips is installed in `Dockerfile.vercel` and required locally (see **Media uploads**).
+- A second daily cron, `GET /internal/cron/purge_unattached_blobs`, removes abandoned uploads
+  (`vercel.json`, `deploy/k8s/cron.yaml`).

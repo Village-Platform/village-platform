@@ -1,6 +1,6 @@
 # 05 — Subscriber articles
 
-Status: draft
+Status: implemented (2026-10-27)
 Request: subscribers can "write articles on the app".
 Depends on: 04 (`max_articles_per_month`), 06 (moderation is audited)
 

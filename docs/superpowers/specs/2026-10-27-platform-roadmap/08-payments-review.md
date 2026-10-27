@@ -1,6 +1,6 @@
 # 08 — Payments review queue
 
-Status: draft
+Status: implemented (2026-10-27)
 Part of: super-admin "control everything"
 Depends on: 06
 

@@ -1,6 +1,6 @@
 # 14 — CSV export
 
-Status: draft
+Status: implemented (2026-10-27)
 Part of: super-admin "control everything"
 Depends on: 06 (exports are audited), 07 (`export.run` permission)
 

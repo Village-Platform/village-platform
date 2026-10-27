@@ -1,6 +1,6 @@
 # 03 — Category icon optimization
 
-Status: draft
+Status: implemented (2026-10-27)
 Request: "Compress category icons to the minimum size possible without decreasing quality."
 Depends on: 01 (`Media::Optimize`, `category_icon` profile)
 

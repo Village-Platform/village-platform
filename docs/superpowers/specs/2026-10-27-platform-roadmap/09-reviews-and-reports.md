@@ -1,6 +1,6 @@
 # 09 — Reviews and reports
 
-Status: draft
+Status: reports implemented (2026-10-27); ratings not built — waiting on the maintainer decision below
 Part of: super-admin "control everything"
 Depends on: 06
 

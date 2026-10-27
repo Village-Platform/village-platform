@@ -14,6 +14,9 @@ The native Android app consumes it. Kept simple on purpose; extend step by step.
 
 ## Setup
 
+libvips must be installed (`apt install libvips42`): uploads are resized and re-encoded in every
+environment, not only in production.
+
 ```bash
 cp .env.example .env            # adjust DB credentials
 docker compose up -d db         # or use your local PostgreSQL
@@ -48,6 +51,11 @@ To start fresh: `bin/rails db:reset` (drops and recreates the development databa
 | `user`        | Browse categories, firms, news. Default on register.          |
 | `firm_admin`  | Create and manage **own** firms while subscribed (created as `pending`). |
 | `super_admin` | Everything: categories, news, approve firms, change roles.    |
+| `staff`       | Dashboard only, limited to the permissions a super admin grants (review payments, moderate firms, …). API clients should treat an unknown role like `user`. |
+
+What a subscription buys is set per plan: `max_firms`, `max_images_per_firm`, `max_videos_per_firm`,
+`max_video_seconds`, `max_articles_per_month` and `priority` (subscribers' firms are listed first,
+higher priority first). `GET /me` returns these limits with current usage.
 
 ## Endpoints (`/api/v1`)
 
@@ -56,16 +64,27 @@ To start fresh: `bin/rails db:reset` (drops and recreates the development databa
 | POST   | `/auth/register`                   | public        |
 | POST   | `/auth/login`                      | public        |
 | GET/PATCH | `/me`                           | user          |
-| GET    | `/categories`, `/categories/:id`   | public        |
+| GET    | `/categories?parent_id=`, `/categories/:id` | public — top level by default; each category lists its custom `fields` |
 | POST/PATCH/DELETE | `/categories[/:id]`     | super_admin   |
 | GET    | `/categories/:id/firms`            | public        |
 | GET    | `/categories/:id/icon?v=`          | public — category image; use the `icon_url` from the JSON (cached 1 year per version) |
 | GET    | `/firms?category_id=&q=&mine=true` | public        |
 | GET    | `/firms/:id`                       | public        |
+| GET    | `/firms/featured`                  | public — the home screen strip |
+| GET    | `/firms/:id/media`                 | public (visible firms) |
+| POST   | `/firms/:id/media` (`kind`, multipart `file` or `signed_blob_id`, `caption`) | owner (plan limits) / super_admin |
+| PATCH/DELETE | `/firms/:id/media/:id`       | owner / super_admin |
+| GET    | `/media_profiles`                  | public — compression targets the app encodes to |
+| POST   | `/direct_uploads` (`profile`, `blob`) | user — presigned upload URL (needed for video) |
+| GET    | `/app_config`                      | public — `min_android_version` (force-update), support phone, banner |
+| POST   | `/reports` (`subject_type`, `subject_id`, `reason`, `note`) | user (rate-limited) |
 | POST   | `/firms`                           | firm_admin+   |
 | PATCH/DELETE | `/firms/:id`                 | owner / super_admin |
 | GET    | `/articles?kind=news`, `/articles/:id` | public    |
-| POST/PATCH/DELETE | `/articles[/:id]`       | super_admin   |
+| POST/PATCH/DELETE | `/articles[/:id]`       | super_admin (published) / subscriber with article quota (reviewed first) |
+| GET    | `/me/articles`                     | user — own articles in every review state |
+| GET    | `/admin/articles?review_state=pending` | super_admin |
+| PATCH  | `/admin/articles/:id/approve`, `/admin/articles/:id/reject` (`reason`) | super_admin |
 | GET    | `/admin/users?role=`               | super_admin   |
 | PATCH  | `/admin/users/:id` (`role`)        | super_admin   |
 | GET    | `/payment_methods`                 | public        |
@@ -78,11 +97,23 @@ To start fresh: `bin/rails db:reset` (drops and recreates the development databa
 | PATCH  | `/notifications/:id/read`, `/notifications/read_all` | user |
 | GET    | `/admin/subscriptions?status=pending`, `/admin/subscriptions/:id` | super_admin |
 | GET    | `/admin/subscriptions/:id/payment_screenshot` | super_admin |
-| PATCH  | `/admin/subscriptions/:id/approve` | super_admin   |
+| PATCH  | `/admin/subscriptions/:id/approve` (optional `reconciliation_note`) | super_admin |
 | PATCH  | `/admin/subscriptions/:id/reject` (`reason`) | super_admin |
 | GET    | `/up`                              | health check  |
 
 Lists accept `page` and `per_page` (max 50) and return `{ data: [...], meta: {...} }`.
+
+### Uploads
+
+Every upload follows a media profile (`GET /media_profiles`): allowed types, maximum size, longest edge,
+video duration and the encoder target. The app compresses to that target before uploading (WEBP ≈ q82
+for photos, H.264 720p ≈ 2.5 Mbps for video); the server checks the real bytes anyway, strips photo
+metadata (EXIF GPS) and re-encodes only what misses the target. Payment screenshots stay lossless.
+
+Images can be sent as multipart. Video goes through a direct upload: `POST /direct_uploads` returns a
+presigned URL, the app `PUT`s the file there, then sends the returned `signed_id` to the feature
+endpoint. Video needs object storage (`MEDIA_STORAGE_SERVICE=r2`); without it the API answers
+`media_storage_unavailable` rather than filling PostgreSQL.
 Errors always look like `{ "error": { "code", "message", "details" } }`.
 
 ### Example
@@ -117,7 +148,15 @@ Open `http://localhost:3000/admin/login` and sign in with the seeded super admin
 | الأقسام | Add, edit, order, enable/disable, upload / remove the icon image (can't delete a category that has firms) |
 | الأخبار | Draft, publish now or schedule; filter by kind |
 | باقات الاشتراك | Prices in EGP, duration, max firms (purchased plans can only be deactivated) |
-| المستخدمون | Search, change role, reset password, see subscriptions and firms |
+| المستخدمون | Search, change role, reset password, see subscriptions and firms; grant staff permissions |
+| البلاغات | Reports grouped by subject; resolve (suspend firm, remove medium, unpublish article) or dismiss |
+| الإشعارات الجماعية | Send an announcement to everyone, firm admins, expiring subscribers or one category's owners |
+| الأنشطة المميزة | Pin firms to the app's featured strip for a period |
+| الإعدادات | Support phone, minimum/latest Android version, in-app banner |
+| سجل العمليات | Every admin write from the dashboard or the API: who, what, before/after, when |
+
+Firm, user and subscription lists export the filtered rows as CSV (permission `export.run`, audited).
+Categories can have sub-categories (one level) and extra fields that firms in them fill in.
 
 Approve / reject use the same services as the API, so renewal stacking, role promotion and notifications
 behave the same everywhere.
@@ -165,6 +204,8 @@ builds the image on every deploy and sends all traffic to it.
 | Migrations / seeds | `bin/docker-entrypoint` runs `db:prepare_locked` on start: migrates, and seeds an empty database. An advisory lock makes containers that start together take turns |
 | Files | `database` Active Storage service: screenshots are kept in PostgreSQL (`stored_files`), served by signed 5-minute URLs |
 | Daily reminders | Vercel Cron calls `GET /internal/cron/subscription_reminders` at 07:00 UTC (`vercel.json`), protected by `CRON_SECRET` |
+| Upload cleanup | Vercel Cron calls `GET /internal/cron/purge_unattached_blobs` daily (abandoned direct uploads) |
+| Video | Object storage (Cloudflare R2) with `MEDIA_STORAGE_SERVICE=r2` and the `R2_*` variables |
 | Background jobs | `:async` inside the container (fine for the current small jobs) |
 
 Steps:
@@ -183,9 +224,12 @@ Steps:
    | `ASSUME_SSL` / `FORCE_SSL` | `1` / `1` |
    | `SEED_DEMO` | `1` only if you want the demo data |
    | `DB_PREPARE_ON_BOOT` | `0` to skip migrations on start (then run them yourself) |
+   | `MEDIA_STORAGE_SERVICE` | `r2` to enable video uploads (with `R2_ENDPOINT`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`) |
 
 4. Deploy, then open `https://<project>.vercel.app/up` and `/admin/login`.
 5. Point the Android release build at it: `AGHOUR_API_URL_RELEASE=https://<project>.vercel.app/api/v1/`.
+6. Once, after the release that adds icon optimization: `bin/rails categories:optimize_icons`
+   (idempotent; shrinks existing category icons and rolls their cache version).
 
 Limits to know: request bodies up to 4.5MB, requests up to 300s (Hobby), the container sleeps
 after 5 minutes without traffic (the next request is a cold start, which also runs `db:prepare`).
@@ -200,6 +244,6 @@ docker run --rm -p 3000:3000 -e DATABASE_URL=postgres://postgres:postgres@host.d
 
 ## Next steps (planned)
 
-1. Images via Active Storage (firm logos, article covers; category icons done) — move files to S3 / R2 when they grow
+1. Move the remaining files (screenshots, images) from PostgreSQL to R2 as they grow (`ACTIVE_STORAGE_SERVICE=r2`)
 2. Token revocation / refresh tokens
 3. Push notifications (FCM) — deliver the existing notifications + news

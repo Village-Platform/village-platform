@@ -1,6 +1,6 @@
 # 10 — Notification composer
 
-Status: draft
+Status: implemented (2026-10-27)
 Part of: super-admin "control everything"
 Depends on: 06
 

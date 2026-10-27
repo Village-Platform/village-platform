@@ -1,7 +1,7 @@
 # Platform roadmap — index
 
 Date: 2026-10-27
-Status: draft, awaiting maintainer review
+Status: implemented on branch claude/pensive-pascal-fl2yqe (2026-10-27), except star ratings (09)
 
 ## Why this exists
 
@@ -76,6 +76,16 @@ These change the design, so they are stated before anything else.
 - **Every admin write is audited** once 06 exists.
 - **Error codes** go into both `config/locales/ar.yml` and `en.yml`.
 - **Coverage is request specs**, as everywhere else in this repo.
+
+## Implementation notes
+
+- Deviations from the specs: `CategoryField` kind `select` became `choice` (name clash with Active
+  Record); settings use an integer id with a unique `key` so they can be audited like other rows;
+  plans and the audit log stay super-admin only rather than getting their own staff permissions;
+  featuring is super-admin only (it can be a paid promotion).
+- Not built: star ratings (09, product decision), server-side video transcoding (01 D5), push (10).
+- Before video works in production: create the R2 bucket and set `MEDIA_STORAGE_SERVICE=r2` with the
+  `R2_*` variables. After deploy: `bin/rails categories:optimize_icons` once.
 
 ## Scale note
 

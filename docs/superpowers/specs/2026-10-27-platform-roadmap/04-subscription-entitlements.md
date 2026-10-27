@@ -1,6 +1,6 @@
 # 04 — Subscription entitlements and priority
 
-Status: draft
+Status: implemented (2026-10-27)
 Request: "Subscribe to manage your firms, add images, videos and write articles on the app, with
 high priority of view."
 

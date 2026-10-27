@@ -1,6 +1,6 @@
 # 12 — Category tree and custom fields
 
-Status: draft
+Status: implemented (2026-10-27)
 Part of: super-admin "control everything"
 
 Two independent features; either can ship alone.

@@ -1,6 +1,6 @@
 # 06 — Audit log
 
-Status: draft
+Status: implemented (2026-10-27)
 Part of: super-admin "control everything"
 
 ## Goal

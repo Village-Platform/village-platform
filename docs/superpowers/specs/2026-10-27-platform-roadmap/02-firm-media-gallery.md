@@ -1,6 +1,6 @@
 # 02 — Firm media gallery
 
-Status: draft
+Status: implemented (2026-10-27)
 Request: "Firms should have many images and many videos, compressed before upload."
 Depends on: 01 (profiles, direct upload), 04 (per-plan limits)
 
@@ -16,7 +16,7 @@ A dedicated `firm_media` table rather than `has_many_attached :images` on `Firm`
 ```
 firm_media
   id, firm_id (fk, not null), kind (image|video), position (int, not null),
-  caption (string ≤ 200), width, height, duration_s, created_at, updated_at
+  caption (string ≤ 200), duration_s, created_at, updated_at
   index (firm_id, kind, position)
 FirmMedium has_one_attached :file
 ```

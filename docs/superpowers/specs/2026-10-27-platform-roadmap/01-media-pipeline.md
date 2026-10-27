@@ -1,6 +1,6 @@
 # 01 — Media pipeline (the general compression "engine")
 
-Status: draft
+Status: implemented (2026-10-27)
 Request: "Any image/video or attachment must compress before upload to our server — create a
 general service/engine."
 
