@@ -50,6 +50,7 @@ Rails.application.routes.draw do
     end
     resources :audit_events, only: :index, path: "audit"
     resources :broadcasts, only: %i[index new create]
+    resource :settings, only: %i[edit update]
     resources :reports, only: :index do
       patch :resolve, on: :collection
     end
@@ -74,6 +75,7 @@ Rails.application.routes.draw do
 
       get "payment_methods", to: "payment_methods#index"
       get "media_profiles", to: "media_profiles#index"
+      get "app_config", to: "app_config#show"
       resources :reports, only: :create
       resources :direct_uploads, only: :create
       resources :subscription_plans

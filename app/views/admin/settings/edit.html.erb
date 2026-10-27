@@ -1,0 +1,18 @@
+<%= page_header "الإعدادات", subtitle: "قيم تشغيلية تصل إلى التطبيق خلال دقائق، بدون نشر جديد" %>
+
+<%= form_with url: admin_settings_path, method: :patch, class: "form card" do |f| %>
+  <div class="form-grid">
+    <% Setting::SCHEMA.each do |key, definition| %>
+      <div class="field<%= ' full' if definition[:type] == :string %>">
+        <%= label_tag "settings_#{key}", definition[:label] %>
+        <% if definition[:type] == :integer %>
+          <%= number_field_tag "settings[#{key}]", @values[key], min: 1, id: "settings_#{key}", dir: "ltr" %>
+        <% else %>
+          <%= text_field_tag "settings[#{key}]", @values[key], id: "settings_#{key}", maxlength: 200 %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <p><small>أرقام الدفع (إنستاباي وفودافون كاش) تبقى في متغيرات البيئة عمدًا، ولا تُعدَّل من هنا.</small></p>
+  <div class="form-actions"><%= f.submit "حفظ", class: "btn btn-gold" %></div>
+<% end %>

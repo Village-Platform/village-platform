@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_28_090008) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_28_090009) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -176,6 +176,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090008) do
     t.index ["subject_type", "subject_id", "status"], name: "index_reports_on_subject_type_and_subject_id_and_status"
   end
 
+  create_table "settings", force: :cascade do |t|
+    t.string "key", null: false
+    t.jsonb "value"
+    t.bigint "updated_by_id"
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_settings_on_key", unique: true
+  end
+
   create_table "staff_permissions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "permission", null: false
@@ -275,6 +283,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090008) do
   add_foreign_key "notifications", "users"
   add_foreign_key "reports", "users", column: "reporter_id"
   add_foreign_key "reports", "users", column: "resolved_by_id"
+  add_foreign_key "settings", "users", column: "updated_by_id"
   add_foreign_key "staff_permissions", "users"
   add_foreign_key "staff_permissions", "users", column: "granted_by_id"
   add_foreign_key "subscriptions", "subscription_plans"
