@@ -36,3 +36,5 @@
     <dt>تاريخ الإضافة</dt><dd><%= fmt_time(@firm.created_at) %></dd>
   </dl>
 </section>
+
+<%= render "admin/shared/history", record: @firm %>

@@ -6,6 +6,7 @@ module Internal
 
     # GET /internal/cron/subscription_reminders  (daily)
     def subscription_reminders
+      Current.source = "cron"
       sent = SubscriptionExpiryRemindersJob.perform_now
       render json: { sent: }
     end

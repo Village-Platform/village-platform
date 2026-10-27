@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_27_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_28_090002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -55,6 +55,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_27_140000) do
     t.index ["author_id"], name: "index_articles_on_author_id"
     t.index ["kind", "published_at"], name: "index_articles_on_kind_and_published_at"
     t.index ["published_at"], name: "index_articles_on_published_at"
+  end
+
+  create_table "audit_events", force: :cascade do |t|
+    t.bigint "actor_id"
+    t.string "action", null: false
+    t.string "subject_type", null: false
+    t.bigint "subject_id", null: false
+    t.string "subject_label"
+    t.jsonb "changeset", default: {}, null: false
+    t.string "source", null: false
+    t.string "ip"
+    t.string "request_id"
+    t.datetime "created_at", null: false
+    t.index ["action"], name: "index_audit_events_on_action"
+    t.index ["actor_id", "created_at"], name: "index_audit_events_on_actor_id_and_created_at"
+    t.index ["created_at"], name: "index_audit_events_on_created_at"
+    t.index ["subject_type", "subject_id", "created_at"], name: "idx_on_subject_type_subject_id_created_at_314bc2a748"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -125,11 +142,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_27_140000) do
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "max_images_per_firm", default: 5, null: false
+    t.integer "max_videos_per_firm", default: 0, null: false
+    t.integer "max_video_seconds", default: 60, null: false
+    t.integer "max_articles_per_month", default: 0, null: false
+    t.integer "priority", default: 0, null: false
     t.index "lower((name)::text) gin_trgm_ops", name: "index_subscription_plans_on_name_trigram", using: :gin
     t.index ["name"], name: "index_subscription_plans_on_name", unique: true
     t.check_constraint "duration_days > 0", name: "subscription_plans_duration_positive"
+    t.check_constraint "max_articles_per_month >= 0", name: "subscription_plans_max_articles_per_month_non_negative"
     t.check_constraint "max_firms > 0", name: "subscription_plans_max_firms_positive"
+    t.check_constraint "max_images_per_firm >= 0", name: "subscription_plans_max_images_per_firm_non_negative"
+    t.check_constraint "max_video_seconds >= 0", name: "subscription_plans_max_video_seconds_non_negative"
+    t.check_constraint "max_videos_per_firm >= 0", name: "subscription_plans_max_videos_per_firm_non_negative"
     t.check_constraint "price_cents >= 0", name: "subscription_plans_price_non_negative"
+    t.check_constraint "priority >= 0 AND priority <= 100", name: "subscription_plans_priority_range"
   end
 
   create_table "subscriptions", force: :cascade do |t|
@@ -178,6 +205,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_27_140000) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "articles", "users", column: "author_id"
+  add_foreign_key "audit_events", "users", column: "actor_id"
   add_foreign_key "firms", "categories"
   add_foreign_key "firms", "users", column: "owner_id"
   add_foreign_key "notifications", "users"

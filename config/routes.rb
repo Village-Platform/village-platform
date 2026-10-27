@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     resources :articles, except: :show
     resources :subscription_plans, except: :show
     resources :users, except: :destroy
+    resources :audit_events, only: :index, path: "audit"
   end
 
   namespace :api do

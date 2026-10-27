@@ -27,11 +27,17 @@ class User < ApplicationRecord
     subscriptions.current.includes(:subscription_plan).order(:ends_at).first
   end
 
+  # Limits from the plan of the current subscription (one query; not memoized, so never stale).
+  def entitlements
+    Entitlements.for(self)
+  end
+
   # Super admins are unlimited; firm admins need a current subscription with free slots.
   def can_add_firm?
-    return true if super_admin?
+    entitlements.within?(:max_firms, firms.count)
+  end
 
-    subscription = current_subscription
-    subscription.present? && firms.count < subscription.subscription_plan.max_firms
+  def articles_this_month
+    articles.where(created_at: Time.current.all_month).count
   end
 end

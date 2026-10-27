@@ -13,7 +13,7 @@ module Admin
 
     def create
       @category = Category.new(category_params)
-      if @category.save
+      if audited("category.create", @category) { @category.save }
         redirect_to admin_categories_path, notice: "تم إضافة التصنيف."
       else
         render :new, status: :unprocessable_content
@@ -23,7 +23,7 @@ module Admin
     def edit; end
 
     def update
-      if @category.update(category_params)
+      if audited("category.update", @category) { @category.update(category_params) }
         @category.icon_image.purge if remove_icon_image?
         redirect_to admin_categories_path, notice: "تم حفظ التعديلات."
       else

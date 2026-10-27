@@ -26,7 +26,11 @@ module Subscriptions
           reviewed_by: @reviewer,
           reviewed_at: now
         )
-        user.update!(role: :firm_admin) if user.user?
+        Audit.record(actor: @reviewer, action: "subscription.approve", subject: @subscription)
+        if user.user?
+          user.update!(role: :firm_admin)
+          Audit.record(actor: @reviewer, action: "user.promote", subject: user)
+        end
       end
 
       notify_owner

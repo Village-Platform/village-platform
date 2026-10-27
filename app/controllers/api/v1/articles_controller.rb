@@ -20,19 +20,20 @@ module Api
 
       def create
         authorize Article
-        article = current_user.articles.create!(permitted_attributes(Article))
+        article = current_user.articles.build(permitted_attributes(Article))
+        audited("article.create", article) { article.save! }
         render_record(article, ArticleSerializer, status: :created)
       end
 
       def update
         authorize @article
-        @article.update!(permitted_attributes(@article))
+        audited("article.update", @article) { @article.update!(permitted_attributes(@article)) }
         render_record(@article, ArticleSerializer)
       end
 
       def destroy
         authorize @article
-        @article.destroy!
+        audited("article.destroy", @article, changes: Audit.snapshot(@article)) { @article.destroy! }
         head :no_content
       end
 

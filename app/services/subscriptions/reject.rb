@@ -18,6 +18,7 @@ module Subscriptions
           reviewed_by: @reviewer,
           reviewed_at: Time.current
         )
+        Audit.record(actor: @reviewer, action: "subscription.reject", subject: @subscription)
       end
 
       notify_owner

@@ -23,7 +23,7 @@ module Admin
 
     def create
       @user = User.new(user_params)
-      if @user.save
+      if audited("user.create", @user) { @user.save }
         redirect_to admin_user_path(@user), notice: "تم إضافة المستخدم."
       else
         render :new, status: :unprocessable_content
@@ -41,7 +41,7 @@ module Admin
         return render :edit, status: :unprocessable_content
       end
 
-      if @user.update(attrs)
+      if audited("user.update", @user) { @user.update(attrs) }
         redirect_to admin_user_path(@user), notice: "تم حفظ التعديلات."
       else
         render :edit, status: :unprocessable_content

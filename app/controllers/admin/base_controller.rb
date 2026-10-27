@@ -2,6 +2,7 @@ module Admin
   # Base for all dashboard pages: Arabic, cookie session, super admins only.
   class BaseController < ActionController::Base
     include Pagination
+    include Auditing
 
     layout "admin"
 
@@ -15,6 +16,9 @@ module Admin
     end
 
     private
+
+    def audit_source = "admin"
+    def audit_actor = current_admin
 
     def current_admin
       @current_admin ||= AdminSession.find_admin(session)
@@ -37,7 +41,8 @@ module Admin
     end
 
     def destroy_and_redirect(record, path)
-      if record.destroy
+      snapshot = Audit.snapshot(record)
+      if audited("#{record.model_name.singular}.destroy", record, changes: snapshot) { record.destroy }
         redirect_to path, notice: "تم الحذف."
       else
         redirect_to path, alert: record.errors.full_messages.to_sentence.presence || "لا يمكن حذف هذا العنصر."

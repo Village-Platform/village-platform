@@ -7,7 +7,7 @@ module Api
       # GET /api/v1/firms?category_id=1&q=pharmacy&mine=true
       # GET /api/v1/categories/:category_id/firms
       def index
-        scope = policy_scope(Firm).includes(category: { icon_image_attachment: :blob }).order(:name, :id)
+        scope = policy_scope(Firm).includes(category: { icon_image_attachment: :blob }).ranked
         scope = scope.where(category_id: params[:category_id]) if params[:category_id].present?
         scope = scope.search(params[:q]) if params[:q].present?
         scope = scope.where(owner_id: current_user.id) if params[:mine].present? && current_user
@@ -31,13 +31,13 @@ module Api
 
       def update
         authorize @firm
-        @firm.update!(permitted_attributes(@firm))
+        audited("firm.update", @firm) { @firm.update!(permitted_attributes(@firm)) }
         render_record(@firm, FirmSerializer)
       end
 
       def destroy
         authorize @firm
-        @firm.destroy!
+        audited("firm.destroy", @firm, changes: Audit.snapshot(@firm)) { @firm.destroy! }
         head :no_content
       end
 

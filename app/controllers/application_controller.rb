@@ -3,10 +3,14 @@ class ApplicationController < ActionController::API
   include Authentication
   include ErrorHandling
   include Pagination
+  include Auditing
 
   around_action :switch_locale
 
   private
+
+  def audit_source = "api"
+  def audit_actor = current_user
 
   def switch_locale(&action)
     requested = request.headers["Accept-Language"].to_s[0, 2]&.downcase

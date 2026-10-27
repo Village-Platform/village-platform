@@ -4,7 +4,7 @@
 <div class="tbl">
   <% if @plans.any? %>
     <table>
-      <thead><tr><th>الترتيب</th><th>الباقة</th><th>السعر</th><th>المدة</th><th>أقصى أنشطة</th><th>مفعّلة</th><th></th></tr></thead>
+      <thead><tr><th>الترتيب</th><th>الباقة</th><th>السعر</th><th>المدة</th><th>أقصى أنشطة</th><th>المزايا</th><th>مفعّلة</th><th></th></tr></thead>
       <tbody>
         <% @plans.each do |plan| %>
           <tr>
@@ -13,6 +13,12 @@
             <td><%= egp(plan.price_cents) %></td>
             <td><%= plan.duration_days %> يوم</td>
             <td><%= plan.max_firms %></td>
+            <td>
+              <%= badge("#{plan.max_images_per_firm} صورة") %>
+              <%= badge("#{plan.max_videos_per_firm} فيديو") %>
+              <%= badge("#{plan.max_articles_per_month} مقال/شهر") %>
+              <%= badge("أولوية #{plan.priority}", plan.priority.positive? ? "gold" : "gray") %>
+            </td>
             <td><%= switch(plan.active) %></td>
             <td class="actions">
               <%= link_to edit_admin_subscription_plan_path(plan), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 16) %><% end %>
