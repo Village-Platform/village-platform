@@ -1,6 +1,6 @@
 # 14 — CSV export
 
-Status: implemented (2026-10-27)
+Status: removed (2026-10-27) — built, then taken out at the maintainer's request; this design stands if it returns
 Part of: super-admin "control everything"
 Depends on: 06 (exports are audited), 07 (`export.run` permission)
 

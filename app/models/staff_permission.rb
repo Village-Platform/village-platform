@@ -9,8 +9,7 @@ class StaffPermission < ApplicationRecord
     "reports.handle" => "معالجة البلاغات",
     "notifications.send" => "إرسال الإشعارات",
     "categories.manage" => "إدارة التصنيفات",
-    "users.manage" => "إدارة المستخدمين",
-    "export.run" => "تصدير البيانات"
+    "users.manage" => "إدارة المستخدمين"
   }.freeze
 
   belongs_to :user

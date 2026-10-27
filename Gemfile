@@ -20,7 +20,6 @@ gem "pundit", "~> 2.5"
 # API helpers
 gem "rack-cors"
 gem "rails-i18n", "~> 8.0"
-gem "csv" # admin exports; a bundled gem, no longer loaded by default since Ruby 3.4
 gem "dotenv-rails"
 
 group :development, :test do

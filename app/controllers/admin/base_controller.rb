@@ -4,7 +4,6 @@ module Admin
   class BaseController < ActionController::Base
     include Pagination
     include Auditing
-    include AdminCsvExport
 
     layout "admin"
 
@@ -25,7 +24,7 @@ module Admin
 
     private
 
-    # Current index filters, for links (pagination, tabs, export) — see Admin::UiHelper::FILTER_KEYS.
+    # Current index filters, for links (pagination, tabs) — see Admin::UiHelper::FILTER_KEYS.
     def filter_params(**overrides)
       request.query_parameters.symbolize_keys.slice(*Admin::UiHelper::FILTER_KEYS).merge(overrides)
     end

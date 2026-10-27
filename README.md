@@ -155,7 +155,6 @@ Open `http://localhost:3000/admin/login` and sign in with the seeded super admin
 | الإعدادات | Support phone, minimum/latest Android version, in-app banner |
 | سجل العمليات | Every admin write from the dashboard or the API: who, what, before/after, when |
 
-Firm, user and subscription lists export the filtered rows as CSV (permission `export.run`, audited).
 Categories can have sub-categories (one level) and extra fields that firms in them fill in.
 
 Approve / reject use the same services as the API, so renewal stacking, role promotion and notifications

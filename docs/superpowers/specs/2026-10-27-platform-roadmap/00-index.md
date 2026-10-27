@@ -83,6 +83,7 @@ These change the design, so they are stated before anything else.
   Record); settings use an integer id with a unique `key` so they can be audited like other rows;
   plans and the audit log stay super-admin only rather than getting their own staff permissions;
   featuring is super-admin only (it can be a paid promotion).
+- Removed after implementation at the maintainer's request: CSV export (14).
 - Not built: star ratings (09, product decision), server-side video transcoding (01 D5), push (10).
 - Before video works in production: create the R2 bucket and set `MEDIA_STORAGE_SERVICE=r2` with the
   `R2_*` variables. After deploy: `bin/rails categories:optimize_icons` once.

@@ -3,7 +3,7 @@ module Admin
     ACTION_LABELS = {
       "create" => "إضافة", "update" => "تعديل", "destroy" => "حذف",
       "approve" => "اعتماد", "reject" => "رفض", "suspend" => "إيقاف", "promote" => "ترقية",
-      "grant" => "منح صلاحية", "revoke" => "سحب صلاحية", "export" => "تصدير", "broadcast" => "إرسال إشعار",
+      "grant" => "منح صلاحية", "revoke" => "سحب صلاحية", "broadcast" => "إرسال إشعار",
       "feature" => "تمييز", "resolve" => "معالجة", "dismiss" => "تجاهل"
     }.freeze
 
