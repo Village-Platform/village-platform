@@ -40,6 +40,9 @@ ar:
     article_rejected:
       title: "لم تتم الموافقة على مقالك"
       body: "لم تتم الموافقة على «%{title}» للسبب التالي: %{reason}"
+    broadcast:
+      title: "%{title}"
+      body: "%{body}"
   payment_methods:
     instapay: "إنستاباي"
     vodafone_cash: "فودافون كاش"

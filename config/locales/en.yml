@@ -40,6 +40,9 @@ en:
     article_rejected:
       title: "Your article was not approved"
       body: "«%{title}» was not approved for this reason: %{reason}"
+    broadcast:
+      title: "%{title}"
+      body: "%{body}"
   payment_methods:
     instapay: "InstaPay"
     vodafone_cash: "Vodafone Cash"

@@ -1,0 +1,31 @@
+<%= page_header "إشعار جديد" %>
+
+<%= form_with model: @broadcast, url: admin_broadcasts_path, scope: :broadcast, class: "form card" do |f| %>
+  <%= render "admin/shared/errors", record: @broadcast %>
+  <%= f.hidden_field :idempotency_key %>
+  <div class="form-grid">
+    <div class="field">
+      <%= f.label :audience, "الجمهور" %>
+      <%= f.select :audience, Broadcast::AUDIENCES.map { |key, label| [ label, key ] } %>
+    </div>
+    <div class="field">
+      <%= label_tag "broadcast_audience_params_days", "عدد الأيام (للمشتركين الذين ينتهي اشتراكهم)" %>
+      <%= number_field_tag "broadcast[audience_params][days]", @broadcast.audience_params["days"], min: 1, max: 60, id: "broadcast_audience_params_days" %>
+    </div>
+    <div class="field">
+      <%= label_tag "broadcast_audience_params_category_id", "التصنيف (لأصحاب أنشطة تصنيف)" %>
+      <%= select_tag "broadcast[audience_params][category_id]",
+            options_from_collection_for_select(@categories, :id, :name, @broadcast.audience_params["category_id"]),
+            include_blank: "—", id: "broadcast_audience_params_category_id" %>
+    </div>
+    <div class="field full"><%= f.label :title, "العنوان" %><%= f.text_field :title, maxlength: 120, required: true %></div>
+    <div class="field full"><%= f.label :body, "النص" %><%= f.text_area :body, rows: 4, maxlength: 1000, required: true %></div>
+  </div>
+  <% if @recipients_count %>
+    <p>سيصل هذا الإشعار إلى <strong><%= @recipients_count %></strong> مستخدم.</p>
+  <% end %>
+  <div class="form-actions">
+    <%= f.button "معاينة عدد المستلمين", type: "submit", formaction: new_admin_broadcast_path, formmethod: "get", class: "btn btn-ghost" %>
+    <%= f.submit "إرسال", class: "btn btn-gold", data: { confirm: "إرسال الإشعار الآن؟ لا يمكن التراجع." } %>
+  </div>
+<% end %>

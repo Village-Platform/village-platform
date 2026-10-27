@@ -49,6 +49,7 @@ Rails.application.routes.draw do
       resource :permissions, only: :update, controller: "staff_permissions"
     end
     resources :audit_events, only: :index, path: "audit"
+    resources :broadcasts, only: %i[index new create]
     resources :reports, only: :index do
       patch :resolve, on: :collection
     end

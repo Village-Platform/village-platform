@@ -10,7 +10,7 @@ module Admin
     SUBJECT_LABELS = {
       "Firm" => "نشاط", "User" => "مستخدم", "Subscription" => "اشتراك", "SubscriptionPlan" => "باقة",
       "Article" => "مقال", "Category" => "تصنيف", "FirmMedium" => "وسائط", "Setting" => "إعداد",
-      "Report" => "بلاغ", "Broadcast" => "إشعار جماعي", "FeaturedPlacement" => "تمييز"
+      "Report" => "بلاغ", "Broadcast" => "إشعار جماعي", "StaffPermission" => "صلاحية", "FeaturedPlacement" => "تمييز"
     }.freeze
 
     def audit_action_label(action)

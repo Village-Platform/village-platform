@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_28_090007) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_28_090008) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -79,6 +79,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090007) do
     t.index ["actor_id", "created_at"], name: "index_audit_events_on_actor_id_and_created_at"
     t.index ["created_at"], name: "index_audit_events_on_created_at"
     t.index ["subject_type", "subject_id", "created_at"], name: "idx_on_subject_type_subject_id_created_at_314bc2a748"
+  end
+
+  create_table "broadcasts", force: :cascade do |t|
+    t.bigint "actor_id", null: false
+    t.string "audience", null: false
+    t.jsonb "audience_params", default: {}, null: false
+    t.string "title", limit: 120, null: false
+    t.text "body", null: false
+    t.integer "recipients_count", default: 0, null: false
+    t.string "idempotency_key", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_broadcasts_on_created_at"
+    t.index ["idempotency_key"], name: "index_broadcasts_on_idempotency_key", unique: true
   end
 
   create_table "categories", force: :cascade do |t|
@@ -254,6 +268,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090007) do
   add_foreign_key "articles", "users", column: "author_id"
   add_foreign_key "articles", "users", column: "reviewed_by_id"
   add_foreign_key "audit_events", "users", column: "actor_id"
+  add_foreign_key "broadcasts", "users", column: "actor_id"
   add_foreign_key "firm_media", "firms"
   add_foreign_key "firms", "categories"
   add_foreign_key "firms", "users", column: "owner_id"

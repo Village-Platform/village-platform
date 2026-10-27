@@ -1,0 +1,25 @@
+<%= page_header "الإشعارات الجماعية", subtitle: "إعلانات تصل إلى صندوق إشعارات التطبيق" do %>
+  <%= link_to new_admin_broadcast_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إشعار جديد<% end %>
+<% end %>
+
+<div class="tbl">
+  <% if @broadcasts.any? %>
+    <table>
+      <thead><tr><th>العنوان</th><th>الجمهور</th><th>المستلمون</th><th>المرسل</th><th>الوقت</th></tr></thead>
+      <tbody>
+        <% @broadcasts.each do |broadcast| %>
+          <tr>
+            <td><span class="cell-main"><%= broadcast.title %></span><span class="cell-sub"><%= truncate(broadcast.body, length: 80) %></span></td>
+            <td><%= Broadcast::AUDIENCES[broadcast.audience] %></td>
+            <td><%= broadcast.recipients_count %></td>
+            <td><%= broadcast.actor.name %></td>
+            <td><%= fmt_time(broadcast.created_at) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <%= empty_state("لم يُرسل أي إشعار بعد.") %>
+  <% end %>
+</div>
+<%= render "admin/shared/pagination", meta: @meta %>
