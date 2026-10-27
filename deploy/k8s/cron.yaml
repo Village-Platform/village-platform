@@ -1,0 +1,33 @@
+# Same contract as Vercel Cron: GET the endpoint with the CRON_SECRET bearer token.
+# The job is idempotent (Notifier dedupe_key), so a retried or doubled run sends nothing new.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: subscription-reminders
+spec:
+  schedule: "0 9 * * *"
+  timeZone: Africa/Cairo
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: curl
+              image: curlimages/curl:8.11.1
+              env:
+                - name: CRON_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      name: village-env
+                      key: CRON_SECRET
+              command:
+                - sh
+                - -c
+                - >-
+                  curl -fsS --max-time 120 -H "Authorization: Bearer $CRON_SECRET"
+                  http://web/internal/cron/subscription_reminders

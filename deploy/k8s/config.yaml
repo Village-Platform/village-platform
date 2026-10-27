@@ -1,0 +1,21 @@
+# Non-secret settings. Secrets (SECRET_KEY_BASE, CRON_SECRET, POSTGRES_PASSWORD, SUPER_ADMIN_PASSWORD)
+# live in the "village-env" Secret.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: village-config
+data:
+  RAILS_ENV: production
+  RAILS_MAX_THREADS: "3"
+  RAILS_LOG_LEVEL: info
+  CORS_ORIGINS: "*"
+  SUPER_ADMIN_PHONE: "01000000000"
+  INSTAPAY_ADDRESS: yourname@instapay
+  VODAFONE_CASH_NUMBER: 010XXXXXXXX
+  # Files go to PostgreSQL (stored_files) so the web pod stays stateless.
+  ACTIVE_STORAGE_SERVICE: database
+  # Cloudflare terminates TLS for aghour.dorfsys.com. ASSUME_SSL makes Rails treat every request as
+  # HTTPS (also the CronJob's in-cluster http://web call), so FORCE_SSL adds HSTS and secure cookies
+  # without redirecting.
+  ASSUME_SSL: "1"
+  FORCE_SSL: "1"

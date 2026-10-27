@@ -4,8 +4,20 @@
   <div class="field full"><%= f.label :name, "اسم التصنيف" %><%= f.text_field :name, required: true %></div>
   <div class="field full"><%= f.label :description, "الوصف" %><%= f.text_area :description, rows: 3 %></div>
   <div class="field">
-    <%= f.label :icon, "الأيقونة" %><%= f.text_field :icon %>
-    <div class="hint">اسم أيقونة يستخدمها تطبيق أندرويد (مثل doctor, pharmacy).</div>
+    <%= f.label :icon_image, "صورة الأيقونة" %>
+    <% if category.icon_image.attached? && category.icon_image.persisted? %>
+      <div class="cat-icon-preview"><%= image_tag url_for(category.icon_image), class: "cat-icon cat-icon-lg", alt: "" %></div>
+    <% end %>
+    <%= f.file_field :icon_image, accept: Category::ICON_CONTENT_TYPES.join(",") %>
+    <div class="hint">تظهر في التطبيق. PNG أو JPEG أو WEBP مربعة (يفضَّل 256×256) وأقل من 512KB.</div>
+    <% if category.icon_image.attached? && category.icon_image.persisted? %>
+      <div class="checkbox"><%= check_box_tag "category[remove_icon_image]", "1", false, id: "remove_icon_image" %>
+        <%= label_tag "remove_icon_image", "حذف الصورة (يظهر شعار التطبيق بدلاً منها)" %></div>
+    <% end %>
+  </div>
+  <div class="field">
+    <%= f.label :icon, "مفتاح الأيقونة" %><%= f.text_field :icon, dir: "ltr" %>
+    <div class="hint">للإصدارات القديمة من التطبيق ولاختيار الصورة الافتراضية (مثل doctor, pharmacy).</div>
   </div>
   <div class="field"><%= f.label :position, "الترتيب" %><%= f.number_field :position, min: 0 %></div>
   <div class="field checkbox full"><%= f.check_box :active %><%= f.label :active, "مفعّل (ظاهر في التطبيق)" %></div>

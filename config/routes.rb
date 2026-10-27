@@ -49,6 +49,7 @@ Rails.application.routes.draw do
       resource :me, only: %i[show update], controller: "me"
 
       resources :categories do
+        get :icon, on: :member
         resources :firms, only: :index
       end
       resources :firms

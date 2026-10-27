@@ -1,17 +1,36 @@
 module Api
   module V1
     class CategoriesController < BaseController
-      before_action :authenticate_user!, except: %i[index show]
-      before_action :set_category, only: %i[show update destroy]
+      before_action :authenticate_user!, except: %i[index show icon]
+      before_action :set_category, only: %i[show update destroy icon]
 
       def index
-        records, meta = paginate(policy_scope(Category).ordered)
+        records, meta = paginate(policy_scope(Category).with_attached_icon_image.ordered)
         render_collection(records, meta, CategorySerializer)
       end
 
       def show
         authorize @category
         render_record(@category, CategorySerializer)
+      end
+
+      # GET /api/v1/categories/:id/icon?v=<icon_version>
+      # Public image bytes. A URL carrying the current version never changes content, so it is
+      # cached for a year by the app and the CDN; without it (or with an old one) for an hour.
+      def icon
+        authorize @category, :show?
+        blob = @category.icon_image.blob if @category.icon_image.attached?
+        raise ActiveRecord::RecordNotFound unless blob
+
+        if params[:v].present? && params[:v] == @category.icon_version
+          expires_in 1.year, public: true, immutable: true
+        else
+          expires_in 1.hour, public: true
+        end
+        return unless stale?(etag: blob.checksum, public: true)
+
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        send_data blob.download, type: blob.content_type, disposition: "inline"
       end
 
       def create

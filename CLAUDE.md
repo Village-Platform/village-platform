@@ -154,11 +154,22 @@ URLs. It exists because Vercel has no persistent disk. Development uses `:local`
 production defaults to `database` (override with `ACTIVE_STORAGE_SERVICE`). Switch to S3/R2 before
 files get large or numerous.
 
+## Category icons
+
+`Category has_one_attached :icon_image` (PNG/JPEG/WEBP, ≤ 512KB). The apps read `icon_url`
+(categories and the `category` inside firms): a **relative** path to the public
+`GET /api/v1/categories/:id/icon?v=<icon_version>`, which streams the image with a one-year
+`immutable` cache when `v` matches the content (an hour otherwise) — unlike payment screenshots,
+these are public. The `icon` string column stays for older Android versions and to pick the default
+image. Preload with `with_attached_icon_image` / `includes(category: { icon_image_attachment: :blob })`.
+
 ## Seeds
 
 - `db/seeds.rb` is the base data every environment needs and must stay idempotent: the super admin
-  (from `SUPER_ADMIN_PHONE` / `SUPER_ADMIN_PASSWORD`), the 11 categories — whose `icon` keys the
-  Android app maps to symbols — a welcome article and three subscription plans.
+  (from `SUPER_ADMIN_PHONE` / `SUPER_ADMIN_PASSWORD`), the 11 categories, a welcome article and
+  three subscription plans. Each category gets its default image (`Category#attach_default_icon!`,
+  `db/seeds/category_icons/<icon>.png`) only if it has none; production backfills existing rows with
+  `bin/rails categories:attach_default_icons`.
 - `db/seeds/demo.rb` is loaded only in development or with `SEED_DEMO=1`. It imports the real
   Aghour Al Kubra places from `db/seeds/aghour_al_kubra_places.json`, mapping the source's detailed
   Arabic types onto the category names from `seeds.rb` with `fetch` — so renaming a category in

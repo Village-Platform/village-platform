@@ -14,7 +14,9 @@ if admin.new_record?
   admin.save!
 end
 
-# `icon` keys are mapped to symbols by the Android app (doctor, pharmacy, restaurant, ...).
+# `icon` keys (doctor, pharmacy, restaurant, ...) pick the default image from db/seeds/category_icons/
+# and are what older Android versions map to built-in symbols. The image is attached only once,
+# so an icon uploaded from the dashboard is never replaced.
 [
   { name: "أطباء",        position: 1, icon: "doctor",     description: "عيادات وأطباء القرية" },
   { name: "صيدليات",      position: 2, icon: "pharmacy",   description: "صيدليات ومستلزمات طبية" },
@@ -33,6 +35,7 @@ end
   category.icon ||= attrs[:icon]
   category.description ||= attrs[:description]
   category.save!
+  category.attach_default_icon!
 end
 
 Article.find_or_create_by!(title: "مرحباً بكم في تطبيق أجهور الكبرى") do |a|
