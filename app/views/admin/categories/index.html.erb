@@ -4,11 +4,12 @@
 <div class="table-wrap">
   <% if @categories.any? %>
     <table>
-      <thead><tr><th>الترتيب</th><th>القسم</th><th>عدد المنشآت</th><th>مفعّل</th><th></th></tr></thead>
+      <thead><tr><th>الترتيب</th><th>الأيقونة</th><th>القسم</th><th>عدد المنشآت</th><th>مفعّل</th><th></th></tr></thead>
       <tbody>
         <% @categories.each do |category| %>
           <tr>
             <td><%= category.position %></td>
+            <td><% if category.icon_image.attached? %><%= image_tag url_for(category.icon_image), class: "cat-icon", alt: "" %><% else %><span class="cell-sub">—</span><% end %></td>
             <td><%= link_to category.name, admin_firms_path(category_id: category.id), class: "cell-main" %>
               <% if category.description.present? %><span class="cell-sub"><%= truncate(category.description, length: 60) %></span><% end %></td>
             <td><%= @firm_counts.fetch(category.id, 0) %></td>

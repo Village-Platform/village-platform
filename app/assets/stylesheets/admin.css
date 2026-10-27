@@ -279,3 +279,8 @@ input[type=tel], input[type=email] { direction: ltr; text-align: right; }
   .stat .value { font-size: 1.35rem; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* Category icon images (list thumbnail and form preview) */
+.cat-icon { width: 36px; height: 36px; border-radius: 10px; object-fit: cover; display: block; }
+.cat-icon-lg { width: 72px; height: 72px; border-radius: 18px; }
+.cat-icon-preview { margin-bottom: 8px; }

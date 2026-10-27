@@ -59,6 +59,7 @@ To start fresh: `bin/rails db:reset` (drops and recreates the development databa
 | GET    | `/categories`, `/categories/:id`   | public        |
 | POST/PATCH/DELETE | `/categories[/:id]`     | super_admin   |
 | GET    | `/categories/:id/firms`            | public        |
+| GET    | `/categories/:id/icon?v=`          | public — category image; use the `icon_url` from the JSON (cached 1 year per version) |
 | GET    | `/firms?category_id=&q=&mine=true` | public        |
 | GET    | `/firms/:id`                       | public        |
 | POST   | `/firms`                           | firm_admin+   |
@@ -113,7 +114,7 @@ Open `http://localhost:3000/admin/login` and sign in with the seeded super admin
 | الرئيسية | Counters, pending subscription requests, subscriptions ending within 7 days, firms waiting for approval |
 | الاشتراكات | Filter / search, view details and the payment screenshot, approve or reject with a reason |
 | المنشآت | Filter / search, add, edit, approve, suspend, delete; shows whether the firm is visible to the public |
-| الأقسام | Add, edit, order, enable/disable (can't delete a category that has firms) |
+| الأقسام | Add, edit, order, enable/disable, upload / remove the icon image (can't delete a category that has firms) |
 | الأخبار | Draft, publish now or schedule; filter by kind |
 | باقات الاشتراك | Prices in EGP, duration, max firms (purchased plans can only be deactivated) |
 | المستخدمون | Search, change role, reset password, see subscriptions and firms |
@@ -199,6 +200,6 @@ docker run --rm -p 3000:3000 -e DATABASE_URL=postgres://postgres:postgres@host.d
 
 ## Next steps (planned)
 
-1. Images via Active Storage (firm logos, category icons, article covers) — move files to S3 / R2 when they grow
+1. Images via Active Storage (firm logos, article covers; category icons done) — move files to S3 / R2 when they grow
 2. Token revocation / refresh tokens
 3. Push notifications (FCM) — deliver the existing notifications + news

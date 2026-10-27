@@ -12,6 +12,31 @@ RSpec.describe "Admin CRUD", type: :request do
     expect(response).to have_http_status(:unprocessable_content)
   end
 
+  it "uploads, shows and removes a category icon image" do
+    post "/admin/categories", params: {
+      category: { name: "مساجد", position: 1, active: "1", icon_image: fixture_file_upload("receipt.png", "image/png") }
+    }
+    category = Category.find_by!(name: "مساجد")
+    expect(category.icon_image).to be_attached
+
+    get "/admin/categories"
+    expect(response.body).to include("cat-icon")
+    get "/admin/categories/#{category.id}/edit"
+    expect(response.body).to include("remove_icon_image")
+
+    patch "/admin/categories/#{category.id}", params: { category: { name: "مساجد", remove_icon_image: "1" } }
+    expect(response).to redirect_to("/admin/categories")
+    expect(category.reload.icon_image).not_to be_attached
+  end
+
+  it "rejects an icon that is not an image" do
+    post "/admin/categories", params: {
+      category: { name: "مساجد", position: 1, icon_image: fixture_file_upload("receipt.txt", "text/plain") }
+    }
+    expect(response).to have_http_status(:unprocessable_content)
+    expect(Category.exists?(name: "مساجد")).to be(false)
+  end
+
   it "does not delete a category that has firms" do
     firm = create(:firm)
 
