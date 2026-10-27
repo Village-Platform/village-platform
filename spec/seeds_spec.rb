@@ -73,7 +73,8 @@ RSpec.describe "db/seeds.rb" do
     expect(Category.count).to eq(11)
     Category.find_each do |category|
       expect(category.icon_image).to be_attached, "#{category.name} has no icon image"
-      expect(category.icon_image.filename.to_s).to eq("#{category.icon}.png")
+      # The default PNG is re-encoded to the category_icon profile on attach.
+      expect(category.icon_image.filename.base).to eq(category.icon)
     end
   end
 end
