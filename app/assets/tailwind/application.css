@@ -20,6 +20,7 @@
   --color-brand: rgb(var(--brand));
   --color-ok: rgb(var(--ok));
   --color-bad: rgb(var(--bad));
+  --color-highlight: rgb(var(--highlight));
 }
 
 /* The channel triplets. A theme is a swap of these, not a parallel set of classes. */
@@ -35,6 +36,7 @@
   --brand: 11 55 39;
   --ok: 31 122 77;
   --bad: 179 64 47;
+  --highlight: 253 246 233;
   color-scheme: light;
 }
 
@@ -52,6 +54,7 @@
     --brand: 47 129 247;
     --ok: 63 185 80;
     --bad: 248 81 73;
+    --highlight: 33 38 45;
     color-scheme: dark;
   }
 }
@@ -68,6 +71,7 @@
   --brand: 47 129 247;
   --ok: 63 185 80;
   --bad: 248 81 73;
+  --highlight: 33 38 45;
   color-scheme: dark;
 }
 
@@ -197,7 +201,7 @@
 
   .stats { @apply grid gap-3 grid-cols-2 lg:grid-cols-4; }
   .stat { @apply block rounded-xl p-4 border bg-surface border-line text-ink; }
-  .stat-hi, .stat.attention { @apply bg-gold/15 border-gold/40; }
+  .stat-hi, .stat.attention { @apply bg-highlight border-gold/40; }
   .stat .label { @apply block text-[11px] text-muted; }
   .stat .value { @apply block text-2xl font-black mt-1 leading-none; }
   .stat .sub { @apply block text-[10px] mt-1 text-goldink font-semibold; }
@@ -210,7 +214,7 @@
   .bar-fill { @apply h-full bg-gold rounded-full; }
 
   .todo-row {
-    @apply flex items-center gap-2 p-2 mb-1.5 rounded-lg bg-gold/10 text-xs text-ink;
+    @apply flex items-center gap-2 p-2 mb-1.5 rounded-lg bg-highlight text-xs text-ink;
   }
   .todo-row .count { @apply font-bold; }
 
@@ -240,7 +244,7 @@
   dl.details dt:last-of-type, dl.details dd:last-of-type { @apply border-b-0; }
 
   .empty { @apply py-8 px-4 text-center text-muted text-xs; }
-  .empty .brand-mark { @apply opacity-20 mx-auto; }
+  .empty .brand-mark { @apply opacity-30 mx-auto; }
   .empty p { @apply mt-2 mb-0; }
   .empty-mark { @apply w-14 opacity-20 mx-auto; }
 

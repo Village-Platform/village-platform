@@ -25,4 +25,9 @@ RSpec.describe "Tailwind build" do
   it "includes preflight now that it owns the reset" do
     expect(css).to include("-webkit-text-size-adjust")
   end
+
+  it "defines the highlight token in all three theme states" do
+    expect(css).to include("--color-highlight")
+    expect(compact.scan("--highlight:").size).to eq(3)
+  end
 end

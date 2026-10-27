@@ -42,3 +42,31 @@ RSpec.describe "Admin theme without a session", type: :request do
     expect(cookies["admin_theme"]).to be_blank
   end
 end
+
+RSpec.describe "Admin browser chrome", type: :request do
+  before { sign_in_admin }
+
+  it "matches the chrome colour to a pinned dark theme" do
+    patch "/admin/theme", params: { theme: "dark" }
+    get "/admin"
+
+    metas = Nokogiri::HTML(response.body).css('meta[name="theme-color"]')
+    expect(metas.map { |meta| meta["content"] }).to eq([ "#0d1117" ])
+  end
+
+  it "matches the chrome colour to a pinned light theme" do
+    patch "/admin/theme", params: { theme: "light" }
+    get "/admin"
+
+    metas = Nokogiri::HTML(response.body).css('meta[name="theme-color"]')
+    expect(metas.map { |meta| meta["content"] }).to eq([ "#ffffff" ])
+  end
+
+  it "offers both chrome colours when nothing is pinned" do
+    get "/admin"
+
+    metas = Nokogiri::HTML(response.body).css('meta[name="theme-color"]')
+    expect(metas.map { |meta| meta["media"] })
+      .to contain_exactly("(prefers-color-scheme: light)", "(prefers-color-scheme: dark)")
+  end
+end
