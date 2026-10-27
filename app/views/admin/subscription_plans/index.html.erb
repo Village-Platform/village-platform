@@ -1,10 +1,10 @@
-<%= page_header "باقات الاشتراك", :plans, subtitle: "ما يدفعه أصحاب المنشآت لإظهار منشآتهم" do %>
+<%= page_header "الباقات والأسعار", subtitle: "ما يدفعه أصحاب الأنشطة لإظهار أنشطتهم" do %>
   <%= link_to new_admin_subscription_plan_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إضافة باقة<% end %>
 <% end %>
-<div class="table-wrap">
+<div class="tbl">
   <% if @plans.any? %>
     <table>
-      <thead><tr><th>الترتيب</th><th>الباقة</th><th>السعر</th><th>المدة</th><th>أقصى منشآت</th><th>مفعّلة</th><th></th></tr></thead>
+      <thead><tr><th>الترتيب</th><th>الباقة</th><th>السعر</th><th>المدة</th><th>أقصى أنشطة</th><th>مفعّلة</th><th></th></tr></thead>
       <tbody>
         <% @plans.each do |plan| %>
           <tr>
@@ -13,7 +13,7 @@
             <td><%= egp(plan.price_cents) %></td>
             <td><%= plan.duration_days %> يوم</td>
             <td><%= plan.max_firms %></td>
-            <td><%= yes_no_badge(plan.active) %></td>
+            <td><%= switch(plan.active) %></td>
             <td class="actions">
               <%= link_to edit_admin_subscription_plan_path(plan), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 16) %><% end %>
               <%= button_to admin_subscription_plan_path(plan), method: :delete, class: "btn btn-ghost btn-sm", title: "حذف",

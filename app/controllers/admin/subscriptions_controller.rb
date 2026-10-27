@@ -30,7 +30,7 @@ module Admin
 
     def approve
       Subscriptions::Approve.call(subscription: @subscription, reviewer: current_admin)
-      redirect_to admin_subscription_path(@subscription), notice: "تم اعتماد الاشتراك وإشعار صاحب المنشأة."
+      redirect_to admin_subscription_path(@subscription), notice: "تم اعتماد الاشتراك وإشعار صاحب النشاط."
     rescue Subscriptions::ReviewError
       redirect_to admin_subscription_path(@subscription), alert: "تمت مراجعة هذا الاشتراك بالفعل."
     end

@@ -1,4 +1,4 @@
-<%= page_header @user.name, :users, subtitle: @user.phone do %>
+<%= page_header @user.name, subtitle: @user.phone do %>
   <%= enum_badge(User, :role, @user.role) %>
   <%= link_to edit_admin_user_path(@user), class: "btn btn-ghost" do %><%= icon(:edit, size: 18) %> تعديل<% end %>
 <% end %>
@@ -23,7 +23,7 @@
   </section>
 
   <section class="card">
-    <div class="card-header"><h2>المنشآت</h2></div>
+    <div class="card-header"><h2>الأنشطة</h2></div>
     <% if @firms.any? %>
       <ul>
         <% @firms.each do |firm| %>
@@ -31,7 +31,7 @@
         <% end %>
       </ul>
     <% else %>
-      <%= empty_state("لا توجد منشآت.") %>
+      <%= empty_state("لا توجد أنشطة.") %>
     <% end %>
   </section>
 </div>
@@ -39,7 +39,7 @@
 <section class="card mt">
   <div class="card-header"><h2>سجل الاشتراكات</h2></div>
   <% if @subscriptions.any? %>
-    <div class="table-wrap">
+    <div class="tbl">
       <table>
         <thead><tr><th>#</th><th>الباقة</th><th>المبلغ</th><th>الحالة</th><th>الوضع</th><th>من</th><th>إلى</th></tr></thead>
         <tbody>

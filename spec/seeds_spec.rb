@@ -60,10 +60,20 @@ RSpec.describe "db/seeds.rb" do
 
   it "is idempotent" do
     seed!
-    counts = [ User.count, Firm.count, Article.count, Subscription.count, Category.count ]
+    counts = [ User.count, Firm.count, Article.count, Subscription.count, Category.count, ActiveStorage::Attachment.count ]
 
     seed!
 
-    expect([ User.count, Firm.count, Article.count, Subscription.count, Category.count ]).to eq(counts)
+    expect([ User.count, Firm.count, Article.count, Subscription.count, Category.count, ActiveStorage::Attachment.count ]).to eq(counts)
+  end
+
+  it "attaches the default icon image to every seeded category" do
+    seed!
+
+    expect(Category.count).to eq(11)
+    Category.find_each do |category|
+      expect(category.icon_image).to be_attached, "#{category.name} has no icon image"
+      expect(category.icon_image.filename.to_s).to eq("#{category.icon}.png")
+    end
   end
 end

@@ -1,22 +1,21 @@
-<%= page_header "الاشتراكات", :subscriptions, subtitle: "طلبات أصحاب المنشآت عبر إنستاباي وفودافون كاش" %>
+<%= page_header "الاشتراكات", subtitle: "طلبات أصحاب الأنشطة عبر إنستاباي وفودافون كاش" %>
 
-<%= form_with url: admin_subscriptions_path, method: :get, class: "filters" do |f| %>
-  <div class="field search">
-    <%= f.label :q, "بحث" %>
-    <%= f.search_field :q, value: params[:q], placeholder: "رقم العملية أو الهاتف أو الاسم" %>
-  </div>
-  <div class="field">
-    <%= f.label :status, "الحالة" %>
-    <%= f.select :status, options_for_select(enum_options(Subscription, :status), params[:status]), include_blank: "الكل" %>
-  </div>
-  <div class="field">
-    <%= f.label :payment_method, "طريقة الدفع" %>
-    <%= f.select :payment_method, options_for_select(enum_options(Subscription, :payment_method), params[:payment_method]), include_blank: "الكل" %>
-  </div>
-  <%= button_tag type: "submit", class: "btn", name: nil do %><%= icon(:search, size: 18) %> تصفية<% end %>
-<% end %>
+<div class="flex flex-wrap gap-2 items-center">
+  <%= filter_tabs :status, enum_options(Subscription, :status) %>
+  <div class="flex-1"></div>
+  <%= form_with url: admin_subscriptions_path, method: :get, class: "flex flex-wrap gap-2 items-center" do |f| %>
+    <%= f.hidden_field :status, value: params[:status] %>
+    <%= search_combobox("subscriptions") do |attrs| %>
+      <%= f.search_field :q, value: params[:q], placeholder: "رقم العملية أو الهاتف", class: "w-52", "aria-label": "بحث", **attrs %>
+    <% end %>
+    <%= f.select :payment_method,
+          options_for_select(enum_options(Subscription, :payment_method), params[:payment_method]),
+          { include_blank: "كل طرق الدفع" }, { class: "w-40", "aria-label": "طريقة الدفع" } %>
+    <%= button_tag type: "submit", class: "btn btn-ghost", name: nil, title: "تصفية" do %><%= icon(:search, size: 16) %><% end %>
+  <% end %>
+</div>
 
-<div class="table-wrap">
+<div class="tbl">
   <% if @subscriptions.any? %>
     <table>
       <thead>

@@ -6,7 +6,7 @@ class CategoryPolicy < ApplicationPolicy
   def destroy? = super_admin?
 
   def permitted_attributes
-    %i[name description icon position active]
+    %i[name description icon icon_image position active]
   end
 
   class Scope < ApplicationPolicy::Scope

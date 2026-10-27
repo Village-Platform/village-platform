@@ -18,6 +18,7 @@ docker compose up -d db                  # PostgreSQL on host port 5434 (set DB_
 bin/setup --skip-server                  # bundle install, copy .env, db:prepare (without --skip-server it boots the server)
 bin/rails db:reset                       # drop/recreate/seed development (seeds.rb + demo.rb)
 bin/rails s
+bin/rails tailwindcss:watch              # rebuild admin CSS on change; run beside the server
 
 bundle exec rspec                        # full suite
 bundle exec rspec spec/requests/api/v1/firms_spec.rb        # one file
@@ -46,10 +47,33 @@ The app is **not** `api_only`. Both halves share the models, policies and servic
   super-admin endpoints live under `Api::V1::Admin::`.
 - **`/admin/*`** — `Admin::BaseController < ActionController::Base`. Cookie session
   (`AdminSession`, 12h TTL, re-checks `super_admin?` on every request), server-rendered ERB,
-  Arabic RTL, one hand-written stylesheet (`app/assets/stylesheets/admin.css`) and inline SVG icons
-  (`Admin::IconsHelper`). Deliberately no admin gem and no JS framework — keep it that way.
-  `Admin::SessionsController` sits outside `BaseController` (it can't require an admin) and carries
-  Rails 8 `rate_limit` plus `reset_session` against fixation.
+  Arabic RTL, Tailwind (`app/assets/tailwind/application.css` → `app/assets/builds/tailwind.css`)
+  and inline SVG icons (`Admin::IconsHelper`). Deliberately no admin gem and no JS framework —
+  keep it that way. `Admin::SessionsController` sits outside `BaseController` (it can't require an
+  admin) and carries Rails 8 `rate_limit` plus `reset_session` against fixation.
+
+### Admin design system
+
+Colour has exactly one definition site: eleven rgb channel triplets (`--gold`, `--surface`, …) in
+`application.css`, mapped once into `@theme` as `--color-*`. The themes redefine those channels
+under `[data-theme]`, so **every utility flips automatically and there are no `dark:` variants
+anywhere** — add one and you have created a second definition site. Repeated patterns are
+`@apply` components in `@layer components` (`.card`, `.btn`, `.tbl`, `.badge-*`, `.stat`, `.tab`,
+`.switch`); keep them there rather than repeating utility strings across views.
+
+Three theme states: no `admin_theme` cookie follows `prefers-color-scheme`, `light`/`dark` pin it.
+The dark block is declared twice — once guarded by `:root:not([data-theme="light"])` inside the
+media query, once as `:root[data-theme="dark"]` — and dropping that guard makes an explicit light
+choice lose to a dark OS. `Admin::ThemeController` writes the cookie against an allowlist because
+the value lands in an HTML attribute. Two rules cannot be utilities and stay hand-written: the
+`body.nav-open .sidebar` drawer and `.brand-mark` visibility, both keyed off an ancestor.
+
+Brand images come in pairs (`mark.png`/`mark-light.png`, `logo.png`/`logo-light.png`); render them
+through `brand_mark` / `brand_logo`, which ship both and let CSS pick, since an `<img>` cannot swap
+source by media query.
+
+Admin view copy says **نشاط** and **تصنيف**, not منشأة/قسم. `config/locales/*.yml` deliberately
+still says منشأة: those strings reach the Android client, where a rename is a contract change.
 
 Admin actions that change subscription state call the same `Subscriptions::Approve` / `Reject`
 services as the API, so renewal stacking, role promotion and notifications can't drift apart.
@@ -130,11 +154,22 @@ URLs. It exists because Vercel has no persistent disk. Development uses `:local`
 production defaults to `database` (override with `ACTIVE_STORAGE_SERVICE`). Switch to S3/R2 before
 files get large or numerous.
 
+## Category icons
+
+`Category has_one_attached :icon_image` (PNG/JPEG/WEBP, ≤ 512KB). The apps read `icon_url`
+(categories and the `category` inside firms): a **relative** path to the public
+`GET /api/v1/categories/:id/icon?v=<icon_version>`, which streams the image with a one-year
+`immutable` cache when `v` matches the content (an hour otherwise) — unlike payment screenshots,
+these are public. The `icon` string column stays for older Android versions and to pick the default
+image. Preload with `with_attached_icon_image` / `includes(category: { icon_image_attachment: :blob })`.
+
 ## Seeds
 
 - `db/seeds.rb` is the base data every environment needs and must stay idempotent: the super admin
-  (from `SUPER_ADMIN_PHONE` / `SUPER_ADMIN_PASSWORD`), the 11 categories — whose `icon` keys the
-  Android app maps to symbols — a welcome article and three subscription plans.
+  (from `SUPER_ADMIN_PHONE` / `SUPER_ADMIN_PASSWORD`), the 11 categories, a welcome article and
+  three subscription plans. Each category gets its default image (`Category#attach_default_icon!`,
+  `db/seeds/category_icons/<icon>.png`) only if it has none; production backfills existing rows with
+  `bin/rails categories:attach_default_icons`.
 - `db/seeds/demo.rb` is loaded only in development or with `SEED_DEMO=1`. It imports the real
   Aghour Al Kubra places from `db/seeds/aghour_al_kubra_places.json`, mapping the source's detailed
   Arabic types onto the category names from `seeds.rb` with `fetch` — so renaming a category in

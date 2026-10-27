@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html <%= tag.attributes({ lang: "ar", dir: "rtl" }.merge(theme_attribute)) %>>
 <head>
   <title><%= [content_for(:title), t("admin.app_name")].compact.join(" · ") %></title>
   <%= render "admin/shared/head" %>
@@ -8,29 +8,36 @@
   <div class="shell">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-brand">
-        <img src="/brand/web/mark-light.png" alt="" width="84" height="74">
-        <strong>أجهور الكبرى</strong>
-        <span>لوحة تحكم تطبيق القرية</span>
+        <%= brand_mark(size: 36) %>
+        <div>
+          <strong>أجهور الكبرى</strong>
+          <span>لوحة الإدارة</span>
+        </div>
       </div>
 
       <nav aria-label="القائمة الرئيسية">
-        <%= nav_link "الرئيسية", admin_root_path, :home, exact: true %>
-        <div class="nav-section">المراجعة</div>
-        <%= nav_link "الاشتراكات", admin_subscriptions_path, :subscriptions, count: Subscription.pending.count %>
-        <%= nav_link "المنشآت", admin_firms_path, :firms, count: Firm.pending.count %>
-        <div class="nav-section">المحتوى</div>
-        <%= nav_link "الأقسام", admin_categories_path, :categories %>
-        <%= nav_link "الأخبار", admin_articles_path, :articles %>
-        <div class="nav-section">الإعدادات</div>
-        <%= nav_link "باقات الاشتراك", admin_subscription_plans_path, :plans %>
-        <%= nav_link "المستخدمون", admin_users_path, :users %>
+        <%= nav_group "عام" do %>
+          <%= nav_link "لوحة التحكم", admin_root_path, :home, exact: true %>
+        <% end %>
+        <%= nav_group "المحتوى" do %>
+          <%= nav_link "التصنيفات", admin_categories_path, :categories %>
+          <%= nav_link "الأنشطة", admin_firms_path, :firms, count: Firm.pending.count %>
+          <%= nav_link "الأخبار والمقالات", admin_articles_path, :articles %>
+        <% end %>
+        <%= nav_group "الأشخاص" do %>
+          <%= nav_link "المستخدمون", admin_users_path, :users %>
+        <% end %>
+        <%= nav_group "المالية" do %>
+          <%= nav_link "الباقات والأسعار", admin_subscription_plans_path, :plans %>
+          <%= nav_link "الاشتراكات", admin_subscriptions_path, :subscriptions, count: Subscription.pending.count %>
+        <% end %>
       </nav>
 
       <div class="sidebar-footer">
         <span class="avatar"><%= initials(current_admin.name) %></span>
         <div class="who">
           <strong><%= current_admin.name %></strong>
-          <small>مدير النظام</small>
+          <small>صلاحيات كاملة</small>
         </div>
         <%= button_to admin_logout_path, method: :delete, class: "icon-btn", title: "تسجيل الخروج",
               form: { data: { confirm: "تسجيل الخروج؟" } } do %>
@@ -42,8 +49,19 @@
 
     <div class="main">
       <header class="topbar">
-        <span class="brand-mini"><img src="/brand/web/mark-light.png" alt="" width="36" height="32"> أجهور الكبرى</span>
-        <button type="button" class="icon-btn" data-nav-toggle aria-controls="sidebar" aria-label="القائمة"><%= icon(:menu) %></button>
+        <button type="button" class="icon-btn nav-toggle" data-nav-toggle aria-controls="sidebar" aria-label="القائمة">
+          <%= icon(:menu) %>
+        </button>
+        <div class="page-title">
+          <h1><%= content_for(:title) %></h1>
+          <% if content_for?(:subtitle) %><p><%= content_for(:subtitle) %></p><% end %>
+        </div>
+        <%= search_combobox("all", wrapper_class: "topbar-search") do |attrs| %>
+          <label class="sr-only" for="admin-global-search">بحث في النظام</label>
+          <%= tag.input id: "admin-global-search", class: "admin-search-input", type: "search",
+                placeholder: "ابحث في الأنشطة والمستخدمين والاشتراكات…", autocomplete: "off", **attrs %>
+        <% end %>
+        <%= theme_toggle %>
       </header>
 
       <main class="content">
@@ -68,5 +86,6 @@
       if (event.target.closest("[data-nav-close]")) document.body.classList.remove("nav-open");
     });
   </script>
+  <%= javascript_include_tag "admin_search", defer: true %>
 </body>
 </html>
