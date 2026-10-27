@@ -1,15 +1,15 @@
 <%= form_with model: [:admin, firm], class: "form card" do |f| %>
   <%= render "admin/shared/errors", record: firm %>
   <div class="form-grid">
-    <div class="field full"><%= f.label :name, "اسم المنشأة" %><%= f.text_field :name, required: true %></div>
+    <div class="field full"><%= f.label :name, "اسم النشاط" %><%= f.text_field :name, required: true %></div>
     <div class="field">
-      <%= f.label :category_id, "القسم" %>
-      <%= f.collection_select :category_id, @categories, :id, :name, { include_blank: "اختر القسم" }, required: true %>
+      <%= f.label :category_id, "التصنيف" %>
+      <%= f.collection_select :category_id, @categories, :id, :name, { include_blank: "اختر التصنيف" }, required: true %>
     </div>
     <div class="field">
       <%= f.label :owner_id, "المالك" %>
       <%= f.collection_select :owner_id, @owners, :id, :name, { include_blank: "اختر المالك" }, required: true %>
-      <div class="hint">أصحاب المنشآت ومديرو النظام فقط.</div>
+      <div class="hint">أصحاب الأنشطة ومديرو النظام فقط.</div>
     </div>
     <div class="field"><%= f.label :status, "الحالة" %><%= f.select :status, enum_options(Firm, :status) %></div>
     <div class="field"><%= f.label :working_hours, "مواعيد العمل" %><%= f.text_field :working_hours, placeholder: "يوميًا ٩ص - ١١م" %></div>

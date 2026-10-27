@@ -1,17 +1,18 @@
-<%= page_header "الأخبار والإعلانات", subtitle: "تظهر لكل مستخدمي التطبيق" do %>
+<%= page_header "الأخبار والمقالات", subtitle: "تظهر لكل مستخدمي التطبيق" do %>
   <%= link_to new_admin_article_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إضافة خبر<% end %>
 <% end %>
 
-<%= form_with url: admin_articles_path, method: :get, class: "filters" do |f| %>
-  <div class="field search"><%= f.label :q, "بحث" %><%= f.search_field :q, value: params[:q], placeholder: "العنوان" %></div>
-  <div class="field">
-    <%= f.label :kind, "النوع" %>
-    <%= f.select :kind, options_for_select(enum_options(Article, :kind), params[:kind]), include_blank: "الكل" %>
-  </div>
-  <%= button_tag type: "submit", class: "btn", name: nil do %><%= icon(:search, size: 18) %> تصفية<% end %>
-<% end %>
+<div class="flex flex-wrap gap-2 items-center">
+  <%= filter_tabs :kind, enum_options(Article, :kind) %>
+  <div class="flex-1"></div>
+  <%= form_with url: admin_articles_path, method: :get, class: "flex flex-wrap gap-2 items-center" do |f| %>
+    <%= f.hidden_field :kind, value: params[:kind] %>
+    <%= f.search_field :q, value: params[:q], placeholder: "العنوان", class: "w-52", "aria-label": "بحث" %>
+    <%= button_tag type: "submit", class: "btn btn-ghost", name: nil, title: "تصفية" do %><%= icon(:search, size: 16) %><% end %>
+  <% end %>
+</div>
 
-<div class="table-wrap">
+<div class="tbl">
   <% if @articles.any? %>
     <table>
       <thead><tr><th>العنوان</th><th>النوع</th><th>النشر</th><th>الكاتب</th><th></th></tr></thead>

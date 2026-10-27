@@ -33,4 +33,35 @@ RSpec.describe "Admin listings", type: :request do
     get "/admin/subscriptions"
     expect(doc.css(".tabs .tab").map { |t| t.text.strip }).to include("الكل", "قيد المراجعة", "مقبول", "مرفوض")
   end
+
+  it "titles the remaining indexes with the design's vocabulary" do
+    { "/admin/categories" => "التصنيفات",
+      "/admin/articles" => "الأخبار والمقالات",
+      "/admin/subscription_plans" => "الباقات والأسعار" }.each do |path, title|
+      get path
+      expect(doc.at_css(".topbar h1").text.strip).to eq(title)
+    end
+  end
+
+  it "renders the user role filter as a tab row" do
+    get "/admin/users"
+    expect(doc.css(".tabs .tab").map { |t| t.text.strip })
+      .to include("الكل", "مستخدم", "صاحب منشأة", "مدير النظام")
+  end
+
+  it "renders the article kind filter as a tab row" do
+    get "/admin/articles"
+    expect(doc.css(".tabs .tab").map { |t| t.text.strip }).to include("الكل", "خبر", "مقال", "إعلان")
+  end
+
+  it "shows category and plan activation as switches" do
+    create(:category)
+    create(:subscription_plan)
+
+    get "/admin/categories"
+    expect(doc.at_css("tbody .switch")).to be_present
+
+    get "/admin/subscription_plans"
+    expect(doc.at_css("tbody .switch")).to be_present
+  end
 end

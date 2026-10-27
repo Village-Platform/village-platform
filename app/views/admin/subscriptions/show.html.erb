@@ -13,7 +13,7 @@
     <div class="grid grid-2">
       <div>
         <%= button_to approve_admin_subscription_path(s), method: :patch, class: "btn",
-              form: { data: { confirm: "اعتماد هذا الاشتراك؟ سيتم تفعيله وإشعار صاحب المنشأة." } } do %>
+              form: { data: { confirm: "اعتماد هذا الاشتراك؟ سيتم تفعيله وإشعار صاحب النشاط." } } do %>
           <%= icon(:check) %> اعتماد الاشتراك
         <% end %>
         <p><small>يبدأ الاشتراك فورًا، أو بعد انتهاء الاشتراك الحالي إن وُجد.</small></p>
@@ -34,7 +34,7 @@
     <div class="card-header"><h2>التفاصيل</h2></div>
     <dl class="details">
       <dt>صاحب الطلب</dt><dd><%= link_to s.user.name, admin_user_path(s.user) %> — <span class="ltr"><%= s.user.phone %></span></dd>
-      <dt>الباقة</dt><dd><%= s.subscription_plan.name %> (<%= s.subscription_plan.duration_days %> يوم، حتى <%= s.subscription_plan.max_firms %> منشأة)</dd>
+      <dt>الباقة</dt><dd><%= s.subscription_plan.name %> (<%= s.subscription_plan.duration_days %> يوم، حتى <%= s.subscription_plan.max_firms %> نشاط)</dd>
       <dt>المبلغ</dt><dd><%= egp(s.amount_cents) %></dd>
       <dt>طريقة الدفع</dt><dd><%= enum_label(Subscription, :payment_method, s.payment_method) %></dd>
       <dt>رقم العملية</dt><dd class="ltr"><%= s.transaction_reference %></dd>

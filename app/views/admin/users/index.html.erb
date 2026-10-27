@@ -1,17 +1,18 @@
-<%= page_header "المستخدمون", subtitle: "سكان القرية وأصحاب المنشآت ومديرو النظام" do %>
+<%= page_header "المستخدمون", subtitle: "سكان القرية وأصحاب الأنشطة ومديرو النظام" do %>
   <%= link_to new_admin_user_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إضافة مستخدم<% end %>
 <% end %>
 
-<%= form_with url: admin_users_path, method: :get, class: "filters" do |f| %>
-  <div class="field search"><%= f.label :q, "بحث" %><%= f.search_field :q, value: params[:q], placeholder: "الاسم أو الهاتف أو البريد" %></div>
-  <div class="field">
-    <%= f.label :role, "الصلاحية" %>
-    <%= f.select :role, options_for_select(enum_options(User, :role), params[:role]), include_blank: "الكل" %>
-  </div>
-  <%= button_tag type: "submit", class: "btn", name: nil do %><%= icon(:search, size: 18) %> تصفية<% end %>
-<% end %>
+<div class="flex flex-wrap gap-2 items-center">
+  <%= filter_tabs :role, enum_options(User, :role) %>
+  <div class="flex-1"></div>
+  <%= form_with url: admin_users_path, method: :get, class: "flex flex-wrap gap-2 items-center" do |f| %>
+    <%= f.hidden_field :role, value: params[:role] %>
+    <%= f.search_field :q, value: params[:q], placeholder: "الاسم أو الهاتف أو البريد", class: "w-52", "aria-label": "بحث" %>
+    <%= button_tag type: "submit", class: "btn btn-ghost", name: nil, title: "تصفية" do %><%= icon(:search, size: 16) %><% end %>
+  <% end %>
+</div>
 
-<div class="table-wrap">
+<div class="tbl">
   <% if @users.any? %>
     <table>
       <thead><tr><th>الاسم</th><th>الهاتف</th><th>البريد</th><th>الصلاحية</th><th>تاريخ التسجيل</th></tr></thead>

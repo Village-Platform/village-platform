@@ -5,11 +5,11 @@
   <% end %>
   <% unless @firm.suspended? %>
     <%= button_to suspend_admin_firm_path(@firm), method: :patch, class: "btn btn-ghost",
-          form: { data: { confirm: "إيقاف المنشأة وإخفاؤها من التطبيق؟" } } do %><%= icon(:close, size: 16) %> إيقاف<% end %>
+          form: { data: { confirm: "إيقاف النشاط وإخفاؤها من التطبيق؟" } } do %><%= icon(:close, size: 16) %> إيقاف<% end %>
   <% end %>
   <%= link_to edit_admin_firm_path(@firm), class: "btn btn-ghost" do %><%= icon(:edit, size: 16) %> تعديل<% end %>
   <%= button_to admin_firm_path(@firm), method: :delete, class: "btn btn-danger",
-        form: { data: { confirm: "حذف المنشأة نهائيًا؟" } } do %><%= icon(:trash, size: 16) %> حذف<% end %>
+        form: { data: { confirm: "حذف النشاط نهائيًا؟" } } do %><%= icon(:trash, size: 16) %> حذف<% end %>
 <% end %>
 
 <section class="card">
