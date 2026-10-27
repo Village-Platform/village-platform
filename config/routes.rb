@@ -36,7 +36,9 @@ Rails.application.routes.draw do
         patch :suspend
       end
       resources :media, only: %i[create destroy], controller: "firm_media"
+      resources :featured_placements, only: :create
     end
+    resources :featured_placements, only: %i[index destroy]
     resources :categories, except: :show do
       resources :fields, only: %i[create destroy], controller: "category_fields"
     end
@@ -71,6 +73,7 @@ Rails.application.routes.draw do
         resources :firms, only: :index
       end
       resources :firms do
+        get :featured, on: :collection
         resources :media, only: %i[index create update destroy], controller: "firm_media"
       end
       resources :articles

@@ -1,7 +1,7 @@
 module Api
   module V1
     class FirmsController < BaseController
-      before_action :authenticate_user!, except: %i[index show]
+      before_action :authenticate_user!, except: %i[index show featured]
       before_action :set_firm, only: %i[show update destroy]
 
       # GET /api/v1/firms?category_id=1&q=pharmacy&mine=true
@@ -15,6 +15,15 @@ module Api
 
         records, meta = paginate(scope)
         render_collection(records, meta, FirmSerializer)
+      end
+
+      # GET /api/v1/firms/featured — the home screen strip: current placements of visible firms.
+      def featured
+        firms = Firm.visible.joins(:featured_placements).merge(FeaturedPlacement.current)
+                    .includes(category: [ :fields, { icon_image_attachment: :blob } ], media: { file_attachment: :blob })
+                    .order("featured_placements.position", "featured_placements.id")
+                    .limit(FeaturedPlacement::MAX_SHOWN).to_a.uniq
+        render json: { data: firms.map { FirmSerializer.render(_1) } }
       end
 
       def show

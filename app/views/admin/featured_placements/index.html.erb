@@ -1,0 +1,27 @@
+<%= page_header "الأنشطة المميزة", subtitle: "تظهر في شريط المميز بالصفحة الرئيسية للتطبيق خلال مدتها" %>
+
+<div class="tbl">
+  <% if @placements.any? %>
+    <table>
+      <thead><tr><th>الترتيب</th><th>النشاط</th><th>من</th><th>إلى</th><th>الحالة</th><th>ملاحظة</th><th></th></tr></thead>
+      <tbody>
+        <% @placements.each do |placement| %>
+          <tr>
+            <td><%= placement.position %></td>
+            <td><%= link_to placement.firm.name, admin_firm_path(placement.firm), class: "cell-main" %></td>
+            <td><%= fmt_time(placement.starts_at) %></td>
+            <td><%= fmt_time(placement.ends_at) %></td>
+            <td><%= placement.starts_at <= Time.current ? badge("ظاهر الآن", "green") : badge("مجدول", "gold") %></td>
+            <td><%= placement.note.presence || "—" %></td>
+            <td class="actions">
+              <%= button_to admin_featured_placement_path(placement), method: :delete, class: "btn btn-ghost btn-sm", title: "إلغاء",
+                    form: { data: { confirm: "إلغاء التمييز؟" } } do %><%= icon(:trash, size: 16) %><% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <%= empty_state("لا توجد أنشطة مميزة حاليًا.") %>
+  <% end %>
+</div>

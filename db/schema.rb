@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_28_090010) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_28_090011) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -123,6 +123,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090010) do
     t.datetime "updated_at", null: false
     t.index ["category_id", "key"], name: "index_category_fields_on_category_id_and_key", unique: true
     t.index ["category_id", "position"], name: "index_category_fields_on_category_id_and_position"
+  end
+
+  create_table "featured_placements", force: :cascade do |t|
+    t.bigint "firm_id", null: false
+    t.datetime "starts_at", null: false
+    t.datetime "ends_at", null: false
+    t.integer "position", default: 0, null: false
+    t.string "note", limit: 200
+    t.bigint "created_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["firm_id"], name: "index_featured_placements_on_firm_id"
+    t.index ["starts_at", "ends_at"], name: "index_featured_placements_on_starts_at_and_ends_at"
+    t.check_constraint "ends_at > starts_at", name: "featured_placements_period_valid"
   end
 
   create_table "firm_media", force: :cascade do |t|
@@ -297,6 +311,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090010) do
   add_foreign_key "broadcasts", "users", column: "actor_id"
   add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "category_fields", "categories"
+  add_foreign_key "featured_placements", "firms"
+  add_foreign_key "featured_placements", "users", column: "created_by_id"
   add_foreign_key "firm_media", "firms"
   add_foreign_key "firms", "categories"
   add_foreign_key "firms", "users", column: "owner_id"

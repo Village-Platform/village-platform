@@ -22,6 +22,7 @@
         <%= nav_group "المحتوى" do %>
           <% if current_admin.can?("categories.manage") %><%= nav_link "التصنيفات", admin_categories_path, :categories %><% end %>
           <% if current_admin.can?("firms.moderate") %><%= nav_link "الأنشطة", admin_firms_path, :firms, count: Firm.pending.count %><% end %>
+          <% if current_admin.super_admin? %><%= nav_link "الأنشطة المميزة", admin_featured_placements_path, :firms %><% end %>
           <% if current_admin.can?("reports.handle") %><%= nav_link "البلاغات", admin_reports_path, :bell, count: Report.open.count %><% end %>
           <% if current_admin.can?("articles.moderate") %><%= nav_link "الأخبار والمقالات", admin_articles_path, :articles, count: Article.pending.count %><% end %>
         <% end %>

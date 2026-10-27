@@ -68,4 +68,18 @@
   <% end %>
 </section>
 
+<% if current_admin.super_admin? %>
+  <section class="card mt">
+    <div class="card-header"><h2>تمييز النشاط</h2><%= link_to "كل الأنشطة المميزة", admin_featured_placements_path %></div>
+    <%= form_with model: FeaturedPlacement.new, url: admin_firm_featured_placements_path(@firm), scope: :featured_placement,
+          class: "flex flex-wrap gap-2 items-end" do |f| %>
+      <div class="field"><%= f.label :starts_at, "من" %><%= f.datetime_local_field :starts_at, value: Time.current.strftime("%Y-%m-%dT%H:%M"), required: true %></div>
+      <div class="field"><%= f.label :ends_at, "إلى" %><%= f.datetime_local_field :ends_at, value: 7.days.from_now.strftime("%Y-%m-%dT%H:%M"), required: true %></div>
+      <div class="field"><%= f.label :position, "الترتيب" %><%= f.number_field :position, value: 0, min: 0, class: "w-20" %></div>
+      <div class="field"><%= f.label :note, "ملاحظة" %><%= f.text_field :note, maxlength: 200 %></div>
+      <%= f.submit "تمييز", class: "btn btn-gold" %>
+    <% end %>
+  </section>
+<% end %>
+
 <%= render "admin/shared/history", record: @firm %>
