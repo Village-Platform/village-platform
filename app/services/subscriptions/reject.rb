@@ -9,6 +9,15 @@ module Subscriptions
     end
 
     def call
+      Audit.operation("subscription.reject", actor: @reviewer) { reject }
+
+      notify_owner
+      @subscription
+    end
+
+    private
+
+    def reject
       @subscription.with_lock do
         raise ReviewError, "Subscription is not pending" unless @subscription.pending?
 
@@ -18,14 +27,8 @@ module Subscriptions
           reviewed_by: @reviewer,
           reviewed_at: Time.current
         )
-        Audit.record(actor: @reviewer, action: "subscription.reject", subject: @subscription)
       end
-
-      notify_owner
-      @subscription
     end
-
-    private
 
     def notify_owner
       Notifier.notify(

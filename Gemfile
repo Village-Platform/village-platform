@@ -16,6 +16,7 @@ gem "aws-sdk-s3", require: false
 gem "bcrypt", "~> 3.1.7"
 gem "jwt", "~> 3.1"
 gem "pundit", "~> 2.5"
+gem "paper_trail", "~> 17.0" # audit trail: versions of every privileged model
 
 # API helpers
 gem "rack-cors"

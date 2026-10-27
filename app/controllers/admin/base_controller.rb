@@ -60,8 +60,7 @@ module Admin
     end
 
     def destroy_and_redirect(record, path)
-      snapshot = Audit.snapshot(record)
-      if audited("#{record.model_name.singular}.destroy", record, changes: snapshot) { record.destroy }
+      if audited("#{record.model_name.singular}.destroy") { record.destroy }
         redirect_to path, notice: "تم الحذف."
       else
         redirect_to path, alert: record.errors.full_messages.to_sentence.presence || "لا يمكن حذف هذا العنصر."

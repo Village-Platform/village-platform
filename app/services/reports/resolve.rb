@@ -23,16 +23,17 @@ module Reports
       raise ArgumentError, "unknown outcome" unless %i[resolved dismissed].include?(@outcome)
       raise ArgumentError, "action does not fit the subject" if @action && ACTIONS[@action] != @subject.class.name
 
+      verb = @outcome == :resolved ? "resolve" : "dismiss"
       ApplicationRecord.transaction do
-        count = Report.open.where(subject: @subject).update_all(
-          status: Report.statuses[@outcome], resolved_by_id: @admin.id, resolution_note: @note,
-          resolved_at: Time.current, updated_at: Time.current
-        )
-        verb = @outcome == :resolved ? "resolve" : "dismiss"
-        Audit.record(actor: @admin, action: "report.#{verb}", subject: @subject,
-                     changes: { "open_reports" => [ count, 0 ], "action" => [ nil, @action ] })
+        # Row by row (not update_all), so each report gets its version.
+        reports = Report.open.where(subject: @subject).lock.to_a
+        Audit.operation("report.#{verb}", actor: @admin) do
+          reports.each do |report|
+            report.update!(status: @outcome, resolved_by: @admin, resolution_note: @note, resolved_at: Time.current)
+          end
+        end
         act if @outcome == :resolved && @action
-        count
+        reports.size
       end
     end
 
@@ -41,14 +42,11 @@ module Reports
     def act
       case @action
       when "suspend_firm"
-        @subject.update!(status: :suspended)
-        Audit.record(actor: @admin, action: "firm.suspend", subject: @subject)
+        Audit.operation("firm.suspend", actor: @admin) { @subject.update!(status: :suspended) }
       when "remove_medium"
-        Audit.record(actor: @admin, action: "firm_medium.destroy", subject: @subject, changes: Audit.snapshot(@subject))
-        @subject.destroy!
+        Audit.operation("firm_medium.destroy", actor: @admin) { @subject.destroy! }
       when "unpublish_article"
-        @subject.update!(review_state: :pending, published_at: nil)
-        Audit.record(actor: @admin, action: "article.update", subject: @subject)
+        Audit.operation("article.unpublish", actor: @admin) { @subject.update!(review_state: :pending, published_at: nil) }
       end
     end
   end

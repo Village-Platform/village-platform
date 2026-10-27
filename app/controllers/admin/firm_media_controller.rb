@@ -15,7 +15,7 @@ module Admin
 
     def destroy
       medium = @firm.media.find(params[:id])
-      audited("firm_medium.destroy", medium, changes: Audit.snapshot(medium)) { medium.destroy! }
+      audited("firm_medium.destroy") { medium.destroy! }
       redirect_to admin_firm_path(@firm), notice: "تم حذف الملف."
     end
 

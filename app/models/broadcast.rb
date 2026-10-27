@@ -7,6 +7,9 @@ class Broadcast < ApplicationRecord
     "category_owners" => "أصحاب أنشطة تصنيف معيّن"
   }.freeze
 
+  # The fan-out count is bookkeeping, not an edit.
+  has_audit_trail ignore: %i[recipients_count]
+
   belongs_to :actor, class_name: "User"
 
   validates :audience, inclusion: { in: AUDIENCES.keys }

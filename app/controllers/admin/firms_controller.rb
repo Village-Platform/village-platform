@@ -26,7 +26,7 @@ module Admin
 
     def create
       @firm = Firm.new(firm_params)
-      if audited("firm.create", @firm) { @firm.save }
+      if audited("firm.create") { @firm.save }
         redirect_to admin_firm_path(@firm), notice: "تم إضافة النشاط."
       else
         render :new, status: :unprocessable_content
@@ -36,7 +36,7 @@ module Admin
     def edit; end
 
     def update
-      if audited("firm.update", @firm) { @firm.update(firm_params) }
+      if audited("firm.update") { @firm.update(firm_params) }
         redirect_to admin_firm_path(@firm), notice: "تم حفظ التعديلات."
       else
         render :edit, status: :unprocessable_content
@@ -48,12 +48,12 @@ module Admin
     end
 
     def approve
-      audited("firm.approve", @firm) { @firm.update!(status: :active) }
+      audited("firm.approve") { @firm.update!(status: :active) }
       redirect_back_or_to admin_firm_path(@firm), notice: "تم اعتماد النشاط."
     end
 
     def suspend
-      audited("firm.suspend", @firm) { @firm.update!(status: :suspended) }
+      audited("firm.suspend") { @firm.update!(status: :suspended) }
       redirect_back_or_to admin_firm_path(@firm), notice: "تم إيقاف النشاط."
     end
 

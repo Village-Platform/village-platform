@@ -1,27 +1,25 @@
-# Fills the request context Audit.record reads, and wraps a write with its audit row in one
-# transaction. Including controllers define #audit_source and #audit_actor.
+# Tells PaperTrail who is acting and from where, and labels writes with a business operation.
+# Including controllers define #audit_source and #audit_actor.
 module Auditing
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_audit_context
+    before_action :set_paper_trail_whodunnit
   end
 
   private
 
-  def set_audit_context
-    Current.source = audit_source
-    Current.ip = request.remote_ip
-    Current.request_id = request.request_id
+  def user_for_paper_trail
+    audit_actor&.id
   end
 
-  # The block returns truthy on success; only then is the audit row written.
-  #   audited("firm.suspend", @firm) { @firm.update!(status: :suspended) }
-  def audited(action, record, changes: nil)
-    ApplicationRecord.transaction do
-      result = yield
-      Audit.record(actor: audit_actor, action:, subject: record, changes:) if result
-      result
-    end
+  def info_for_paper_trail
+    { source: audit_source, ip: request.remote_ip, request_id: request.request_id }
+  end
+
+  # Names the versions the block writes; returns the block's result.
+  #   audited("firm.suspend") { @firm.update!(status: :suspended) }
+  def audited(operation, &)
+    Audit.operation(operation, &)
   end
 end

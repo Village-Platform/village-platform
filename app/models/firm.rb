@@ -5,6 +5,8 @@ class Firm < ApplicationRecord
   # Note: an active firm is shown publicly only while its owner has a current subscription.
   enum :status, { pending: 0, active: 1, suspended: 2 }, default: :pending, validate: true
 
+  has_audit_trail
+
   belongs_to :category
   # Optional: a firm without an owner is managed by super admins only.
   belongs_to :owner, class_name: "User", inverse_of: :firms, optional: true

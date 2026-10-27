@@ -12,6 +12,15 @@ module Subscriptions
     end
 
     def call
+      Audit.operation("subscription.approve", actor: @reviewer) { approve }
+
+      notify_owner
+      @subscription
+    end
+
+    private
+
+    def approve
       Subscription.transaction do
         user = @subscription.user
         user.lock! # serialize approvals for the same owner
@@ -29,18 +38,9 @@ module Subscriptions
           reviewed_at: now,
           reconciliation_note: @reconciliation_note
         )
-        Audit.record(actor: @reviewer, action: "subscription.approve", subject: @subscription)
-        if user.user?
-          user.update!(role: :firm_admin)
-          Audit.record(actor: @reviewer, action: "user.promote", subject: user)
-        end
+        Audit.operation("user.promote", actor: @reviewer) { user.update!(role: :firm_admin) } if user.user?
       end
-
-      notify_owner
-      @subscription
     end
-
-    private
 
     # Outside the transaction: a failed notification must never undo an approval.
     def notify_owner

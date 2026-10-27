@@ -1,8 +1,0 @@
-<tr>
-  <td><%= fmt_time(event.created_at) %></td>
-  <td><%= event.actor ? link_to(event.actor.name, admin_user_path(event.actor)) : "النظام" %></td>
-  <td><%= badge(audit_action_label(event.action)) %></td>
-  <td><span class="cell-main"><%= event.subject_label %></span><span class="cell-sub"><%= audit_subject_label(event.subject_type) %> #<%= event.subject_id %></span></td>
-  <td><%= audit_changes(event.changeset) %></td>
-  <td><%= event.source == "api" ? "التطبيق" : (event.source == "admin" ? "اللوحة" : event.source) %></td>
-</tr>

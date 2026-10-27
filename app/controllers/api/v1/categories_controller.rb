@@ -40,21 +40,21 @@ module Api
       def create
         authorize Category
         category = Category.new(permitted_attributes(Category))
-        audited("category.create", category) { category.save! }
+        audited("category.create") { category.save! }
         Categories::OptimizeIcon.call(category)
         render_record(category, CategorySerializer, status: :created)
       end
 
       def update
         authorize @category
-        audited("category.update", @category) { @category.update!(permitted_attributes(@category)) }
+        audited("category.update") { @category.update!(permitted_attributes(@category)) }
         Categories::OptimizeIcon.call(@category)
         render_record(@category, CategorySerializer)
       end
 
       def destroy
         authorize @category
-        if audited("category.destroy", @category, changes: Audit.snapshot(@category)) { @category.destroy }
+        if audited("category.destroy") { @category.destroy }
           head :no_content
         else
           render_error(:unprocessable_content, "cannot_delete", details: @category.errors.to_hash(true))

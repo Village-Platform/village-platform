@@ -1,9 +1,9 @@
-<%= page_header "سجل العمليات", subtitle: "كل تعديل أجراه مدير، من اللوحة أو من التطبيق" %>
+<%= page_header "سجل العمليات", subtitle: "كل تعديل على البيانات: من اللوحة أو التطبيق أو النظام" %>
 
 <div class="flex flex-wrap gap-2 items-center">
   <%= filter_tabs :subject_type, @subject_types.map { |type| [ audit_subject_label(type), type ] } %>
   <div class="flex-1"></div>
-  <%= form_with url: admin_audit_events_path, method: :get, class: "flex flex-wrap gap-2 items-center" do |f| %>
+  <%= form_with url: admin_versions_path, method: :get, class: "flex flex-wrap gap-2 items-center" do |f| %>
     <%= f.hidden_field :subject_type, value: params[:subject_type] %>
     <%= f.search_field :q, value: params[:q], placeholder: "اسم العنصر أو العملية", class: "w-52", "aria-label": "بحث" %>
     <%= button_tag type: "submit", class: "btn btn-ghost", name: nil, title: "تصفية" do %><%= icon(:search, size: 16) %><% end %>
@@ -11,11 +11,11 @@
 </div>
 
 <div class="tbl">
-  <% if @events.any? %>
+  <% if @versions.any? %>
     <table>
       <thead><tr><th>الوقت</th><th>المنفّذ</th><th>العملية</th><th>العنصر</th><th>التغييرات</th><th>المصدر</th></tr></thead>
       <tbody>
-        <%= render partial: "admin/audit_events/row", collection: @events, as: :event %>
+        <%= render partial: "admin/versions/row", collection: @versions, as: :version, locals: { actors: audit_actors(@versions) } %>
       </tbody>
     </table>
   <% else %>

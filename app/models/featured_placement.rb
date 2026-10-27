@@ -4,6 +4,8 @@
 class FeaturedPlacement < ApplicationRecord
   MAX_SHOWN = 10
 
+  has_audit_trail
+
   belongs_to :firm
   belongs_to :created_by, class_name: "User", optional: true
 

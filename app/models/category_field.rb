@@ -4,6 +4,8 @@
 class CategoryField < ApplicationRecord
   enum :kind, { text: 0, boolean: 1, number: 2, choice: 3 }, validate: true
 
+  has_audit_trail
+
   belongs_to :category, inverse_of: :fields
 
   scope :ordered, -> { order(:position, :id) }

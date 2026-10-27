@@ -1,12 +1,13 @@
 <%# History of one record: render "admin/shared/history", record: @firm %>
-<% events = AuditEvent.for_subject(record).includes(:actor).latest_first.limit(20) %>
+<% versions = record.versions.reorder(created_at: :desc, id: :desc).limit(20).to_a %>
+<% actors = audit_actors(versions) %>
 <section class="card mt">
   <div class="card-header"><h2>سجل التعديلات</h2></div>
-  <% if events.any? %>
+  <% if versions.any? %>
     <div class="tbl">
       <table>
         <thead><tr><th>الوقت</th><th>المنفّذ</th><th>العملية</th><th>العنصر</th><th>التغييرات</th><th>المصدر</th></tr></thead>
-        <tbody><%= render partial: "admin/audit_events/row", collection: events, as: :event %></tbody>
+        <tbody><%= render partial: "admin/versions/row", collection: versions, as: :version, locals: { actors: } %></tbody>
       </table>
     </div>
   <% else %>

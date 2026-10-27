@@ -30,7 +30,7 @@
           <% if current_admin.can?("users.manage") %><%= nav_link "المستخدمون", admin_users_path, :users %><% end %>
           <% if current_admin.can?("notifications.send") %><%= nav_link "الإشعارات الجماعية", admin_broadcasts_path, :bell %><% end %>
           <% if current_admin.super_admin? %><%= nav_link "الإعدادات", edit_admin_settings_path, :edit %><% end %>
-          <% if current_admin.super_admin? %><%= nav_link "سجل العمليات", admin_audit_events_path, :clock %><% end %>
+          <% if current_admin.super_admin? %><%= nav_link "سجل العمليات", admin_versions_path, :clock %><% end %>
         <% end %>
         <%= nav_group "المالية" do %>
           <% if current_admin.super_admin? %><%= nav_link "الباقات والأسعار", admin_subscription_plans_path, :plans %><% end %>

@@ -52,7 +52,7 @@ Rails.application.routes.draw do
     resources :users, except: :destroy do
       resource :permissions, only: :update, controller: "staff_permissions"
     end
-    resources :audit_events, only: :index, path: "audit"
+    resources :versions, only: :index, path: "audit"
     resources :broadcasts, only: %i[index new create]
     resource :settings, only: %i[edit update]
     resources :reports, only: :index do

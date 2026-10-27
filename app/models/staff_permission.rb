@@ -12,6 +12,8 @@ class StaffPermission < ApplicationRecord
     "users.manage" => "إدارة المستخدمين"
   }.freeze
 
+  has_audit_trail
+
   belongs_to :user
   belongs_to :granted_by, class_name: "User", optional: true
 

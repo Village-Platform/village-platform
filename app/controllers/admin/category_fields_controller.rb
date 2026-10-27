@@ -6,7 +6,7 @@ module Admin
 
     def create
       field = @category.fields.build(field_params)
-      if audited("category_field.create", field) { field.save }
+      if audited("category_field.create") { field.save }
         redirect_to edit_admin_category_path(@category), notice: "تم إضافة الحقل."
       else
         redirect_to edit_admin_category_path(@category), alert: field.errors.full_messages.to_sentence
@@ -16,7 +16,7 @@ module Admin
     # Removing a field hides its values; the values stay stored in each firm.
     def destroy
       field = @category.fields.find(params[:id])
-      audited("category_field.destroy", field, changes: Audit.snapshot(field)) { field.destroy! }
+      audited("category_field.destroy") { field.destroy! }
       redirect_to edit_admin_category_path(@category), notice: "تم حذف الحقل."
     end
 

@@ -63,14 +63,22 @@ wrapped in the same check. Plans, settings, featured firms and the audit log are
 Staff with `users.manage` cannot edit admin accounts or hand out admin roles. The **API** knows nothing
 of staff: its policies still ask `super_admin?`.
 
-### Audit log
+### Audit trail (PaperTrail)
 
-Every privileged write records an append-only `AuditEvent` in the **same transaction** as the change.
-In controllers wrap the write: `audited("firm.suspend", @firm) { @firm.update!(status: :suspended) }`
-(the block's truthiness decides whether the row is written); inside services call
-`Audit.record(actor:, action:, subject:)` within the service's transaction. `destroy_and_redirect`
-already audits with a snapshot. `Current` carries source (admin/api/cron), IP and request id. Never
-audit from model callbacks — they lose the actor and fire for seeds and consoles.
+Auditing is the `paper_trail` gem. Each audited model declares `has_audit_trail` (a thin wrapper over
+`has_paper_trail` that also stores `item_label`); every save then writes a `versions` row in the same
+transaction (jsonb `object` / `object_changes`). The `Auditing` controller concern sets `whodunnit`
+(the API user or the admin) and `source` / `ip` / `request_id`; writes outside a request are
+`source: "system"` with no whodunnit.
+
+- **Name the business operation**: in controllers `audited("firm.suspend") { @firm.update!(...) }`, in
+  services `Audit.operation("subscription.approve", actor: reviewer) { ... }`. It fills
+  `versions.operation`; without it the audit page shows the plain create/update/destroy event.
+- A new model that admins or owners change should get `has_audit_trail`.
+- PaperTrail only sees callbacks: use `destroy`/`update!`, never `delete_all`/`update_all`, for audited rows.
+- `User` skips `password_digest`, so a password-only change is recorded explicitly
+  (`user.password_reset`, via `paper_trail.save_with_version`).
+- Notifications and blobs are not versioned on purpose (volume, no editorial meaning).
 
 ### Admin design system
 

@@ -14,7 +14,7 @@ module Admin
 
     def create
       @plan = SubscriptionPlan.new(plan_params)
-      if audited("subscription_plan.create", @plan) { @plan.save }
+      if audited("subscription_plan.create") { @plan.save }
         redirect_to admin_subscription_plans_path, notice: "تم إضافة الباقة."
       else
         render :new, status: :unprocessable_content
@@ -24,7 +24,7 @@ module Admin
     def edit; end
 
     def update
-      if audited("subscription_plan.update", @plan) { @plan.update(plan_params) }
+      if audited("subscription_plan.update") { @plan.update(plan_params) }
         redirect_to admin_subscription_plans_path, notice: "تم حفظ التعديلات."
       else
         render :edit, status: :unprocessable_content

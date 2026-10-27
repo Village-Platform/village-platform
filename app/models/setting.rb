@@ -13,6 +13,8 @@ class Setting < ApplicationRecord
   CACHE_KEY = "settings/all/v1".freeze
   CACHE_TTL = 60.seconds # with several web pods, this is how stale another pod can be
 
+  has_audit_trail
+
   belongs_to :updated_by, class_name: "User", optional: true
 
   validates :key, inclusion: { in: SCHEMA.keys }, uniqueness: true

@@ -64,23 +64,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090012) do
     t.index ["review_state"], name: "index_articles_pending_review", where: "(review_state = 1)"
   end
 
-  create_table "audit_events", force: :cascade do |t|
-    t.bigint "actor_id"
-    t.string "action", null: false
-    t.string "subject_type", null: false
-    t.bigint "subject_id", null: false
-    t.string "subject_label"
-    t.jsonb "changeset", default: {}, null: false
-    t.string "source", null: false
-    t.string "ip"
-    t.string "request_id"
-    t.datetime "created_at", null: false
-    t.index ["action"], name: "index_audit_events_on_action"
-    t.index ["actor_id", "created_at"], name: "index_audit_events_on_actor_id_and_created_at"
-    t.index ["created_at"], name: "index_audit_events_on_created_at"
-    t.index ["subject_type", "subject_id", "created_at"], name: "idx_on_subject_type_subject_id_created_at_314bc2a748"
-  end
-
   create_table "broadcasts", force: :cascade do |t|
     t.bigint "actor_id", null: false
     t.string "audience", null: false
@@ -302,12 +285,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090012) do
     t.index ["role"], name: "index_users_on_role"
   end
 
+  create_table "versions", force: :cascade do |t|
+    t.string "whodunnit"
+    t.datetime "created_at", null: false
+    t.bigint "item_id", null: false
+    t.string "item_type", null: false
+    t.string "event", null: false
+    t.jsonb "object"
+    t.jsonb "object_changes"
+    t.string "operation"
+    t.string "item_label"
+    t.string "source", default: "system", null: false
+    t.string "ip"
+    t.string "request_id"
+    t.index ["created_at"], name: "index_versions_on_created_at"
+    t.index ["item_type", "item_id", "created_at"], name: "index_versions_on_item_type_and_item_id_and_created_at"
+    t.index ["whodunnit", "created_at"], name: "index_versions_on_whodunnit_and_created_at"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "articles", "firms"
   add_foreign_key "articles", "users", column: "author_id"
   add_foreign_key "articles", "users", column: "reviewed_by_id"
-  add_foreign_key "audit_events", "users", column: "actor_id"
   add_foreign_key "broadcasts", "users", column: "actor_id"
   add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "category_fields", "categories"

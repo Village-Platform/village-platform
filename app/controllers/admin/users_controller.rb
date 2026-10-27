@@ -31,7 +31,7 @@ module Admin
       @user = User.new(user_params)
       return render(:new, status: :unprocessable_content) unless role_assignable?(@user)
 
-      if audited("user.create", @user) { @user.save }
+      if audited("user.create") { @user.save }
         redirect_to admin_user_path(@user), notice: "تم إضافة المستخدم."
       else
         render :new, status: :unprocessable_content
@@ -51,7 +51,10 @@ module Admin
       @user.assign_attributes(attrs.slice(:role))
       return render(:edit, status: :unprocessable_content) unless role_assignable?(@user)
 
-      if audited("user.update", @user) { @user.update(attrs) }
+      password_reset = attrs[:password].present?
+      if audited("user.update") { @user.update(attrs) }
+        # The digest is skipped by PaperTrail, so a password-only change would leave no trace.
+        audited("user.password_reset") { @user.paper_trail.save_with_version } if password_reset
         redirect_to admin_user_path(@user), notice: "تم حفظ التعديلات."
       else
         render :edit, status: :unprocessable_content

@@ -23,7 +23,7 @@ RSpec.describe "Subscriber articles", type: :request do
     patch "/api/v1/admin/articles/#{article.id}/approve", headers: auth_headers(super_admin)
     expect(json["data"]["review_state"]).to eq("approved")
     expect(author.notifications.last.kind).to eq("article_approved")
-    expect(AuditEvent.last.action).to eq("article.approve")
+    expect(PaperTrail::Version.last.operation).to eq("article.approve")
 
     get "/api/v1/articles"
     expect(json["data"].map { _1["id"] }).to eq([ article.id ])

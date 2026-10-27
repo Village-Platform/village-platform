@@ -10,6 +10,8 @@ class Subscription < ApplicationRecord
   enum :status, { pending: 0, active: 1, rejected: 2 }, default: :pending, validate: true
   enum :payment_method, { instapay: 0, vodafone_cash: 1 }, validate: true
 
+  has_audit_trail
+
   belongs_to :user
   belongs_to :subscription_plan
   belongs_to :reviewed_by, class_name: "User", optional: true

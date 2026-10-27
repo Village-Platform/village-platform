@@ -3,6 +3,8 @@
 class FirmMedium < ApplicationRecord
   enum :kind, { image: 0, video: 1 }, validate: true
 
+  has_audit_trail
+
   belongs_to :firm, inverse_of: :media
   # Reports point at nothing once their subject is gone.
   has_many :reports, as: :subject, dependent: :delete_all

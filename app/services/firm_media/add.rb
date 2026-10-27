@@ -32,15 +32,14 @@ module FirmMedia
     private
 
     def create_medium(result, limit)
-      FirmMedium.transaction do
-        @firm.lock!
-        media = @firm.media.where(kind: @kind)
-        raise Media::LimitReached if limit && media.count >= limit
+      Audit.operation("firm_medium.create", actor: @uploader) do
+        FirmMedium.transaction do
+          @firm.lock!
+          raise Media::LimitReached if limit && @firm.media.where(kind: @kind).count >= limit
 
-        medium = @firm.media.create!(kind: @kind, caption: @caption, duration_s: result.metadata[:duration_s],
-                                     position: (@firm.media.maximum(:position) || -1) + 1, file: result.blob)
-        Audit.record(actor: @uploader, action: "firm_medium.create", subject: medium)
-        medium
+          @firm.media.create!(kind: @kind, caption: @caption, duration_s: result.metadata[:duration_s],
+                              position: (@firm.media.maximum(:position) || -1) + 1, file: result.blob)
+        end
       end
     rescue Media::LimitReached, ActiveRecord::RecordInvalid
       result.blob.purge

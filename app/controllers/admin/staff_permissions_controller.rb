@@ -8,15 +8,13 @@ module Admin
       wanted = Array(params[:permissions]) & StaffPermission::PERMISSIONS.keys
       current = user.staff_permissions.pluck(:permission)
 
+      # One version per granted or revoked StaffPermission row (destroy, not delete_all, so
+      # PaperTrail sees it).
       ApplicationRecord.transaction do
-        (wanted - current).each do |permission|
-          granted = user.staff_permissions.create!(permission:, granted_by: current_admin)
-          Audit.record(actor: current_admin, action: "user.grant", subject: user, changes: { "permission" => [ nil, granted.permission ] })
+        audited("user.grant") do
+          (wanted - current).each { |permission| user.staff_permissions.create!(permission:, granted_by: current_admin) }
         end
-        (current - wanted).each do |permission|
-          user.staff_permissions.where(permission:).delete_all
-          Audit.record(actor: current_admin, action: "user.revoke", subject: user, changes: { "permission" => [ permission, nil ] })
-        end
+        audited("user.revoke") { user.staff_permissions.where(permission: current - wanted).destroy_all }
       end
 
       redirect_to admin_user_path(user), notice: "تم حفظ الصلاحيات."

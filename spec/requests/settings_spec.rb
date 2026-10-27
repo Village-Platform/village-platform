@@ -16,7 +16,7 @@ RSpec.describe "Settings and app config", type: :request do
     expect(response).to redirect_to("/admin/settings/edit")
     get "/api/v1/app_config"
     expect(json["data"]).to include("min_android_version" => 12, "banner" => "صيانة الليلة", "support_phone" => nil)
-    expect(AuditEvent.where(action: "setting.update").count).to eq(2)
+    expect(PaperTrail::Version.where(operation: "setting.update").count).to eq(2)
   end
 
   it "rejects a non-numeric version" do

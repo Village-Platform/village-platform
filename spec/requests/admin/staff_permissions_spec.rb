@@ -77,7 +77,7 @@ RSpec.describe "Staff permissions", type: :request do
     patch "/admin/users/#{staff.id}/permissions", params: { permissions: %w[articles.moderate bogus] }
 
     expect(staff.staff_permissions.pluck(:permission)).to eq([ "articles.moderate" ])
-    expect(AuditEvent.where(subject_id: staff.id).pluck(:action)).to contain_exactly("user.grant", "user.revoke")
+    expect(PaperTrail::Version.where(item_type: "StaffPermission").pluck(:operation)).to include("user.grant", "user.revoke")
   end
 
   it "does not let staff grant permissions" do

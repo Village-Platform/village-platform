@@ -97,7 +97,7 @@ RSpec.describe "Firm media gallery", type: :request do
 
     delete "/api/v1/firms/#{firm.id}/media/#{medium_id}", headers: auth_headers(create(:user, :super_admin))
     expect(response).to have_http_status(:no_content)
-    expect(AuditEvent.last.action).to eq("firm_medium.destroy")
+    expect(PaperTrail::Version.last).to have_attributes(operation: "firm_medium.destroy", event: "destroy")
   end
 
   it "removes the gallery with the firm" do

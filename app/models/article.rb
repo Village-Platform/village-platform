@@ -7,6 +7,8 @@ class Article < ApplicationRecord
   # Kinds a subscriber may write. Announcements speak for the platform.
   SUBSCRIBER_KINDS = %w[news article].freeze
 
+  has_audit_trail
+
   belongs_to :author, class_name: "User", inverse_of: :articles
   belongs_to :firm, optional: true
   belongs_to :reviewed_by, class_name: "User", optional: true

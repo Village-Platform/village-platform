@@ -21,12 +21,7 @@ module Notifications
       broadcast = ::Broadcast.find_by(idempotency_key: @attributes[:idempotency_key])
       return broadcast if broadcast
 
-      broadcast = ::Broadcast.transaction do
-        ::Broadcast.create!(@attributes.merge(actor: @actor)).tap do |created|
-          Audit.record(actor: @actor, action: "broadcast.broadcast", subject: created,
-                       changes: { "audience" => [ nil, created.audience ] })
-        end
-      end
+      broadcast = Audit.operation("broadcast.send", actor: @actor) { ::Broadcast.create!(@attributes.merge(actor: @actor)) }
       broadcast.update!(recipients_count: deliver(broadcast))
       broadcast
     rescue ActiveRecord::RecordNotUnique

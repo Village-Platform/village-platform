@@ -32,7 +32,7 @@ module Api
         attrs = permitted_attributes(Article)
         article =
           if current_user.super_admin?
-            current_user.articles.build(attrs).tap { |a| audited("article.create", a) { a.save! } }
+            current_user.articles.build(attrs).tap { |a| audited("article.create") { a.save! } }
           else
             raise Pundit::NotAuthorizedError unless Article::SUBSCRIBER_KINDS.include?(attrs.fetch(:kind, "news").to_s)
 
@@ -48,13 +48,13 @@ module Api
         authorize @article
         attrs = permitted_attributes(@article)
         attrs = attrs.merge(review_state: :pending, published_at: nil, rejection_reason: nil) unless current_user.super_admin?
-        audited("article.update", @article) { @article.update!(attrs) }
+        audited("article.update") { @article.update!(attrs) }
         render json: { data: ArticleSerializer.render(@article, include_review: true) }
       end
 
       def destroy
         authorize @article
-        audited("article.destroy", @article, changes: Audit.snapshot(@article)) { @article.destroy! }
+        audited("article.destroy") { @article.destroy! }
         head :no_content
       end
 

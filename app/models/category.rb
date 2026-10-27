@@ -5,6 +5,9 @@ class Category < ApplicationRecord
   # Default artwork for the seed `icon` keys (doctor.png, pharmacy.png, ...).
   DEFAULT_ICONS_DIR = Rails.root.join("db/seeds/category_icons")
 
+  # children_count is a counter cache: not a change anyone made.
+  has_audit_trail ignore: %i[children_count]
+
   has_many :firms, dependent: :restrict_with_error
   # One level deep only: a village directory needs groups, not a taxonomy.
   belongs_to :parent, class_name: "Category", optional: true, counter_cache: :children_count

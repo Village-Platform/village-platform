@@ -27,13 +27,13 @@ module Api
       def update
         authorize @medium
         attrs = params.require(:medium).permit(policy(@medium).permitted_attributes)
-        audited("firm_medium.update", @medium) { @medium.update!(attrs) }
+        audited("firm_medium.update") { @medium.update!(attrs) }
         render_record(@medium, FirmMediumSerializer)
       end
 
       def destroy
         authorize @medium
-        audited("firm_medium.destroy", @medium, changes: Audit.snapshot(@medium)) { @medium.destroy! }
+        audited("firm_medium.destroy") { @medium.destroy! }
         head :no_content
       end
 

@@ -18,7 +18,7 @@ module Admin
 
     def create
       @article = current_admin.articles.build(article_params)
-      if audited("article.create", @article) { @article.save }
+      if audited("article.create") { @article.save }
         redirect_to admin_articles_path, notice: "تم حفظ الخبر."
       else
         render :new, status: :unprocessable_content
@@ -28,7 +28,7 @@ module Admin
     def edit; end
 
     def update
-      if audited("article.update", @article) { @article.update(article_params) }
+      if audited("article.update") { @article.update(article_params) }
         redirect_to admin_articles_path, notice: "تم حفظ التعديلات."
       else
         render :edit, status: :unprocessable_content

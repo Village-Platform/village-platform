@@ -1,6 +1,6 @@
 # 06 — Audit log
 
-Status: implemented (2026-10-27)
+Status: implemented (2026-10-27), then moved to the paper_trail gem at the maintainer's request — see **Revision**
 Part of: super-admin "control everything"
 
 ## Goal
@@ -47,3 +47,18 @@ Keep forever at this scale (a few thousand rows a year). At 10x: partition by mo
 
 Why write the audit row in the same transaction as the change, rather than publishing an event
 after commit? What does each choice lose?
+
+## Revision: PaperTrail instead of a custom table
+
+The maintainer chose the `paper_trail` gem over the hand-written `audit_events` table. What changed:
+
+- Versions are written by model callbacks for every save of an audited model, so the trail now also
+  covers seeds, consoles and jobs (`source: "system"`), not only admin actions.
+- The business action survives as metadata: `versions.operation` ("firm.suspend"), set with
+  `audited(...)` / `Audit.operation(...)`, next to PaperTrail's create/update/destroy event.
+- Writes that skip callbacks (`update_all`, `delete_all`) are invisible to it; the code was changed to
+  per-row `update!` / `destroy` where an audit matters.
+- Bonus from the gem: `object` holds the full previous state, so a version can be reified (restored).
+
+Trade-off accepted: more rows (one per save, not per admin action) and a callback-based design, in
+exchange for a maintained, well-known gem and full model history.

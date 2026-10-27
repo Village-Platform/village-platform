@@ -6,6 +6,8 @@ class Report < ApplicationRecord
   enum :reason, { wrong_info: 0, inappropriate: 1, spam: 2, closed: 3, other: 4 }, validate: true
   enum :status, { open: 0, resolved: 1, dismissed: 2 }, default: :open, validate: true
 
+  has_audit_trail
+
   belongs_to :reporter, class_name: "User"
   belongs_to :resolved_by, class_name: "User", optional: true
   belongs_to :subject, polymorphic: true

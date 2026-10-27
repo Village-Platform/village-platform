@@ -45,13 +45,13 @@ module Api
 
       def update
         authorize @firm
-        audited("firm.update", @firm) { @firm.update!(permitted_attributes(@firm)) }
+        audited("firm.update") { @firm.update!(permitted_attributes(@firm)) }
         render_record(@firm, FirmSerializer)
       end
 
       def destroy
         authorize @firm
-        audited("firm.destroy", @firm, changes: Audit.snapshot(@firm)) { @firm.destroy! }
+        audited("firm.destroy") { @firm.destroy! }
         head :no_content
       end
 

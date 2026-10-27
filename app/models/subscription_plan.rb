@@ -1,4 +1,6 @@
 class SubscriptionPlan < ApplicationRecord
+  has_audit_trail
+
   has_many :subscriptions, dependent: :restrict_with_error
 
   scope :active, -> { where(active: true) }

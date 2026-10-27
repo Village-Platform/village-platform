@@ -19,7 +19,7 @@ module Admin
 
     def create
       @category = Category.new(category_params)
-      if audited("category.create", @category) { @category.save }
+      if audited("category.create") { @category.save }
         Categories::OptimizeIcon.call(@category)
         redirect_to admin_categories_path, notice: "تم إضافة التصنيف."
       else
@@ -30,7 +30,7 @@ module Admin
     def edit; end
 
     def update
-      if audited("category.update", @category) { @category.update(category_params) }
+      if audited("category.update") { @category.update(category_params) }
         @category.icon_image.purge if remove_icon_image?
         Categories::OptimizeIcon.call(@category)
         redirect_to admin_categories_path, notice: "تم حفظ التعديلات."

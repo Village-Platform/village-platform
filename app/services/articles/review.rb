@@ -24,11 +24,12 @@ module Articles
     private
 
     def review(verb, attributes)
-      @article.with_lock do
-        raise Subscriptions::ReviewError, "Article is not pending" unless @article.pending?
+      Audit.operation("article.#{verb}", actor: @reviewer) do
+        @article.with_lock do
+          raise Subscriptions::ReviewError, "Article is not pending" unless @article.pending?
 
-        @article.update!(attributes.merge(reviewed_by: @reviewer, reviewed_at: Time.current))
-        Audit.record(actor: @reviewer, action: "article.#{verb}", subject: @article)
+          @article.update!(attributes.merge(reviewed_by: @reviewer, reviewed_at: Time.current))
+        end
       end
     end
 

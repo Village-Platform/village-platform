@@ -18,7 +18,7 @@ module Api
         def update
           user = User.find(params[:id])
           authorize user
-          audited("user.update", user) { user.update!(params.require(:user).permit(:role)) }
+          audited("user.update") { user.update!(params.require(:user).permit(:role)) }
           render_record(user, UserSerializer)
         end
       end

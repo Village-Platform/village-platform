@@ -62,7 +62,7 @@ RSpec.describe "Reports", type: :request do
       expect(Report.open.count).to eq(0)
       expect(Report.resolved.pluck(:resolution_note).uniq).to eq([ "تأكدنا" ])
       expect(firm.reload).to be_suspended
-      expect(AuditEvent.pluck(:action)).to include("report.resolve", "firm.suspend")
+      expect(PaperTrail::Version.pluck(:operation)).to include("report.resolve", "firm.suspend")
     end
 
     it "dismisses reports without touching the subject" do

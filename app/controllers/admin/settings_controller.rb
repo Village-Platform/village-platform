@@ -16,9 +16,7 @@ module Admin
           setting = Setting.find_or_initialize_by(key:)
           next if setting.value == value && (setting.persisted? || value.nil?) # unchanged
 
-          old = setting.value
-          setting.update!(value:, updated_by: current_admin, updated_at: Time.current)
-          Audit.record(actor: current_admin, action: "setting.update", subject: setting, changes: { key => [ old, value ] })
+          audited("setting.update") { setting.update!(value:, updated_by: current_admin, updated_at: Time.current) }
         end
       end
       redirect_to edit_admin_settings_path, notice: "تم حفظ الإعدادات."

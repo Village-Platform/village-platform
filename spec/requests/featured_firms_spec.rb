@@ -29,7 +29,7 @@ RSpec.describe "Featured firms", type: :request do
 
     placement = firm.featured_placements.last
     expect(placement.note).to eq("افتتاح")
-    expect(AuditEvent.last.action).to eq("featured_placement.feature")
+    expect(PaperTrail::Version.last.operation).to eq("featured_placement.feature")
 
     get "/admin/featured_placements"
     expect(response.body).to include(firm.name)

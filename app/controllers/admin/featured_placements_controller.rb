@@ -10,7 +10,7 @@ module Admin
     def create
       firm = Firm.find(params[:firm_id])
       placement = firm.featured_placements.build(placement_params.merge(created_by: current_admin))
-      if audited("featured_placement.feature", placement) { placement.save }
+      if audited("featured_placement.feature") { placement.save }
         redirect_to admin_firm_path(firm), notice: "تم تمييز النشاط."
       else
         redirect_to admin_firm_path(firm), alert: placement.errors.full_messages.to_sentence

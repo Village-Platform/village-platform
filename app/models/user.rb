@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  # The password digest never enters a version.
+  has_audit_trail skip: %i[password_digest]
+
   has_secure_password
 
   # user        -> normal village resident

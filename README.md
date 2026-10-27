@@ -153,7 +153,7 @@ Open `http://localhost:3000/admin/login` and sign in with the seeded super admin
 | الإشعارات الجماعية | Send an announcement to everyone, firm admins, expiring subscribers or one category's owners |
 | الأنشطة المميزة | Pin firms to the app's featured strip for a period |
 | الإعدادات | Support phone, minimum/latest Android version, in-app banner |
-| سجل العمليات | Every admin write from the dashboard or the API: who, what, before/after, when |
+| سجل العمليات | The audit trail (PaperTrail versions): who changed what, before/after, when, from the dashboard, the app or the system |
 
 Categories can have sub-categories (one level) and extra fields that firms in them fill in.
 

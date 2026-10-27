@@ -14,13 +14,13 @@ module Articles
 
     def call
       cover = ingest_cover
-      Article.transaction do
-        @author.lock!
-        raise Media::LimitReached unless @author.entitlements.within?(:max_articles_per_month, @author.articles_this_month)
+      Audit.operation("article.create", actor: @author) do
+        Article.transaction do
+          @author.lock!
+          raise Media::LimitReached unless @author.entitlements.within?(:max_articles_per_month, @author.articles_this_month)
 
-        article = @author.articles.create!(@attributes.merge(review_state: :pending, published_at: nil, cover_image: cover))
-        Audit.record(actor: @author, action: "article.create", subject: article)
-        article
+          @author.articles.create!(@attributes.merge(review_state: :pending, published_at: nil, cover_image: cover))
+        end
       end
     rescue Media::LimitReached, ActiveRecord::RecordInvalid
       cover&.purge

@@ -1,0 +1,9 @@
+<% actor = actors[version.whodunnit] %>
+<tr>
+  <td><%= fmt_time(version.created_at) %></td>
+  <td><%= actor ? link_to(actor.name, admin_user_path(actor)) : "النظام" %></td>
+  <td><%= badge(audit_action_label(version)) %></td>
+  <td><span class="cell-main"><%= version.item_label %></span><span class="cell-sub"><%= audit_subject_label(version.item_type) %> #<%= version.item_id %></span></td>
+  <td><%= audit_changes(version) %></td>
+  <td><%= audit_source_label(version.source) %></td>
+</tr>
