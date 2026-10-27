@@ -4,13 +4,14 @@ module Admin
   class BaseController < ActionController::Base
     include Pagination
     include Auditing
+    include AdminCsvExport
 
     layout "admin"
 
     around_action :use_arabic
     before_action :require_admin
 
-    helper_method :current_admin
+    helper_method :current_admin, :filter_params
 
     # requires_permission "firms.moderate"            — every action
     # requires_permission :super_admin, only: :update — super admins only
@@ -23,6 +24,11 @@ module Admin
     end
 
     private
+
+    # Current index filters, for links (pagination, tabs, export) — see Admin::UiHelper::FILTER_KEYS.
+    def filter_params(**overrides)
+      request.query_parameters.symbolize_keys.slice(*Admin::UiHelper::FILTER_KEYS).merge(overrides)
+    end
 
     def audit_source = "admin"
     def audit_actor = current_admin

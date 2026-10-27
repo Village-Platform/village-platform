@@ -14,9 +14,10 @@ module Admin
     end
 
     def resolve
-      subject = Report::SUBJECT_TYPES.values.include?(params[:subject_type]) &&
-                params[:subject_type].constantize.find(params[:subject_id])
-      raise ActiveRecord::RecordNotFound unless subject
+      klass = { "Firm" => Firm, "FirmMedium" => FirmMedium, "Article" => Article }.fetch(params[:subject_type]) do
+        raise ActiveRecord::RecordNotFound
+      end
+      subject = klass.find(params[:subject_id])
 
       Reports::Resolve.call(subject:, admin: current_admin, outcome: params[:outcome] == "dismissed" ? :dismissed : :resolved,
                             action: params[:subject_action], note: params[:note])

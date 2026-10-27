@@ -2,6 +2,11 @@ module Admin
   class UsersController < BaseController
     requires_permission "users.manage"
 
+    CSV_COLUMNS = {
+      "id" => :id.to_proc, "الاسم" => :name.to_proc, "الهاتف" => :phone.to_proc, "البريد" => :email.to_proc,
+      "الصلاحية" => :role.to_proc, "تاريخ التسجيل" => :created_at.to_proc
+    }.freeze
+
     before_action :set_user, only: %i[show edit update]
     # Staff with users.manage must not take over an admin account (reset its password) or
     # create one: that would turn a limited permission into full control.
@@ -14,6 +19,8 @@ module Admin
       if params[:q].present?
         scope = scope.where("users.name ILIKE :q OR users.phone ILIKE :q OR users.email ILIKE :q", q: like(params[:q]))
       end
+      return export_csv(scope, "users", CSV_COLUMNS) if request.format.csv?
+
       @users, @meta = paginate(scope)
     end
 

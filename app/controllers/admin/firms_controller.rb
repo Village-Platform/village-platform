@@ -2,6 +2,13 @@ module Admin
   class FirmsController < BaseController
     requires_permission "firms.moderate"
 
+    CSV_COLUMNS = {
+      "id" => :id.to_proc, "الاسم" => :name.to_proc, "التصنيف" => ->(f) { f.category.name },
+      "المالك" => ->(f) { f.owner.name }, "هاتف المالك" => ->(f) { f.owner.phone }, "الحالة" => :status.to_proc,
+      "الهاتف" => :phone.to_proc, "واتساب" => :whatsapp.to_proc, "العنوان" => :address.to_proc,
+      "تاريخ الإضافة" => :created_at.to_proc
+    }.freeze
+
     before_action :set_firm, only: %i[show edit update destroy approve suspend]
     before_action :load_form_options, only: %i[new create edit update]
 
@@ -10,6 +17,8 @@ module Admin
       scope = scope.where(status: params[:status]) if Firm.statuses.key?(params[:status])
       scope = scope.where(category_id: params[:category_id]) if params[:category_id].present?
       scope = scope.where("firms.name ILIKE ?", like(params[:q])) if params[:q].present?
+
+      return export_csv(scope, "firms", CSV_COLUMNS) if request.format.csv?
 
       @categories = Category.ordered
       @firms, @meta = paginate(scope)

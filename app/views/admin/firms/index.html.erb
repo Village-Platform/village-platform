@@ -15,6 +15,9 @@
           { include_blank: "كل التصنيفات" }, { class: "w-40", "aria-label": "التصنيف" } %>
     <%= button_tag type: "submit", class: "btn btn-ghost", name: nil, title: "تصفية" do %><%= icon(:search, size: 16) %><% end %>
   <% end %>
+  <% if current_admin.can?("export.run") %>
+    <%= link_to "تصدير CSV", url_for(filter_params(page: nil, format: :csv)), class: "btn btn-ghost" %>
+  <% end %>
 </div>
 
 <div class="tbl">

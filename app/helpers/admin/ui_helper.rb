@@ -166,11 +166,8 @@ module Admin
     # link on the page to another domain — the operator lands on a genuine page and the first
     # thing they click takes them off-site — and a `?controller=`/`?action=` pair reroutes
     # them or raises UrlGenerationError.
+    # (filter_params itself lives in Admin::BaseController, which CSV exports also use.)
     FILTER_KEYS = %i[ q status role kind review_state category_id payment_method subject_type actor_id page per_page ].freeze
-
-    def filter_params(**overrides)
-      request.query_parameters.symbolize_keys.slice(*FILTER_KEYS).merge(overrides)
-    end
 
     private
 

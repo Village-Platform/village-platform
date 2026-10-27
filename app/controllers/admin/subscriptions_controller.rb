@@ -5,6 +5,14 @@ module Admin
 
     include ActiveStorage::SetCurrent # Disk service URLs for the screenshot redirect
 
+    CSV_COLUMNS = {
+      "id" => :id.to_proc, "الاسم" => ->(s) { s.user.name }, "الهاتف" => ->(s) { s.user.phone },
+      "الباقة" => ->(s) { s.subscription_plan.name }, "المبلغ (ج.م)" => ->(s) { s.amount_cents / 100.0 },
+      "طريقة الدفع" => :payment_method.to_proc, "رقم العملية" => :transaction_reference.to_proc,
+      "رقم المحوِّل" => :payer_phone.to_proc, "الحالة" => :status.to_proc, "الوضع" => :state.to_proc,
+      "يبدأ" => :starts_at.to_proc, "ينتهي" => :ends_at.to_proc, "تاريخ الطلب" => :created_at.to_proc
+    }.freeze
+
     before_action :set_subscription, only: %i[show screenshot approve reject]
 
     def index
@@ -19,6 +27,8 @@ module Admin
           q: like(params[:q])
         )
       end
+
+      return export_csv(scope, "subscriptions", CSV_COLUMNS) if request.format.csv?
 
       @subscriptions, @meta = paginate(scope)
     end
