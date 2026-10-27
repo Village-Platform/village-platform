@@ -41,33 +41,33 @@
 /* The :not() guard is load-bearing: without it an explicit light choice loses to a dark OS. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --page: 8 40 28;
-    --surface: 13 52 37;
-    --surface2: 18 64 47;
-    --ink: 244 236 217;
-    --muted: 157 181 168;
-    --line: 29 77 58;
-    --gold: 217 164 88;
-    --goldink: 232 192 126;
-    --brand: 244 236 217;
-    --ok: 95 207 147;
-    --bad: 255 141 122;
+    --page: 13 17 23;
+    --surface: 22 27 34;
+    --surface2: 33 38 45;
+    --ink: 230 237 243;
+    --muted: 145 152 161;
+    --line: 48 54 61;
+    --gold: 210 153 34;
+    --goldink: 227 179 65;
+    --brand: 47 129 247;
+    --ok: 63 185 80;
+    --bad: 248 81 73;
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --page: 8 40 28;
-  --surface: 13 52 37;
-  --surface2: 18 64 47;
-  --ink: 244 236 217;
-  --muted: 157 181 168;
-  --line: 29 77 58;
-  --gold: 217 164 88;
-  --goldink: 232 192 126;
-  --brand: 244 236 217;
-  --ok: 95 207 147;
-  --bad: 255 141 122;
+  --page: 13 17 23;
+  --surface: 22 27 34;
+  --surface2: 33 38 45;
+  --ink: 230 237 243;
+  --muted: 145 152 161;
+  --line: 48 54 61;
+  --gold: 210 153 34;
+  --goldink: 227 179 65;
+  --brand: 47 129 247;
+  --ok: 63 185 80;
+  --bad: 248 81 73;
   color-scheme: dark;
 }
 
@@ -131,9 +131,37 @@
   .topbar .page-title h1 { @apply text-sm font-bold truncate; }
   .topbar .page-title p { @apply text-[10px] text-muted m-0 truncate; }
   .topbar-search {
-    @apply hidden md:block w-52 bg-surface2 border border-line rounded-lg
-           px-3 py-1.5 text-[11px] text-muted;
+    @apply relative hidden md:block w-64;
   }
+  .admin-search-input {
+    @apply w-full bg-surface2 border border-line rounded-lg px-3 py-2
+           text-xs text-ink placeholder:text-muted focus:border-brand;
+  }
+  .admin-search-results {
+    @apply absolute top-full end-0 z-50 mt-2 w-[min(28rem,90vw)] max-h-[70vh]
+           overflow-y-auto rounded-xl border border-line bg-surface shadow-xl p-1;
+  }
+  .admin-search-results[hidden] { display: none; }
+  .admin-search-result {
+    @apply flex items-start gap-3 rounded-lg px-3 py-2 text-ink no-underline;
+  }
+  .admin-search-result:hover,
+  .admin-search-result[aria-selected="true"] { @apply bg-surface2; }
+  .admin-search-kind {
+    @apply shrink-0 rounded-md bg-brand/10 px-2 py-1 text-[10px] text-brand;
+  }
+  .admin-search-copy { @apply min-w-0 flex-1; }
+  .admin-search-title { @apply block truncate text-xs font-semibold text-ink; }
+  .admin-search-subtitle { @apply mt-0.5 block truncate text-[10px] text-muted; }
+  .admin-search-status { @apply px-3 py-2 text-[11px] text-muted; }
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
+  .dark-callout { @apply border-s-2 border-brand ps-3; }
+  .searchable-field { @apply relative min-w-0; }
+  .searchable-field .admin-search-results { @apply w-full; }
+
   .bell {
     @apply relative w-8 h-8 rounded-lg bg-surface2 border border-line
            grid place-items-center text-muted;

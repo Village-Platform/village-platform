@@ -12,7 +12,11 @@ RSpec.describe "Admin shell", type: :request do
 
   it "renders the topbar chrome" do
     get "/admin"
-    expect(response.body).to include("ابحث عن نشاط")
+    # Assert the control, not its wording: the placeholder has already changed once, when
+    # the firms-scoped box became a global search.
+    search = Nokogiri::HTML(response.body).at_css(".topbar [data-admin-search]")
+    expect(search).to be_present
+    expect(search["placeholder"]).to be_present
     expect(response.body).to include(admin_logout_path)
   end
 

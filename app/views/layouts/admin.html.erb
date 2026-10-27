@@ -56,10 +56,16 @@
           <h1><%= content_for(:title) %></h1>
           <% if content_for?(:subtitle) %><p><%= content_for(:subtitle) %></p><% end %>
         </div>
-        <%# The design's topbar search is cross-entity; only firm search exists, so it says so. %>
-        <%= form_with url: admin_firms_path, method: :get, class: "topbar-search" do |f| %>
-          <%= f.search_field :q, placeholder: "ابحث عن نشاط…", "aria-label": "ابحث عن نشاط" %>
-        <% end %>
+        <div class="topbar-search" data-admin-search-widget>
+          <label class="sr-only" for="admin-global-search">بحث في النظام</label>
+          <input id="admin-global-search" class="admin-search-input" type="search"
+                 placeholder="ابحث في الأنشطة والمستخدمين والاشتراكات…"
+                 autocomplete="off" role="combobox" aria-autocomplete="list"
+                 aria-expanded="false" aria-controls="admin-global-search-results"
+                 data-admin-search data-search-url="<%= admin_search_path %>" data-search-scope="all">
+          <ul id="admin-global-search-results" class="admin-search-results" role="listbox" hidden></ul>
+          <span class="sr-only" role="status" aria-live="polite" data-search-status></span>
+        </div>
         <%= theme_toggle %>
       </header>
 
@@ -85,5 +91,6 @@
       if (event.target.closest("[data-nav-close]")) document.body.classList.remove("nav-open");
     });
   </script>
+  <%= javascript_include_tag "admin_search", defer: true %>
 </body>
 </html>

@@ -7,7 +7,14 @@
   <div class="flex-1"></div>
   <%= form_with url: admin_firms_path, method: :get, class: "flex flex-wrap gap-2 items-center" do |f| %>
     <%= f.hidden_field :status, value: params[:status] %>
-    <%= f.search_field :q, value: params[:q], placeholder: "اسم النشاط", class: "w-44", "aria-label": "بحث" %>
+    <div class="searchable-field">
+      <%= f.search_field :q, value: params[:q], placeholder: "اسم النشاط", class: "w-44",
+            "aria-label": "بحث", role: "combobox", "aria-autocomplete": "list",
+            "aria-expanded": "false", "aria-controls": "firms-search-results",
+            data: { admin_search: true, search_url: admin_search_path, search_scope: "firms" } %>
+      <ul id="firms-search-results" class="admin-search-results" role="listbox" hidden></ul>
+      <span class="sr-only" role="status" aria-live="polite" data-search-status></span>
+    </div>
     <%= f.select :category_id,
           options_from_collection_for_select(@categories, :id, :name, params[:category_id]),
           { include_blank: "كل التصنيفات" }, { class: "w-40", "aria-label": "التصنيف" } %>
