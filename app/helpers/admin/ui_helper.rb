@@ -31,9 +31,14 @@ module Admin
       badge(value ? "نعم" : "لا", TONES[!!value])
     end
 
-    # Read-only inline toggle, for a boolean a row only reports.
-    def switch(value)
-      tag.span(tag.span("", class: "switch-knob"), class: [ "switch", ("switch-on" if value) ])
+    # Read-only inline toggle, for a boolean a row only reports. The state is carried by
+    # colour and knob position, so it needs a name of its own: this replaced a cell that
+    # used to read "نعم"/"لا" out loud.
+    def switch(value, label: nil)
+      tag.span(tag.span("", class: "switch-knob"),
+               class: [ "switch", ("switch-on" if value) ],
+               role: "img",
+               "aria-label": label || (value ? "نعم" : "لا"))
     end
 
     def egp(cents)
@@ -52,14 +57,17 @@ module Admin
 
     # The design filters by enum with a tab row rather than a <select>. Other active
     # filters ride along, so switching status does not silently drop a search.
+    # `aria-current` replaces the selected-option announcement the <select> used to give.
     def filter_tabs(param, options, all_label: "الكل")
       current = params[param].presence
       rows = [ [ all_label, nil ] ] + options
 
-      tag.div(class: "tabs") do
+      tag.nav(class: "tabs", "aria-label": "تصفية") do
         safe_join(rows.map { |label, value|
+          active = current == value
           link_to label, url_for(filter_params(param => value, page: nil)),
-                  class: [ "tab", ("tab-on" if current == value) ]
+                  class: [ "tab", ("tab-on" if active) ],
+                  "aria-current": (active ? "page" : nil)
         })
       end
     end
@@ -98,10 +106,15 @@ module Admin
 
     def theme_toggle
       current = cookies[:admin_theme]
-      buttons = [ [ "light", "☀", "الوضع النهاري" ], [ "dark", "☾", "الوضع الليلي" ] ].map do |value, glyph, label|
-        button_to glyph, admin_theme_path, method: :patch, params: { theme: value },
+      # Inline SVG rather than ☀/☾: Cairo has neither glyph, so they fall back to whatever
+      # symbol font the OS happens to carry — tofu on a bare Linux box — and they cannot
+      # take currentColor the way the rest of the icon set does.
+      buttons = [ [ "light", :sun, "الوضع النهاري" ], [ "dark", :moon, "الوضع الليلي" ] ].map do |value, name, label|
+        button_to admin_theme_path, method: :patch, params: { theme: value },
                   class: [ "seg-btn", ("seg-on" if current == value) ], title: label,
-                  aria: { label: label }
+                  aria: { label: label } do
+          icon(name, size: 14)
+        end
       end
       tag.div(safe_join(buttons), class: "seg")
     end
@@ -125,9 +138,17 @@ module Admin
       end
     end
 
-    # Keeps current filters when building links (pagination, etc.)
+    # Keeps current filters when building links (pagination, tab rows).
+    #
+    # Only the keys the admin screens actually filter on are carried forward. Handing
+    # `request.query_parameters` straight to `url_for` lets a crafted `?host=` rewrite every
+    # link on the page to another domain — the operator lands on a genuine page and the first
+    # thing they click takes them off-site — and a `?controller=`/`?action=` pair reroutes
+    # them or raises UrlGenerationError.
+    FILTER_KEYS = %i[ q status role kind category_id payment_method page per_page ].freeze
+
     def filter_params(**overrides)
-      request.query_parameters.symbolize_keys.merge(overrides)
+      request.query_parameters.symbolize_keys.slice(*FILTER_KEYS).merge(overrides)
     end
 
     private

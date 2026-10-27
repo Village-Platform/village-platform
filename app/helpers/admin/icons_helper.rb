@@ -14,6 +14,8 @@ module Admin
       search: '<circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/>',
       plus: '<path d="M12 5v14M5 12h14"/>',
       clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+      sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/>',
+      moon: '<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>',
       check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
       close: '<path d="M6 6l12 12M18 6L6 18"/>',
       bell: '<path d="M6 16v-5a6 6 0 1 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>',

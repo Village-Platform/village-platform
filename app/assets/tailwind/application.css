@@ -333,7 +333,15 @@
 :root[data-theme="dark"] .brand-mark .on-light { display: none; }
 :root[data-theme="dark"] .brand-mark .on-dark { display: block; }
 
+/* The drawer and the button that opens it MUST share this breakpoint. Binding the button to
+   a Tailwind variant (md: = 768px) while the drawer moved off-canvas at 960px left a
+   768-960px band — an iPad in portrait, a half-screen laptop — with the sidebar hidden and
+   no control to bring it back, so there was no navigation and no logout. */
+.nav-toggle { display: none; }
+
 @media (max-width: 960px) {
+  .nav-toggle { display: inline-grid; }
+
   .sidebar {
     position: fixed;
     inset-block: 0;

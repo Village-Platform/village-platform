@@ -14,7 +14,7 @@ module Admin
     def create
       @category = Category.new(category_params)
       if @category.save
-        redirect_to admin_categories_path, notice: "تم إضافة القسم."
+        redirect_to admin_categories_path, notice: "تم إضافة التصنيف."
       else
         render :new, status: :unprocessable_content
       end

@@ -5,7 +5,7 @@
   <% end %>
   <% unless @firm.suspended? %>
     <%= button_to suspend_admin_firm_path(@firm), method: :patch, class: "btn btn-ghost",
-          form: { data: { confirm: "إيقاف النشاط وإخفاؤها من التطبيق؟" } } do %><%= icon(:close, size: 16) %> إيقاف<% end %>
+          form: { data: { confirm: "إيقاف النشاط وإخفاؤه من التطبيق؟" } } do %><%= icon(:close, size: 16) %> إيقاف<% end %>
   <% end %>
   <%= link_to edit_admin_firm_path(@firm), class: "btn btn-ghost" do %><%= icon(:edit, size: 16) %> تعديل<% end %>
   <%= button_to admin_firm_path(@firm), method: :delete, class: "btn btn-danger",
@@ -14,7 +14,7 @@
 
 <section class="card">
   <dl class="details">
-    <dt>ظاهرة للجمهور</dt>
+    <dt>ظاهر للجمهور</dt>
     <dd>
       <%= yes_no_badge(@visible) %>
       <% unless @visible %><small>تظهر فقط إذا كانت مفعّلة واشتراك المالك ساري.</small><% end %>
