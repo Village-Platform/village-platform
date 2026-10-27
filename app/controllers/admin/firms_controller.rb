@@ -25,7 +25,7 @@ module Admin
     def create
       @firm = Firm.new(firm_params)
       if @firm.save
-        redirect_to admin_firm_path(@firm), notice: "تم إضافة المنشأة."
+        redirect_to admin_firm_path(@firm), notice: "تم إضافة النشاط."
       else
         render :new, status: :unprocessable_content
       end
@@ -47,12 +47,12 @@ module Admin
 
     def approve
       @firm.update!(status: :active)
-      redirect_back_or_to admin_firm_path(@firm), notice: "تم اعتماد المنشأة."
+      redirect_back_or_to admin_firm_path(@firm), notice: "تم اعتماد النشاط."
     end
 
     def suspend
       @firm.update!(status: :suspended)
-      redirect_back_or_to admin_firm_path(@firm), notice: "تم إيقاف المنشأة."
+      redirect_back_or_to admin_firm_path(@firm), notice: "تم إيقاف النشاط."
     end
 
     private

@@ -1,7 +1,7 @@
-<%= page_header "الأقسام", :categories, subtitle: "تظهر في الصفحة الرئيسية للتطبيق بنفس الترتيب" do %>
-  <%= link_to new_admin_category_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إضافة قسم<% end %>
+<%= page_header "التصنيفات", subtitle: "تظهر في الصفحة الرئيسية للتطبيق بنفس الترتيب" do %>
+  <%= link_to new_admin_category_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إضافة تصنيف<% end %>
 <% end %>
-<div class="table-wrap">
+<div class="tbl">
   <% if @categories.any? %>
     <table>
       <thead><tr><th>الترتيب</th><th>الأيقونة</th><th>القسم</th><th>عدد المنشآت</th><th>مفعّل</th><th></th></tr></thead>
@@ -13,17 +13,17 @@
             <td><%= link_to category.name, admin_firms_path(category_id: category.id), class: "cell-main" %>
               <% if category.description.present? %><span class="cell-sub"><%= truncate(category.description, length: 60) %></span><% end %></td>
             <td><%= @firm_counts.fetch(category.id, 0) %></td>
-            <td><%= yes_no_badge(category.active) %></td>
+            <td><%= switch(category.active) %></td>
             <td class="actions">
               <%= link_to edit_admin_category_path(category), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 16) %><% end %>
               <%= button_to admin_category_path(category), method: :delete, class: "btn btn-ghost btn-sm", title: "حذف",
-                    form: { data: { confirm: "حذف القسم؟" } } do %><%= icon(:trash, size: 16) %><% end %>
+                    form: { data: { confirm: "حذف التصنيف؟" } } do %><%= icon(:trash, size: 16) %><% end %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
   <% else %>
-    <%= empty_state("لا توجد أقسام بعد.") %>
+    <%= empty_state("لا توجد تصنيفات بعد.") %>
   <% end %>
 </div>

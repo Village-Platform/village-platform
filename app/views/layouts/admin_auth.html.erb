@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html <%= tag.attributes({ lang: "ar", dir: "rtl" }.merge(theme_attribute)) %>>
 <head>
   <title>تسجيل الدخول · <%= t("admin.app_name") %></title>
   <%= render "admin/shared/head" %>

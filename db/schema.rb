@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_25_120001) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_27_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+  enable_extension "pg_trgm"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -50,6 +51,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120001) do
     t.datetime "published_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index "lower((title)::text) gin_trgm_ops", name: "index_articles_on_title_trigram", using: :gin
     t.index ["author_id"], name: "index_articles_on_author_id"
     t.index ["kind", "published_at"], name: "index_articles_on_kind_and_published_at"
     t.index ["published_at"], name: "index_articles_on_published_at"
@@ -63,6 +65,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120001) do
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index "lower((name)::text) gin_trgm_ops", name: "index_categories_on_name_trigram", using: :gin
     t.index ["active", "position"], name: "index_categories_on_active_and_position"
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
@@ -81,6 +84,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120001) do
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index "lower((address)::text) gin_trgm_ops", name: "index_firms_on_address_trigram", using: :gin
+    t.index "lower((name)::text) gin_trgm_ops", name: "index_firms_on_name_trigram", using: :gin
+    t.index "lower((phone)::text) gin_trgm_ops", name: "index_firms_on_phone_trigram", using: :gin
     t.index ["category_id", "status"], name: "index_firms_on_category_id_and_status"
     t.index ["category_id"], name: "index_firms_on_category_id"
     t.index ["owner_id"], name: "index_firms_on_owner_id"
@@ -119,6 +125,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120001) do
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index "lower((name)::text) gin_trgm_ops", name: "index_subscription_plans_on_name_trigram", using: :gin
     t.index ["name"], name: "index_subscription_plans_on_name", unique: true
     t.check_constraint "duration_days > 0", name: "subscription_plans_duration_positive"
     t.check_constraint "max_firms > 0", name: "subscription_plans_max_firms_positive"
@@ -141,6 +148,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120001) do
     t.text "rejection_reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index "lower((payer_phone)::text) gin_trgm_ops", name: "index_subscriptions_on_payer_phone_trigram", using: :gin
+    t.index "lower((transaction_reference)::text) gin_trgm_ops", name: "index_subscriptions_on_transaction_reference_trigram", using: :gin
     t.index ["payment_method", "transaction_reference"], name: "index_subscriptions_on_payment_reference", unique: true
     t.index ["reviewed_by_id"], name: "index_subscriptions_on_reviewed_by_id"
     t.index ["status", "ends_at"], name: "index_subscriptions_on_status_and_ends_at"
@@ -158,6 +167,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120001) do
     t.integer "role", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index "lower((email)::text) gin_trgm_ops", name: "index_users_on_email_trigram", using: :gin
+    t.index "lower((name)::text) gin_trgm_ops", name: "index_users_on_name_trigram", using: :gin
+    t.index "lower((phone)::text) gin_trgm_ops", name: "index_users_on_phone_trigram", using: :gin
     t.index ["email"], name: "index_users_on_email", unique: true, where: "(email IS NOT NULL)"
     t.index ["phone"], name: "index_users_on_phone", unique: true
     t.index ["role"], name: "index_users_on_role"

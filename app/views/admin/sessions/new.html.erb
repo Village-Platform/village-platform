@@ -1,7 +1,7 @@
 <div class="auth">
   <section class="auth-panel">
     <div class="auth-card">
-      <img class="logo" src="/brand/web/logo.png" alt="أجهور الكبرى — تطبيق القرية" width="150" height="150">
+      <div class="logo"><%= brand_logo %></div>
       <h1>لوحة تحكم التطبيق</h1>
       <p class="subtitle"><%= t("admin.sessions.subtitle") %></p>
 
@@ -19,7 +19,7 @@
           <%= f.label :password, t("admin.sessions.password") %>
           <%= f.password_field :password, required: true, autocomplete: "current-password" %>
         </div>
-        <%= f.button t("admin.sessions.submit"), type: "submit", class: "btn btn-gold" %>
+        <%= f.button t("admin.sessions.submit"), type: "submit", class: "btn" %>
       <% end %>
 
       <p class="auth-foot">مخصص لمديري النظام فقط</p>
@@ -28,6 +28,6 @@
 
   <aside class="auth-visual" aria-hidden="true">
     <h2>كل خدمات قريتك<br><span>في مكان واحد</span></h2>
-    <p>أدر الأقسام والمنشآت والأخبار واشتراكات أصحاب المنشآت من مكان واحد.</p>
+    <p>أدر التصنيفات والأنشطة والأخبار واشتراكات أصحاب الأنشطة من مكان واحد.</p>
   </aside>
 </div>

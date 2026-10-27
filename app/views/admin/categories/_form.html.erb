@@ -1,7 +1,7 @@
 <%= form_with model: [:admin, category], class: "form card" do |f| %>
   <%= render "admin/shared/errors", record: category %>
   <div class="form-grid">
-  <div class="field full"><%= f.label :name, "اسم القسم" %><%= f.text_field :name, required: true %></div>
+  <div class="field full"><%= f.label :name, "اسم التصنيف" %><%= f.text_field :name, required: true %></div>
   <div class="field full"><%= f.label :description, "الوصف" %><%= f.text_area :description, rows: 3 %></div>
   <div class="field">
     <%= f.label :icon_image, "صورة الأيقونة" %>

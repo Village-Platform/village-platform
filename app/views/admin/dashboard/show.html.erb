@@ -1,48 +1,63 @@
-<% content_for :title, "الرئيسية" %>
-
-<section class="hero">
-  <div>
-    <h1>أهلاً <%= current_admin.name %></h1>
-    <p>كل خدمات أجهور الكبرى في مكان واحد — راجع الطلبات الجديدة وتابع المنشآت والأخبار.</p>
-    <div class="hero-actions">
-      <%= link_to admin_subscriptions_path(status: "pending"), class: "btn btn-gold" do %>
-        <%= icon(:subscriptions) %> مراجعة الاشتراكات
-      <% end %>
-      <%= link_to new_admin_article_path, class: "btn btn-light" do %>
-        <%= icon(:plus) %> خبر جديد
-      <% end %>
-      <%= link_to new_admin_firm_path, class: "btn btn-light" do %>
-        <%= icon(:plus) %> منشأة جديدة
-      <% end %>
-    </div>
-  </div>
-</section>
+<% content_for :title, "نظرة عامة" %>
+<% content_for :subtitle, l(Date.current, format: :long) %>
 
 <div class="stats">
-  <%= link_to admin_subscriptions_path(status: "pending"), class: "stat attention" do %>
-    <span class="stat-icon"><%= icon(:clock, size: 22) %></span>
-    <span><span class="value"><%= @stats[:pending_subscriptions] %></span><br><span class="label">اشتراكات قيد المراجعة</span></span>
+  <%= link_to admin_users_path, class: "stat stat-hi" do %>
+    <span class="label">إجمالي الأهالي</span>
+    <span class="value"><%= @stats[:users] %></span>
+  <% end %>
+  <%= link_to admin_firms_path, class: "stat" do %>
+    <span class="label">الأنشطة المسجلة</span>
+    <span class="value"><%= @stats[:firms] %></span>
+    <% if @stats[:pending_firms].positive? %>
+      <span class="sub"><%= @stats[:pending_firms] %> بانتظار الموافقة</span>
+    <% end %>
   <% end %>
   <%= link_to admin_subscriptions_path(status: "active"), class: "stat" do %>
-    <span class="stat-icon"><%= icon(:subscriptions, size: 22) %></span>
-    <span><span class="value"><%= @stats[:current_subscriptions] %></span><br><span class="label">اشتراكات سارية</span></span>
-  <% end %>
-  <%= link_to admin_firms_path(status: "pending"), class: "stat attention" do %>
-    <span class="stat-icon"><%= icon(:firms, size: 22) %></span>
-    <span><span class="value"><%= @stats[:pending_firms] %></span><br><span class="label">منشآت تنتظر الاعتماد</span></span>
-  <% end %>
-  <%= link_to admin_firms_path(status: "active"), class: "stat" do %>
-    <span class="stat-icon"><%= icon(:eye, size: 22) %></span>
-    <span><span class="value"><%= @stats[:visible_firms] %></span><br><span class="label">منشآت ظاهرة للجمهور</span></span>
-  <% end %>
-  <%= link_to admin_users_path, class: "stat" do %>
-    <span class="stat-icon"><%= icon(:users, size: 22) %></span>
-    <span><span class="value"><%= @stats[:users] %></span><br><span class="label">المستخدمون</span></span>
+    <span class="label">الاشتراكات الفعالة</span>
+    <span class="value"><%= @stats[:current_subscriptions] %></span>
   <% end %>
   <%= link_to admin_articles_path, class: "stat" do %>
-    <span class="stat-icon"><%= icon(:articles, size: 22) %></span>
-    <span><span class="value"><%= @stats[:published_articles] %></span><br><span class="label">أخبار منشورة</span></span>
+    <span class="label">المقالات المنشورة</span>
+    <span class="value"><%= @stats[:published_articles] %></span>
   <% end %>
+</div>
+
+<div class="grid grid-2">
+  <section class="card">
+    <h2 class="mb-3">تحتاج إجراءك</h2>
+    <%= link_to admin_subscriptions_path(status: "pending"), class: "todo-row" do %>
+      <span class="flex-1">اشتراكات بانتظار المراجعة</span>
+      <b class="count"><%= @stats[:pending_subscriptions] %></b>
+    <% end %>
+    <%= link_to admin_firms_path(status: "pending"), class: "todo-row" do %>
+      <span class="flex-1">أنشطة بانتظار الموافقة</span>
+      <b class="count"><%= @stats[:pending_firms] %></b>
+    <% end %>
+    <%= link_to admin_subscriptions_path(status: "active"), class: "todo-row" do %>
+      <span class="flex-1">اشتراكات تنتهي هذا الأسبوع</span>
+      <b class="count"><%= @stats[:expiring_soon] %></b>
+    <% end %>
+  </section>
+
+  <section class="card">
+    <h2 class="mb-3">الأنشطة حسب التصنيف</h2>
+    <% if @firms_by_category.any? %>
+      <% busiest = @firms_by_category.first.last %>
+      <div class="bars">
+        <% @firms_by_category.each do |name, count| %>
+          <div class="bar-row">
+            <div class="bar-head"><span><%= name %></span><b><%= count %></b></div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: <%= (count * 100.0 / busiest).round %>%"></div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <%= empty_state("لا توجد أنشطة بعد") %>
+    <% end %>
+  </section>
 </div>
 
 <div class="grid grid-2">
@@ -79,14 +94,14 @@
     <% if @expiring.any? %>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>صاحب المنشأة</th><th>الباقة</th><th>ينتهي في</th><th>متبقي</th></tr></thead>
+          <thead><tr><th>صاحب النشاط</th><th>الباقة</th><th>ينتهي في</th><th>متبقي</th></tr></thead>
           <tbody>
             <% @expiring.each do |s| %>
               <tr>
                 <td><%= link_to s.user.name, admin_user_path(s.user), class: "cell-main" %></td>
                 <td><%= s.subscription_plan.name %></td>
                 <td><%= fmt_date(s.ends_at) %></td>
-                <td><%= badge("#{s.days_left} يوم", s.days_left <= 1 ? "danger" : "warning") %></td>
+                <td><%= badge("#{s.days_left} يوم", s.days_left <= 1 ? "red" : "gold") %></td>
               </tr>
             <% end %>
           </tbody>
@@ -99,13 +114,13 @@
 
   <section class="card">
     <div class="card-header">
-      <h2>منشآت تنتظر الاعتماد</h2>
+      <h2>أنشطة تنتظر الاعتماد</h2>
       <%= link_to "عرض الكل", admin_firms_path(status: "pending") %>
     </div>
     <% if @pending_firms.any? %>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>المنشأة</th><th>القسم</th><th>المالك</th><th></th></tr></thead>
+          <thead><tr><th>النشاط</th><th>التصنيف</th><th>المالك</th><th></th></tr></thead>
           <tbody>
             <% @pending_firms.each do |firm| %>
               <tr>
@@ -119,7 +134,7 @@
         </table>
       </div>
     <% else %>
-      <%= empty_state("لا توجد منشآت جديدة.") %>
+      <%= empty_state("لا توجد أنشطة جديدة.") %>
     <% end %>
   </section>
 </div>

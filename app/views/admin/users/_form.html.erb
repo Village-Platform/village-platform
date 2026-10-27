@@ -6,7 +6,7 @@
   <div class="field"><%= f.label :email, "البريد الإلكتروني" %><%= f.email_field :email %></div>
   <div class="field">
     <%= f.label :role, "الصلاحية" %><%= f.select :role, enum_options(User, :role) %>
-    <div class="hint">صاحب المنشأة يُمنح تلقائيًا عند اعتماد اشتراكه.</div>
+    <div class="hint">صاحب النشاط يُمنح تلقائيًا عند اعتماد اشتراكه.</div>
   </div>
   <div class="field">
     <%= f.label :password, "كلمة المرور" %>
