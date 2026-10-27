@@ -1,0 +1,50 @@
+<%= page_header "البلاغات", subtitle: "ما أبلغ عنه المستخدمون، الأكثر بلاغات أولاً" %>
+
+<%= filter_tabs :status, enum_options(Report, :status).reject { |_, value| value == "open" }, all_label: "مفتوحة" %>
+
+<% if @groups.any? %>
+  <% @groups.each do |type, id, count| %>
+    <% reports = @reports.fetch([ type, id ], []) %>
+    <% subject = reports.first&.subject %>
+    <section class="card mt">
+      <div class="card-header">
+        <h2>
+          <%= badge(audit_subject_label(type)) %>
+          <% if subject.is_a?(Firm) %>
+            <%= link_to subject.name, admin_firm_path(subject) %>
+          <% elsif subject.is_a?(Article) %>
+            <%= link_to subject.title, edit_admin_article_path(subject) %>
+          <% elsif subject.is_a?(FirmMedium) %>
+            <%= link_to "وسائط في #{subject.firm.name}", admin_firm_path(subject.firm) %>
+          <% else %>
+            #<%= id %>
+          <% end %>
+        </h2>
+        <%= badge("#{count} بلاغ", count > 2 ? "red" : "gold") %>
+      </div>
+      <ul>
+        <% reports.each do |report| %>
+          <li><%= enum_badge(Report, :reason, report.reason) %> <%= report.note %> — <small><%= report.reporter.name %>، <%= fmt_time(report.created_at) %></small></li>
+        <% end %>
+      </ul>
+      <% if @status == "open" && subject %>
+        <%= form_with url: resolve_admin_reports_path, method: :patch, class: "flex flex-wrap gap-2 items-center mt" do |f| %>
+          <%= f.hidden_field :subject_type, value: type %>
+          <%= f.hidden_field :subject_id, value: id %>
+          <%= f.select :subject_action, options_for_select(
+                [ [ "بدون إجراء", "" ] ] + {
+                  "Firm" => [ [ "إيقاف النشاط", "suspend_firm" ] ],
+                  "FirmMedium" => [ [ "حذف الملف", "remove_medium" ] ],
+                  "Article" => [ [ "إعادة المقال للمراجعة", "unpublish_article" ] ]
+                }.fetch(type, [])), {}, { class: "w-44", "aria-label": "الإجراء" } %>
+          <%= f.text_field :note, placeholder: "ملاحظة", maxlength: 300, class: "w-52", "aria-label": "ملاحظة" %>
+          <%= f.button "معالجة", name: "outcome", value: "resolved", class: "btn btn-gold" %>
+          <%= f.button "تجاهل", name: "outcome", value: "dismissed", class: "btn btn-ghost" %>
+        <% end %>
+      <% end %>
+    </section>
+  <% end %>
+<% else %>
+  <%= empty_state("لا توجد بلاغات.") %>
+<% end %>
+<%= render "admin/shared/pagination", meta: @meta %>

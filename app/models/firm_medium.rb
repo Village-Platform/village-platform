@@ -4,6 +4,8 @@ class FirmMedium < ApplicationRecord
   enum :kind, { image: 0, video: 1 }, validate: true
 
   belongs_to :firm, inverse_of: :media
+  # Reports point at nothing once their subject is gone.
+  has_many :reports, as: :subject, dependent: :delete_all
 
   # Video goes to object storage when MEDIA_STORAGE_SERVICE is set (see MediaProfile).
   has_one_attached :file

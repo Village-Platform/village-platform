@@ -4,7 +4,7 @@ module Admin
     TONES = {
       "active" => "green", "current" => "green", "super_admin" => "green", true => "green",
       "pending" => "gold", "scheduled" => "gold", "firm_admin" => "gold", "staff" => "gold", "announcement" => "gold",
-      "rejected" => "red", "suspended" => "red", "approved" => "green",
+      "rejected" => "red", "suspended" => "red", "approved" => "green", "open" => "gold", "resolved" => "green",
       "expired" => "gray", "user" => "gray", "news" => "gray", "article" => "gray", false => "gray"
     }.freeze
 

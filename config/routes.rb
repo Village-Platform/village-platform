@@ -49,6 +49,9 @@ Rails.application.routes.draw do
       resource :permissions, only: :update, controller: "staff_permissions"
     end
     resources :audit_events, only: :index, path: "audit"
+    resources :reports, only: :index do
+      patch :resolve, on: :collection
+    end
   end
 
   namespace :api do
@@ -70,6 +73,7 @@ Rails.application.routes.draw do
 
       get "payment_methods", to: "payment_methods#index"
       get "media_profiles", to: "media_profiles#index"
+      resources :reports, only: :create
       resources :direct_uploads, only: :create
       resources :subscription_plans
       resources :subscriptions, only: %i[index show create] do

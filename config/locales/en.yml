@@ -20,6 +20,7 @@ en:
       direct_upload_unsupported: "Direct upload is not available; send the file with the request."
       invalid_blob: "The uploaded file is invalid or expired; upload it again."
       media_limit_reached: "You have reached the limit of your plan."
+      too_many_requests: "Too many requests, try again later."
   notifications:
     subscription_approved:
       title: "Subscription approved"

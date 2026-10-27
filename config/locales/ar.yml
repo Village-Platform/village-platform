@@ -20,6 +20,7 @@ ar:
       direct_upload_unsupported: "الرفع المباشر غير متاح، أرسل الملف مع الطلب."
       invalid_blob: "الملف المرفوع غير صالح أو انتهت صلاحيته، أعد رفعه."
       media_limit_reached: "وصلت إلى الحد الأقصى المسموح به في باقتك."
+      too_many_requests: "طلبات كثيرة، حاول لاحقًا."
   notifications:
     subscription_approved:
       title: "تم تفعيل اشتراكك"
@@ -102,6 +103,17 @@ ar:
         approved: "معتمد"
         pending: "بانتظار المراجعة"
         rejected: "مرفوض"
+    report:
+      reason:
+        wrong_info: "معلومات خاطئة"
+        inappropriate: "محتوى غير لائق"
+        spam: "إزعاج أو إعلان"
+        closed: "مغلق نهائيًا"
+        other: "أخرى"
+      status:
+        open: "مفتوح"
+        resolved: "تمت المعالجة"
+        dismissed: "تم التجاهل"
     subscription:
       status:
         pending: "قيد المراجعة"

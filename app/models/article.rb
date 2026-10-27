@@ -10,6 +10,8 @@ class Article < ApplicationRecord
   belongs_to :author, class_name: "User", inverse_of: :articles
   belongs_to :firm, optional: true
   belongs_to :reviewed_by, class_name: "User", optional: true
+  # Reports point at nothing once their subject is gone.
+  has_many :reports, as: :subject, dependent: :delete_all
 
   has_one_attached :cover_image
 

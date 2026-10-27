@@ -9,6 +9,8 @@ class Firm < ApplicationRecord
   belongs_to :owner, class_name: "User", inverse_of: :firms
   # Media has no meaning without its firm, so it is the one association that cascades.
   has_many :media, -> { ordered }, class_name: "FirmMedium", inverse_of: :firm, dependent: :destroy
+  # Reports point at nothing once their subject is gone.
+  has_many :reports, as: :subject, dependent: :delete_all
 
   scope :search, ->(term) { where("firms.name ILIKE ?", "%#{sanitize_sql_like(term)}%") }
 

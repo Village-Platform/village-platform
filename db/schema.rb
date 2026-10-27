@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_28_090006) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_28_090007) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -145,6 +145,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090006) do
     t.index ["user_id"], name: "index_notifications_unread_by_user", where: "(read_at IS NULL)"
   end
 
+  create_table "reports", force: :cascade do |t|
+    t.bigint "reporter_id", null: false
+    t.string "subject_type", null: false
+    t.bigint "subject_id", null: false
+    t.integer "reason", null: false
+    t.string "note", limit: 500
+    t.integer "status", default: 0, null: false
+    t.bigint "resolved_by_id"
+    t.string "resolution_note", limit: 300
+    t.datetime "resolved_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reporter_id", "subject_type", "subject_id"], name: "index_reports_one_open_per_reporter", unique: true, where: "(status = 0)"
+    t.index ["status"], name: "index_reports_open", where: "(status = 0)"
+    t.index ["subject_type", "subject_id", "status"], name: "index_reports_on_subject_type_and_subject_id_and_status"
+  end
+
   create_table "staff_permissions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "permission", null: false
@@ -241,6 +258,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090006) do
   add_foreign_key "firms", "categories"
   add_foreign_key "firms", "users", column: "owner_id"
   add_foreign_key "notifications", "users"
+  add_foreign_key "reports", "users", column: "reporter_id"
+  add_foreign_key "reports", "users", column: "resolved_by_id"
   add_foreign_key "staff_permissions", "users"
   add_foreign_key "staff_permissions", "users", column: "granted_by_id"
   add_foreign_key "subscriptions", "subscription_plans"
