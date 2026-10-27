@@ -3,6 +3,7 @@ module Admin
     def show
       @stats = {
         pending_subscriptions: Subscription.pending.count,
+        stale_subscriptions: Subscription.pending.where(created_at: ...24.hours.ago).count,
         current_subscriptions: Subscription.current.count,
         expiring_soon: expiring.count,
         pending_firms: Firm.pending.count,

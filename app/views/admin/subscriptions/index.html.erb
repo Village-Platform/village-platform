@@ -32,7 +32,13 @@
             <td class="ltr"><%= s.transaction_reference %></td>
             <td><%= enum_badge(Subscription, :status, s.status) %></td>
             <td><%= enum_badge(Subscription, :state, s.state) %></td>
-            <td><%= fmt_date(s.created_at) %></td>
+            <td>
+              <%= fmt_date(s.created_at) %>
+              <% if s.pending? %>
+                <% hours = ((Time.current - s.created_at) / 1.hour).floor %>
+                <span class="cell-sub"><%= badge("منذ #{hours} ساعة", hours >= 24 ? "red" : "gold") %></span>
+              <% end %>
+            </td>
             <td><%= link_to (s.pending? ? "مراجعة" : "عرض"), admin_subscription_path(s), class: "btn btn-sm #{s.pending? ? 'btn-gold' : 'btn-ghost'}" %></td>
           </tr>
         <% end %>

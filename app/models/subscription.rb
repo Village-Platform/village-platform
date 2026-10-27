@@ -28,6 +28,7 @@ class Subscription < ApplicationRecord
                                     uniqueness: { scope: :payment_method }
   validates :payer_phone, format: { with: /\A\+?\d{8,15}\z/ }, allow_nil: true
   validates :notes, length: { maximum: 500 }
+  validates :reconciliation_note, length: { maximum: 300 }
   validates :amount_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validate :one_pending_per_user, on: :create
   validate :plan_is_available, on: :create

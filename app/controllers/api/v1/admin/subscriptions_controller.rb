@@ -27,9 +27,10 @@ module Api
           redirect_to_payment_screenshot(@subscription)
         end
 
-        # PATCH /api/v1/admin/subscriptions/:id/approve
+        # PATCH /api/v1/admin/subscriptions/:id/approve  { "reconciliation_note": "..." } (optional)
         def approve
-          render_admin(Subscriptions::Approve.call(subscription: @subscription, reviewer: current_user))
+          render_admin(Subscriptions::Approve.call(subscription: @subscription, reviewer: current_user,
+                                                   reconciliation_note: params[:reconciliation_note]))
         end
 
         # PATCH /api/v1/admin/subscriptions/:id/reject  { "reason": "..." }

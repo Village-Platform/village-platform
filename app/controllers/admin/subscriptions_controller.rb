@@ -8,7 +8,9 @@ module Admin
     before_action :set_subscription, only: %i[show screenshot approve reject]
 
     def index
-      scope = Subscription.includes(:user, :subscription_plan).latest_first
+      scope = Subscription.includes(:user, :subscription_plan)
+      # The pending tab is a queue: oldest first, so nothing waits forever at the bottom.
+      scope = params[:status] == "pending" ? scope.order(:created_at, :id) : scope.latest_first
       scope = scope.where(status: params[:status]) if Subscription.statuses.key?(params[:status])
       scope = scope.where(payment_method: params[:payment_method]) if Subscription.payment_methods.key?(params[:payment_method])
       if params[:q].present?
@@ -21,7 +23,9 @@ module Admin
       @subscriptions, @meta = paginate(scope)
     end
 
-    def show; end
+    def show
+      @signals = Subscriptions::DuplicateSignals.call(@subscription)
+    end
 
     # Image tag source: checks admin access, then redirects to a 5-minute URL.
     def screenshot
@@ -31,7 +35,8 @@ module Admin
     end
 
     def approve
-      Subscriptions::Approve.call(subscription: @subscription, reviewer: current_admin)
+      Subscriptions::Approve.call(subscription: @subscription, reviewer: current_admin,
+                                  reconciliation_note: params[:reconciliation_note].to_s.strip)
       redirect_to admin_subscription_path(@subscription), notice: "تم اعتماد الاشتراك وإشعار صاحب النشاط."
     rescue Subscriptions::ReviewError
       redirect_to admin_subscription_path(@subscription), alert: "تمت مراجعة هذا الاشتراك بالفعل."

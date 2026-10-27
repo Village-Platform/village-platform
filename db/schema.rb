@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_28_090005) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_28_090006) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -203,6 +203,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_090005) do
     t.text "rejection_reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "reconciliation_note", limit: 300
     t.index "lower((payer_phone)::text) gin_trgm_ops", name: "index_subscriptions_on_payer_phone_trigram", using: :gin
     t.index "lower((transaction_reference)::text) gin_trgm_ops", name: "index_subscriptions_on_transaction_reference_trigram", using: :gin
     t.index ["payment_method", "transaction_reference"], name: "index_subscriptions_on_payment_reference", unique: true

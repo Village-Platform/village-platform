@@ -2,11 +2,13 @@ module Subscriptions
   # Approves a pending subscription after the super admin has verified the transfer.
   # Renewals stack: if the owner still has time left, the new period starts when the old one ends.
   class Approve
-    def self.call(subscription:, reviewer:) = new(subscription:, reviewer:).call
+    def self.call(subscription:, reviewer:, reconciliation_note: nil) = new(subscription:, reviewer:, reconciliation_note:).call
 
-    def initialize(subscription:, reviewer:)
+    # reconciliation_note: optional "matched against the statement on <date>" for the record.
+    def initialize(subscription:, reviewer:, reconciliation_note: nil)
       @subscription = subscription
       @reviewer = reviewer
+      @reconciliation_note = reconciliation_note.presence
     end
 
     def call
@@ -24,7 +26,8 @@ module Subscriptions
           starts_at:,
           ends_at: starts_at + @subscription.subscription_plan.duration_days.days,
           reviewed_by: @reviewer,
-          reviewed_at: now
+          reviewed_at: now,
+          reconciliation_note: @reconciliation_note
         )
         Audit.record(actor: @reviewer, action: "subscription.approve", subject: @subscription)
         if user.user?

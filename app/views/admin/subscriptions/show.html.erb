@@ -11,13 +11,15 @@
       <strong><%= enum_label(Subscription, :payment_method, s.payment_method) %></strong>
       برقم العملية <strong class="ltr"><%= s.transaction_reference %></strong> قبل الاعتماد.</p>
     <div class="grid grid-2">
-      <div>
-        <%= button_to approve_admin_subscription_path(s), method: :patch, class: "btn",
-              form: { data: { confirm: "اعتماد هذا الاشتراك؟ سيتم تفعيله وإشعار صاحب النشاط." } } do %>
-          <%= icon(:check) %> اعتماد الاشتراك
-        <% end %>
+      <%= form_with url: approve_admin_subscription_path(s), method: :patch,
+            data: { confirm: "اعتماد هذا الاشتراك؟ سيتم تفعيله وإشعار صاحب النشاط." } do |f| %>
+        <div class="field">
+          <%= f.label :reconciliation_note, "ملاحظة المطابقة (اختياري)" %>
+          <%= f.text_field :reconciliation_note, maxlength: 300, placeholder: "مثال: طابق كشف الحساب يوم ٢٨" %>
+        </div>
+        <%= button_tag type: "submit", class: "btn" do %><%= icon(:check) %> اعتماد الاشتراك<% end %>
         <p><small>يبدأ الاشتراك فورًا، أو بعد انتهاء الاشتراك الحالي إن وُجد.</small></p>
-      </div>
+      <% end %>
       <%= form_with url: reject_admin_subscription_path(s), method: :patch, data: { confirm: "رفض هذا الطلب؟" } do |f| %>
         <div class="field">
           <%= f.label :reason, "سبب الرفض" %>
@@ -26,6 +28,24 @@
         <%= button_tag type: "submit", class: "btn btn-danger" do %><%= icon(:close) %> رفض الطلب<% end %>
       <% end %>
     </div>
+  </section>
+<% end %>
+
+<% if @signals.any? %>
+  <section class="card mt">
+    <div class="card-header"><h2>تنبيهات تكرار</h2></div>
+    <ul>
+      <% @signals.each do |signal| %>
+        <li>
+          <%= badge(signal.kind == :reference ? "رقم عملية مشابه" : "نفس رقم المحوِّل لحساب آخر", "red") %>
+          <%= link_to "طلب ##{signal.subscription.id}", admin_subscription_path(signal.subscription) %> —
+          <%= signal.subscription.user.name %>،
+          <%= enum_label(Subscription, :payment_method, signal.subscription.payment_method) %>،
+          <span class="ltr"><%= signal.subscription.transaction_reference %></span>
+          <%= enum_badge(Subscription, :status, signal.subscription.status) %>
+        </li>
+      <% end %>
+    </ul>
   </section>
 <% end %>
 
@@ -46,6 +66,9 @@
       <dt>تاريخ الطلب</dt><dd><%= fmt_time(s.created_at) %></dd>
       <% if s.reviewed_at %>
         <dt>تمت المراجعة</dt><dd><%= fmt_time(s.reviewed_at) %> — <%= s.reviewed_by&.name %></dd>
+      <% end %>
+      <% if s.reconciliation_note.present? %>
+        <dt>ملاحظة المطابقة</dt><dd><%= s.reconciliation_note %></dd>
       <% end %>
       <% if s.rejection_reason.present? %>
         <dt>سبب الرفض</dt><dd><%= s.rejection_reason %></dd>
