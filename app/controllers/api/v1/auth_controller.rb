@@ -14,7 +14,7 @@ module Api
       # { "phone": "...", "password": "..." }
       def login
         phone = User.normalize_value_for(:phone, params.require(:phone))
-        user = User.find_by(phone:)
+        user = User.not_deleted.find_by(phone:)
 
         if user&.authenticate(params.require(:password))
           Observability::Metrics.increment(:logins, surface: "api", result: "success")

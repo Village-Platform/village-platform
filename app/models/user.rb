@@ -19,6 +19,12 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_nil: true
   validates :password, length: { minimum: 8, maximum: 72 }, allow_nil: true
 
+  scope :not_deleted, -> { where(deleted_at: nil) }
+
+  def deleted?
+    deleted_at.present?
+  end
+
   def can_manage_firms?
     firm_admin? || super_admin?
   end

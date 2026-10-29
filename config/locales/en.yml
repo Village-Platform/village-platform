@@ -11,9 +11,14 @@ en:
       subscription_required: "You need an active subscription with free firm slots to add a firm."
       pending_subscription_exists: "You already have a subscription request under review."
       invalid_state: "This subscription has already been reviewed."
+      invalid_password: "Incorrect password."
       duplicate: "This record already exists."
       invalid_image_type: "must be a PNG, JPEG or WEBP image"
       file_too_large: "must be smaller than %{size}"
+  account_deletions:
+    invalid: "Invalid phone or password."
+    super_admin: "A super admin account cannot be deleted here. Ask another admin."
+    too_many_attempts: "Too many attempts. Try again shortly."
   notifications:
     subscription_approved:
       title: "Subscription approved"

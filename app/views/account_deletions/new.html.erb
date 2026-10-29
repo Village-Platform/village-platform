@@ -1,0 +1,37 @@
+<% content_for :title, "حذف الحساب" %>
+<div class="auth">
+  <section class="auth-panel">
+    <div class="auth-card">
+      <div class="logo"><%= brand_logo %></div>
+      <h1>حذف حسابك في تطبيق خدمات أجهور الكبرى</h1>
+      <p class="subtitle">
+        يُحذف فوراً: اسمك ورقم هاتفك وبريدك الإلكتروني وكلمة المرور، والأنشطة التي أضفتها،
+        والإشعارات، وصور إيصالات الدفع. نحتفظ فقط بسجل مدفوعات الاشتراكات (المبلغ والباقة والتاريخ
+        ورقم العملية) دون أي بيانات تعرّف بك، لأغراض المراجعة المالية. لا يمكن التراجع عن الحذف.
+      </p>
+
+      <% flash.each do |type, message| %>
+        <div class="flash flash-<%= type %>"><%= message %></div>
+      <% end %>
+
+      <%= form_with url: account_deletion_path, method: :post do |f| %>
+        <div class="field">
+          <%= f.label :phone, "رقم الهاتف" %>
+          <%= f.telephone_field :phone, required: true, autocomplete: "username", inputmode: "tel",
+                placeholder: "01xxxxxxxxx" %>
+        </div>
+        <div class="field">
+          <%= f.label :password, "كلمة المرور" %>
+          <%= f.password_field :password, required: true, autocomplete: "current-password" %>
+        </div>
+        <%= f.button "حذف حسابي نهائياً", type: "submit", class: "btn" %>
+      <% end %>
+
+      <p class="auth-foot">يمكنك أيضاً حذف حسابك من داخل التطبيق: الملف الشخصي ← حذف الحساب.</p>
+    </div>
+  </section>
+
+  <aside class="auth-visual" aria-hidden="true">
+    <h2>كل خدمات قريتك<br><span>في مكان واحد</span></h2>
+  </aside>
+</div>

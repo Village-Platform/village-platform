@@ -11,6 +11,10 @@ Rails.application.routes.draw do
   # Vercel Cron jobs (protected by CRON_SECRET).
   get "internal/cron/subscription_reminders", to: "internal/cron#subscription_reminders"
 
+  # Public account-deletion page (the URL declared in Google Play's Data safety form).
+  get  "account/delete", to: "account_deletions#new", as: :account_deletion
+  post "account/delete", to: "account_deletions#create"
+
   # Admin dashboard (server-rendered, Arabic RTL) — super admins only.
   namespace :admin do
     get    "login",  to: "sessions#new",     as: :login
@@ -51,7 +55,7 @@ Rails.application.routes.draw do
       post "auth/register", to: "auth#register"
       post "auth/login",    to: "auth#login"
 
-      resource :me, only: %i[show update], controller: "me"
+      resource :me, only: %i[show update destroy], controller: "me"
 
       resources :categories do
         get :icon, on: :member

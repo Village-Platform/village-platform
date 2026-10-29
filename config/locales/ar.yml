@@ -11,9 +11,14 @@ ar:
       subscription_required: "تحتاج إلى اشتراك فعّال به أماكن متاحة لإضافة منشأة."
       pending_subscription_exists: "لديك طلب اشتراك قيد المراجعة بالفعل."
       invalid_state: "تمت مراجعة هذا الاشتراك بالفعل."
+      invalid_password: "كلمة المرور غير صحيحة."
       duplicate: "هذا العنصر موجود بالفعل."
       invalid_image_type: "يجب أن تكون صورة بصيغة PNG أو JPEG أو WEBP"
       file_too_large: "يجب أن يكون حجمها أقل من %{size}"
+  account_deletions:
+    invalid: "رقم الهاتف أو كلمة المرور غير صحيحة."
+    super_admin: "لا يمكن حذف حساب مدير النظام من هنا. تواصل مع مدير آخر."
+    too_many_attempts: "محاولات كثيرة. حاول مرة أخرى بعد قليل."
   notifications:
     subscription_approved:
       title: "تم تفعيل اشتراكك"
