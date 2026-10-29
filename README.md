@@ -60,8 +60,8 @@ To start fresh: `bin/rails db:reset` (drops and recreates the development databa
 | POST/PATCH/DELETE | `/categories[/:id]`     | super_admin   |
 | GET    | `/categories/:id/firms`            | public        |
 | GET    | `/categories/:id/icon?v=`          | public — category image; use the `icon_url` from the JSON (cached 1 year per version) |
-| GET    | `/firms?category_id=&q=&mine=true` | public        |
-| GET    | `/firms/:id`                       | public        |
+| GET    | `/firms?category_id=&q=&mine=true` | public — lists only visible firms (active, owner subscribed), for every role; `mine=true` lists all of your own |
+| GET    | `/firms/:id`                       | public — visible firms; owners and the super admin can also open pending / suspended ones |
 | POST   | `/firms`                           | firm_admin+   |
 | PATCH/DELETE | `/firms/:id`                 | owner / super_admin |
 | GET    | `/articles?kind=news`, `/articles/:id` | public    |

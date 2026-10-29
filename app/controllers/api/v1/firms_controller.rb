@@ -6,11 +6,15 @@ module Api
 
       # GET /api/v1/firms?category_id=1&q=pharmacy&mine=true
       # GET /api/v1/categories/:category_id/firms
+      #
+      # Lists show only visible firms, to everyone. The policy scope still decides what a user may
+      # open: owners and the super admin reach pending / suspended firms through show, and owners
+      # list all of their own with mine=true.
       def index
         scope = policy_scope(Firm).includes(category: { icon_image_attachment: :blob }).order(:name, :id)
+        scope = params[:mine].present? && current_user ? scope.where(owner_id: current_user.id) : scope.visible
         scope = scope.where(category_id: params[:category_id]) if params[:category_id].present?
         scope = scope.search(params[:q]) if params[:q].present?
-        scope = scope.where(owner_id: current_user.id) if params[:mine].present? && current_user
 
         records, meta = paginate(scope)
         render_collection(records, meta, FirmSerializer)
