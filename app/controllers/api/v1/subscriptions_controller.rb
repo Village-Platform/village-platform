@@ -24,6 +24,7 @@ module Api
       def create
         authorize Subscription
         subscription = current_user.subscriptions.create!(permitted_attributes(Subscription))
+        record_metrics(subscription)
         render_record(subscription, SubscriptionSerializer, status: :created)
       end
 
@@ -41,6 +42,17 @@ module Api
       def set_subscription
         @subscription = own_subscriptions.find(params[:id])
         authorize @subscription, :show?
+      end
+
+      # Plan names are set by super admins, so they stay a small set.
+      def record_metrics(subscription)
+        Observability::Metrics.increment(:subscriptions_requested,
+                                         payment_method: subscription.payment_method,
+                                         plan: subscription.subscription_plan.name)
+        return unless subscription.payment_screenshot.attached?
+
+        blob = subscription.payment_screenshot.blob
+        Observability::Metrics.record(:payment_screenshot_size, blob.byte_size, content_type: blob.content_type)
       end
     end
   end

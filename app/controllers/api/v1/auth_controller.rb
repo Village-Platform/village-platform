@@ -6,6 +6,7 @@ module Api
       # Everyone registers as a normal user; roles are granted by a super admin.
       def register
         user = User.create!(register_params)
+        Observability::Metrics.increment(:registrations)
         render json: auth_payload(user), status: :created
       end
 
@@ -16,8 +17,10 @@ module Api
         user = User.find_by(phone:)
 
         if user&.authenticate(params.require(:password))
+          Observability::Metrics.increment(:logins, surface: "api", result: "success")
           render json: auth_payload(user)
         else
+          Observability::Metrics.increment(:logins, surface: "api", result: "invalid_credentials")
           render_error(:unauthorized, "invalid_credentials")
         end
       end

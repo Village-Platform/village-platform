@@ -18,6 +18,25 @@ RSpec.describe SubscriptionExpiryRemindersJob, type: :job do
     expect(owner.notifications.last.data).to include("days_left" => 6)
   end
 
+  it "counts runs, sent reminders and deduplicated ones", :metrics do
+    subscription(ends_in: -1.day)
+
+    2.times { described_class.perform_now }
+
+    expect(metric_value("aghour.reminders.runs", result: "success")).to eq(2)
+    expect(metric_value("aghour.reminders.runs", result: "failure")).to eq(0)
+    expect(metric_value("aghour.reminders.sent")).to eq(1)
+    expect(metric_value("aghour.notifications.created", kind: "subscription_expired")).to eq(1)
+    expect(metric_value("aghour.notifications.deduplicated", kind: "subscription_expired")).to eq(1)
+  end
+
+  it "counts a failed run and still raises", :metrics do
+    allow(Subscription).to receive(:current).and_raise(ActiveRecord::ConnectionNotEstablished)
+
+    expect { described_class.perform_now }.to raise_error(ActiveRecord::ConnectionNotEstablished)
+    expect(metric_value("aghour.reminders.runs", result: "failure")).to eq(1)
+  end
+
   it "sends a separate 1-day reminder" do
     sub = subscription(ends_in: 6.days)
     described_class.perform_now

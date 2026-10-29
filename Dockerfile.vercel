@@ -53,6 +53,11 @@ USER 1000:1000
 ENV BOOTSNAP_READONLY="1" \
     HOME="/home/rails"
 
+# The commit this image was built from, reported as service.version on traces and metrics.
+# Last, so a new revision does not invalidate the layers above. Vercel does not pass it: "unknown".
+ARG APP_REVISION=unknown
+ENV APP_REVISION=$APP_REVISION
+
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 EXPOSE 3000

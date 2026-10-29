@@ -20,11 +20,17 @@ module Subscriptions
         )
       end
 
+      record_metrics
       notify_owner
       @subscription
     end
 
     private
+
+    def record_metrics
+      Observability::Metrics.increment(:subscriptions_reviewed, outcome: "rejected")
+      Observability::Metrics.record(:subscription_review_wait, @subscription.reviewed_at - @subscription.created_at, outcome: "rejected")
+    end
 
     def notify_owner
       Notifier.notify(

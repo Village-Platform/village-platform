@@ -10,7 +10,7 @@ Rails.application.configure do
   config.force_ssl = ENV["FORCE_SSL"].present?
   config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
 
-  config.log_tags = [ :request_id ]
+  config.log_tags = [ :request_id, ->(request) { Observability.log_tag(request) } ]
   config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
   config.silence_healthcheck_path = "/up"

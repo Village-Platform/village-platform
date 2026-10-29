@@ -33,6 +33,7 @@ module ErrorHandling
   # Consistent error shape:
   # { "error": { "code": "not_found", "message": "...", "details": {...} } }
   def render_error(status, code, details: nil)
+    Observability::Metrics.increment(:api_errors, code:, status: Rack::Utils.status_code(status))
     body = { code:, message: I18n.t("errors.api.#{code}") }
     body[:details] = details if details.present?
     render json: { error: body }, status:
