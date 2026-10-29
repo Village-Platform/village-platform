@@ -40,6 +40,12 @@ RSpec.describe "Subscriptions API", type: :request do
       expect(response).to have_http_status(:unprocessable_content)
     end
 
+    it "lets a super admin create a request too" do
+      post "/api/v1/subscriptions", params:, headers: auth_headers(create(:user, :super_admin)), as: :json
+
+      expect(response).to have_http_status(:created)
+    end
+
     it "requires authentication" do
       post "/api/v1/subscriptions", params:, as: :json
       expect(response).to have_http_status(:unauthorized)

@@ -1,7 +1,7 @@
 class SubscriptionPolicy < ApplicationPolicy
   def index?   = user.present?
   def show?    = super_admin? || record.user_id == user&.id
-  def create?  = user.present? && !super_admin?
+  def create?  = user.present?
   def review?  = super_admin?
 
   def permitted_attributes

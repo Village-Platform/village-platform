@@ -6,11 +6,14 @@ class ApplicationPolicy
     @record = record
   end
 
-  def index?   = false
-  def show?    = false
-  def create?  = false
-  def update?  = false
-  def destroy? = false
+  # Super admins may do everything; everyone else is denied unless a policy grants more.
+  # Overrides must still return true for a super admin, usually by starting with `super_admin? ||`
+  # (spec/policies/super_admin_policy_spec.rb checks every policy).
+  def index?   = super_admin?
+  def show?    = super_admin?
+  def create?  = super_admin?
+  def update?  = super_admin?
+  def destroy? = super_admin?
 
   private
 
