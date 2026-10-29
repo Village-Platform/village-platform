@@ -17,12 +17,12 @@ module Api
         scope = scope.search(params[:q]) if params[:q].present?
 
         records, meta = paginate(scope)
-        render_collection(records, meta, FirmSerializer)
+        render_collection(records, meta, FirmSerializer, user: current_user)
       end
 
       def show
         authorize @firm
-        render_record(@firm, FirmSerializer)
+        render_record(@firm, FirmSerializer, user: current_user)
       end
 
       def create
@@ -30,13 +30,14 @@ module Api
         return render_error(:forbidden, "subscription_required") unless current_user.can_add_firm?
 
         firm = current_user.firms.create!(permitted_attributes(Firm))
-        render_record(firm, FirmSerializer, status: :created)
+        render_record(firm, FirmSerializer, status: :created, user: current_user)
       end
 
+      # An owner's edit of an active firm sends it back for review (Firms::Update).
       def update
         authorize @firm
-        @firm.update!(permitted_attributes(@firm))
-        render_record(@firm, FirmSerializer)
+        Firms::Update.call(firm: @firm, editor: current_user, attributes: permitted_attributes(@firm))
+        render_record(@firm, FirmSerializer, user: current_user)
       end
 
       def destroy

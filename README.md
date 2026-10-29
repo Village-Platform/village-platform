@@ -63,7 +63,7 @@ To start fresh: `bin/rails db:reset` (drops and recreates the development databa
 | GET    | `/firms?category_id=&q=&mine=true` | public — lists only visible firms (active, owner subscribed), for every role; `mine=true` lists all of your own |
 | GET    | `/firms/:id`                       | public — visible firms; owners and the super admin can also open pending / suspended ones |
 | POST   | `/firms`                           | firm_admin+   |
-| PATCH/DELETE | `/firms/:id`                 | owner / super_admin |
+| PATCH/DELETE | `/firms/:id`                 | owner / super_admin — an owner's edit of an active firm sends it back to `pending`; firm JSON has `can: { update, destroy, moderate }` |
 | GET    | `/articles?kind=news`, `/articles/:id` | public    |
 | POST/PATCH/DELETE | `/articles[/:id]`       | super_admin   |
 | GET    | `/admin/users?role=`               | super_admin   |

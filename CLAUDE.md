@@ -129,6 +129,10 @@ These are easy to break from a single file and are covered by request specs:
 - **Renewals stack.** `Subscriptions::Approve` starts the new period at `max(now, latest ends_at)`,
   locks the user row and the subscription, and promotes `user` → `firm_admin`. Notification sending
   happens *outside* the transaction on purpose: a failed notification must never undo an approval.
+- **An owner's edit of an approved firm is re-reviewed.** `Firms::Update` turns an active firm
+  `pending` when its owner changes anything; super admin edits, and edits of pending or suspended
+  firms, keep the status. Firm JSON carries `can: { update, destroy, moderate }` from `FirmPolicy`
+  for the current user, which the apps use to show controls — the policy still decides.
 - **Firm quota is separate from authorization.** `FirmPolicy#create?` only asks
   `can_manage_firms?`; the plan's `max_firms` is enforced by `User#can_add_firm?`, checked in the
   controller and answered with `403 subscription_required`. Both checks must stay.
