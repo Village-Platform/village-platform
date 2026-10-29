@@ -19,7 +19,7 @@ module Admin
     end
 
     def new
-      @firm = Firm.new(status: :active, owner: current_admin)
+      @firm = Firm.new(status: :active, owner: prefilled_owner || current_admin)
     end
 
     def create
@@ -64,6 +64,13 @@ module Admin
     def load_form_options
       @categories = Category.ordered
       @owners = User.where(role: %i[firm_admin super_admin]).order(:name)
+    end
+
+    # Reached from a user's page: "+ نشاط جديد" carries the owner so it is not picked twice.
+    def prefilled_owner
+      return if params[:owner_id].blank?
+
+      @owners.find_by(id: params[:owner_id])
     end
 
     def firm_params

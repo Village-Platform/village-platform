@@ -38,7 +38,9 @@ Rails.application.routes.draw do
     resources :categories, except: :show
     resources :articles, except: :show
     resources :subscription_plans, except: :show
-    resources :users, except: :destroy
+    resources :users, except: :destroy do
+      resources :firms, only: %i[ create destroy ], controller: "user_firms"
+    end
     resources :feature_flags, except: :show do
       patch :toggle, on: :member
     end

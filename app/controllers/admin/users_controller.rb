@@ -15,6 +15,11 @@ module Admin
       @current_subscription = @user.current_subscription
       @subscriptions = @user.subscriptions.includes(:subscription_plan).latest_first.limit(20)
       @firms = @user.firms.includes(:category).order(:name)
+      @visible_ids = Firm.visible.where(id: @firms.map(&:id)).pluck(:id).to_set
+      @owners = User.where(role: %i[ firm_admin super_admin ]).where.not(id: @user.id).order(:name)
+      @attachable_firms = Firm.includes(:owner).where.not(owner_id: @user.id).order(:name)
+      # Super admins are unlimited; for everyone else the plan caps what they may add themselves.
+      @firm_quota = @current_subscription&.subscription_plan&.max_firms unless @user.super_admin?
     end
 
     def new
