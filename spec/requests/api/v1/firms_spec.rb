@@ -23,6 +23,26 @@ RSpec.describe "Firms API", type: :request do
       expect(json["data"].map { _1["name"] }).to eq([ "Mine" ])
     end
 
+    it "lists only active firms to owners and super admins too" do
+      create(:firm, name: "Visible", category:)
+      create(:firm, :pending, name: "Own pending", owner:, category:)
+      create(:firm, name: "Suspended", status: :suspended, category:)
+
+      [ owner, super_admin ].each do |user|
+        get "/api/v1/firms", headers: auth_headers(user)
+        expect(json["data"].map { _1["name"] }).to eq([ "Visible" ])
+
+        get "/api/v1/categories/#{category.id}/firms", headers: auth_headers(user)
+        expect(json["data"].map { _1["name"] }).to eq([ "Visible" ])
+      end
+    end
+
+    it "still lets the super admin open a pending firm" do
+      firm = create(:firm, :pending, category:)
+      get "/api/v1/firms/#{firm.id}", headers: auth_headers(super_admin)
+      expect(response).to have_http_status(:ok)
+    end
+
     it "filters by category through the nested route and searches by name" do
       other = create(:category)
       create(:firm, name: "Pharmacy Nour", category:)
