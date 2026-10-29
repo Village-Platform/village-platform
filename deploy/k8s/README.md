@@ -29,7 +29,7 @@ Keys: `SECRET_KEY_BASE`, `CRON_SECRET`, `POSTGRES_PASSWORD`, `SUPER_ADMIN_PASSWO
 SHA=$(git rev-parse --short HEAD)
 git archive --format=tar.gz HEAD | ssh root@HOST "rm -rf /opt/village-platform && mkdir -p /opt/village-platform \
   && tar -xzf - -C /opt/village-platform && cd /opt/village-platform \
-  && docker build -f Dockerfile.vercel -t village-platform:$SHA . \
+  && docker build -f Dockerfile.vercel --build-arg APP_REVISION=$SHA -t village-platform:$SHA . \
   && docker save village-platform:$SHA | k3s ctr images import -"
 # bump images[].newTag in kustomization.yaml to $SHA, copy deploy/k8s to the server, then:
 ssh root@HOST "kubectl apply -k /opt/village-deploy/deploy/k8s && kubectl -n village rollout status deploy/web"

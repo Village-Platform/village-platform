@@ -10,7 +10,20 @@ class SubscriptionExpiryRemindersJob < ApplicationJob
   REMINDER_WINDOWS = [ 7, 1 ].freeze # days before expiry
   EXPIRED_LOOKBACK = 3.days
 
+  # The success count feeds the "reminders did not run" alert (deploy/observability).
   def perform
+    sent = send_reminders
+    Observability::Metrics.increment(:reminder_runs, result: "success")
+    Observability::Metrics.increment(:reminders_sent, sent)
+    sent
+  rescue StandardError
+    Observability::Metrics.increment(:reminder_runs, result: "failure")
+    raise
+  end
+
+  private
+
+  def send_reminders
     now = Time.current
     sent = 0
 

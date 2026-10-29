@@ -1,0 +1,93 @@
+# Grafana: not exposed. Reach it with
+#   kubectl -n observability port-forward svc/grafana 3000:80
+# Datasources have fixed uids (prometheus, tempo, loki) that dashboards/ and grafana-alerting/ use.
+# Dashboards and alert rules are files in git, mounted from ConfigMaps (no sidecar, to save memory);
+# in the UI they are read-only.
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: grafana
+spec:
+  repo: https://grafana-community.github.io/helm-charts
+  chart: grafana
+  version: 14.0.1
+  targetNamespace: observability
+  valuesContent: |-
+    admin:
+      existingSecret: grafana-admin # keys admin-user, admin-password (README.md)
+    # Required: without it the Telegram contact point fails provisioning. Create it first (README.md).
+    envFromSecrets:
+      - name: grafana-telegram # TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+    testFramework:
+      enabled: false
+    persistence:
+      enabled: true
+      storageClassName: local-path
+      size: 1Gi
+    resources:
+      requests: { cpu: 50m, memory: 100Mi }
+      limits: { memory: 256Mi }
+
+    grafana.ini:
+      analytics:
+        reporting_enabled: false
+        check_for_updates: false
+      users:
+        allow_sign_up: false
+
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        datasources:
+          - name: Prometheus
+            uid: prometheus
+            type: prometheus
+            url: http://prometheus-server.observability.svc
+            isDefault: true
+            jsonData:
+              timeInterval: 30s
+          - name: Tempo
+            uid: tempo
+            type: tempo
+            url: http://tempo.observability.svc:3200
+            jsonData:
+              tracesToLogsV2:
+                datasourceUid: loki
+                filterByTraceID: true
+                spanStartTimeShift: -5m
+                spanEndTimeShift: 5m
+              nodeGraph:
+                enabled: true
+          - name: Loki
+            uid: loki
+            type: loki
+            url: http://loki.observability.svc:3100
+            jsonData:
+              derivedFields:
+                # trace_id is structured metadata set by the collector from the "trace=" log tag.
+                - name: Trace
+                  matcherType: label
+                  matcherRegex: trace_id
+                  datasourceUid: tempo
+                  url: "$${__value.raw}" # $$: provisioning files expand $VARS
+
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: aghour
+            orgId: 1
+            folder: Aghour
+            type: file
+            disableDeletion: true
+            allowUiUpdates: false
+            options:
+              path: /var/lib/grafana/dashboards/aghour
+    dashboardsConfigMaps:
+      aghour: aghour-dashboards
+
+    extraConfigmapMounts:
+      - name: grafana-alerting
+        configMap: grafana-alerting
+        mountPath: /etc/grafana/provisioning/alerting
+        readOnly: true

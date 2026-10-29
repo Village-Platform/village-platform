@@ -29,11 +29,18 @@ module Subscriptions
         user.update!(role: :firm_admin) if user.user?
       end
 
+      record_metrics
       notify_owner
       @subscription
     end
 
     private
+
+    # After the commit, like the notification: telemetry never holds the locks or undoes an approval.
+    def record_metrics
+      Observability::Metrics.increment(:subscriptions_reviewed, outcome: "approved")
+      Observability::Metrics.record(:subscription_review_wait, @subscription.reviewed_at - @subscription.created_at, outcome: "approved")
+    end
 
     # Outside the transaction: a failed notification must never undo an approval.
     def notify_owner

@@ -22,6 +22,17 @@ gem "rack-cors"
 gem "rails-i18n", "~> 8.0"
 gem "dotenv-rails"
 
+# Observability (config/initializers/opentelemetry.rb). Off unless OTEL_EXPORTER_OTLP_ENDPOINT is set.
+# The metrics gems are pre-1.0 and only reached through Observability::Metrics: keep them pinned.
+gem "opentelemetry-sdk", "~> 1.13"
+gem "opentelemetry-exporter-otlp", "~> 0.37"
+# Only what this app uses (instrumentation-all brings ~60 gems: AWS, Mongo, GraphQL, ...).
+gem "opentelemetry-instrumentation-rails" # Rack, Action Pack/View, Active Record/Job/Support
+gem "opentelemetry-instrumentation-pg"
+gem "opentelemetry-instrumentation-net_http"
+gem "opentelemetry-metrics-sdk", "0.22.0"
+gem "opentelemetry-exporter-otlp-metrics", "0.15.0"
+
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "rspec-rails", "~> 8.0"

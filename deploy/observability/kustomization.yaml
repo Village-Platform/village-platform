@@ -1,0 +1,34 @@
+# Observability stack for the single-node k3s deployment. Apply with:
+#   kubectl apply -k deploy/observability
+# Create the Secrets first (README.md). Charts are installed by k3s' helm-controller (HelmChart).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: observability
+resources:
+  - namespace.yaml
+  - otel-collector.yaml
+  - postgres-exporter.yaml
+  - prometheus.yaml
+  - grafana.yaml
+  - tempo.yaml
+  - loki.yaml
+
+configMapGenerator:
+  # Hashed name: a config change rolls the collector.
+  - name: otel-collector
+    files:
+      - config.yaml=otel-collector/config.yaml
+  # Fixed names: Grafana's chart mounts them by name (grafana.yaml).
+  - name: aghour-dashboards
+    files:
+      - dashboards/aghour-api.json
+      - dashboards/aghour-business.json
+      - dashboards/aghour-infra.json
+    options:
+      disableNameSuffixHash: true
+  - name: grafana-alerting
+    files:
+      - grafana-alerting/rules.yaml
+      - grafana-alerting/contact-points.yaml
+    options:
+      disableNameSuffixHash: true
