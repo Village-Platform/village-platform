@@ -18,7 +18,7 @@ module Authentication
     return nil unless scheme&.casecmp?("Bearer")
 
     payload = JsonWebToken.decode(token)
-    payload && User.find_by(id: payload["sub"])
+    payload && User.not_deleted.find_by(id: payload["sub"])
   end
 
   def issue_token_for(user)
