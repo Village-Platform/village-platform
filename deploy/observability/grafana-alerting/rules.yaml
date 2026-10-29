@@ -1,0 +1,307 @@
+# Grafana-managed alert rules (provisioned, read-only in the UI). Each rule: A = PromQL, C = threshold.
+# Traffic is low, so ratio and latency rules require a minimum request count: at 3 a.m. one error in
+# four requests is not an outage.
+apiVersion: 1
+groups:
+  - orgId: 1
+    name: aghour-api
+    folder: Aghour
+    interval: 1m
+    rules:
+      - uid: aghour-web-unavailable
+        title: API has no ready pod
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 300, to: 0 }
+            datasourceUid: prometheus
+            model:
+              expr: max(kube_deployment_status_replicas_available{namespace="village", deployment="web"})
+              instant: true
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions: [ { evaluator: { type: lt, params: [ 1 ] } } ]
+        for: 2m
+        noDataState: Alerting
+        execErrState: Error
+        labels: { severity: critical }
+        annotations:
+          summary: The web Deployment has no available replica.
+          description: Check `kubectl -n village get pods` and `kubectl -n village describe deploy/web`.
+
+      - uid: aghour-api-5xx-ratio
+        title: API 5xx ratio above 5%
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: prometheus
+            model:
+              expr: |
+                (
+                  sum(increase(http_server_request_duration_seconds_count{app_surface="api", http_response_status_code=~"5.."}[10m]))
+                  / sum(increase(http_server_request_duration_seconds_count{app_surface="api"}[10m]))
+                ) and on() sum(increase(http_server_request_duration_seconds_count{app_surface="api"}[10m])) > 20
+              instant: true
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions: [ { evaluator: { type: gt, params: [ 0.05 ] } } ]
+        for: 10m
+        noDataState: OK
+        execErrState: Error
+        labels: { severity: critical }
+        annotations:
+          summary: More than 5% of API requests failed with a 5xx in the last 10 minutes.
+
+      - uid: aghour-api-latency-p95
+        title: API p95 latency above 1s
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 900, to: 0 }
+            datasourceUid: prometheus
+            model:
+              expr: |
+                histogram_quantile(0.95, sum by (le) (rate(http_server_request_duration_seconds_bucket{app_surface="api"}[15m])))
+                and on() sum(increase(http_server_request_duration_seconds_count{app_surface="api"}[15m])) > 20
+              instant: true
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions: [ { evaluator: { type: gt, params: [ 1 ] } } ]
+        for: 15m
+        noDataState: OK
+        execErrState: Error
+        labels: { severity: warning }
+        annotations:
+          summary: 95th percentile API latency has been above 1s for 15 minutes.
+
+      - uid: aghour-db-pool-waiting
+        title: Threads waiting for a database connection
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 300, to: 0 }
+            datasourceUid: prometheus
+            model:
+              expr: max(aghour_db_pool_waiting)
+              instant: true
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions: [ { evaluator: { type: gt, params: [ 0 ] } } ]
+        for: 5m
+        noDataState: OK
+        execErrState: Error
+        labels: { severity: warning }
+        annotations:
+          summary: Requests are queueing for Active Record connections (pool = RAILS_MAX_THREADS).
+
+      - uid: aghour-telemetry-missing
+        title: App is not exporting metrics
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: prometheus
+            # Counters started at 0 are exported by every live process, so absence means the
+            # app or the collector pipeline is down.
+            model:
+              expr: absent_over_time(aghour_reminders_runs_total[10m])
+              instant: true
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions: [ { evaluator: { type: gt, params: [ 0 ] } } ]
+        for: 0s
+        noDataState: OK
+        execErrState: Error
+        labels: { severity: warning }
+        annotations:
+          summary: No app metrics for 10 minutes. Check the web pod and the otel-collector DaemonSet.
+
+  - orgId: 1
+    name: aghour-business
+    folder: Aghour
+    interval: 5m
+    rules:
+      # Needs 26h of history: expect one false alarm in the first day after installing the stack.
+      - uid: aghour-reminders-missed
+        title: Daily reminders did not run
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 93600, to: 0 }
+            datasourceUid: prometheus
+            model:
+              expr: sum(increase(aghour_reminders_runs_total{result="success"}[26h]))
+              instant: true
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions: [ { evaluator: { type: lt, params: [ 1 ] } } ]
+        for: 0s
+        noDataState: Alerting
+        execErrState: Error
+        labels: { severity: critical }
+        annotations:
+          summary: SubscriptionExpiryRemindersJob has not succeeded in 26 hours.
+          description: Check `kubectl -n village get cronjob,jobs` and the job's logs.
+
+      - uid: aghour-reminders-failed
+        title: Daily reminders failed
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 3600, to: 0 }
+            datasourceUid: prometheus
+            model:
+              expr: sum(increase(aghour_reminders_runs_total{result="failure"}[1h]))
+              instant: true
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions: [ { evaluator: { type: gt, params: [ 0 ] } } ]
+        for: 0s
+        noDataState: OK
+        execErrState: Error
+        labels: { severity: critical }
+        annotations:
+          summary: SubscriptionExpiryRemindersJob raised an exception.
+
+      - uid: aghour-subscription-waiting
+        title: Subscription waiting for review over 24h
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: prometheus
+            # max(), not sum(): every web replica reports the same database count.
+            model:
+              expr: max(aghour_subscriptions_pending_oldest_age_seconds)
+              instant: true
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions: [ { evaluator: { type: gt, params: [ 86400 ] } } ]
+        for: 0s
+        noDataState: OK
+        execErrState: Error
+        labels: { severity: warning }
+        annotations:
+          summary: An owner has been waiting more than a day for their payment to be reviewed.
+
+  - orgId: 1
+    name: aghour-infra
+    folder: Aghour
+    interval: 1m
+    rules:
+      - uid: aghour-postgres-down
+        title: Postgres is down
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 300, to: 0 }
+            datasourceUid: prometheus
+            model:
+              expr: max(pg_up)
+              instant: true
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions: [ { evaluator: { type: lt, params: [ 1 ] } } ]
+        for: 2m
+        noDataState: Alerting
+        execErrState: Error
+        labels: { severity: critical }
+        annotations:
+          summary: postgres-exporter cannot reach Postgres (or the exporter itself is down).
+
+      - uid: aghour-pod-restarts
+        title: Pod restarting
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 1800, to: 0 }
+            datasourceUid: prometheus
+            model:
+              expr: max by (namespace, pod) (increase(kube_pod_container_status_restarts_total{namespace=~"village|observability"}[30m]))
+              instant: true
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions: [ { evaluator: { type: gt, params: [ 2 ] } } ]
+        for: 0s
+        noDataState: OK
+        execErrState: Error
+        labels: { severity: warning }
+        annotations:
+          summary: "{{ $labels.namespace }}/{{ $labels.pod }} restarted more than twice in 30 minutes."
+
+      - uid: aghour-node-memory
+        title: Node memory below 10%
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: prometheus
+            model:
+              expr: min(node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)
+              instant: true
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions: [ { evaluator: { type: lt, params: [ 0.10 ] } } ]
+        for: 10m
+        noDataState: OK
+        execErrState: Error
+        labels: { severity: critical }
+        annotations:
+          summary: The node is close to OOM-killing pods (the API included).
+
+      - uid: aghour-node-disk
+        title: Node disk below 15%
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: prometheus
+            model:
+              expr: min(node_filesystem_avail_bytes{mountpoint="/", fstype!="tmpfs"} / node_filesystem_size_bytes{mountpoint="/", fstype!="tmpfs"})
+              instant: true
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions: [ { evaluator: { type: lt, params: [ 0.15 ] } } ]
+        for: 30m
+        noDataState: OK
+        execErrState: Error
+        labels: { severity: warning }
+        annotations:
+          summary: Root filesystem below 15% free (Postgres, Prometheus, Loki and Tempo all live there).

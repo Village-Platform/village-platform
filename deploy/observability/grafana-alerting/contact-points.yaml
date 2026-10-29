@@ -1,0 +1,22 @@
+# Where alerts go. Telegram for now; the token and chat id come from the grafana-telegram Secret
+# (README.md). Grafana expands $VARS in provisioning files.
+apiVersion: 1
+contactPoints:
+  - orgId: 1
+    name: telegram
+    receivers:
+      - uid: aghour-telegram
+        type: telegram
+        settings:
+          bottoken: $TELEGRAM_BOT_TOKEN
+          chatid: $TELEGRAM_CHAT_ID
+          parse_mode: HTML
+        disableResolveMessage: false
+
+policies:
+  - orgId: 1
+    receiver: telegram
+    group_by: [ grafana_folder, alertname ]
+    group_wait: 30s
+    group_interval: 5m
+    repeat_interval: 4h

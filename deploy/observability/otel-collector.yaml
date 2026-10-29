@@ -1,0 +1,92 @@
+# OpenTelemetry Collector: the single way out for the app's telemetry (config: otel-collector/config.yaml).
+# A DaemonSet so the filelog receiver can read this node's pod logs; with one node there is one pod.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: otel-collector
+spec:
+  selector:
+    matchLabels:
+      app: otel-collector
+  template:
+    metadata:
+      labels:
+        app: otel-collector
+    spec:
+      containers:
+        - name: otel-collector
+          image: otel/opentelemetry-collector-contrib:0.163.2
+          args: [ "--config=/conf/config.yaml" ]
+          ports:
+            - { name: otlp-http, containerPort: 4318 }
+            - { name: metrics, containerPort: 8889 }
+            - { name: self-metrics, containerPort: 8888 }
+            - { name: health, containerPort: 13133 }
+          readinessProbe:
+            httpGet: { path: /, port: health }
+          livenessProbe:
+            httpGet: { path: /, port: health }
+            periodSeconds: 30
+          resources:
+            requests: { cpu: 50m, memory: 64Mi }
+            limits: { memory: 200Mi }
+          # Pod log files are root-only (0640 root:root).
+          securityContext:
+            runAsUser: 0
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - { name: config, mountPath: /conf }
+            - { name: pod-logs, mountPath: /var/log/pods, readOnly: true }
+      volumes:
+        - name: config
+          configMap:
+            name: otel-collector
+        - name: pod-logs
+          hostPath:
+            path: /var/log/pods
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector
+spec:
+  selector:
+    app: otel-collector
+  # Each node's pods talk to that node's collector.
+  internalTrafficPolicy: Local
+  ports:
+    - { name: otlp-http, port: 4318, targetPort: otlp-http }
+    - { name: metrics, port: 8889, targetPort: metrics }
+    - { name: self-metrics, port: 8888, targetPort: self-metrics }
+---
+# Only the app may send telemetry; only this namespace (Prometheus) may scrape. k3s enforces
+# NetworkPolicy. The health port stays open for the kubelet's probes.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: otel-collector
+spec:
+  podSelector:
+    matchLabels:
+      app: otel-collector
+  policyTypes: [ Ingress ]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: village
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+      ports:
+        - port: 4318
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+      ports:
+        - port: 8888
+        - port: 8889
+    - ports:
+        - port: 13133

@@ -1,0 +1,78 @@
+# OpenTelemetry Collector configuration, packed into the otel-collector ConfigMap by kustomization.yaml
+# (hashed name, so a change rolls the DaemonSet).
+#   app --OTLP/HTTP:4318--> metrics -> :8889/metrics (scraped by Prometheus)
+#                           traces  -> Tempo
+#   /var/log/pods/village_web-* -> logs -> Loki (native OTLP)
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+  # Rails logs of the web pods only; start_at end, so a collector restart skips rather than
+  # replays (no offset storage on purpose: logs here are a convenience, not an audit trail).
+  filelog:
+    include: [ /var/log/pods/village_web-*/web/*.log ]
+    start_at: end
+    include_file_path: false
+    operators:
+      - type: container
+      - type: regex_parser
+        regex: '(?P<severity>DEBUG|INFO|WARN|ERROR|FATAL)'
+        on_error: send_quiet
+        severity:
+          parse_from: attributes.severity
+      - type: regex_parser
+        regex: 'trace=(?P<trace_id>[0-9a-f]{32})'
+        on_error: send_quiet
+      - type: trace_parser
+        trace_id:
+          parse_from: attributes.trace_id
+
+processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 160
+    spike_limit_mib: 40
+  batch: {}
+  # File logs carry no service.name; give them the app's, so Loki's service_name matches the traces.
+  resource/app-logs:
+    attributes:
+      - { key: service.name, value: aghour-api, action: upsert }
+
+exporters:
+  # Resource attributes stay out of the labels (pids and instance ids would mint new series on
+  # every restart); they are exported once per target as target_info instead.
+  prometheus:
+    endpoint: 0.0.0.0:8889
+  otlphttp/tempo:
+    endpoint: http://tempo.observability.svc:4318
+  otlphttp/loki:
+    endpoint: http://loki.observability.svc:3100/otlp
+
+service:
+  extensions: [ health_check ]
+  telemetry:
+    metrics:
+      readers:
+        - pull:
+            exporter:
+              prometheus:
+                host: 0.0.0.0
+                port: 8888
+  pipelines:
+    metrics:
+      receivers: [ otlp ]
+      processors: [ memory_limiter, batch ]
+      exporters: [ prometheus ]
+    traces:
+      receivers: [ otlp ]
+      processors: [ memory_limiter, batch ]
+      exporters: [ otlphttp/tempo ]
+    logs:
+      receivers: [ filelog ]
+      processors: [ memory_limiter, resource/app-logs, batch ]
+      exporters: [ otlphttp/loki ]
