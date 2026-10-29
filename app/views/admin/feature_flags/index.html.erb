@@ -1,0 +1,29 @@
+<%= page_header "الميزات", subtitle: "تشغيل أو إيقاف ميزات التطبيق دون إصدار جديد. يصل التغيير للتطبيق خلال ٥ دقائق" do %>
+  <%= link_to new_admin_feature_flag_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إضافة ميزة<% end %>
+<% end %>
+<div class="tbl">
+  <% if @flags.any? %>
+    <table>
+      <thead><tr><th>المفتاح</th><th>الوصف</th><th>مفعّلة</th><th></th></tr></thead>
+      <tbody>
+        <% @flags.each do |flag| %>
+          <tr>
+            <td class="cell-main"><code dir="ltr"><%= flag.key %></code></td>
+            <td><%= flag.description.presence || tag.span("—", class: "cell-sub") %></td>
+            <td>
+              <%= button_to toggle_admin_feature_flag_path(flag), method: :patch, class: "switch-btn",
+                    title: flag.enabled ? "إيقاف" : "تفعيل" do %><%= switch(flag.enabled, label: flag.enabled ? "مفعّلة" : "متوقفة") %><% end %>
+            </td>
+            <td class="actions">
+              <%= link_to edit_admin_feature_flag_path(flag), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 16) %><% end %>
+              <%= button_to admin_feature_flag_path(flag), method: :delete, class: "btn btn-ghost btn-sm", title: "حذف",
+                    form: { data: { confirm: "حذف الميزة؟ ستتوقف في التطبيق." } } do %><%= icon(:trash, size: 16) %><% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <%= empty_state("لا توجد ميزات بعد.") %>
+  <% end %>
+</div>

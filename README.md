@@ -69,6 +69,7 @@ To start fresh: `bin/rails db:reset` (drops and recreates the development databa
 | GET    | `/admin/users?role=`               | super_admin   |
 | PATCH  | `/admin/users/:id` (`role`)        | super_admin   |
 | GET    | `/payment_methods`                 | public        |
+| GET    | `/app_config`                      | public — `{ data: { features: { plans: false } } }`; flags are managed at `/admin/feature_flags`, missing = off, cached 5 min |
 | GET    | `/subscription_plans[/:id]`        | public        |
 | POST/PATCH/DELETE | `/subscription_plans[/:id]` | super_admin |
 | GET    | `/subscriptions[/:id]`             | user (own)    |

@@ -134,6 +134,9 @@ These are easy to break from a single file and are covered by request specs:
   controller and answered with `403 subscription_required`. Both checks must stay.
 - **Guards backed by DB indexes:** one pending subscription per user, and `transaction_reference`
   unique per `payment_method`. The race is caught by `rescue_from ActiveRecord::RecordNotUnique`.
+- **Feature flags fail closed.** `GET /api/v1/app_config` returns `FeatureFlag.to_h`: the `feature_flags`
+  rows (toggled at `/admin/feature_flags`) merged over `FeatureFlag::DEFAULTS`. A missing flag is off.
+  `key` is a contract with the Android app — `attr_readonly`, never renamed; add new keys to `DEFAULTS`.
 - **`Notifier.notify` is idempotent** via `dedupe_key`. The daily reminder job relies on this —
   running it twice must send nothing new.
 - **Payment screenshots are never public.** Controllers authorize first, then redirect to a URL that

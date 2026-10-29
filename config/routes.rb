@@ -39,6 +39,9 @@ Rails.application.routes.draw do
     resources :articles, except: :show
     resources :subscription_plans, except: :show
     resources :users, except: :destroy
+    resources :feature_flags, except: :show do
+      patch :toggle, on: :member
+    end
   end
 
   namespace :api do
@@ -56,6 +59,7 @@ Rails.application.routes.draw do
       resources :articles
 
       get "payment_methods", to: "payment_methods#index"
+      get "app_config", to: "app_config#show"
       resources :subscription_plans
       resources :subscriptions, only: %i[index show create] do
         get :payment_screenshot, on: :member

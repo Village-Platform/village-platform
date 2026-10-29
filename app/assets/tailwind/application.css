@@ -440,6 +440,10 @@
   .switch-knob {
     @apply w-4 h-4 rounded-full bg-white shadow;
   }
+  /* A switch that changes state: the read-only .switch inside a button_to. */
+  .switch-btn {
+    @apply cursor-pointer rounded-full focus-visible:outline-2 focus-visible:outline-gold;
+  }
 
   .tabs {
     @apply flex gap-2 flex-wrap;
