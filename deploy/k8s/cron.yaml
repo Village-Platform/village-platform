@@ -1,5 +1,7 @@
 # Same contract as Vercel Cron: GET the endpoint with the CRON_SECRET bearer token.
 # The job is idempotent (Notifier dedupe_key), so a retried or doubled run sends nothing new.
+# On success it pings HEALTHCHECK_URL (healthchecks.io), if set: a dead man's switch that still
+# alerts when the whole node, and the monitoring on it, is gone.
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -25,9 +27,16 @@ spec:
                     secretKeyRef:
                       name: village-env
                       key: CRON_SECRET
+                - name: HEALTHCHECK_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: village-env
+                      key: HEALTHCHECK_URL
+                      optional: true
               command:
                 - sh
                 - -c
                 - >-
                   curl -fsS --max-time 120 -H "Authorization: Bearer $CRON_SECRET"
                   http://web/internal/cron/subscription_reminders
+                  && { [ -z "$HEALTHCHECK_URL" ] || curl -fsS --max-time 10 -o /dev/null "$HEALTHCHECK_URL"; }
