@@ -1,5 +1,6 @@
-# Grafana: not exposed. Reach it with
-#   kubectl -n observability port-forward svc/grafana 3000:80
+# Grafana: https://grafana.dorfsys.com, through Traefik and Cloudflare (which terminates TLS, as for
+# the app). The login page is public, so the admin password is the only gate: keep it long, and put
+# Cloudflare Access in front before adding more users.
 # Datasources have fixed uids (prometheus, tempo, loki) that dashboards/ and grafana-alerting/ use.
 # Dashboards and alert rules are files in git, mounted from ConfigMaps (no sidecar, to save memory);
 # in the UI they are read-only.
@@ -27,11 +28,29 @@ spec:
     resources:
       requests: { cpu: 50m, memory: 100Mi }
       limits: { memory: 256Mi }
+    # The first boot migrates Grafana's database, which takes minutes on one busy vCPU; the chart's
+    # liveness probe (60s + 10 failures) killed it mid-migration.
+    livenessProbe:
+      initialDelaySeconds: 300
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      hosts: [ grafana.dorfsys.com ]
 
     grafana.ini:
+      # Links, redirects and alert notifications are built from root_url.
+      server:
+        domain: grafana.dorfsys.com
+        root_url: https://grafana.dorfsys.com/
+      # Browsers reach Grafana over HTTPS (Cloudflare), though Grafana itself serves plain HTTP.
+      security:
+        cookie_secure: true
       analytics:
         reporting_enabled: false
         check_for_updates: false
+      # Grafana 13 downloads "preinstalled" app plugins at startup; we use none of them.
+      plugins:
+        preinstall_disabled: true
       users:
         allow_sign_up: false
 
