@@ -6,10 +6,12 @@ class FirmPolicy < ApplicationPolicy
   def create?  = user&.can_manage_firms? || false
   def update?  = super_admin? || owner?
   def destroy? = super_admin? || owner?
+  # Approve / suspend (setting `status`); sent to the apps in FirmSerializer's `can`.
+  def moderate? = super_admin?
 
   # Only super admins can change the status (approve / suspend).
   def permitted_attributes
-    super_admin? ? BASE_ATTRIBUTES + [ :status ] : BASE_ATTRIBUTES
+    moderate? ? BASE_ATTRIBUTES + [ :status ] : BASE_ATTRIBUTES
   end
 
   private

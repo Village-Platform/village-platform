@@ -128,5 +128,66 @@ RSpec.describe "Firms API", type: :request do
       expect(response).to have_http_status(:forbidden)
       expect(firm.reload.name).not_to eq("Hacked")
     end
+
+    it "sends an owner's edit of an active firm back for review" do
+      firm.update!(status: :active)
+
+      patch "/api/v1/firms/#{firm.id}", params: { firm: { phone: "01099999999" } },
+                                        headers: auth_headers(owner), as: :json
+
+      expect(response).to have_http_status(:ok)
+      expect(json.dig("data", "status")).to eq("pending")
+      expect(firm.reload).to be_pending
+      expect(firm.phone).to eq("01099999999")
+    end
+
+    it "keeps an active firm active when the owner saves without changes" do
+      firm.update!(status: :active)
+
+      patch "/api/v1/firms/#{firm.id}", params: { firm: { name: firm.name } },
+                                        headers: auth_headers(owner), as: :json
+
+      expect(firm.reload).to be_active
+    end
+
+    it "keeps a suspended firm suspended when its owner edits it" do
+      firm.update!(status: :suspended)
+
+      patch "/api/v1/firms/#{firm.id}", params: { firm: { name: "New name" } },
+                                        headers: auth_headers(owner), as: :json
+
+      expect(firm.reload).to be_suspended
+    end
+
+    it "keeps the status when the super admin edits an active firm" do
+      firm.update!(status: :active)
+
+      patch "/api/v1/firms/#{firm.id}", params: { firm: { name: "Fixed typo" } },
+                                        headers: auth_headers(super_admin), as: :json
+
+      expect(firm.reload).to be_active
+    end
+  end
+
+  describe "permissions in the response (can)" do
+    let!(:firm) { create(:firm, owner:, category:) }
+
+    def can_for(headers = {})
+      get "/api/v1/firms/#{firm.id}", headers: headers
+      json.dig("data", "can")
+    end
+
+    it "tells each viewer what they may do" do
+      expect(can_for).to eq("update" => false, "destroy" => false, "moderate" => false)
+      expect(can_for(auth_headers(create(:user)))).to eq("update" => false, "destroy" => false, "moderate" => false)
+      expect(can_for(auth_headers(owner))).to eq("update" => true, "destroy" => true, "moderate" => false)
+      expect(can_for(auth_headers(super_admin))).to eq("update" => true, "destroy" => true, "moderate" => true)
+    end
+
+    it "is included in lists too" do
+      get "/api/v1/firms", headers: auth_headers(owner)
+
+      expect(json["data"].first["can"]).to include("update" => true)
+    end
   end
 end

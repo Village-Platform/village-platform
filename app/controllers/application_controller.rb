@@ -14,11 +14,12 @@ class ApplicationController < ActionController::API
     I18n.with_locale(locale, &action)
   end
 
-  def render_collection(records, meta, serializer)
-    render json: { data: records.map { |r| serializer.render(r) }, meta: }
+  # Extra keywords (e.g. user:) are passed on to serializers that take them; others get none.
+  def render_collection(records, meta, serializer, **context)
+    render json: { data: records.map { |r| serializer.render(r, **context) }, meta: }
   end
 
-  def render_record(record, serializer, status: :ok)
-    render json: { data: serializer.render(record) }, status:
+  def render_record(record, serializer, status: :ok, **context)
+    render json: { data: serializer.render(record, **context) }, status:
   end
 end
