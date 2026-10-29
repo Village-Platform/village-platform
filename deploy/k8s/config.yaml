@@ -19,9 +19,11 @@ data:
   # without redirecting.
   ASSUME_SSL: "1"
   FORCE_SSL: "1"
-  # Telemetry to the collector in deploy/observability. Off until that stack is installed (it needs
-  # the 4 GB node): uncomment the endpoint then. Without it the app sends nothing.
-  # OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector.observability.svc:4318
+  # Telemetry to the collector in deploy/observability. Comment the endpoint out to send nothing.
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector.observability.svc:4318
+  # Tempo is not installed on the 2 GB node, and the collector's retries to it would hit the shared
+  # memory_limiter and drop metrics too. Remove this line once tempo.yaml is applied.
+  OTEL_TRACES_EXPORTER: none
   OTEL_SERVICE_NAME: aghour-api
   OTEL_METRIC_EXPORT_INTERVAL: "30000"
   OTEL_TRACES_SAMPLER: parentbased_traceidratio

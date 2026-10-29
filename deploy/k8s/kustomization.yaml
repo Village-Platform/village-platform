@@ -11,4 +11,4 @@ resources:
   - cron.yaml
 images:
   - name: village-platform
-    newTag: 1cefc58
+    newTag: 047fc98
