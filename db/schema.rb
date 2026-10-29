@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_27_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_29_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -68,6 +68,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_27_140000) do
     t.index "lower((name)::text) gin_trgm_ops", name: "index_categories_on_name_trigram", using: :gin
     t.index ["active", "position"], name: "index_categories_on_active_and_position"
     t.index ["name"], name: "index_categories_on_name", unique: true
+  end
+
+  create_table "feature_flags", force: :cascade do |t|
+    t.string "key", null: false
+    t.boolean "enabled", default: false, null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_feature_flags_on_key", unique: true
+    t.check_constraint "key::text ~ '^[a-z][a-z0-9_]*$'::text", name: "feature_flags_key_format"
   end
 
   create_table "firms", force: :cascade do |t|

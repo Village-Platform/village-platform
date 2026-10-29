@@ -31,6 +31,9 @@
           <%= nav_link "الباقات والأسعار", admin_subscription_plans_path, :plans %>
           <%= nav_link "الاشتراكات", admin_subscriptions_path, :subscriptions, count: Subscription.pending.count %>
         <% end %>
+        <%= nav_group "الإعدادات" do %>
+          <%= nav_link "الميزات", admin_feature_flags_path, :flag %>
+        <% end %>
       </nav>
 
       <div class="sidebar-footer">

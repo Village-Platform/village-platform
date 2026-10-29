@@ -38,6 +38,7 @@ ar:
       article: "خبر"
       subscription_plan: "باقة اشتراك"
       subscription: "اشتراك"
+      feature_flag: "ميزة"
     attributes:
       user:
         name: "الاسم"
@@ -57,6 +58,10 @@ ar:
         title: "العنوان"
         body: "المحتوى"
         kind: "النوع"
+      feature_flag:
+        key: "المفتاح"
+        description: "الوصف"
+        enabled: "مفعّلة"
       subscription_plan:
         name: "اسم الباقة"
         price_cents: "السعر"

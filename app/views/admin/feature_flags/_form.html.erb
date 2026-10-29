@@ -1,0 +1,18 @@
+<%= form_with model: [:admin, flag], class: "form card" do |f| %>
+  <%= render "admin/shared/errors", record: flag %>
+  <div class="form-grid">
+  <div class="field full">
+    <%= f.label :key, "المفتاح" %>
+    <%# The apps look the flag up by this key, so it cannot change once created. %>
+    <%= f.text_field :key, required: true, dir: "ltr", pattern: "[a-z][a-z0-9_]*", disabled: flag.persisted?,
+          placeholder: "plans" %>
+    <small class="cell-sub">حروف إنجليزية صغيرة وأرقام و _ فقط. لا يمكن تغييره بعد الحفظ لأن التطبيق يقرأ الميزة به.</small>
+  </div>
+  <div class="field full"><%= f.label :description, "الوصف" %><%= f.text_area :description, rows: 2 %></div>
+  <div class="field checkbox full"><%= f.check_box :enabled %><%= f.label :enabled, "مفعّلة (تظهر في التطبيق)" %></div>
+  </div>
+  <div class="form-actions">
+    <%= f.submit "حفظ", class: "btn btn-gold" %>
+    <%= link_to "إلغاء", admin_feature_flags_path, class: "btn btn-ghost" %>
+  </div>
+<% end %>

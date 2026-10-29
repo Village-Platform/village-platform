@@ -54,10 +54,16 @@ end
   SubscriptionPlan.find_or_create_by!(name: attrs[:name]) { |p| p.assign_attributes(attrs) }
 end
 
+# Feature flags the apps read. Created off; only the description is set here, so a flag switched
+# on from the dashboard stays on when the seeds run again.
+FeatureFlag.find_or_create_by!(key: "plans") do |flag|
+  flag.description = "إظهار الباقات والاشتراك في التطبيق"
+end
+
 # Demo data (owners, firms, news) for development and testing only.
 # Never runs in production unless SEED_DEMO=1 is set on purpose.
 if Rails.env.development? || ENV["SEED_DEMO"] == "1"
   load Rails.root.join("db/seeds/demo.rb")
 end
 
-puts "Seeded: #{User.count} users, #{Category.count} categories, #{Article.count} articles, #{SubscriptionPlan.count} plans, #{Firm.count} firms, #{Subscription.count} subscriptions"
+puts "Seeded: #{User.count} users, #{Category.count} categories, #{Article.count} articles, #{SubscriptionPlan.count} plans, #{FeatureFlag.count} feature flags, #{Firm.count} firms, #{Subscription.count} subscriptions"

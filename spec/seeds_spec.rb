@@ -60,11 +60,21 @@ RSpec.describe "db/seeds.rb" do
 
   it "is idempotent" do
     seed!
-    counts = [ User.count, Firm.count, Article.count, Subscription.count, Category.count, ActiveStorage::Attachment.count ]
+    counts = [ User.count, Firm.count, Article.count, Subscription.count, Category.count, ActiveStorage::Attachment.count, FeatureFlag.count ]
 
     seed!
 
-    expect([ User.count, Firm.count, Article.count, Subscription.count, Category.count, ActiveStorage::Attachment.count ]).to eq(counts)
+    expect([ User.count, Firm.count, Article.count, Subscription.count, Category.count, ActiveStorage::Attachment.count, FeatureFlag.count ]).to eq(counts)
+  end
+
+  it "seeds the plans flag off, and keeps a flag switched on from the dashboard on" do
+    seed!
+    expect(FeatureFlag.find_by!(key: "plans").enabled).to be(false)
+
+    FeatureFlag.find_by!(key: "plans").update!(enabled: true)
+    seed!
+
+    expect(FeatureFlag.find_by!(key: "plans").enabled).to be(true)
   end
 
   it "attaches the default icon image to every seeded category" do
