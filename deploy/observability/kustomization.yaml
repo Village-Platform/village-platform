@@ -21,6 +21,7 @@ configMapGenerator:
   # Fixed names: Grafana's chart mounts them by name (grafana.yaml).
   - name: aghour-dashboards
     files:
+      - dashboards/aghour-overview.json
       - dashboards/aghour-api.json
       - dashboards/aghour-business.json
       - dashboards/aghour-infra.json
