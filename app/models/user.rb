@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_secure_password
+  acts_as_paranoid
 
   # user        -> normal village resident
   # firm_admin  -> firm owner, can add/manage own firms while subscribed

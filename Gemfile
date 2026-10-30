@@ -12,6 +12,13 @@ group :production do
   gem "ruby-vips"
 end
 
+group :development do
+  gem "actual_db_schema"
+end
+
+# Soft Deletion
+gem "acts_as_paranoid", "~> 0.11.0"
+
 # Auth & authorization
 gem "bcrypt", "~> 3.1.7"
 gem "jwt", "~> 3.1"

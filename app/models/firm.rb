@@ -3,6 +3,8 @@ class Firm < ApplicationRecord
   # active    -> approved
   # suspended -> hidden by a super admin (moderation)
   # Note: an active firm is shown publicly only while its owner has a current subscription.
+  acts_as_paranoid
+
   enum :status, { pending: 0, active: 1, suspended: 2 }, default: :pending, validate: true
 
   belongs_to :category

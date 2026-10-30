@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_29_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_30_164245) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -51,6 +51,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_120000) do
     t.datetime "published_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.index "lower((title)::text) gin_trgm_ops", name: "index_articles_on_title_trigram", using: :gin
     t.index ["author_id"], name: "index_articles_on_author_id"
     t.index ["kind", "published_at"], name: "index_articles_on_kind_and_published_at"
@@ -94,6 +95,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_120000) do
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.index "lower((address)::text) gin_trgm_ops", name: "index_firms_on_address_trigram", using: :gin
     t.index "lower((name)::text) gin_trgm_ops", name: "index_firms_on_name_trigram", using: :gin
     t.index "lower((phone)::text) gin_trgm_ops", name: "index_firms_on_phone_trigram", using: :gin

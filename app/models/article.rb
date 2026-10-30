@@ -1,4 +1,6 @@
 class Article < ApplicationRecord
+  acts_as_paranoid
+
   enum :kind, { news: 0, article: 1, announcement: 2 }, default: :news, validate: true
 
   belongs_to :author, class_name: "User", inverse_of: :articles
