@@ -1,0 +1,19 @@
+default: &default
+  dispatchers:
+    - polling_interval: 1
+      batch_size: 500
+  workers:
+    - queues: "*"
+      # Each forked process has its own pool of RAILS_MAX_THREADS connections; leave one spare.
+      threads: <%= ENV.fetch("JOB_THREADS", 2) %>
+      processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
+      polling_interval: 1
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

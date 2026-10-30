@@ -1,0 +1,57 @@
+<%= page_header @topic.name, subtitle: @topic.description do %>
+  <%= link_to admin_topics_path, class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 16) %> كل المواضيع<% end %>
+  <% unless @topic.system? %>
+    <%= link_to edit_admin_topic_path(@topic), class: "btn btn-ghost" do %><%= icon(:edit, size: 16) %> تعديل<% end %>
+  <% end %>
+<% end %>
+
+<% if @topic.system? %>
+  <section class="card"><p>هذا الموضوع يضم كل جهاز مسجّل تلقائيًا، بما فيها أجهزة الزوار. لا يمكن تعديل أعضائه.</p></section>
+<% else %>
+  <section class="card">
+    <%= form_with url: admin_topic_path(@topic), method: :get, class: "flex gap-2 items-center" do |f| %>
+      <%= f.search_field :q, value: params[:q], placeholder: "ابحث عن مستخدم بالاسم أو الهاتف لإضافته...", class: "w-72 input", "aria-label": "بحث" %>
+      <%= button_tag type: "submit", class: "btn btn-ghost", name: nil, title: "بحث" do %><%= icon(:search, size: 16) %><% end %>
+    <% end %>
+    <% if @candidates %>
+      <div class="tbl mt-3">
+        <table>
+          <tbody>
+            <% @candidates.each do |user| %>
+              <tr>
+                <td class="cell-main"><%= user.name %></td>
+                <td dir="ltr"><%= user.phone %></td>
+                <td class="actions">
+                  <%= button_to admin_topic_members_path(@topic), params: { user_id: user.id }, class: "btn btn-gold btn-sm" do %><%= icon(:plus, size: 16) %> إضافة<% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <%= empty_state("لا يوجد مستخدم مطابق.") if @candidates.none? %>
+      </div>
+    <% end %>
+  </section>
+
+  <p class="cell-sub">أجهزة زوار مشتركة بنفسها: <%= @guest_devices %></p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>العضو</th><th>الهاتف</th><th>الأجهزة</th><th></th></tr></thead>
+      <tbody>
+        <% @members.each do |user| %>
+          <tr>
+            <td class="cell-main"><%= link_to user.name, admin_user_path(user) %></td>
+            <td dir="ltr"><%= user.phone %></td>
+            <td><%= @device_counts.fetch(user.id, 0) %></td>
+            <td class="actions">
+              <%= button_to admin_topic_member_path(@topic, user), method: :delete, class: "btn btn-ghost btn-sm", title: "إزالة",
+                    form: { data: { confirm: "إزالة #{user.name} من الموضوع؟" } } do %><%= icon(:trash, size: 16) %><% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= empty_state("لا يوجد أعضاء بعد.") if @members.none? %>
+  </div>
+  <%= render "admin/shared/pagination", pagy: @pagy %>
+<% end %>

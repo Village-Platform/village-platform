@@ -17,9 +17,13 @@ Rails.application.configure do
 
   config.active_support.report_deprecations = false
 
-  # Swap to Redis / Solid Cache and Sidekiq / Solid Queue when needed.
+  # Swap to Redis / Solid Cache when needed.
   config.cache_store = :memory_store
-  config.active_job.queue_adapter = :async
+  # Jobs are rows in the primary database (see CreateSolidQueueTables), run by the Solid Queue
+  # plugin inside Puma when SOLID_QUEUE_IN_PUMA is set. They survive restarts, unlike :async.
+  config.active_job.queue_adapter = :solid_queue
+  # Delete a job's row when it finishes, so no recurring cleanup (and no scheduler process) is needed.
+  config.solid_queue.preserve_finished_jobs = false
 
   # Uploaded files (payment screenshots). "database" keeps them in PostgreSQL, which works on
   # hosts without a persistent disk (Vercel). Use "local" with a mounted volume, or S3 later.

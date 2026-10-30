@@ -1,0 +1,21 @@
+<%= form_with model: [:admin, topic], class: "form card" do |f| %>
+  <%= render "admin/shared/errors", record: topic %>
+  <div class="form-grid">
+  <div class="field">
+    <%= f.label :name, "الاسم" %>
+    <%= f.text_field :name, required: true %>
+  </div>
+  <div class="field">
+    <%= f.label :key, "المفتاح" %>
+    <%# The key is the FCM topic name: renaming it would orphan every subscribed phone. %>
+    <%= f.text_field :key, required: true, dir: "ltr", pattern: "[a-z][a-z0-9_]*", disabled: topic.persisted?, placeholder: "offers" %>
+    <small class="cell-sub">حروف إنجليزية صغيرة وأرقام و _ فقط. لا يمكن تغييره بعد الحفظ.</small>
+  </div>
+  <div class="field full"><%= f.label :description, "الوصف" %><%= f.text_area :description, rows: 2 %></div>
+  <div class="field checkbox full"><%= f.check_box :public %><%= f.label :public, "يظهر في التطبيق ليشترك فيه المستخدمون بأنفسهم" %></div>
+  </div>
+  <div class="form-actions">
+    <%= f.submit "حفظ", class: "btn btn-gold" %>
+    <%= link_to "إلغاء", admin_topics_path, class: "btn btn-ghost" %>
+  </div>
+<% end %>

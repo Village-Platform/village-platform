@@ -1,0 +1,12 @@
+<%# Shared by campaigns and single-user notifications: where a tap on the notification leads. %>
+<div class="field">
+  <%= label_tag "#{scope}[screen]", "عند الضغط على الإشعار يفتح" %>
+  <%= select_tag "#{scope}[screen]",
+        options_for_select(Notifications::Destination::ADMIN_SCREENS.map { |s| [ t("enums.destination.screen.#{s}"), s ] }, screen),
+        class: "select w-full" %>
+</div>
+<div class="field">
+  <%= label_tag "#{scope}[target_id]", "رقم العنصر" %>
+  <%= number_field_tag "#{scope}[target_id]", target_id, min: 1, class: "input w-full", dir: "ltr" %>
+  <small class="cell-sub">رقم الخبر أو النشاط أو التصنيف كما يظهر في صفحته. اتركه فارغًا مع «صندوق الإشعارات».</small>
+</div>

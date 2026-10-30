@@ -17,6 +17,8 @@ class User < ApplicationRecord
   has_many :articles, foreign_key: :author_id, inverse_of: :author, dependent: :restrict_with_error
   has_many :subscriptions, dependent: :restrict_with_error
   has_many :notifications, dependent: :delete_all
+  has_many :devices, dependent: :nullify
+  has_many :topic_subscriptions, dependent: :delete_all
 
   normalizes :phone, with: ->(phone) { phone.to_s.gsub(/[^\d+]/, "") }
   normalizes :email, with: ->(email) { email.strip.downcase.presence }

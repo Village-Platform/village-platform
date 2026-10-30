@@ -26,6 +26,7 @@ module Admin
     def create
       @article = current_admin.articles.build(article_params)
       if @article.save
+        Articles::SyncPushCampaign.call(@article)
         redirect_to admin_articles_path, notice: "تم حفظ المقال."
       else
         render :new, status: :unprocessable_content
@@ -36,6 +37,7 @@ module Admin
 
     def update
       if @article.update(article_params)
+        Articles::SyncPushCampaign.call(@article)
         redirect_to admin_articles_path, notice: "تم حفظ التعديلات."
       else
         render :edit, status: :unprocessable_content
@@ -61,7 +63,7 @@ module Admin
     end
 
     def article_params
-      params.require(:article).permit(:title, :body, :kind, :published_at)
+      params.require(:article).permit(:title, :body, :kind, :published_at, :notify_topic_id)
     end
   end
 end

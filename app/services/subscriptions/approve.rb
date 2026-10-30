@@ -49,6 +49,7 @@ module Subscriptions
         kind: :subscription_approved,
         dedupe_key: "subscription:#{@subscription.id}:approved",
         data: { subscription_id: @subscription.id },
+        destination: Notifications::Destination.new(screen: "subscription", id: @subscription.id),
         plan: @subscription.subscription_plan.name,
         ends_at: I18n.l(@subscription.ends_at.to_date, locale: I18n.default_locale)
       )

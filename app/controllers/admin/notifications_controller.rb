@@ -25,45 +25,27 @@ module Admin
 
     def new
       @notification = Notification.new(kind: :system_announcement)
-      @users = User.order(:name)
+      @users = User.not_deleted.order(:name)
     end
 
+    # One user: the inbox row and a push to each of their devices (Notifier). Everyone, or a group,
+    # is a campaign to a topic instead (Admin::NotificationCampaignsController).
     def create
-      title = params.dig(:notification, :title).to_s.strip
-      body = params.dig(:notification, :body).to_s.strip
-      kind = params.dig(:notification, :kind).presence || "system_announcement"
-      target = params[:target] # "all" or "specific"
-      user_id = params.dig(:notification, :user_id)
+      attrs = params.require(:notification).permit(:user_id, :title, :body, :screen, :target_id)
+      title = attrs[:title].to_s.strip
+      body = attrs[:body].to_s.strip
+      destination = Notifications::Destination.new(screen: attrs[:screen].presence || "none", id: attrs[:target_id])
+      user = User.not_deleted.find_by(id: attrs[:user_id])
 
-      if title.blank? || body.blank?
-        flash.now[:alert] = "يجب إدخال عنوان الإشعار ونصه."
-        @notification = Notification.new(title:, body:, kind:, user_id:)
-        @users = User.order(:name)
-        return render :new, status: :unprocessable_content
+      error = if title.blank? || body.blank? then "يجب إدخال عنوان الإشعار ونصه."
+      elsif user.nil? then "يجب اختيار المستخدم المستلم."
+      elsif !Notifications::Destination::ADMIN_SCREENS.include?(destination.screen) || !destination.valid?
+        destination.error || "الشاشة غير معروفة."
       end
+      return render_new(attrs, error) if error
 
-      if target == "all"
-        users = User.not_deleted
-        count = 0
-        Notification.transaction do
-          users.find_each do |user|
-            Notification.create!(user:, title:, body:, kind:)
-            count += 1
-          end
-        end
-        redirect_to admin_notifications_path, notice: "تم إرسال الإشعار لجميع المستخدمين (#{count} مستخدم)."
-      else
-        user = User.find_by(id: user_id)
-        unless user
-          flash.now[:alert] = "يجب اختيار المستخدم المستلم."
-          @notification = Notification.new(title:, body:, kind:)
-          @users = User.order(:name)
-          return render :new, status: :unprocessable_content
-        end
-
-        Notification.create!(user:, title:, body:, kind:)
-        redirect_to admin_notifications_path, notice: "تم إرسال الإشعار للمستخدم #{user.name}."
-      end
+      Notifier.notify(user:, kind: :system_announcement, destination:, title:, body:)
+      redirect_to admin_notifications_path, notice: "تم إرسال الإشعار للمستخدم #{user.name}."
     end
 
     def destroy
@@ -71,6 +53,13 @@ module Admin
     end
 
     private
+
+    def render_new(attrs, error)
+      flash.now[:alert] = error
+      @notification = Notification.new(title: attrs[:title], body: attrs[:body], user_id: attrs[:user_id])
+      @users = User.not_deleted.order(:name)
+      render :new, status: :unprocessable_content
+    end
 
     def set_notification
       @notification = Notification.find(params[:id])

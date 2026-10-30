@@ -8,6 +8,12 @@
     <%= f.datetime_local_field :published_at %>
     <div class="hint">اتركه فارغًا ليبقى مسودة. تاريخ مستقبلي = نشر مجدول.</div>
   </div>
+  <div class="field">
+    <%= f.label :notify_topic_id, "إرسال إشعار إلى" %>
+    <%= f.select :notify_topic_id, Topic.order(system: :desc, name: :asc).map { |topic| [ topic.name, topic.id ] },
+          { include_blank: "بدون إشعار" }, class: "select w-full" %>
+    <div class="hint">يُرسل عند النشر، أو في وقت النشر المجدول. لا يُعاد الإرسال بعد تعديل المقال.</div>
+  </div>
   <div class="field full"><%= f.label :body, "المحتوى" %><%= f.text_area :body, rows: 12, required: true %></div>
   </div>
   <div class="form-actions">

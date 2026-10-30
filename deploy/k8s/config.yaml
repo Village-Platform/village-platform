@@ -7,6 +7,9 @@ metadata:
 data:
   RAILS_ENV: production
   RAILS_MAX_THREADS: "3"
+  # Background jobs (push notifications, scheduled campaigns) run in Solid Queue processes forked by
+  # Puma. Move them to their own Deployment when campaigns start competing with web requests.
+  SOLID_QUEUE_IN_PUMA: "1"
   RAILS_LOG_LEVEL: info
   CORS_ORIGINS: "*"
   SUPER_ADMIN_PHONE: "01000000000"

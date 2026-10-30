@@ -19,6 +19,8 @@
         <%= nav_group "عام" do %>
           <%= nav_link "لوحة التحكم", admin_root_path, :home, exact: true %>
           <%= nav_link "الإشعارات", admin_notifications_path, :bell %>
+          <%= nav_link "حملات الإشعارات", admin_notification_campaigns_path, :bell %>
+          <%= nav_link "المواضيع", admin_topics_path, :categories %>
         <% end %>
         <%= nav_group "المحتوى" do %>
           <%= nav_link "التصنيفات", admin_categories_path, :categories %>

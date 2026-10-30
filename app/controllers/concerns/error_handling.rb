@@ -23,6 +23,10 @@ module ErrorHandling
       render_error(:bad_request, "bad_request", details: { param: e.param })
     end
 
+    rescue_from Devices::OwnershipError do
+      render_error(:forbidden, "forbidden")
+    end
+
     rescue_from Pundit::NotAuthorizedError do
       current_user ? render_error(:forbidden, "forbidden") : render_error(:unauthorized, "unauthorized")
     end

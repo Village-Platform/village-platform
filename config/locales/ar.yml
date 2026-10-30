@@ -13,6 +13,7 @@ ar:
       invalid_state: "تمت مراجعة هذا الاشتراك بالفعل."
       invalid_password: "كلمة المرور غير صحيحة."
       duplicate: "هذا العنصر موجود بالفعل."
+      rate_limited: "طلبات كثيرة، حاول مرة أخرى بعد قليل."
       invalid_image_type: "يجب أن تكون صورة بصيغة PNG أو JPEG أو WEBP"
       file_too_large: "يجب أن يكون حجمها أقل من %{size}"
   account_deletions:
@@ -119,3 +120,17 @@ ar:
         subscription_expiring: "تنبيه قرب انتهاء"
         subscription_expired: "انتهاء اشتراك"
         system_announcement: "إعلان إداري"
+    notification_campaign:
+      status:
+        scheduled: "مجدولة"
+        sending: "جارٍ الإرسال"
+        sent: "أُرسلت"
+        failed: "فشلت"
+        canceled: "أُلغيت"
+    destination:
+      screen:
+        none: "صندوق الإشعارات"
+        article: "خبر أو مقال"
+        firm: "نشاط"
+        category: "تصنيف"
+        subscription: "الاشتراك"

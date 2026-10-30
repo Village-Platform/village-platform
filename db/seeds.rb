@@ -60,10 +60,16 @@ FeatureFlag.find_or_create_by!(key: "plans") do |flag|
   flag.description = "إظهار الباقات والاشتراك في التطبيق"
 end
 
+# Push topics. "all" is every device (membership implicit); "news" is listed in the app for opt-in.
+Topic.everyone
+Topic.find_or_create_by!(key: "news") do |topic|
+  topic.assign_attributes(name: "الأخبار", public: true, description: "أخبار القرية ومقالاتها الجديدة")
+end
+
 # Demo data (owners, firms, news) for development and testing only.
 # Never runs in production unless SEED_DEMO=1 is set on purpose.
 if Rails.env.development? || ENV["SEED_DEMO"] == "1"
   load Rails.root.join("db/seeds/demo.rb")
 end
 
-puts "Seeded: #{User.count} users, #{Category.count} categories, #{Article.count} articles, #{SubscriptionPlan.count} plans, #{FeatureFlag.count} feature flags, #{Firm.count} firms, #{Subscription.count} subscriptions"
+puts "Seeded: #{User.count} users, #{Category.count} categories, #{Article.count} articles, #{SubscriptionPlan.count} plans, #{FeatureFlag.count} feature flags, #{Topic.count} topics, #{Firm.count} firms, #{Subscription.count} subscriptions"

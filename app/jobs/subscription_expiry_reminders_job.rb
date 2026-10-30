@@ -38,6 +38,7 @@ class SubscriptionExpiryRemindersJob < ApplicationJob
         kind: :subscription_expiring,
         dedupe_key: "subscription:#{subscription.id}:expiring:#{window}",
         data: { subscription_id: subscription.id, days_left: },
+        destination: Notifications::Destination.new(screen: "subscription", id: subscription.id),
         plan: subscription.subscription_plan.name,
         days: days_left
       )
@@ -52,6 +53,7 @@ class SubscriptionExpiryRemindersJob < ApplicationJob
         kind: :subscription_expired,
         dedupe_key: "subscription:#{subscription.id}:expired",
         data: { subscription_id: subscription.id },
+        destination: Notifications::Destination.new(screen: "subscription", id: subscription.id),
         plan: subscription.subscription_plan.name
       )
     end

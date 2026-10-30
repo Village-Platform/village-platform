@@ -1,0 +1,26 @@
+<%= page_header "المواضيع", subtitle: "مجموعات الإشعارات. يُرسل الإشعار الواحد لكل أعضاء الموضوع دفعة واحدة" do %>
+  <%= link_to new_admin_topic_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إضافة موضوع<% end %>
+<% end %>
+<div class="tbl">
+  <table>
+    <thead><tr><th>الموضوع</th><th>المفتاح</th><th>يظهر في التطبيق</th><th>الأعضاء</th><th></th></tr></thead>
+    <tbody>
+      <% @topics.each do |topic| %>
+        <tr>
+          <td class="cell-main"><%= link_to topic.name, admin_topic_path(topic) %></td>
+          <td><code dir="ltr"><%= topic.key %></code></td>
+          <td><%= topic.system? ? badge("النظام", "gold") : yes_no_badge(topic.public?) %></td>
+          <td><%= topic.system? ? "كل الأجهزة" : @member_counts.fetch(topic.id, 0) %></td>
+          <td class="actions">
+            <% unless topic.system? %>
+              <%= link_to edit_admin_topic_path(topic), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 16) %><% end %>
+              <%= button_to admin_topic_path(topic), method: :delete, class: "btn btn-ghost btn-sm", title: "حذف",
+                    form: { data: { confirm: "حذف الموضوع وكل عضوياته؟" } } do %><%= icon(:trash, size: 16) %><% end %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= empty_state("لا توجد مواضيع بعد.") if @topics.none? %>
+</div>

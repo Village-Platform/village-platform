@@ -38,6 +38,7 @@ module Subscriptions
         kind: :subscription_rejected,
         dedupe_key: "subscription:#{@subscription.id}:rejected",
         data: { subscription_id: @subscription.id },
+        destination: Notifications::Destination.new(screen: "subscription", id: @subscription.id),
         reason: @reason
       )
     rescue StandardError => e

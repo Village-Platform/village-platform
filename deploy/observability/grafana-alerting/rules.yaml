@@ -185,6 +185,55 @@ groups:
         annotations:
           summary: SubscriptionExpiryRemindersJob raised an exception.
 
+      # A bad, expired or wrong-project Firebase key: nothing is being delivered.
+      - uid: aghour-push-auth-error
+        title: FCM rejects our credentials
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 900, to: 0 }
+            datasourceUid: prometheus
+            model:
+              expr: sum(increase(aghour_push_sent_total{result="auth_error"}[15m]))
+              instant: true
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions: [ { evaluator: { type: gt, params: [ 0 ] } } ]
+        for: 0s
+        noDataState: OK
+        execErrState: Error
+        labels: { severity: critical }
+        annotations:
+          summary: FCM answered 401/403. Check FCM_SERVICE_ACCOUNT_JSON in the village-env secret.
+
+      - uid: aghour-push-failing
+        title: Push notifications failing
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 1800, to: 0 }
+            datasourceUid: prometheus
+            model:
+              expr: |
+                sum(increase(aghour_push_sent_total{result=~"invalid|retry"}[30m]))
+                  + sum(increase(aghour_push_campaigns_total{result="failed"}[30m]))
+              instant: true
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions: [ { evaluator: { type: gt, params: [ 3 ] } } ]
+        for: 10m
+        noDataState: OK
+        execErrState: Error
+        labels: { severity: warning }
+        annotations:
+          summary: FCM is refusing or throttling pushes, or a campaign failed. See the web pod logs ([PushNotificationJob] / [DeliverCampaignJob]).
+
       - uid: aghour-subscription-waiting
         title: Subscription waiting for review over 24h
         condition: C

@@ -83,6 +83,26 @@ module Observability
         description: "SubscriptionExpiryRemindersJob runs", attributes: %i[ result ],
         zero: [ { result: "success" }, { result: "failure" } ]
       ),
+      devices_registered: Definition.new(
+        kind: :counter, name: "aghour.push.devices_registered", unit: "{device}",
+        description: "Device registrations; changed = new install, new token or new user", attributes: %i[ result ]
+      ),
+      push_sent: Definition.new(
+        kind: :counter, name: "aghour.push.sent", unit: "{message}",
+        description: "FCM sends by source (system / campaign) and result (ok, invalid, unregistered, auth_error, retry, failed)",
+        attributes: %i[ source result ],
+        zero: [ { source: "system", result: "ok" }, { source: "system", result: "auth_error" },
+                { source: "campaign", result: "ok" }, { source: "campaign", result: "auth_error" } ]
+      ),
+      campaigns_delivered: Definition.new(
+        kind: :counter, name: "aghour.push.campaigns", unit: "{campaign}",
+        description: "Campaign deliveries by outcome", attributes: %i[ result ],
+        zero: [ { result: "sent" }, { result: "failed" }, { result: "canceled" } ]
+      ),
+      push_tokens_pruned: Definition.new(
+        kind: :counter, name: "aghour.push.tokens_pruned", unit: "{device}",
+        description: "Devices deleted because FCM reported their token unregistered or invalid", zero: [ {} ]
+      ),
       reminders_sent: Definition.new(
         kind: :counter, name: "aghour.reminders.sent", unit: "{notification}",
         description: "Reminder notifications sent by the daily job", zero: [ {} ]

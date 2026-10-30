@@ -1,0 +1,27 @@
+<%= page_header "حملة إشعارات جديدة", subtitle: "إشعار واحد يصل لكل أعضاء المواضيع المختارة، ويُحفظ في صندوق كل مستخدم مسجّل" do %>
+  <%= link_to admin_notification_campaigns_path, class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 16) %> كل الحملات<% end %>
+<% end %>
+
+<%= form_with model: [:admin, @campaign], class: "form card" do |f| %>
+  <%= render "admin/shared/errors", record: @campaign %>
+  <div class="form-grid">
+    <div class="field full"><%= f.label :title, "العنوان" %><%= f.text_field :title, required: true, maxlength: 100 %></div>
+    <div class="field full"><%= f.label :body, "النص" %><%= f.text_area :body, rows: 3, required: true, maxlength: 500 %></div>
+    <div class="field full">
+      <span class="lbl">المواضيع (حتى <%= NotificationCampaign::MAX_TOPICS %>)</span>
+      <%= f.collection_check_boxes :topic_ids, @topics, :id, :name do |b| %>
+        <label class="flex items-center gap-1.5 text-xs font-semibold"><%= b.check_box %><span><%= b.text %></span></label>
+      <% end %>
+    </div>
+    <%= render "destination_fields", scope: "notification_campaign", screen: @campaign.screen, target_id: @campaign.target_id %>
+    <div class="field">
+      <%= f.label :scheduled_at, "وقت الإرسال" %>
+      <%= f.datetime_local_field :scheduled_at, value: @campaign.scheduled_at&.strftime("%Y-%m-%dT%H:%M") %>
+      <small class="cell-sub">اتركه فارغًا للإرسال الآن. بتوقيت القاهرة.</small>
+    </div>
+  </div>
+  <div class="form-actions">
+    <%= f.submit "إرسال / جدولة", class: "btn btn-gold" %>
+    <%= link_to "إلغاء", admin_notification_campaigns_path, class: "btn btn-ghost" %>
+  </div>
+<% end %>

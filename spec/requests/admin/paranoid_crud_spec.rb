@@ -209,6 +209,8 @@ RSpec.describe "Admin Full CRUD and Soft Deletion", type: :request do
   end
 
   describe "Notifications management" do
+    include ActiveJob::TestHelper
+
     it "views notifications, sends to a specific user, and deletes" do
       target_user = create(:user, name: "محمود حسن")
 
@@ -218,10 +220,8 @@ RSpec.describe "Admin Full CRUD and Soft Deletion", type: :request do
 
       # Send to specific user
       post "/admin/notifications", params: {
-        target: "specific",
         notification: {
           user_id: target_user.id,
-          kind: "system_announcement",
           title: "تنبيه هام",
           body: "يرجى تحديث بيانات النشاط"
         }
@@ -247,21 +247,18 @@ RSpec.describe "Admin Full CRUD and Soft Deletion", type: :request do
       expect(Notification.exists?(notification.id)).to be(false)
     end
 
-    it "broadcasts notification to all users" do
+    it "broadcasts to all users through a campaign to the everyone topic" do
       create_list(:user, 3)
 
-      expect {
-        post "/admin/notifications", params: {
-          target: "all",
-          notification: {
-            kind: "system_announcement",
-            title: "إعلان عام",
-            body: "أهلاً بأهل القرية جميعاً"
-          }
+      perform_enqueued_jobs do
+        post "/admin/notification_campaigns", params: {
+          notification_campaign: { title: "إعلان عام", body: "أهلاً بأهل القرية جميعاً", screen: "none",
+                                   topic_ids: [ Topic.everyone.id ] }
         }
-      }.to change(Notification, :count).by(User.not_deleted.count)
+      end
 
-      expect(response).to redirect_to("/admin/notifications")
+      expect(Notification.where(title: "إعلان عام").count).to eq(User.not_deleted.count)
+      expect(Fcm.client.deliveries.sole[:topic]).to eq("all")
     end
   end
 end

@@ -1,0 +1,15 @@
+# examples:
+#   periodic_cleanup:
+#     class: CleanSoftDeletedRecordsJob
+#     queue: background
+#     args: [ 1000, { batch_size: 500 } ]
+#     schedule: every hour
+#   periodic_cleanup_with_command:
+#     command: "SoftDeletedRecord.due.delete_all"
+#     priority: 2
+#     schedule: at 5am every day
+
+# No recurring tasks in production: an empty file means Solid Queue starts no scheduler process
+# (one less Ruby process in the 640Mi web pod). Finished jobs are not kept instead of being
+# cleared hourly (config.solid_queue.preserve_finished_jobs = false in production.rb).
+production: {}

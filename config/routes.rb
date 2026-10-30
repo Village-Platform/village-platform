@@ -68,6 +68,12 @@ Rails.application.routes.draw do
       patch :toggle, on: :member
     end
     resources :notifications, only: %i[ index show new create destroy ]
+    resources :notification_campaigns, only: %i[ index show new create ] do
+      patch :cancel, on: :member
+    end
+    resources :topics do
+      resources :members, only: %i[ create destroy ], controller: "topic_members"
+    end
   end
 
   namespace :api do
@@ -94,6 +100,11 @@ Rails.application.routes.draw do
         patch :read, on: :member
         patch :read_all, on: :collection
       end
+      resources :devices, only: :update, param: :installation_id do
+        post :detach, on: :member
+        resources :topics, only: %i[ update destroy ], param: :key, controller: "device_topics"
+      end
+      resources :topics, only: :index
 
       namespace :admin do
         resources :users, only: %i[index update]

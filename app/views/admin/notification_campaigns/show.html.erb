@@ -1,0 +1,33 @@
+<%= page_header @campaign.title do %>
+  <%= link_to admin_notification_campaigns_path, class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 16) %> كل الحملات<% end %>
+  <% if @campaign.scheduled? %>
+    <%= button_to cancel_admin_notification_campaign_path(@campaign), method: :patch, class: "btn btn-ghost",
+          form: { data: { confirm: "إلغاء الحملة؟ لن تُرسل." } } do %><%= icon(:close, size: 16) %> إلغاء الحملة<% end %>
+  <% end %>
+<% end %>
+
+<% destination = @campaign.destination %>
+<section class="card">
+  <dl class="form-grid">
+    <div class="field"><dt class="lbl">الحالة</dt><dd><%= enum_badge(NotificationCampaign, :status, @campaign.status) %></dd></div>
+    <div class="field"><dt class="lbl">وقت الإرسال</dt><dd><%= fmt_time(@campaign.scheduled_at) %></dd></div>
+    <div class="field full"><dt class="lbl">النص</dt><dd><%= @campaign.body %></dd></div>
+    <div class="field"><dt class="lbl">المواضيع</dt><dd><%= @campaign.topics.map(&:name).join("، ") %></dd></div>
+    <div class="field">
+      <dt class="lbl">يفتح عند الضغط</dt>
+      <dd>
+        <%= t("enums.destination.screen.#{destination.screen}") %>
+        <% if destination.screen != "none" %>
+          — <%= destination.target.try(:title) || destination.target.try(:name) || "غير موجود" %>
+        <% end %>
+      </dd>
+    </div>
+    <div class="field"><dt class="lbl">المستلمون في الصندوق</dt><dd><%= @campaign.recipients_count || "—" %></dd></div>
+    <% if @campaign.article %>
+      <div class="field"><dt class="lbl">أُنشئت تلقائيًا من</dt><dd><%= link_to @campaign.article.title, admin_article_path(@campaign.article) %></dd></div>
+    <% end %>
+    <% if @campaign.last_error.present? %>
+      <div class="field full"><dt class="lbl">ملاحظة</dt><dd><%= @campaign.last_error %></dd></div>
+    <% end %>
+  </dl>
+</section>

@@ -9,7 +9,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 JSON API backend (Rails 8.1, Ruby 4.0.1, PostgreSQL) for a village services app in Aghour Al Kubra,
 Egypt. A native Android app is the main client. Arabic is the default locale throughout.
-See `README.md` for the full endpoint table, role matrix and Vercel deploy steps.
+See `README.md` for the full endpoint table, role matrix and deploy steps; `docs/push-notifications.md`
+for the push contract with the Android app.
 
 ## Commands
 
@@ -143,6 +144,24 @@ These are easy to break from a single file and are covered by request specs:
   `key` is a contract with the Android app — `attr_readonly`, never renamed; add new keys to `DEFAULTS`.
 - **`Notifier.notify` is idempotent** via `dedupe_key`. The daily reminder job relies on this —
   running it twice must send nothing new.
+- **Push: the inbox is the source of truth, FCM only delivers.** `Notifier.notify` writes the
+  `notifications` row and enqueues one `PushNotificationJob` per device *in the same transaction*
+  (Solid Queue is in the primary DB, so that is a transactional outbox). Every push carries a
+  destination (`Notifications::Destination`: `screen` from a closed list + `id`); the app opens the
+  inbox for a screen it does not know, so add screens server-side first. Groups and everyone are
+  `NotificationCampaign`s to topics (`DeliverCampaignJob`: one topic send + inbox rows, idempotent,
+  at-least-once). Contract with the app: `docs/push-notifications.md`.
+- **Topic membership lives in our DB, FCM holds a mirror.** `topics` / `topic_subscriptions` (user or
+  guest device) are the truth; `SyncDeviceTopicsJob` reconciles a device with FCM. FCM cannot list
+  members, so never "read back" from it. `Topic.key` is the FCM topic name — `attr_readonly`.
+  `Topic.everyone` (`all`) is implicit membership for every device and creates itself if missing.
+- **Devices belong to an install, not a token.** `devices.installation_id` is stable, `token`
+  rotates. An anonymous request can never modify a device that has a user (`Devices::OwnershipError`
+  → 403); logout calls `detach`, which also pulls the token out of that user's topics.
+- **All Google calls go through `Fcm.client`** (`Fcm::Client`: sends via the `fcm` gem, topic
+  membership via the topicSubscriptions REST API — the gem's topic methods use the deprecated
+  Instance ID API). Specs get `FakeFcm` automatically (`spec/support/fake_fcm.rb`); nothing in the
+  suite reaches the network. No `FCM_SERVICE_ACCOUNT_JSON` = logged no-op.
 - **Payment screenshots are never public.** Controllers authorize first, then redirect to a URL that
   expires in 5 minutes (`ScreenshotRedirect`). Max 4MB, PNG/JPEG/WEBP.
 - **Payment account numbers live in ENV** (`INSTAPAY_ADDRESS`, `VODAFONE_CASH_NUMBER`), surfaced by
@@ -226,6 +245,19 @@ in `spec/jobs/subscription_expiry_reminders_job_spec.rb` (the DST case above).
 Models lean on Rails 8 features already in use here: `enum ... validate: true`, `normalizes`,
 and range-based scopes (`where(starts_at: ..Time.current)`).
 
+## Deployment
+
+Production runs on a single-node k3s cluster (`deploy/k8s/`, `deploy/observability/`); the Vercel
+setup below (`Dockerfile.vercel`, `vercel.json`) is still in the repo.
+
+- Background jobs: **Solid Queue**, tables in the primary database, run inside Puma when
+  `SOLID_QUEUE_IN_PUMA=1` (set in `deploy/k8s/config.yaml` and `.env.example`; otherwise run
+  `bin/jobs`). Production and development use it; test uses `:test`. Move it to its own Deployment
+  before campaigns compete with web requests — and watch memory: the plugin forks extra Ruby
+  processes on a 2 GB node.
+- The daily reminders: a k8s `CronJob` curls `GET /internal/cron/subscription_reminders` with
+  `CRON_SECRET` (Vercel Cron did the same).
+
 ## Deployment constraints (Vercel Container Runtime)
 
 - Request bodies cap at 4.5MB — that is why the screenshot limit is 4MB.
@@ -234,6 +266,6 @@ and range-based scopes (`where(starts_at: ..Time.current)`).
   schema load.
 - The daily job runs via Vercel Cron hitting `GET /internal/cron/subscription_reminders`, guarded by
   a `CRON_SECRET` bearer token compared with `secure_compare` (`Internal::CronController`).
-  Active Job uses the `:async` adapter in-process — there is no separate worker.
+  On Vercel, Solid Queue would need `SOLID_QUEUE_IN_PUMA` and a container that is not scaled to zero.
 - `ruby-vips` is in the `:production` group only (libvips is installed in `Dockerfile.vercel`), so
   image variants can't be exercised locally without installing it.

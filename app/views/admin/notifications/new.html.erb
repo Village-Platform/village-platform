@@ -1,35 +1,18 @@
-<%= page_header "إرسال إشعار جديد", subtitle: "إرسال تنبيه أو إعلان للمستخدمين" do %>
+<%= page_header "إرسال إشعار لمستخدم", subtitle: "يصل لصندوق المستخدم ولكل أجهزته" do %>
   <%= link_to admin_notifications_path, class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 16) %> رجوع للإشعارات<% end %>
 <% end %>
 
 <section class="card">
+  <p class="cell-sub mb-3">
+    للإرسال لكل المستخدمين أو لمجموعة منهم استخدم
+    <%= link_to "حملة إشعارات", new_admin_notification_campaign_path %>.
+  </p>
   <%= form_with url: admin_notifications_path, method: :post, class: "form" do |f| %>
     <div class="field">
-      <label class="lbl">الوجهة المستهدفة</label>
-      <div class="flex gap-4 items-center mb-3">
-        <label class="flex items-center gap-1.5 text-xs font-semibold cursor-pointer">
-          <%= radio_button_tag :target, "specific", true, id: "target_specific" %>
-          <span>مستخدم محدد</span>
-        </label>
-        <label class="flex items-center gap-1.5 text-xs font-semibold cursor-pointer">
-          <%= radio_button_tag :target, "all", false, id: "target_all" %>
-          <span>جميع المستخدمين (إرسال عام)</span>
-        </label>
-      </div>
-    </div>
-
-    <div class="field" id="user_select_container">
       <%= f.label "notification[user_id]", "المستخدم المستلم" %>
       <%= select_tag "notification[user_id]",
             options_from_collection_for_select(@users, :id, ->(u) { "#{u.name} (#{u.phone})" }, params.dig(:notification, :user_id)),
-            { prompt: "اختر المستخدم", class: "select w-full" } %>
-    </div>
-
-    <div class="field">
-      <%= f.label "notification[kind]", "نوع الإشعار" %>
-      <%= select_tag "notification[kind]",
-            options_for_select(enum_options(Notification, :kind), params.dig(:notification, :kind) || "system_announcement"),
-            { class: "select w-full" } %>
+            { prompt: "اختر المستخدم", class: "select w-full", required: true } %>
     </div>
 
     <div class="field">
@@ -44,25 +27,12 @@
             rows: 4, class: "input w-full", placeholder: "اكتب رسالة الإشعار بالتفصيل...", required: true %>
     </div>
 
+    <%= render "admin/notification_campaigns/destination_fields", scope: "notification",
+          screen: params.dig(:notification, :screen) || "none", target_id: params.dig(:notification, :target_id) %>
+
     <div class="form-actions mt-4">
       <%= f.submit "إرسال الإشعار", class: "btn btn-gold" %>
       <%= link_to "إلغاء", admin_notifications_path, class: "btn btn-ghost" %>
     </div>
   <% end %>
 </section>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var specific = document.getElementById("target_specific");
-    var all = document.getElementById("target_all");
-    var container = document.getElementById("user_select_container");
-    if (!specific || !all || !container) return;
-
-    function toggle() {
-      container.style.display = all.checked ? "none" : "block";
-    }
-    specific.addEventListener("change", toggle);
-    all.addEventListener("change", toggle);
-    toggle();
-  });
-</script>

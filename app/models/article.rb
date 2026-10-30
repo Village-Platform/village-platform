@@ -7,7 +7,10 @@ class Article < ApplicationRecord
 
   enum :kind, { news: 0, article: 1, announcement: 2 }, default: :news, validate: true
 
-  belongs_to :author, class_name: "User", inverse_of: :articles, with_deleted: true
+  belongs_to :author, class_name: "User", inverse_of: :articles
+  # Pushed to this topic when the article goes live (Articles::SyncPushCampaign).
+  belongs_to :notify_topic, class_name: "Topic", optional: true
+  has_one :push_campaign, class_name: "NotificationCampaign", dependent: :nullify
 
   scope :published, -> { where(published_at: ..Time.current) }
   scope :latest_first, -> { order(published_at: :desc, id: :desc) }

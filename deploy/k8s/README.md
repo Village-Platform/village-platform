@@ -9,6 +9,7 @@ One VM (Ubuntu 24.04) running k3s, with Docker used only to build the image.
 | Ingress | Traefik (bundled with k3s) on the node's port 80 → `web` Service |
 | Migrations / seeds | `bin/docker-entrypoint` runs `db:prepare_locked` before Puma, as on Vercel |
 | Files | `database` Active Storage service (PostgreSQL), so the web pod stays stateless |
+| Background jobs | Solid Queue, in the primary database, run inside Puma (`SOLID_QUEUE_IN_PUMA=1` in `config.yaml`): push notifications and scheduled campaigns |
 | Daily reminders | `CronJob` at 09:00 Cairo, curls `/internal/cron/subscription_reminders` with `CRON_SECRET` |
 
 ## Secrets
@@ -20,7 +21,8 @@ kubectl -n village create secret generic village-env --from-env-file=/root/villa
   --dry-run=client -o yaml | kubectl apply -f -
 ```
 
-Keys: `SECRET_KEY_BASE`, `CRON_SECRET`, `POSTGRES_PASSWORD`, `SUPER_ADMIN_PASSWORD`.
+Keys: `SECRET_KEY_BASE`, `CRON_SECRET`, `POSTGRES_PASSWORD`, `SUPER_ADMIN_PASSWORD`, `FCM_SERVICE_ACCOUNT_JSON`
+(the **production** Firebase project's service-account key, as one line of JSON; without it pushes are skipped).
 `SUPER_ADMIN_PASSWORD` is only read by the seeds, i.e. on the first boot against an empty database.
 
 ## Deploy a new version

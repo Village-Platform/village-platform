@@ -13,6 +13,7 @@ en:
       invalid_state: "This subscription has already been reviewed."
       invalid_password: "Incorrect password."
       duplicate: "This record already exists."
+      rate_limited: "Too many requests. Try again shortly."
       invalid_image_type: "must be a PNG, JPEG or WEBP image"
       file_too_large: "must be smaller than %{size}"
   account_deletions:

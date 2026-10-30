@@ -16,6 +16,14 @@
   <%= link_to admin_articles_path, class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 16) %> العودة للقائمة<% end %>
 <% end %>
 
+<% if (campaign = @article.push_campaign) %>
+  <div class="card mb-4 flex items-center gap-3">
+    <span class="text-xs">إشعار المقال:</span>
+    <%= enum_badge(NotificationCampaign, :status, campaign.status) %>
+    <%= link_to "عرض الحملة", admin_notification_campaign_path(campaign), class: "btn btn-ghost btn-sm" %>
+  </div>
+<% end %>
+
 <% if @article.deleted? %>
   <div class="card mb-4 border-r-4 border-bad bg-bad/10 p-4 flex flex-wrap items-center justify-between gap-3">
     <div class="flex items-center gap-3">

@@ -53,3 +53,9 @@ gem "tailwindcss-rails", "~> 4.7"
 # Search and filtering for Active Record models
 gem "ransack", "~> 6.0"
 gem "pagy", "~> 43.8"
+
+gem "solid_queue", "~> 1.7"
+
+gem "googleauth", "~> 1.17"
+
+gem "fcm", "~> 2.0"

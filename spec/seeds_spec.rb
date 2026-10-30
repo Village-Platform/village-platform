@@ -86,4 +86,13 @@ RSpec.describe "db/seeds.rb" do
       expect(category.icon_image.filename.to_s).to eq("#{category.icon}.png")
     end
   end
+
+  it "seeds the everyone topic and a public news topic, once" do
+    seed!
+    seed!
+
+    expect(Topic.pluck(:key)).to contain_exactly("all", "news")
+    expect(Topic.find_by!(key: "all")).to have_attributes(system: true, public: false)
+    expect(Topic.find_by!(key: "news")).to have_attributes(system: false, public: true)
+  end
 end

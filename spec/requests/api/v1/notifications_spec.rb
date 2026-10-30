@@ -53,4 +53,30 @@ RSpec.describe "Notifications API", type: :request do
 
     expect(user.notifications.count).to eq(1)
   end
+
+  describe "push" do
+    include ActiveJob::TestHelper
+
+    it "enqueues one push per device of the user when notified" do
+      devices = create_list(:device, 2, user:)
+      create(:device) # someone else's phone
+
+      expect { notify }.to have_enqueued_job(PushNotificationJob).exactly(2).times
+      expect(PushNotificationJob).to have_been_enqueued.with(Notification.last.id, devices.first.id)
+    end
+
+    it "pushes nothing for a duplicate" do
+      create(:device, user:)
+      notify(key: "same")
+      expect { notify(key: "same") }.not_to have_enqueued_job(PushNotificationJob)
+    end
+
+    it "adds the destination to data and keeps subscription_id" do
+      subscription = create(:subscription, user:)
+      Subscriptions::Reject.call(subscription:, reviewer: create(:user, :super_admin), reason: "صورة غير واضحة")
+
+      data = user.notifications.last.data
+      expect(data).to include("subscription_id" => subscription.id, "screen" => "subscription", "id" => subscription.id.to_s)
+    end
+  end
 end

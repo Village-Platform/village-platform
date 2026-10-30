@@ -4,6 +4,16 @@ RSpec.describe "Me API", type: :request do
   describe "DELETE /api/v1/me" do
     let(:user) { create(:user, password: "password123") }
 
+    it "turns the account's phones into guests and drops its topics" do
+      device = create(:device, user:)
+      TopicSubscription.create!(topic: create(:topic), user:)
+
+      delete "/api/v1/me", params: { password: "password123" }, headers: auth_headers(user), as: :json
+
+      expect(device.reload.user).to be_nil
+      expect(TopicSubscription.count).to eq(0)
+    end
+
     it "deletes the account and revokes the token" do
       delete "/api/v1/me", params: { password: "password123" }, headers: auth_headers(user), as: :json
 

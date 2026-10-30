@@ -4,7 +4,8 @@ module Users
   # The users row is kept as an anonymised tombstone: subscriptions are payment records the
   # platform keeps for reconciliation, and they hold a NOT NULL user_id. Everything personal is
   # removed: firms, notifications, payment screenshots, payer phone and notes, and the user's own
-  # name / phone / email / password. Authentication refuses any user with `deleted_at` set.
+  # name / phone / email / password. Their phones become guests and leave the user's push topics.
+  # Authentication refuses any user with `deleted_at` set.
   class DeleteAccount
     DELETED_NAME = "حساب محذوف".freeze
 
@@ -22,6 +23,8 @@ module Users
         # firms the owner had already deleted. Both kinds hold the user's contact details.
         @user.firms.with_deleted.find_each(&:destroy_fully!)
         @user.notifications.delete_all
+        @user.devices.each { |device| Devices::Detach.call(device:) }
+        @user.topic_subscriptions.delete_all
         @user.subscriptions.find_each do |subscription|
           subscription.payment_screenshot.purge if subscription.payment_screenshot.attached?
           subscription.update_columns(payer_phone: nil, notes: nil)

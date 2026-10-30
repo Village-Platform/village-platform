@@ -1,0 +1,27 @@
+<%= page_header "حملات الإشعارات", subtitle: "#{@meta[:total]} حملة" do %>
+  <%= link_to new_admin_notification_campaign_path, class: "btn btn-gold" do %><%= icon(:plus, size: 16) %> حملة جديدة<% end %>
+<% end %>
+
+<div class="mb-4"><%= filter_tabs :status, enum_options(NotificationCampaign, :status) %></div>
+
+<div class="tbl">
+  <% if @campaigns.any? %>
+    <table>
+      <thead><tr><th>العنوان</th><th>المواضيع</th><th>الحالة</th><th>وقت الإرسال</th><th>المستلمون</th></tr></thead>
+      <tbody>
+        <% @campaigns.each do |campaign| %>
+          <tr>
+            <td class="cell-main"><%= link_to campaign.title, admin_notification_campaign_path(campaign) %></td>
+            <td><%= campaign.topics.map(&:name).join("، ") %></td>
+            <td><%= enum_badge(NotificationCampaign, :status, campaign.status) %></td>
+            <td><%= fmt_time(campaign.scheduled_at) %></td>
+            <td><%= campaign.recipients_count || "—" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <%= empty_state("لا توجد حملات بعد.") %>
+  <% end %>
+</div>
+<%= render "admin/shared/pagination", pagy: @pagy %>

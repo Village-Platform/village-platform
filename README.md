@@ -77,6 +77,10 @@ To start fresh: `bin/rails db:reset` (drops and recreates the development databa
 | GET    | `/subscriptions/:id/payment_screenshot` | user (own) |
 | GET    | `/notifications?unread=true`       | user          |
 | PATCH  | `/notifications/:id/read`, `/notifications/read_all` | user |
+| PUT    | `/devices/:installation_id` (`token`, `locale`, `app_version`, `platform`) | public or user — registers the install for push; see `docs/push-notifications.md` |
+| POST   | `/devices/:installation_id/detach` | user (own device) — call on logout |
+| GET    | `/topics` (header `X-Installation-Id`) | public — topics the app can opt into, with `subscribed` |
+| PUT/DELETE | `/devices/:installation_id/topics/:key` | public or user — opt in / out |
 | GET    | `/admin/subscriptions?status=pending`, `/admin/subscriptions/:id` | super_admin |
 | GET    | `/admin/subscriptions/:id/payment_screenshot` | super_admin |
 | PATCH  | `/admin/subscriptions/:id/approve` | super_admin   |

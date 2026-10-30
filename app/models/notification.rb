@@ -13,7 +13,8 @@ class Notification < ApplicationRecord
     system_announcement: 4
   }, validate: true
 
-  belongs_to :user, with_deleted: true
+  belongs_to :user
+  belongs_to :campaign, class_name: "NotificationCampaign", optional: true
 
   scope :unread, -> { where(read_at: nil) }
   scope :latest_first, -> { order(created_at: :desc, id: :desc) }
