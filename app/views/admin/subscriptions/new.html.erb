@@ -1,0 +1,7 @@
+<%= page_header "إضافة اشتراك جديد", subtitle: "تسجيل اشتراك يدوي لمستخدم" do %>
+  <%= link_to admin_subscriptions_path, class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 16) %> رجوع للأرشيف<% end %>
+<% end %>
+
+<section class="card">
+  <%= render "form" %>
+</section>

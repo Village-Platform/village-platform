@@ -38,6 +38,25 @@
       <span class="flex-1">اشتراكات تنتهي هذا الأسبوع</span>
       <b class="count"><%= @stats[:expiring_soon] %></b>
     <% end %>
+    <% if @stats[:total_deleted].positive? %>
+      <div class="mt-4 pt-3 border-t border-line">
+        <div class="text-xs text-muted mb-2 font-semibold flex items-center justify-between">
+          <span>سلة المحذوفات (قابلة للاستعادة)</span>
+          <span class="badge badge-red"><%= @stats[:total_deleted] %></span>
+        </div>
+        <div class="flex gap-2 flex-wrap text-xs">
+          <% if @stats[:deleted_firms].positive? %>
+            <%= link_to "أنشطة محذوفة (#{@stats[:deleted_firms]})", admin_firms_path(deleted: "only"), class: "badge badge-gray hover:text-ink" %>
+          <% end %>
+          <% if @stats[:deleted_users].positive? %>
+            <%= link_to "مستخدمون محذوفون (#{@stats[:deleted_users]})", admin_users_path(deleted: "only"), class: "badge badge-gray hover:text-ink" %>
+          <% end %>
+          <% if @stats[:deleted_articles].positive? %>
+            <%= link_to "مقالات محذوفة (#{@stats[:deleted_articles]})", admin_articles_path(deleted: "only"), class: "badge badge-gray hover:text-ink" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </section>
 
   <section class="card">

@@ -1,0 +1,73 @@
+<%= form_with model: [:admin, @subscription], class: "form" do |f| %>
+  <%= render "admin/shared/errors", record: @subscription %>
+
+  <div class="form-grid">
+    <div class="field">
+      <%= f.label :user_id, "المستخدم" %>
+      <%= f.collection_select :user_id, @users, :id, ->(u) { "#{u.name} (#{u.phone})" },
+            { prompt: "اختر المستخدم" }, { class: "select w-full", required: true } %>
+    </div>
+
+    <div class="field">
+      <%= f.label :subscription_plan_id, "باقة الاشتراك" %>
+      <%= f.collection_select :subscription_plan_id, @plans, :id,
+            ->(p) { "#{p.name} — #{egp(p.price_cents)} (#{p.duration_days} يوم)" },
+            { prompt: "اختر الباقة" }, { class: "select w-full", required: true } %>
+    </div>
+
+    <div class="field">
+      <%= f.label :payment_method, "طريقة الدفع" %>
+      <%= f.select :payment_method, enum_options(Subscription, :payment_method), {}, { class: "select w-full" } %>
+    </div>
+
+    <div class="field">
+      <%= f.label :status, "حالة الاشتراك" %>
+      <%= f.select :status, enum_options(Subscription, :status), {}, { class: "select w-full" } %>
+    </div>
+
+    <div class="field">
+      <%= f.label :amount_cents, "المبلغ بالقرش (مثال: 15000 = 150 ج.م)" %>
+      <%= f.number_field :amount_cents, class: "input w-full", required: true %>
+      <p class="hint">يتم حسابه تلقائياً من الباقة إذا تُرِك كما هو.</p>
+    </div>
+
+    <div class="field">
+      <%= f.label :transaction_reference, "رقم العملية / المرجع" %>
+      <%= f.text_field :transaction_reference, class: "input w-full ltr", placeholder: "MANUAL-..." %>
+      <p class="hint">اتركه فارغاً ليتم توليد رقم مرجعي تلقائي.</p>
+    </div>
+
+    <div class="field">
+      <%= f.label :payer_phone, "رقم هاتف المحوّل (اختياري)" %>
+      <%= f.telephone_field :payer_phone, class: "input w-full ltr" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :starts_at, "تاريخ البدء" %>
+      <%= f.datetime_local_field :starts_at, class: "input w-full" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :ends_at, "تاريخ الانتهاء" %>
+      <%= f.datetime_local_field :ends_at, class: "input w-full" %>
+      <p class="hint">يتم حسابه تلقائياً بناءً على مدة الباقة إذا تُرك فارغاً.</p>
+    </div>
+
+    <div class="field full">
+      <%= f.label :notes, "ملاحظات إدارية" %>
+      <%= f.text_area :notes, rows: 3, class: "input w-full", placeholder: "أية ملاحظات خاصة بهذا الاشتراك..." %>
+    </div>
+
+    <% if @subscription.persisted? && @subscription.rejected? %>
+      <div class="field full">
+        <%= f.label :rejection_reason, "سبب الرفض" %>
+        <%= f.text_area :rejection_reason, rows: 2, class: "input w-full text-bad" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="form-actions mt-4">
+    <%= f.submit @subscription.new_record? ? "إنشاء الاشتراك" : "حفظ التعديلات", class: "btn btn-gold" %>
+    <%= link_to "إلغاء", admin_subscriptions_path, class: "btn btn-ghost" %>
+  </div>
+<% end %>

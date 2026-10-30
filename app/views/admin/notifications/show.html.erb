@@ -1,0 +1,39 @@
+<%= page_header @notification.title, subtitle: enum_label(Notification, :kind, @notification.kind) do %>
+  <%= button_to admin_notification_path(@notification), method: :delete, class: "btn btn-danger",
+        form: { data: { confirm: "حذف هذا الإشعار؟" } } do %><%= icon(:trash, size: 16) %> حذف<% end %>
+  <%= link_to admin_notifications_path, class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 16) %> رجوع للإشعارات<% end %>
+<% end %>
+
+<div class="grid grid-2 mb-4">
+  <section class="card">
+    <div class="card-header"><h2>بيانات الإشعار</h2></div>
+    <dl class="details">
+      <dt>المستلم</dt><dd><%= link_to @notification.user.name, admin_user_path(@notification.user) %> — <span class="ltr"><%= @notification.user.phone %></span></dd>
+      <dt>النوع</dt><dd><%= enum_badge(Notification, :kind, @notification.kind) %></dd>
+      <dt>حالة القراءة</dt>
+      <dd>
+        <% if @notification.read? %>
+          <%= badge("مقروء", "green") %> <span class="text-xs text-muted"><%= fmt_time(@notification.read_at) %></span>
+        <% else %>
+          <%= badge("غير مقروء", "gold") %>
+        <% end %>
+      </dd>
+      <dt>تاريخ الإرسال</dt><dd><%= fmt_time(@notification.created_at) %></dd>
+      <% if @notification.dedupe_key.present? %>
+        <dt>رمز التمييز</dt><dd class="ltr font-mono text-xs"><%= @notification.dedupe_key %></dd>
+      <% end %>
+    </dl>
+  </section>
+
+  <section class="card">
+    <div class="card-header"><h2>نص الإشعار</h2></div>
+    <div class="p-3 bg-surface2 rounded-lg mb-3">
+      <h3 class="font-bold text-sm mb-1"><%= @notification.title %></h3>
+      <p class="text-xs leading-relaxed text-ink"><%= @notification.body %></p>
+    </div>
+    <% if @notification.data.present? && @notification.data.any? %>
+      <div class="card-header mt-3"><h3>البيانات الإضافية</h3></div>
+      <pre class="bg-surface2 p-2 rounded text-xs ltr overflow-x-auto"><%= JSON.pretty_generate(@notification.data) %></pre>
+    <% end %>
+  </section>
+</div>

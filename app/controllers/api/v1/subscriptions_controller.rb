@@ -10,7 +10,7 @@ module Api
       def index
         authorize Subscription
         scope = own_subscriptions.includes(:subscription_plan).with_attached_payment_screenshot.latest_first
-        records, meta = paginate(scope)
+        records, meta = paginate(filter(scope))
         render_collection(records, meta, SubscriptionSerializer)
       end
 

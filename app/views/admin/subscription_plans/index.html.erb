@@ -1,22 +1,55 @@
 <%= page_header "الباقات والأسعار", subtitle: "ما يدفعه أصحاب الأنشطة لإظهار أنشطتهم" do %>
   <%= link_to new_admin_subscription_plan_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إضافة باقة<% end %>
 <% end %>
+
+<div class="flex flex-wrap gap-2 items-center justify-between mb-4">
+  <%= form_with url: admin_subscription_plans_path, method: :get, class: "flex flex-wrap gap-2 items-center" do |f| %>
+    <%= f.search_field :q, value: params[:q], placeholder: "ابحث في الباقات...", class: "w-56 input", "aria-label": "بحث" %>
+    <%= f.select :active, [["الكل", ""], ["المفعّلة", "true"], ["المعطلة", "false"]], { selected: params[:active] }, { class: "w-36 select", "aria-label": "الحالة" } %>
+    <%= button_tag type: "submit", class: "btn btn-ghost", name: nil, title: "تصفية" do %><%= icon(:search, size: 16) %><% end %>
+    <% if params[:q].present? || params[:active].present? %>
+      <%= link_to "إلغاء الفلاتر", admin_subscription_plans_path, class: "btn btn-ghost btn-sm text-xs" %>
+    <% end %>
+  <% end %>
+</div>
+
+<%= advanced_filter(url: admin_subscription_plans_path, carry: %i[ q active ]) do |f| %>
+  <%= filter_range f, :price_egp, "السعر (ج.م)" %>
+  <%= filter_range f, :duration_days, "المدة (يوم)" %>
+  <%= filter_range f, :max_firms, "أقصى أنشطة" %>
+<% end %>
+
 <div class="tbl">
   <% if @plans.any? %>
     <table>
-      <thead><tr><th>الترتيب</th><th>الباقة</th><th>السعر</th><th>المدة</th><th>أقصى أنشطة</th><th>مفعّلة</th><th></th></tr></thead>
+      <thead>
+        <tr>
+          <%= sortable_th "الترتيب", :position %>
+          <%= sortable_th "الباقة", :name %>
+          <%= sortable_th "السعر", :price_cents %>
+          <%= sortable_th "المدة", :duration_days %>
+          <%= sortable_th "أقصى أنشطة", :max_firms %>
+          <%= sortable_th "مفعّلة", :active %>
+          <th>إجراءات</th>
+        </tr>
+      </thead>
       <tbody>
         <% @plans.each do |plan| %>
           <tr>
             <td><%= plan.position %></td>
-            <td class="cell-main"><%= plan.name %></td>
+            <td><%= link_to plan.name, admin_subscription_plan_path(plan), class: "cell-main" %></td>
             <td><%= egp(plan.price_cents) %></td>
             <td><%= plan.duration_days %> يوم</td>
             <td><%= plan.max_firms %></td>
-            <td><%= switch(plan.active) %></td>
+            <td>
+              <%= button_to toggle_admin_subscription_plan_path(plan), method: :patch, class: "switch-btn", title: "تغيير حالة التفعيل" do %>
+                <%= switch(plan.active) %>
+              <% end %>
+            </td>
             <td class="actions">
+              <%= link_to admin_subscription_plan_path(plan), class: "btn btn-ghost btn-sm", title: "عرض" do %><%= icon(:eye, size: 16) %><% end %>
               <%= link_to edit_admin_subscription_plan_path(plan), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 16) %><% end %>
-              <%= button_to admin_subscription_plan_path(plan), method: :delete, class: "btn btn-ghost btn-sm", title: "حذف",
+              <%= button_to admin_subscription_plan_path(plan), method: :delete, class: "btn btn-ghost btn-sm text-bad", title: "حذف",
                     form: { data: { confirm: "حذف الباقة؟ الباقات المشتراة لا تُحذف، أوقفها بدلاً من ذلك." } } do %><%= icon(:trash, size: 16) %><% end %>
             </td>
           </tr>

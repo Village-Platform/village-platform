@@ -15,6 +15,7 @@ module Api
         scope = params[:mine].present? && current_user ? scope.where(owner_id: current_user.id) : scope.visible
         scope = scope.where(category_id: params[:category_id]) if params[:category_id].present?
         scope = scope.search(params[:q]) if params[:q].present?
+        scope = filter(scope)
 
         records, meta = paginate(scope)
         render_collection(records, meta, FirmSerializer, user: current_user)

@@ -1,5 +1,9 @@
 class Article < ApplicationRecord
   acts_as_paranoid
+  # `author` is admin-only: it leads to a User, and through it to a phone number.
+  ransack_tiers public: %w[ id title kind published_at ],
+                admin: %w[ body author_id created_at updated_at deleted_at ],
+                admin_associations: %w[ author ]
 
   enum :kind, { news: 0, article: 1, announcement: 2 }, default: :news, validate: true
 
@@ -13,5 +17,9 @@ class Article < ApplicationRecord
 
   def published?
     published_at.present? && published_at <= Time.current
+  end
+
+  def self.ransackable_scopes(auth_object = nil)
+    %w[ published ]
   end
 end

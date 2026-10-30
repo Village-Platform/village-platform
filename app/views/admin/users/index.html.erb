@@ -1,37 +1,100 @@
-<%= page_header "المستخدمون", subtitle: "سكان القرية وأصحاب الأنشطة ومديرو النظام" do %>
+<%= page_header "المستخدمون", subtitle: "#{@meta[:total]} مستخدم مسجل في النظام" do %>
   <%= link_to new_admin_user_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إضافة مستخدم<% end %>
 <% end %>
 
-<div class="flex flex-wrap gap-2 items-center">
-  <%= filter_tabs :role, enum_options(User, :role) %>
-  <div class="flex-1"></div>
+<div class="flex flex-col gap-3 mb-4">
+  <div class="flex flex-wrap gap-2 items-center justify-between">
+    <%= filter_tabs :role, enum_options(User, :role) %>
+    <div class="flex gap-2 items-center">
+      <%= link_to url_for(filter_params(deleted: params[:deleted] == "only" ? nil : "only", page: nil)),
+            class: [ "tab", ("tab-on bg-bad text-white border-bad" if params[:deleted] == "only") ] do %>
+        <span>المحذوفات</span>
+        <% if @deleted_count.positive? %>
+          <span class="badge <%= params[:deleted] == "only" ? "badge-gray" : "badge-red" %>"><%= @deleted_count %></span>
+        <% end %>
+      <% end %>
+      <% if params[:role].present? || params[:q].present? || params[:deleted].present? %>
+        <%= link_to "إلغاء الفلاتر", admin_users_path, class: "btn btn-ghost btn-sm text-xs" %>
+      <% end %>
+    </div>
+  </div>
+
   <%= form_with url: admin_users_path, method: :get, class: "flex flex-wrap gap-2 items-center" do |f| %>
-    <%= f.hidden_field :role, value: params[:role] %>
+    <%= f.hidden_field :role, value: params[:role] if params[:role].present? %>
+    <%= f.hidden_field :deleted, value: params[:deleted] if params[:deleted].present? %>
     <%= search_combobox("users") do |attrs| %>
-      <%= f.search_field :q, value: params[:q], placeholder: "الاسم أو الهاتف أو البريد", class: "w-52", "aria-label": "بحث", **attrs %>
+      <%= f.search_field :q, value: params[:q], placeholder: "الاسم أو الهاتف أو البريد...", class: "w-64", "aria-label": "بحث", **attrs %>
     <% end %>
     <%= button_tag type: "submit", class: "btn btn-ghost", name: nil, title: "تصفية" do %><%= icon(:search, size: 16) %><% end %>
   <% end %>
 </div>
 
+<%= advanced_filter(url: admin_users_path, carry: %i[ q role deleted ]) do |f| %>
+  <%= filter_text f, :name_cont, "الاسم" %>
+  <%= filter_text f, :phone_start, "الهاتف", ltr: true %>
+  <%= filter_text f, :email_cont, "البريد", ltr: true %>
+  <%= filter_range f, :created_at, "تاريخ التسجيل", as: :date %>
+<% end %>
+
 <div class="tbl">
   <% if @users.any? %>
     <table>
-      <thead><tr><th>الاسم</th><th>الهاتف</th><th>البريد</th><th>الصلاحية</th><th>تاريخ التسجيل</th></tr></thead>
+      <thead>
+        <tr>
+          <%= sortable_th "الاسم", :name %>
+          <%= sortable_th "الهاتف", :phone %>
+          <%= sortable_th "البريد", :email %>
+          <%= sortable_th "الصلاحية", :role %>
+          <%= sortable_th "تاريخ التسجيل", :created_at %>
+          <th>إجراءات</th>
+        </tr>
+      </thead>
       <tbody>
         <% @users.each do |user| %>
-          <tr>
-            <td><span class="avatar" style="width:30px;height:30px;font-size:.8rem;display:inline-grid;margin-inline-end:8px"><%= initials(user.name) %></span><%= link_to user.name, admin_user_path(user), class: "cell-main" %></td>
+          <tr class="<%= "opacity-75 bg-bad/5" if user.deleted? %>">
+            <td>
+              <span class="avatar" style="width:30px;height:30px;font-size:.8rem;display:inline-grid;margin-inline-end:8px"><%= initials(user.name) %></span>
+              <%= link_to user.name, admin_user_path(user), class: "cell-main" %>
+              <% if user.deleted? %>
+                <span class="cell-sub text-bad">حُذف في: <%= fmt_time(user.deleted_at) %></span>
+              <% end %>
+            </td>
             <td class="ltr"><%= user.phone %></td>
             <td class="ltr"><%= user.email.presence || "—" %></td>
-            <td><%= enum_badge(User, :role, user.role) %></td>
+            <td>
+              <% if user.deleted? %>
+                <%= badge("محذوف", "red") %>
+              <% else %>
+                <%= enum_badge(User, :role, user.role) %>
+              <% end %>
+            </td>
             <td><%= fmt_date(user.created_at) %></td>
+            <td class="actions">
+              <% if user.deleted? %>
+                <%= button_to restore_admin_user_path(user), method: :patch, class: "btn btn-gold btn-sm", title: "استعادة" do %>
+                  <%= icon(:restore, size: 14) %> استعادة
+                <% end %>
+                <% unless user == current_admin %>
+                  <%= button_to destroy_fully_admin_user_path(user), method: :delete, class: "btn btn-danger btn-sm", title: "حذف نهائي",
+                        form: { data: { confirm: "هل أنت متأكد من الحذف النهائي للمستخدم؟ لا يمكن التراجع!" } } do %>
+                    <%= icon(:trash, size: 14) %>
+                  <% end %>
+                <% end %>
+              <% else %>
+                <%= link_to edit_admin_user_path(user), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 14) %><% end %>
+                <% unless user == current_admin %>
+                  <%= button_to admin_user_path(user), method: :delete, class: "btn btn-ghost btn-sm text-bad", title: "حذف مؤقت",
+                        form: { data: { confirm: "نقل هذا المستخدم إلى المحذوفات؟" } } do %><%= icon(:trash, size: 14) %><% end %>
+                <% end %>
+              <% end %>
+              <%= link_to admin_user_path(user), class: "btn btn-ghost btn-sm", title: "عرض" do %><%= icon(:eye, size: 14) %><% end %>
+            </td>
           </tr>
         <% end %>
       </tbody>
     </table>
   <% else %>
-    <%= empty_state("لا توجد نتائج.") %>
+    <%= empty_state(params[:deleted] == "only" ? "لا يوجد مستخدمون في سلة المحذوفات." : "لا توجد نتائج.") %>
   <% end %>
 </div>
-<%= render "admin/shared/pagination", meta: @meta %>
+<%= render "admin/shared/pagination", pagy: @pagy %>

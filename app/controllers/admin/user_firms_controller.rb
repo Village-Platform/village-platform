@@ -8,17 +8,17 @@ module Admin
     before_action :set_user
 
     def create
-      reassign(Firm.find(params[:firm_id]), @user)
+      reassign(Firm.with_deleted.find(params[:firm_id]), @user)
     end
 
     def destroy
-      reassign(@user.firms.find(params[:id]), User.find_by(id: params[:new_owner_id]))
+      reassign(@user.firms.with_deleted.find(params[:id]), User.find_by(id: params[:new_owner_id]))
     end
 
     private
 
     def set_user
-      @user = User.find(params[:user_id])
+      @user = User.with_deleted.find(params[:user_id])
     end
 
     def reassign(firm, new_owner)

@@ -32,6 +32,9 @@ en:
     subscription_expired:
       title: "Your subscription has ended"
       body: "Your %{plan} subscription has ended and your firm is hidden. Renew to show it again."
+    system_announcement:
+      title: "%{title}"
+      body: "%{body}"
   payment_methods:
     instapay: "InstaPay"
     vodafone_cash: "Vodafone Cash"

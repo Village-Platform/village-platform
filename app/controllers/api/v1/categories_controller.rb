@@ -5,7 +5,7 @@ module Api
       before_action :set_category, only: %i[show update destroy icon]
 
       def index
-        records, meta = paginate(policy_scope(Category).with_attached_icon_image.ordered)
+        records, meta = paginate(filter(policy_scope(Category).with_attached_icon_image.ordered))
         render_collection(records, meta, CategorySerializer)
       end
 

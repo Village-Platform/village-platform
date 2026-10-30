@@ -9,7 +9,7 @@ module Api
         scope = current_user.notifications.latest_first
         scope = scope.unread if params[:unread].present?
 
-        records, meta = paginate(scope)
+        records, meta = paginate(filter(scope))
         meta[:unread_count] = current_user.notifications.unread.count
         render_collection(records, meta, NotificationSerializer)
       end

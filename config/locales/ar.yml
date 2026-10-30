@@ -32,6 +32,9 @@ ar:
     subscription_expired:
       title: "انتهى اشتراكك"
       body: "انتهى اشتراكك في باقة %{plan} وتم إخفاء منشأتك. جدّد الاشتراك لإظهارها مرة أخرى."
+    system_announcement:
+      title: "%{title}"
+      body: "%{body}"
   payment_methods:
     instapay: "إنستاباي"
     vodafone_cash: "فودافون كاش"
@@ -109,3 +112,10 @@ ar:
         scheduled: "مجدول (تجديد)"
         current: "ساري"
         expired: "منتهي"
+    notification:
+      kind:
+        subscription_approved: "تفعيل اشتراك"
+        subscription_rejected: "رفض اشتراك"
+        subscription_expiring: "تنبيه قرب انتهاء"
+        subscription_expired: "انتهاء اشتراك"
+        system_announcement: "إعلان إداري"

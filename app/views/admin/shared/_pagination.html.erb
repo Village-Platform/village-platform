@@ -1,11 +1,8 @@
-<% if meta[:total_pages] > 1 %>
-  <nav class="pagination">
-    <% if meta[:page] > 1 %>
-      <%= link_to "السابق", url_for(filter_params(page: meta[:page] - 1)), class: "btn btn-ghost btn-sm" %>
-    <% end %>
-    <span>صفحة <%= meta[:page] %> من <%= meta[:total_pages] %> (<%= meta[:total] %>)</span>
-    <% if meta[:page] < meta[:total_pages] %>
-      <%= link_to "التالي", url_for(filter_params(page: meta[:page] + 1)), class: "btn btn-ghost btn-sm" %>
-    <% end %>
-  </nav>
+<%# Pagy builds these links from the request's own path and query string, so the text search,
+    status tab and advanced filters (f[...]) all survive a page change. %>
+<% if pagy.last > 1 %>
+  <div class="pagination">
+    <%== pagy.series_nav(aria_label: "الصفحات") %>
+    <span><%= pagy.from %>–<%= pagy.to %> من <%= pagy.count %></span>
+  </div>
 <% end %>

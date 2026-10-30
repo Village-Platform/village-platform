@@ -1,0 +1,7 @@
+<%= page_header "تعديل اشتراك ##{@subscription.id}", subtitle: "#{@subscription.user.name} — #{@subscription.subscription_plan.name}" do %>
+  <%= link_to admin_subscription_path(@subscription), class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 16) %> رجوع للتفاصيل<% end %>
+<% end %>
+
+<section class="card">
+  <%= render "form" %>
+</section>

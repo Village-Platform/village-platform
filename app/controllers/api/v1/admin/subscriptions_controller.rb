@@ -14,7 +14,7 @@ module Api
           scope = Subscription.includes(:subscription_plan, :user).with_attached_payment_screenshot.latest_first
           scope = scope.where(status: params[:status]) if Subscription.statuses.key?(params[:status])
 
-          records, meta = paginate(scope)
+          records, meta = paginate(filter(scope))
           render json: { data: records.map { SubscriptionSerializer.render(_1, include_user: true) }, meta: }
         end
 

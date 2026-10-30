@@ -10,7 +10,7 @@ module Api
           scope = User.order(:id)
           scope = scope.where(role: params[:role]) if User.roles.key?(params[:role])
 
-          records, meta = paginate(scope)
+          records, meta = paginate(filter(scope))
           render_collection(records, meta, UserSerializer)
         end
 

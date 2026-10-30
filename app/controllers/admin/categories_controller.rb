@@ -1,10 +1,18 @@
 module Admin
   class CategoriesController < BaseController
-    before_action :set_category, only: %i[edit update destroy]
+    before_action :set_category, only: %i[show edit update destroy toggle]
 
     def index
-      @categories = Category.with_attached_icon_image.ordered
+      scope = Category.with_attached_icon_image.ordered
+      scope = scope.where(active: params[:active] == "true") if params[:active].in?(%w[true false])
+      scope = scope.where("categories.name ILIKE ?", like(params[:q])) if params[:q].present?
+      @categories = filter(scope)
       @firm_counts = Firm.group(:category_id).count
+    end
+
+    def show
+      @firms, @meta = paginate(@category.firms.with_deleted.includes(:owner).order(:name))
+      @visible_ids = Firm.visible.where(id: @firms.map(&:id)).pluck(:id).to_set
     end
 
     def new
@@ -29,6 +37,11 @@ module Admin
       else
         render :edit, status: :unprocessable_content
       end
+    end
+
+    def toggle
+      @category.update!(active: !@category.active)
+      redirect_back_or_to admin_categories_path, notice: "تم تحديث حالة تفعيل التصنيف."
     end
 
     def destroy

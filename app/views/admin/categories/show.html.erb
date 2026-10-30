@@ -1,0 +1,86 @@
+<%= page_header @category.name, subtitle: "الترتيب: #{@category.position} · #{@firms.size} نشاط" do %>
+  <%= button_to toggle_admin_category_path(@category), method: :patch, class: "btn btn-ghost" do %>
+    <%= @category.active? ? "تعطيل التصنيف" : "تفعيل التصنيف" %>
+  <% end %>
+  <%= link_to edit_admin_category_path(@category), class: "btn btn-ghost" do %><%= icon(:edit, size: 16) %> تعديل<% end %>
+  <%= button_to admin_category_path(@category), method: :delete, class: "btn btn-danger",
+        form: { data: { confirm: "حذف هذا التصنيف؟ لن يمكن الحذف إذا كانت هناك أنشطة مرتبطة." } } do %>
+    <%= icon(:trash, size: 16) %> حذف
+  <% end %>
+  <%= link_to admin_categories_path, class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 16) %> العودة للتصنيفات<% end %>
+<% end %>
+
+<div class="grid grid-2 mb-4">
+  <section class="card">
+    <div class="card-header"><h2>بيانات التصنيف</h2></div>
+    <dl class="details">
+      <dt>الاسم</dt><dd><strong><%= @category.name %></strong></dd>
+      <dt>الحالة</dt><dd><%= yes_no_badge(@category.active) %></dd>
+      <dt>الترتيب</dt><dd><%= @category.position %></dd>
+      <dt>رمز الأيقونة</dt><dd class="ltr"><%= @category.icon.presence || "—" %></dd>
+      <dt>الوصف</dt><dd><%= @category.description.presence || "—" %></dd>
+    </dl>
+  </section>
+
+  <section class="card">
+    <div class="card-header"><h2>أيقونة التصنيف</h2></div>
+    <div class="flex items-center justify-center p-6">
+      <% if @category.icon_image.attached? %>
+        <%= image_tag url_for(@category.icon_image), class: "cat-icon-lg", alt: @category.name %>
+      <% else %>
+        <%= empty_state("لا توجد صورة مخصصة (يتم استخدام الرمز الافتراضي).") %>
+      <% end %>
+    </div>
+  </section>
+</div>
+
+<section class="card">
+  <div class="card-header">
+    <h2>الأنشطة التابعة لهذا التصنيف</h2>
+    <%= link_to new_admin_firm_path(category_id: @category.id), class: "btn btn-ghost btn-sm text-xs" do %>
+      <%= icon(:plus, size: 14) %> إضافة نشاط في هذا التصنيف
+    <% end %>
+  </div>
+
+  <% if @firms.any? %>
+    <div class="tbl">
+      <table>
+        <thead>
+          <tr>
+            <th>النشاط</th>
+            <th>المالك</th>
+            <th>الحالة</th>
+            <th>ظاهر</th>
+            <th>إجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @firms.each do |firm| %>
+            <tr class="<%= "opacity-75 bg-bad/5" if firm.deleted? %>">
+              <td>
+                <%= link_to firm.name, admin_firm_path(firm), class: "cell-main" %>
+                <% if firm.deleted? %><span class="cell-sub text-bad">محذوف</span><% end %>
+              </td>
+              <td><%= link_to firm.owner.name, admin_user_path(firm.owner) %></td>
+              <td>
+                <% if firm.deleted? %>
+                  <%= badge("محذوف", "red") %>
+                <% else %>
+                  <%= enum_badge(Firm, :status, firm.status) %>
+                <% end %>
+              </td>
+              <td><%= switch(!firm.deleted? && @visible_ids.include?(firm.id)) %></td>
+              <td class="actions">
+                <%= link_to admin_firm_path(firm), class: "btn btn-ghost btn-sm", title: "عرض" do %><%= icon(:eye, size: 14) %><% end %>
+                <%= link_to edit_admin_firm_path(firm), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 14) %><% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= render "admin/shared/pagination", pagy: @pagy %>
+  <% else %>
+    <%= empty_state("لا توجد أنشطة في هذا التصنيف.") %>
+  <% end %>
+</section>

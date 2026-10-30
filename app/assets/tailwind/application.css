@@ -585,7 +585,24 @@
     @apply bg-bad/10 text-bad;
   }
   .pagination {
-    @apply flex gap-2 items-center justify-center mt-4 text-[11px] text-muted;
+    @apply flex flex-wrap gap-3 items-center justify-center mt-4 text-[11px] text-muted;
+  }
+  /* Pagy's series_nav: plain <a> tags; the current page and the disabled ends carry aria-*. */
+  .pagination .pagy {
+    @apply flex flex-wrap gap-1 items-center;
+  }
+  .pagination .pagy a {
+    @apply min-w-8 h-8 px-2 inline-flex items-center justify-center rounded-lg border border-line
+      text-xs font-semibold text-ink no-underline hover:bg-surface2;
+  }
+  .pagination .pagy a[aria-current="page"] {
+    @apply bg-gold/15 border-gold/40 text-goldink;
+  }
+  .pagination .pagy a[aria-disabled="true"]:not([aria-current]) {
+    @apply opacity-40 pointer-events-none;
+  }
+  .pagination .pagy a[role="separator"] {
+    @apply border-transparent;
   }
 
   .screenshot {
@@ -601,6 +618,22 @@
   .icon {
     @apply shrink-0 align-middle inline-block;
   }
+
+  /* ---------- advanced filter (ransack) ---------- */
+  .adv-filter { @apply bg-surface border border-line rounded-xl; }
+  .adv-filter > summary {
+    @apply flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-muted cursor-pointer
+           select-none list-none;
+  }
+  .adv-filter > summary::-webkit-details-marker { display: none; }
+  .adv-filter[open] > summary { @apply text-ink border-b border-line; }
+  .adv-filter-form { @apply p-3; }
+  .adv-filter-grid { @apply grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4; }
+  .adv-field { @apply flex flex-col gap-1 min-w-0; }
+  .adv-range { @apply grid grid-cols-2 gap-1.5; }
+  .adv-filter-actions { @apply flex gap-2 mt-3 pt-3 border-t border-line; }
+  .th-sort { @apply text-muted no-underline hover:text-ink; }
+  th[aria-sort="ascending"] .th-sort, th[aria-sort="descending"] .th-sort { @apply text-goldink font-bold; }
 
   /* ---------- login ---------- */
   .auth {

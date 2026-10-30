@@ -18,6 +18,7 @@
       <nav aria-label="القائمة الرئيسية">
         <%= nav_group "عام" do %>
           <%= nav_link "لوحة التحكم", admin_root_path, :home, exact: true %>
+          <%= nav_link "الإشعارات", admin_notifications_path, :bell %>
         <% end %>
         <%= nav_group "المحتوى" do %>
           <%= nav_link "التصنيفات", admin_categories_path, :categories %>

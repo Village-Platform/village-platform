@@ -1,4 +1,8 @@
 class Category < ApplicationRecord
+  ransack_tiers public: %w[ id name description icon position active ],
+                admin: %w[ created_at updated_at ],
+                admin_associations: %w[ firms ]
+
   # Formats Android decodes without extra libraries (no SVG). Icons are small tiles, so the cap is low.
   ICON_CONTENT_TYPES = %w[image/png image/jpeg image/webp].freeze
   ICON_MAX_SIZE = 512.kilobytes
@@ -41,6 +45,10 @@ class Category < ApplicationRecord
 
     icon_image.attach(io: path.open("rb"), filename: path.basename.to_s, content_type: "image/png")
     true
+  end
+
+  def self.ransackable_scopes(auth_object = nil)
+    %w[ active ordered ]
   end
 
   private

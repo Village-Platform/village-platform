@@ -1,0 +1,87 @@
+<%= page_header @plan.name, subtitle: "#{egp(@plan.price_cents)} · #{@plan.duration_days} يوماً · #{@subscriptions.size} مشتركاً" do %>
+  <%= button_to toggle_admin_subscription_plan_path(@plan), method: :patch, class: "btn btn-ghost" do %>
+    <%= @plan.active? ? "تعطيل الباقة" : "تفعيل الباقة" %>
+  <% end %>
+  <%= link_to edit_admin_subscription_plan_path(@plan), class: "btn btn-ghost" do %><%= icon(:edit, size: 16) %> تعديل<% end %>
+  <%= button_to admin_subscription_plan_path(@plan), method: :delete, class: "btn btn-danger",
+        form: { data: { confirm: "حذف هذه الباقة؟ لن يمكن الحذف إذا كانت هناك اشتراكات مرتبطة." } } do %>
+    <%= icon(:trash, size: 16) %> حذف
+  <% end %>
+  <%= link_to admin_subscription_plans_path, class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 16) %> العودة للباقات<% end %>
+<% end %>
+
+<div class="grid grid-2 mb-4">
+  <section class="card">
+    <div class="card-header"><h2>تفاصيل الباقة</h2></div>
+    <dl class="details">
+      <dt>الاسم</dt><dd><strong><%= @plan.name %></strong></dd>
+      <dt>السعر</dt><dd><strong><%= egp(@plan.price_cents) %></strong></dd>
+      <dt>المدة</dt><dd><%= @plan.duration_days %> يوماً</dd>
+      <dt>الحد الأقصى للأنشطة</dt><dd><%= @plan.max_firms %> أنشطة</dd>
+      <dt>الحالة</dt><dd><%= yes_no_badge(@plan.active) %></dd>
+      <dt>الترتيب</dt><dd><%= @plan.position %></dd>
+      <dt>الوصف</dt><dd><%= @plan.description.presence || "—" %></dd>
+    </dl>
+  </section>
+
+  <section class="card">
+    <div class="card-header"><h2>إحصائيات الباقة</h2></div>
+    <div class="stats mb-3">
+      <div class="stat">
+        <span class="label">إجمالي الاشتراكات</span>
+        <span class="value"><%= @plan.subscriptions.count %></span>
+      </div>
+      <div class="stat">
+        <span class="label">الاشتراكات الفعالة</span>
+        <span class="value text-ok"><%= @plan.subscriptions.active.count %></span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="card">
+  <div class="card-header">
+    <h2>المشتركون في هذه الباقة</h2>
+    <%= link_to new_admin_subscription_path(subscription_plan_id: @plan.id), class: "btn btn-ghost btn-sm text-xs" do %>
+      <%= icon(:plus, size: 14) %> إضافة اشتراك في هذه الباقة
+    <% end %>
+  </div>
+
+  <% if @subscriptions.any? %>
+    <div class="tbl">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>المشترك</th>
+            <th>المبلغ</th>
+            <th>الحالة</th>
+            <th>الوضع</th>
+            <th>يبدأ</th>
+            <th>ينتهي</th>
+            <th>إجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @subscriptions.each do |s| %>
+            <tr>
+              <td><%= s.id %></td>
+              <td><%= link_to s.user.name, admin_user_path(s.user), class: "cell-main" %></td>
+              <td><%= egp(s.amount_cents) %></td>
+              <td><%= enum_badge(Subscription, :status, s.status) %></td>
+              <td><%= enum_badge(Subscription, :state, s.state) %></td>
+              <td><%= fmt_date(s.starts_at) %></td>
+              <td><%= fmt_date(s.ends_at) %></td>
+              <td class="actions">
+                <%= link_to admin_subscription_path(s), class: "btn btn-ghost btn-sm", title: "عرض" do %><%= icon(:eye, size: 14) %><% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= render "admin/shared/pagination", pagy: @pagy %>
+  <% else %>
+    <%= empty_state("لا توجد اشتراكات مسجلة في هذه الباقة بعد.") %>
+  <% end %>
+</section>

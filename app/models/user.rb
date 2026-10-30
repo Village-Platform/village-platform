@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+  # No public endpoint lists users, and no public association reaches one: nothing is public.
+  ransack_tiers admin: %w[ id name phone email role created_at updated_at deleted_at ],
+                admin_associations: %w[ firms articles subscriptions ]
+
   has_secure_password
   acts_as_paranoid
 
@@ -40,5 +44,9 @@ class User < ApplicationRecord
 
     subscription = current_subscription
     subscription.present? && firms.count < subscription.subscription_plan.max_firms
+  end
+
+  def self.ransackable_scopes(auth_object = nil)
+    %w[ not_deleted ]
   end
 end

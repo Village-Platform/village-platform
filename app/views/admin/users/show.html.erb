@@ -1,18 +1,63 @@
 <%= page_header @user.name, subtitle: @user.phone do %>
-  <%= enum_badge(User, :role, @user.role) %>
-  <%= link_to edit_admin_user_path(@user), class: "btn btn-ghost" do %><%= icon(:edit, size: 18) %> تعديل<% end %>
+  <% if @user.deleted? %>
+    <%= badge("محذوف", "red") %>
+    <%= button_to restore_admin_user_path(@user), method: :patch, class: "btn btn-gold" do %>
+      <%= icon(:restore, size: 16) %> استعادة الحساب
+    <% end %>
+    <% unless @user == current_admin %>
+      <%= button_to destroy_fully_admin_user_path(@user), method: :delete, class: "btn btn-danger",
+            form: { data: { confirm: "هل أنت متأكد من الحذف النهائي للمستخدم؟ لا يمكن التراجع عن هذا الإجراء!" } } do %>
+        <%= icon(:trash, size: 16) %> حذف نهائي
+      <% end %>
+    <% end %>
+  <% else %>
+    <%= enum_badge(User, :role, @user.role) %>
+    <%= link_to new_admin_subscription_path(user_id: @user.id), class: "btn btn-sm" do %>
+      <%= icon(:plus, size: 14) %> إضافة اشتراك
+    <% end %>
+    <%= link_to edit_admin_user_path(@user), class: "btn btn-ghost" do %><%= icon(:edit, size: 16) %> تعديل<% end %>
+    <% unless @user == current_admin %>
+      <%= button_to admin_user_path(@user), method: :delete, class: "btn btn-danger",
+            form: { data: { confirm: "نقل هذا المستخدم إلى سلة المحذوفات؟" } } do %>
+        <%= icon(:trash, size: 16) %> حذف
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% if @user.deleted? %>
+  <div class="card mb-4 border-r-4 border-bad bg-bad/10 p-4 flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <span class="badge badge-red text-xs">حساب محذوف</span>
+      <span class="text-xs">تم حذف هذا المستخدم بتاريخ <%= fmt_time(@user.deleted_at) %> (<%= time_ago_in_words(@user.deleted_at) %>).</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <%= button_to restore_admin_user_path(@user), method: :patch, class: "btn btn-sm btn-gold" do %>
+        <%= icon(:restore, size: 14) %> استعادة الحساب
+      <% end %>
+      <% unless @user == current_admin %>
+        <%= button_to destroy_fully_admin_user_path(@user), method: :delete, class: "btn btn-sm btn-danger",
+              form: { data: { confirm: "هل أنت متأكد من الحذف النهائي للمستخدم؟ لا يمكن التراجع عن هذا الإجراء!" } } do %>
+          <%= icon(:trash, size: 14) %> حذف نهائي
+        <% end %>
+      <% end %>
+    </div>
+  </div>
 <% end %>
 
 <section class="card">
-  <div class="card-header"><h2>البيانات</h2></div>
+  <div class="card-header"><h2>البيانات الشخصية</h2></div>
   <dl class="details">
     <dt>الهاتف</dt><dd class="ltr"><%= @user.phone %></dd>
     <dt>البريد</dt><dd class="ltr"><%= @user.email.presence || "—" %></dd>
     <dt>تاريخ التسجيل</dt><dd><%= fmt_time(@user.created_at) %></dd>
+    <% if @user.deleted? %>
+      <dt>تاريخ الحذف</dt><dd class="text-bad"><%= fmt_time(@user.deleted_at) %> (<%= time_ago_in_words(@user.deleted_at) %>)</dd>
+    <% end %>
     <dt>الاشتراك الحالي</dt>
     <dd>
       <% if @current_subscription %>
-        <%= @current_subscription.subscription_plan.name %> — حتى <%= fmt_date(@current_subscription.ends_at) %>
+        <%= link_to @current_subscription.subscription_plan.name, admin_subscription_path(@current_subscription) %> — حتى <%= fmt_date(@current_subscription.ends_at) %>
         (<%= @current_subscription.days_left %> يوم)
       <% else %>
         <%= badge("لا يوجد") %>
@@ -23,35 +68,56 @@
 
 <section class="card mt">
   <div class="card-header">
-    <h2>الأنشطة</h2>
+    <h2>الأنشطة التابعة</h2>
     <span class="text-[10px] text-muted">
       <%= @firms.size %> نشاط<% if @firm_quota %> · الباقة تسمح بـ <%= @firm_quota %><% end %>
     </span>
   </div>
 
-  <% if @firm_quota && @firms.size > @firm_quota %>
+  <% if @firm_quota && @firms.reject(&:deleted?).size > @firm_quota %>
     <p class="text-[11px] text-bad mb-2">تجاوز حد الباقة — لن يستطيع إضافة أنشطة جديدة بنفسه.</p>
   <% end %>
 
   <% if @firms.any? %>
     <div class="tbl">
       <table>
-        <thead><tr><th>النشاط</th><th>التصنيف</th><th>الحالة</th><th>ظاهر</th><th>نقل إلى مالك آخر</th></tr></thead>
+        <thead>
+          <tr>
+            <th>النشاط</th>
+            <th>التصنيف</th>
+            <th>الحالة</th>
+            <th>ظاهر</th>
+            <th>نقل إلى مالك آخر</th>
+          </tr>
+        </thead>
         <tbody>
           <% @firms.each do |firm| %>
-            <tr>
-              <td><%= link_to firm.name, admin_firm_path(firm), class: "cell-main" %></td>
-              <td><%= firm.category.name %></td>
-              <td><%= enum_badge(Firm, :status, firm.status) %></td>
-              <td><%= switch(@visible_ids.include?(firm.id), label: @visible_ids.include?(firm.id) ? "ظاهر" : "غير ظاهر") %></td>
+            <tr class="<%= "opacity-75 bg-bad/5" if firm.deleted? %>">
               <td>
-                <%= form_with url: admin_user_firm_path(@user, firm), method: :delete,
-                      class: "flex gap-1 items-center" do |f| %>
-                  <%= f.select :new_owner_id,
-                        options_from_collection_for_select(@owners, :id, :name),
-                        { include_blank: "المالك الجديد" },
-                        { class: "w-40", "aria-label": "المالك الجديد لـ #{firm.name}" } %>
-                  <%= f.submit "نقل", class: "btn btn-ghost btn-sm" %>
+                <%= link_to firm.name, admin_firm_path(firm), class: "cell-main" %>
+                <% if firm.deleted? %><span class="cell-sub text-bad">محذوف</span><% end %>
+              </td>
+              <td><%= firm.category.name %></td>
+              <td>
+                <% if firm.deleted? %>
+                  <%= badge("محذوف", "red") %>
+                <% else %>
+                  <%= enum_badge(Firm, :status, firm.status) %>
+                <% end %>
+              </td>
+              <td><%= switch(!firm.deleted? && @visible_ids.include?(firm.id), label: @visible_ids.include?(firm.id) ? "ظاهر" : "غير ظاهر") %></td>
+              <td>
+                <% unless firm.deleted? %>
+                  <%= form_with url: admin_user_firm_path(@user, firm), method: :delete,
+                        class: "flex gap-1 items-center" do |f| %>
+                    <%= f.select :new_owner_id,
+                          options_from_collection_for_select(@owners, :id, :name),
+                          { include_blank: "المالك الجديد" },
+                          { class: "w-40", "aria-label": "المالك الجديد لـ #{firm.name}" } %>
+                    <%= f.submit "نقل", class: "btn btn-ghost btn-sm" %>
+                  <% end %>
+                <% else %>
+                  <span class="text-xs text-muted">استعد النشاط أولاً لنقله</span>
                 <% end %>
               </td>
             </tr>
@@ -63,24 +129,31 @@
     <%= empty_state("لا توجد أنشطة.") %>
   <% end %>
 
-  <div class="form-actions">
-    <%= form_with url: admin_user_firms_path(@user), method: :post,
-          class: "flex gap-2 items-center flex-wrap" do |f| %>
-      <%= f.select :firm_id,
-            options_from_collection_for_select(@attachable_firms, :id,
-              ->(firm) { "#{firm.name} — #{firm.owner.name}" }),
-            { include_blank: "اختر نشاطًا قائمًا" },
-            { class: "w-72", "aria-label": "نشاط لضمه" } %>
-      <%= f.submit "ضم إلى هذا المستخدم", class: "btn btn-sm" %>
-    <% end %>
-    <%= link_to new_admin_firm_path(owner_id: @user.id), class: "btn btn-ghost btn-sm" do %>
-      <%= icon(:plus, size: 14) %> نشاط جديد
-    <% end %>
-  </div>
+  <% unless @user.deleted? %>
+    <div class="form-actions">
+      <%= form_with url: admin_user_firms_path(@user), method: :post,
+            class: "flex gap-2 items-center flex-wrap" do |f| %>
+        <%= f.select :firm_id,
+              options_from_collection_for_select(@attachable_firms, :id,
+                ->(firm) { "#{firm.name} — #{firm.owner.name}" }),
+              { include_blank: "اختر نشاطًا قائمًا" },
+              { class: "w-72", "aria-label": "نشاط لضمه" } %>
+        <%= f.submit "ضم إلى هذا المستخدم", class: "btn btn-sm" %>
+      <% end %>
+      <%= link_to new_admin_firm_path(owner_id: @user.id), class: "btn btn-ghost btn-sm" do %>
+        <%= icon(:plus, size: 14) %> نشاط جديد
+      <% end %>
+    </div>
+  <% end %>
 </section>
 
 <section class="card mt">
-  <div class="card-header"><h2>سجل الاشتراكات</h2></div>
+  <div class="card-header">
+    <h2>سجل الاشتراكات</h2>
+    <%= link_to new_admin_subscription_path(user_id: @user.id), class: "btn btn-ghost btn-sm text-xs" do %>
+      <%= icon(:plus, size: 14) %> إضافة اشتراك جديد
+    <% end %>
+  </div>
   <% if @subscriptions.any? %>
     <div class="tbl">
       <table>

@@ -3,6 +3,7 @@ class ApplicationController < ActionController::API
   include Authentication
   include ErrorHandling
   include Pagination
+  include Filterable
 
   around_action :switch_locale
 

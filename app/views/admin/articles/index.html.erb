@@ -2,29 +2,65 @@
   <%= link_to new_admin_article_path, class: "btn btn-gold" do %><%= icon(:plus, size: 18) %> إضافة خبر<% end %>
 <% end %>
 
-<div class="flex flex-wrap gap-2 items-center">
-  <%= filter_tabs :kind, enum_options(Article, :kind) %>
-  <div class="flex-1"></div>
+<div class="flex flex-col gap-3 mb-4">
+  <div class="flex flex-wrap gap-2 items-center justify-between">
+    <%= filter_tabs :kind, enum_options(Article, :kind) %>
+    <div class="flex gap-2 items-center">
+      <%= link_to url_for(filter_params(deleted: params[:deleted] == "only" ? nil : "only", page: nil)),
+            class: [ "tab", ("tab-on bg-bad text-white border-bad" if params[:deleted] == "only") ] do %>
+        <span>المحذوفات</span>
+        <% if @deleted_count.positive? %>
+          <span class="badge <%= params[:deleted] == "only" ? "badge-gray" : "badge-red" %>"><%= @deleted_count %></span>
+        <% end %>
+      <% end %>
+      <% if params[:kind].present? || params[:status].present? || params[:q].present? || params[:deleted].present? %>
+        <%= link_to "إلغاء الفلاتر", admin_articles_path, class: "btn btn-ghost btn-sm text-xs" %>
+      <% end %>
+    </div>
+  </div>
+
   <%= form_with url: admin_articles_path, method: :get, class: "flex flex-wrap gap-2 items-center" do |f| %>
-    <%= f.hidden_field :kind, value: params[:kind] %>
+    <%= f.hidden_field :kind, value: params[:kind] if params[:kind].present? %>
+    <%= f.hidden_field :deleted, value: params[:deleted] if params[:deleted].present? %>
     <%= search_combobox("articles") do |attrs| %>
-      <%= f.search_field :q, value: params[:q], placeholder: "العنوان", class: "w-52", "aria-label": "بحث", **attrs %>
+      <%= f.search_field :q, value: params[:q], placeholder: "ابحث في عنوان المقال...", class: "w-56", "aria-label": "بحث", **attrs %>
     <% end %>
     <%= button_tag type: "submit", class: "btn btn-ghost", name: nil, title: "تصفية" do %><%= icon(:search, size: 16) %><% end %>
   <% end %>
 </div>
 
+<%= advanced_filter(url: admin_articles_path, carry: %i[ q kind deleted ]) do |f| %>
+  <%= filter_text f, :title_cont, "العنوان" %>
+  <%= filter_text f, :author_name_cont, "الكاتب" %>
+  <%= filter_range f, :published_at, "تاريخ النشر", as: :date %>
+<% end %>
+
 <div class="tbl">
   <% if @articles.any? %>
     <table>
-      <thead><tr><th>العنوان</th><th>النوع</th><th>النشر</th><th>الكاتب</th><th></th></tr></thead>
+      <thead>
+        <tr>
+          <%= sortable_th "العنوان", :title %>
+          <%= sortable_th "النوع", :kind %>
+          <%= sortable_th "النشر", :published_at %>
+          <%= sortable_th "الكاتب", :author_name %>
+          <th>إجراءات</th>
+        </tr>
+      </thead>
       <tbody>
         <% @articles.each do |article| %>
-          <tr>
-            <td><%= link_to truncate(article.title, length: 60), edit_admin_article_path(article), class: "cell-main" %></td>
+          <tr class="<%= "opacity-75 bg-bad/5" if article.deleted? %>">
+            <td>
+              <%= link_to truncate(article.title, length: 60), admin_article_path(article), class: "cell-main" %>
+              <% if article.deleted? %>
+                <span class="cell-sub text-bad">حُذف في: <%= fmt_time(article.deleted_at) %></span>
+              <% end %>
+            </td>
             <td><%= enum_badge(Article, :kind, article.kind) %></td>
             <td>
-              <% if article.published_at.nil? %>
+              <% if article.deleted? %>
+                <%= badge("محذوف", "red") %>
+              <% elsif article.published_at.nil? %>
                 <%= badge("مسودة") %>
               <% elsif article.published? %>
                 <%= badge("منشور", "green") %> <small><%= fmt_date(article.published_at) %></small>
@@ -34,16 +70,27 @@
             </td>
             <td><%= article.author.name %></td>
             <td class="actions">
-              <%= link_to edit_admin_article_path(article), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 16) %><% end %>
-              <%= button_to admin_article_path(article), method: :delete, class: "btn btn-ghost btn-sm", title: "حذف",
-                    form: { data: { confirm: "حذف الخبر؟" } } do %><%= icon(:trash, size: 16) %><% end %>
+              <% if article.deleted? %>
+                <%= button_to restore_admin_article_path(article), method: :patch, class: "btn btn-gold btn-sm", title: "استعادة" do %>
+                  <%= icon(:restore, size: 14) %> استعادة
+                <% end %>
+                <%= button_to destroy_fully_admin_article_path(article), method: :delete, class: "btn btn-danger btn-sm", title: "حذف نهائي",
+                      form: { data: { confirm: "هل أنت متأكد من الحذف النهائي للمقال؟ لا يمكن التراجع!" } } do %>
+                  <%= icon(:trash, size: 14) %>
+                <% end %>
+              <% else %>
+                <%= link_to edit_admin_article_path(article), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 16) %><% end %>
+                <%= button_to admin_article_path(article), method: :delete, class: "btn btn-ghost btn-sm text-bad", title: "حذف مؤقت",
+                      form: { data: { confirm: "نقل هذا الخبر إلى المحذوفات؟" } } do %><%= icon(:trash, size: 16) %><% end %>
+              <% end %>
+              <%= link_to admin_article_path(article), class: "btn btn-ghost btn-sm", title: "عرض" do %><%= icon(:eye, size: 16) %><% end %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
   <% else %>
-    <%= empty_state("لا توجد أخبار بعد.") %>
+    <%= empty_state(params[:deleted] == "only" ? "لا توجد مقالات في سلة المحذوفات." : "لا توجد نتائج.") %>
   <% end %>
 </div>
-<%= render "admin/shared/pagination", meta: @meta %>
+<%= render "admin/shared/pagination", pagy: @pagy %>

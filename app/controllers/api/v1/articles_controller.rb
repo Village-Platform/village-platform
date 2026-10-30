@@ -9,7 +9,7 @@ module Api
         scope = policy_scope(Article).includes(:author).latest_first
         scope = scope.where(kind: params[:kind]) if Article.kinds.key?(params[:kind])
 
-        records, meta = paginate(scope)
+        records, meta = paginate(filter(scope))
         render_collection(records, meta, ArticleSerializer)
       end
 

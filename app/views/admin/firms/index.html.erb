@@ -2,13 +2,28 @@
   <%= link_to new_admin_firm_path, class: "btn" do %><%= icon(:plus, size: 16) %> إضافة نشاط<% end %>
 <% end %>
 
-<div class="flex flex-wrap gap-2 items-center">
-  <%= filter_tabs :status, enum_options(Firm, :status) %>
-  <div class="flex-1"></div>
+<div class="flex flex-col gap-3 mb-4">
+  <div class="flex flex-wrap gap-2 items-center justify-between">
+    <%= filter_tabs :status, enum_options(Firm, :status) %>
+    <div class="flex gap-2 items-center">
+      <%= link_to url_for(filter_params(deleted: params[:deleted] == "only" ? nil : "only", page: nil)),
+            class: [ "tab", ("tab-on bg-bad text-white border-bad" if params[:deleted] == "only") ] do %>
+        <span>المحذوفات</span>
+        <% if @deleted_count.positive? %>
+          <span class="badge <%= params[:deleted] == "only" ? "badge-gray" : "badge-red" %>"><%= @deleted_count %></span>
+        <% end %>
+      <% end %>
+      <% if params[:status].present? || params[:category_id].present? || params[:q].present? || params[:deleted].present? %>
+        <%= link_to "إلغاء الفلاتر", admin_firms_path, class: "btn btn-ghost btn-sm text-xs" %>
+      <% end %>
+    </div>
+  </div>
+
   <%= form_with url: admin_firms_path, method: :get, class: "flex flex-wrap gap-2 items-center" do |f| %>
-    <%= f.hidden_field :status, value: params[:status] %>
+    <%= f.hidden_field :status, value: params[:status] if params[:status].present? %>
+    <%= f.hidden_field :deleted, value: params[:deleted] if params[:deleted].present? %>
     <%= search_combobox("firms") do |attrs| %>
-      <%= f.search_field :q, value: params[:q], placeholder: "اسم النشاط", class: "w-44", "aria-label": "بحث", **attrs %>
+      <%= f.search_field :q, value: params[:q], placeholder: "اسم النشاط، هاتف، عنوان...", class: "w-56", "aria-label": "بحث", **attrs %>
     <% end %>
     <%= f.select :category_id,
           options_from_collection_for_select(@categories, :id, :name, params[:category_id]),
@@ -17,34 +32,75 @@
   <% end %>
 </div>
 
+<%= advanced_filter(url: admin_firms_path, carry: %i[ q status deleted category_id ]) do |f| %>
+  <%= filter_text f, :name_cont, "اسم النشاط" %>
+  <%= filter_text f, :owner_name_cont, "اسم المالك" %>
+  <%= filter_text f, :owner_phone_start, "هاتف المالك", ltr: true %>
+  <%= filter_range f, :created_at, "تاريخ الإضافة", as: :date %>
+<% end %>
+
 <div class="tbl">
   <% if @firms.any? %>
     <table>
-      <thead><tr><th>النشاط</th><th>التصنيف</th><th>المالك</th><th>ظاهر</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+      <thead>
+        <tr>
+          <%= sortable_th "النشاط", :name %>
+          <%= sortable_th "التصنيف", :category_name %>
+          <%= sortable_th "المالك", :owner_name %>
+          <th>ظاهر</th>
+          <%= sortable_th "الحالة", :status %>
+          <th>إجراءات</th>
+        </tr>
+      </thead>
       <tbody>
         <% @firms.each do |firm| %>
-          <tr>
-            <td><%= link_to firm.name, admin_firm_path(firm), class: "cell-main" %><span class="cell-sub ltr"><%= firm.phone %></span></td>
+          <tr class="<%= "opacity-75 bg-bad/5" if firm.deleted? %>">
+            <td>
+              <%= link_to firm.name, admin_firm_path(firm), class: "cell-main" %>
+              <span class="cell-sub ltr"><%= firm.phone %></span>
+              <% if firm.deleted? %>
+                <span class="cell-sub text-bad">حُذف في: <%= fmt_time(firm.deleted_at) %></span>
+              <% end %>
+            </td>
             <td><%= firm.category.name %></td>
-            <td><%= firm.owner.name %></td>
-            <td><%= switch(@visible_ids.include?(firm.id)) %></td>
-            <td><%= enum_badge(Firm, :status, firm.status) %></td>
+            <td><%= link_to firm.owner.name, admin_user_path(firm.owner) %></td>
+            <td><%= switch(!firm.deleted? && @visible_ids.include?(firm.id)) %></td>
+            <td>
+              <% if firm.deleted? %>
+                <%= badge("محذوف", "red") %>
+              <% else %>
+                <%= enum_badge(Firm, :status, firm.status) %>
+              <% end %>
+            </td>
             <td class="actions">
-              <% unless firm.active? %>
-                <%= button_to "اعتماد", approve_admin_firm_path(firm), method: :patch, class: "btn btn-sm" %>
+              <% if firm.deleted? %>
+                <%= button_to restore_admin_firm_path(firm), method: :patch, class: "btn btn-gold btn-sm", title: "استعادة" do %>
+                  <%= icon(:restore, size: 14) %> استعادة
+                <% end %>
+                <%= button_to destroy_fully_admin_firm_path(firm), method: :delete, class: "btn btn-danger btn-sm", title: "حذف نهائي",
+                      form: { data: { confirm: "هل أنت متأكد من الحذف النهائي للنشاط؟ لا يمكن التراجع!" } } do %>
+                  <%= icon(:trash, size: 14) %>
+                <% end %>
+              <% else %>
+                <% unless firm.active? %>
+                  <%= button_to "اعتماد", approve_admin_firm_path(firm), method: :patch, class: "btn btn-sm" %>
+                <% end %>
+                <% unless firm.suspended? %>
+                  <%= button_to "إيقاف", suspend_admin_firm_path(firm), method: :patch, class: "btn btn-ghost btn-sm",
+                        form: { data: { confirm: "إيقاف النشاط وإخفاؤه من التطبيق؟" } } %>
+                <% end %>
+                <%= link_to edit_admin_firm_path(firm), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 14) %><% end %>
+                <%= button_to admin_firm_path(firm), method: :delete, class: "btn btn-ghost btn-sm text-bad", title: "حذف مؤقت",
+                      form: { data: { confirm: "نقل هذا النشاط إلى المحذوفات؟" } } do %><%= icon(:trash, size: 14) %><% end %>
               <% end %>
-              <% unless firm.suspended? %>
-                <%= button_to "إيقاف", suspend_admin_firm_path(firm), method: :patch, class: "btn btn-ghost btn-sm",
-                      form: { data: { confirm: "إيقاف النشاط وإخفاؤه من التطبيق؟" } } %>
-              <% end %>
-              <%= link_to edit_admin_firm_path(firm), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 14) %><% end %>
+              <%= link_to admin_firm_path(firm), class: "btn btn-ghost btn-sm", title: "عرض" do %><%= icon(:eye, size: 14) %><% end %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
   <% else %>
-    <%= empty_state("لا توجد نتائج.") %>
+    <%= empty_state(params[:deleted] == "only" ? "لا توجد أنشطة في سلة المحذوفات." : "لا توجد نتائج.") %>
   <% end %>
 </div>
-<%= render "admin/shared/pagination", meta: @meta %>
+<%= render "admin/shared/pagination", pagy: @pagy %>

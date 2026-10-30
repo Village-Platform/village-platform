@@ -1,13 +1,29 @@
-<%= page_header "الاشتراكات", subtitle: "طلبات أصحاب الأنشطة عبر إنستاباي وفودافون كاش" %>
+<%= page_header "الاشتراكات", subtitle: "#{@meta[:total]} اشتراكاً في النظام" do %>
+  <%= link_to new_admin_subscription_path, class: "btn btn-gold" do %><%= icon(:plus, size: 16) %> إضافة اشتراك يدوي<% end %>
+<% end %>
 
-<div class="flex flex-wrap gap-2 items-center">
-  <%= filter_tabs :status, enum_options(Subscription, :status) %>
-  <div class="flex-1"></div>
+<div class="flex flex-col gap-3 mb-4">
+  <div class="flex flex-wrap gap-2 items-center justify-between">
+    <%= filter_tabs :status, enum_options(Subscription, :status) %>
+    <div class="flex gap-2 items-center">
+      <%= link_to url_for(filter_params(status: params[:status] == "expiring" ? nil : "expiring", page: nil)),
+            class: [ "tab", ("tab-on" if params[:status] == "expiring") ] do %>
+        <span>تنتهي خلال ٧ أيام</span>
+      <% end %>
+      <% if params[:status].present? || params[:payment_method].present? || params[:subscription_plan_id].present? || params[:q].present? %>
+        <%= link_to "إلغاء الفلاتر", admin_subscriptions_path, class: "btn btn-ghost btn-sm text-xs" %>
+      <% end %>
+    </div>
+  </div>
+
   <%= form_with url: admin_subscriptions_path, method: :get, class: "flex flex-wrap gap-2 items-center" do |f| %>
-    <%= f.hidden_field :status, value: params[:status] %>
+    <%= f.hidden_field :status, value: params[:status] if params[:status].present? %>
     <%= search_combobox("subscriptions") do |attrs| %>
-      <%= f.search_field :q, value: params[:q], placeholder: "رقم العملية أو الهاتف", class: "w-52", "aria-label": "بحث", **attrs %>
+      <%= f.search_field :q, value: params[:q], placeholder: "رقم العملية أو الهاتف أو اسم المشترك...", class: "w-64", "aria-label": "بحث", **attrs %>
     <% end %>
+    <%= f.select :subscription_plan_id,
+          options_from_collection_for_select(@plans, :id, :name, params[:subscription_plan_id]),
+          { include_blank: "كل الباقات" }, { class: "w-40", "aria-label": "الباقة" } %>
     <%= f.select :payment_method,
           options_for_select(enum_options(Subscription, :payment_method), params[:payment_method]),
           { include_blank: "كل طرق الدفع" }, { class: "w-40", "aria-label": "طريقة الدفع" } %>
@@ -15,25 +31,55 @@
   <% end %>
 </div>
 
+<%= advanced_filter(url: admin_subscriptions_path, carry: %i[ q status payment_method subscription_plan_id ]) do |f| %>
+  <%= filter_text f, :transaction_reference_cont, "رقم العملية", ltr: true %>
+  <%= filter_text f, :user_phone_start, "هاتف صاحب الطلب", ltr: true %>
+  <%= filter_range f, :amount_egp, "المبلغ (ج.م)" %>
+  <%= filter_range f, :created_at, "تاريخ الطلب", as: :date %>
+<% end %>
+
 <div class="tbl">
   <% if @subscriptions.any? %>
     <table>
       <thead>
-        <tr><th>#</th><th>صاحب الطلب</th><th>الباقة</th><th>المبلغ</th><th>الدفع</th><th>رقم العملية</th><th>الحالة</th><th>الوضع</th><th>التاريخ</th><th></th></tr>
+        <tr>
+          <%= sortable_th "#", :id %>
+          <%= sortable_th "صاحب الطلب", :user_name %>
+          <%= sortable_th "الباقة", :subscription_plan_name %>
+          <%= sortable_th "المبلغ", :amount_cents %>
+          <%= sortable_th "الدفع", :payment_method %>
+          <%= sortable_th "رقم العملية", :transaction_reference %>
+          <%= sortable_th "الحالة", :status %>
+          <th>الوضع</th>
+          <%= sortable_th "التاريخ", :created_at %>
+          <th>إجراءات</th>
+        </tr>
       </thead>
       <tbody>
         <% @subscriptions.each do |s| %>
           <tr>
-            <td><%= s.id %></td>
-            <td><%= link_to s.user.name, admin_subscription_path(s), class: "cell-main" %><span class="cell-sub ltr"><%= s.user.phone %></span></td>
-            <td><%= s.subscription_plan.name %></td>
+            <td><%= link_to "##{s.id}", admin_subscription_path(s) %></td>
+            <td>
+              <%= link_to s.user.name, admin_subscription_path(s), class: "cell-main" %>
+              <span class="cell-sub ltr"><%= s.user.phone %></span>
+            </td>
+            <td><%= link_to s.subscription_plan.name, admin_subscription_plan_path(s.subscription_plan) %></td>
             <td><%= egp(s.amount_cents) %></td>
             <td><%= enum_label(Subscription, :payment_method, s.payment_method) %></td>
             <td class="ltr"><%= s.transaction_reference %></td>
             <td><%= enum_badge(Subscription, :status, s.status) %></td>
             <td><%= enum_badge(Subscription, :state, s.state) %></td>
             <td><%= fmt_date(s.created_at) %></td>
-            <td><%= link_to (s.pending? ? "مراجعة" : "عرض"), admin_subscription_path(s), class: "btn btn-sm #{s.pending? ? 'btn-gold' : 'btn-ghost'}" %></td>
+            <td class="actions">
+              <% if s.pending? %>
+                <%= link_to "مراجعة", admin_subscription_path(s), class: "btn btn-sm btn-gold" %>
+              <% else %>
+                <%= link_to admin_subscription_path(s), class: "btn btn-ghost btn-sm", title: "عرض" do %><%= icon(:eye, size: 14) %><% end %>
+              <% end %>
+              <%= link_to edit_admin_subscription_path(s), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 14) %><% end %>
+              <%= button_to admin_subscription_path(s), method: :delete, class: "btn btn-ghost btn-sm text-bad", title: "حذف",
+                    form: { data: { confirm: "هل أنت متأكد من حذف هذا الاشتراك نهائياً؟" } } do %><%= icon(:trash, size: 14) %><% end %>
+            </td>
           </tr>
         <% end %>
       </tbody>
@@ -42,4 +88,4 @@
     <%= empty_state("لا توجد نتائج.") %>
   <% end %>
 </div>
-<%= render "admin/shared/pagination", meta: @meta %>
+<%= render "admin/shared/pagination", pagy: @pagy %>

@@ -4,6 +4,20 @@
 #       (+ optional screenshot) -> pending -> super admin approves (active) or rejects (rejected).
 # Expiry is time-based: an active subscription is "current" only while starts_at <= now < ends_at.
 class Subscription < ApplicationRecord
+  # Public rows are already limited to the caller's own by the policy scope, so their own payment
+  # fields are safe to filter on. `user` and `reviewed_by` lead to other people and are admin-only.
+  ransack_tiers public: %w[ id status payment_method amount_cents transaction_reference payer_phone
+                            notes starts_at ends_at reviewed_at rejection_reason
+                            subscription_plan_id created_at ],
+                admin: %w[ user_id reviewed_by_id updated_at amount_egp ],
+                public_associations: %w[ subscription_plan ],
+                admin_associations: %w[ user reviewed_by ]
+
+  # Money is stored in piasters; filtering in pounds stops "500" meaning 5 EGP.
+  ransacker :amount_egp do
+    Arel.sql("(subscriptions.amount_cents / 100.0)")
+  end
+
   SCREENSHOT_CONTENT_TYPES = %w[image/png image/jpeg image/webp].freeze
   SCREENSHOT_MAX_SIZE = 4.megabytes # Vercel accepts request bodies up to 4.5MB
 
@@ -54,6 +68,10 @@ class Subscription < ApplicationRecord
   def renewed?
     Subscription.active.where(user_id: user_id).where.not(id: id)
                 .where(starts_at: (ends_at - 1.minute)..).exists?
+  end
+
+  def self.ransackable_scopes(auth_object = nil)
+    %w[ current ]
   end
 
   private

@@ -5,7 +5,7 @@ module Api
       before_action :set_plan, only: %i[show update destroy]
 
       def index
-        records, meta = paginate(policy_scope(SubscriptionPlan).ordered)
+        records, meta = paginate(filter(policy_scope(SubscriptionPlan).ordered))
         render_collection(records, meta, SubscriptionPlanSerializer)
       end
 

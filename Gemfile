@@ -49,3 +49,7 @@ group :development, :test do
 end
 
 gem "tailwindcss-rails", "~> 4.7"
+
+# Search and filtering for Active Record models
+gem "ransack", "~> 6.0"
+gem "pagy", "~> 43.8"

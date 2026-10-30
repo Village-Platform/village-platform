@@ -8,7 +8,11 @@ module Admin
         pending_firms: Firm.pending.count,
         firms: Firm.count,
         users: User.count,
-        published_articles: Article.published.count
+        published_articles: Article.published.count,
+        deleted_firms: Firm.only_deleted.count,
+        deleted_users: User.only_deleted.count,
+        deleted_articles: Article.only_deleted.count,
+        total_deleted: Firm.only_deleted.count + User.only_deleted.count + Article.only_deleted.count
       }
       # Ordered so the view can take the maximum off the front instead of scanning.
       @firms_by_category = Firm.visible.joins(:category).group("categories.name").count.sort_by { |_, n| -n }

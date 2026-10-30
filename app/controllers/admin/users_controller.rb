@@ -1,20 +1,28 @@
 module Admin
   class UsersController < BaseController
-    before_action :set_user, only: %i[show edit update]
+    before_action :set_user, only: %i[show edit update destroy restore destroy_fully]
 
     def index
-      scope = User.order(created_at: :desc, id: :desc)
+      scope = case params[:deleted]
+      when "only" then User.only_deleted
+      when "all" then User.with_deleted
+      else User.all
+      end
+
+      scope = scope.order(created_at: :desc, id: :desc)
       scope = scope.where(role: params[:role]) if User.roles.key?(params[:role])
       if params[:q].present?
         scope = scope.where("users.name ILIKE :q OR users.phone ILIKE :q OR users.email ILIKE :q", q: like(params[:q]))
       end
-      @users, @meta = paginate(scope)
+
+      @deleted_count = User.only_deleted.count
+      @users, @meta = paginate(filter(scope))
     end
 
     def show
       @current_subscription = @user.current_subscription
       @subscriptions = @user.subscriptions.includes(:subscription_plan).latest_first.limit(20)
-      @firms = @user.firms.includes(:category).order(:name)
+      @firms = @user.firms.with_deleted.includes(:category).order(:name)
       @visible_ids = Firm.visible.where(id: @firms.map(&:id)).pluck(:id).to_set
       @owners = User.where(role: %i[ firm_admin super_admin ]).where.not(id: @user.id).order(:name)
       @attachable_firms = Firm.includes(:owner).where.not(owner_id: @user.id).order(:name)
@@ -53,10 +61,32 @@ module Admin
       end
     end
 
+    def destroy
+      if @user == current_admin
+        redirect_to admin_users_path, alert: "لا يمكنك حذف حسابك الشخصي."
+        return
+      end
+
+      destroy_and_redirect(@user, admin_users_path)
+    end
+
+    def restore
+      restore_and_redirect(@user, admin_user_path(@user))
+    end
+
+    def destroy_fully
+      if @user == current_admin
+        redirect_to admin_users_path, alert: "لا يمكنك حذف حسابك الشخصي."
+        return
+      end
+
+      destroy_fully_and_redirect(@user, admin_users_path)
+    end
+
     private
 
     def set_user
-      @user = User.find(params[:id])
+      @user = User.with_deleted.find(params[:id])
     end
 
     def user_params

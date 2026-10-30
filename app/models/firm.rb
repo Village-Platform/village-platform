@@ -1,4 +1,11 @@
 class Firm < ApplicationRecord
+  # Public: what FirmSerializer shows. `owner` is admin-only — it leads to the owner's phone.
+  ransack_tiers public: %w[ id name description phone whatsapp address working_hours status
+                            category_id owner_id created_at ],
+                admin: %w[ updated_at deleted_at ],
+                public_associations: %w[ category ],
+                admin_associations: %w[ owner ]
+
   # pending   -> created by a firm owner, waiting for super admin review
   # active    -> approved
   # suspended -> hidden by a super admin (moderation)
@@ -21,4 +28,8 @@ class Firm < ApplicationRecord
   validates :name, presence: true, length: { maximum: 150 }
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90 }, allow_nil: true
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180 }, allow_nil: true
+
+  def self.ransackable_scopes(auth_object = nil)
+    %w[ visible ]
+  end
 end

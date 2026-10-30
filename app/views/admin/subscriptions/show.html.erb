@@ -1,6 +1,9 @@
 <% s = @subscription %>
 <%= page_header "طلب اشتراك ##{s.id}", subtitle: "#{s.user.name} — #{s.subscription_plan.name}" do %>
   <%= enum_badge(Subscription, :status, s.status) %>
+  <%= link_to edit_admin_subscription_path(s), class: "btn btn-ghost" do %><%= icon(:edit, size: 16) %> تعديل<% end %>
+  <%= button_to admin_subscription_path(s), method: :delete, class: "btn btn-danger",
+        form: { data: { confirm: "هل أنت متأكد من حذف هذا الاشتراك نهائياً؟" } } do %><%= icon(:trash, size: 16) %> حذف<% end %>
   <%= link_to admin_subscriptions_path, class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 16) %> رجوع<% end %>
 <% end %>
 
@@ -34,7 +37,7 @@
     <div class="card-header"><h2>التفاصيل</h2></div>
     <dl class="details">
       <dt>صاحب الطلب</dt><dd><%= link_to s.user.name, admin_user_path(s.user) %> — <span class="ltr"><%= s.user.phone %></span></dd>
-      <dt>الباقة</dt><dd><%= s.subscription_plan.name %> (<%= s.subscription_plan.duration_days %> يوم، حتى <%= s.subscription_plan.max_firms %> نشاط)</dd>
+      <dt>الباقة</dt><dd><%= link_to s.subscription_plan.name, admin_subscription_plan_path(s.subscription_plan) %> (<%= s.subscription_plan.duration_days %> يوم، حتى <%= s.subscription_plan.max_firms %> نشاط)</dd>
       <dt>المبلغ</dt><dd><%= egp(s.amount_cents) %></dd>
       <dt>طريقة الدفع</dt><dd><%= enum_label(Subscription, :payment_method, s.payment_method) %></dd>
       <dt>رقم العملية</dt><dd class="ltr"><%= s.transaction_reference %></dd>
@@ -48,7 +51,7 @@
         <dt>تمت المراجعة</dt><dd><%= fmt_time(s.reviewed_at) %> — <%= s.reviewed_by&.name %></dd>
       <% end %>
       <% if s.rejection_reason.present? %>
-        <dt>سبب الرفض</dt><dd><%= s.rejection_reason %></dd>
+        <dt>سبب الرفض</dt><dd class="text-bad"><%= s.rejection_reason %></dd>
       <% end %>
     </dl>
   </section>

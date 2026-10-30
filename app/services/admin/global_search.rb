@@ -45,13 +45,19 @@ module Admin
     end
 
     def search_firms
-      matching(Firm.includes(:category, :owner), "firms", %w[name phone address])
-        .map { |firm| Result.new("نشاط", firm.name, [ firm.category.name, firm.phone ].compact_blank.join(" · "), firm) }
+      matching(Firm.with_deleted.includes(:category, :owner), "firms", %w[name phone address])
+        .map do |firm|
+          sub = [ (firm.deleted? ? "محذوف" : nil), firm.category&.name, firm.phone ].compact_blank.join(" · ")
+          Result.new("نشاط", firm.name, sub, firm)
+        end
     end
 
     def search_users
-      matching(User.all, "users", %w[name phone email])
-        .map { |user| Result.new("مستخدم", user.name, [ user.phone, user.email ].compact_blank.join(" · "), user) }
+      matching(User.with_deleted, "users", %w[name phone email])
+        .map do |user|
+          sub = [ (user.deleted? ? "محذوف" : nil), user.phone, user.email ].compact_blank.join(" · ")
+          Result.new("مستخدم", user.name, sub, user)
+        end
     end
 
     def search_subscriptions
@@ -65,8 +71,11 @@ module Admin
     end
 
     def search_articles
-      matching(Article.all, "articles", %w[title])
-        .map { |article| Result.new("مقال", article.title, enum_label(article.kind), article) }
+      matching(Article.with_deleted, "articles", %w[title])
+        .map do |article|
+          sub = [ (article.deleted? ? "محذوف" : nil), enum_label(article.kind) ].compact_blank.join(" · ")
+          Result.new("مقال", article.title, sub, article)
+        end
     end
 
     def search_categories

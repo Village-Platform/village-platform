@@ -1,9 +1,16 @@
 module Admin
   class SubscriptionPlansController < BaseController
-    before_action :set_plan, only: %i[edit update destroy]
+    before_action :set_plan, only: %i[show edit update destroy toggle]
 
     def index
-      @plans = SubscriptionPlan.ordered
+      scope = SubscriptionPlan.ordered
+      scope = scope.where(active: params[:active] == "true") if params[:active].in?(%w[true false])
+      scope = scope.where("subscription_plans.name ILIKE ?", like(params[:q])) if params[:q].present?
+      @plans = filter(scope)
+    end
+
+    def show
+      @subscriptions, @meta = paginate(@plan.subscriptions.includes(:user).latest_first)
     end
 
     def new
@@ -27,6 +34,11 @@ module Admin
       else
         render :edit, status: :unprocessable_content
       end
+    end
+
+    def toggle
+      @plan.update!(active: !@plan.active)
+      redirect_back_or_to admin_subscription_plans_path, notice: "تم تحديث حالة تفعيل الباقة."
     end
 
     # Plans that were already purchased can't be deleted — deactivate them instead.

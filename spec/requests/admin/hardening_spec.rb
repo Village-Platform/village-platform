@@ -18,7 +18,8 @@ RSpec.describe "Admin hardening", type: :request do
       create_list(:category, 2).each { |category| create(:firm, category: category) }
 
       get "/admin/firms", params: { host: "evil.example.com", per_page: 1 }
-      hrefs = doc.css(".pagination a").map { |link| link["href"] }
+      hrefs = doc.css(".pagination a[href]").map { |link| link["href"] }
+      expect(hrefs).to be_present
       expect(hrefs).to all(start_with("/admin/firms"))
     end
 

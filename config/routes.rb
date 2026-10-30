@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     patch "theme", to: "theme#update", as: :theme
     get "search", to: "search#index", as: :search
 
-    resources :subscriptions, only: %i[index show] do
+    resources :subscriptions do
       member do
         get :screenshot
         patch :approve
@@ -37,17 +37,37 @@ Rails.application.routes.draw do
       member do
         patch :approve
         patch :suspend
+        patch :restore
+        delete :destroy_fully
       end
     end
-    resources :categories, except: :show
-    resources :articles, except: :show
-    resources :subscription_plans, except: :show
-    resources :users, except: :destroy do
+    resources :categories do
+      member do
+        patch :toggle
+      end
+    end
+    resources :articles do
+      member do
+        patch :restore
+        delete :destroy_fully
+      end
+    end
+    resources :subscription_plans do
+      member do
+        patch :toggle
+      end
+    end
+    resources :users do
+      member do
+        patch :restore
+        delete :destroy_fully
+      end
       resources :firms, only: %i[ create destroy ], controller: "user_firms"
     end
     resources :feature_flags, except: :show do
       patch :toggle, on: :member
     end
+    resources :notifications, only: %i[ index show new create destroy ]
   end
 
   namespace :api do

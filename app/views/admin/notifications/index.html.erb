@@ -1,0 +1,77 @@
+<%= page_header "الإشعارات", subtitle: "#{@meta[:total]} إشعاراً في النظام" do %>
+  <%= link_to new_admin_notification_path, class: "btn btn-gold" do %><%= icon(:plus, size: 16) %> إرسال إشعار جديد<% end %>
+<% end %>
+
+<div class="flex flex-col gap-3 mb-4">
+  <div class="flex flex-wrap gap-2 items-center justify-between">
+    <%= filter_tabs :kind, enum_options(Notification, :kind) %>
+    <div class="flex gap-2 items-center">
+      <%= link_to url_for(filter_params(status: params[:status] == "unread" ? nil : "unread", page: nil)),
+            class: [ "tab", ("tab-on" if params[:status] == "unread") ] do %>
+        <span>غير المقروءة</span>
+      <% end %>
+      <% if params[:kind].present? || params[:status].present? || params[:q].present? || params[:user_id].present? %>
+        <%= link_to "إلغاء الفلاتر", admin_notifications_path, class: "btn btn-ghost btn-sm text-xs" %>
+      <% end %>
+    </div>
+  </div>
+
+  <%= form_with url: admin_notifications_path, method: :get, class: "flex flex-wrap gap-2 items-center" do |f| %>
+    <%= f.hidden_field :kind, value: params[:kind] if params[:kind].present? %>
+    <%= f.search_field :q, value: params[:q], placeholder: "ابحث في العنوان، المحتوى، أو اسم المستخدم...", class: "w-72 input", "aria-label": "بحث" %>
+    <%= button_tag type: "submit", class: "btn btn-ghost", name: nil, title: "تصفية" do %><%= icon(:search, size: 16) %><% end %>
+  <% end %>
+</div>
+
+<%= advanced_filter(url: admin_notifications_path, carry: %i[ q kind user_id read ]) do |f| %>
+  <%= filter_text f, :title_cont, "العنوان" %>
+  <%= filter_text f, :user_phone_start, "هاتف المستلم", ltr: true %>
+  <%= filter_range f, :created_at, "التاريخ", as: :date %>
+<% end %>
+
+<div class="tbl">
+  <% if @notifications.any? %>
+    <table>
+      <thead>
+        <tr>
+          <%= sortable_th "#", :id %>
+          <%= sortable_th "المستلم", :user_name %>
+          <%= sortable_th "النوع", :kind %>
+          <%= sortable_th "العنوان", :title %>
+          <th>الحالة</th>
+          <%= sortable_th "التاريخ", :created_at %>
+          <th>إجراءات</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @notifications.each do |n| %>
+          <tr>
+            <td><%= n.id %></td>
+            <td><%= link_to n.user.name, admin_user_path(n.user), class: "cell-main" %><span class="cell-sub ltr"><%= n.user.phone %></span></td>
+            <td><%= enum_badge(Notification, :kind, n.kind) %></td>
+            <td>
+              <%= link_to n.title, admin_notification_path(n), class: "cell-main" %>
+              <span class="cell-sub"><%= truncate(n.body, length: 60) %></span>
+            </td>
+            <td>
+              <% if n.read? %>
+                <%= badge("مقروء", "green") %> <small><%= fmt_date(n.read_at) %></small>
+              <% else %>
+                <%= badge("غير مقروء", "gold") %>
+              <% end %>
+            </td>
+            <td><%= fmt_time(n.created_at) %></td>
+            <td class="actions">
+              <%= link_to admin_notification_path(n), class: "btn btn-ghost btn-sm", title: "عرض" do %><%= icon(:eye, size: 14) %><% end %>
+              <%= button_to admin_notification_path(n), method: :delete, class: "btn btn-ghost btn-sm text-bad", title: "حذف",
+                    form: { data: { confirm: "حذف هذا الإشعار؟" } } do %><%= icon(:trash, size: 14) %><% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <%= empty_state("لا توجد إشعارات.") %>
+  <% end %>
+</div>
+<%= render "admin/shared/pagination", pagy: @pagy %>

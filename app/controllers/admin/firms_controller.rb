@@ -1,16 +1,23 @@
 module Admin
   class FirmsController < BaseController
-    before_action :set_firm, only: %i[show edit update destroy approve suspend]
+    before_action :set_firm, only: %i[show edit update destroy approve suspend restore destroy_fully]
     before_action :load_form_options, only: %i[new create edit update]
 
     def index
-      scope = Firm.includes(:category, :owner).order(created_at: :desc, id: :desc)
+      scope = case params[:deleted]
+      when "only" then Firm.only_deleted
+      when "all" then Firm.with_deleted
+      else Firm.all
+      end
+
+      scope = scope.includes(:category, :owner).order(created_at: :desc, id: :desc)
       scope = scope.where(status: params[:status]) if Firm.statuses.key?(params[:status])
       scope = scope.where(category_id: params[:category_id]) if params[:category_id].present?
       scope = scope.where("firms.name ILIKE ?", like(params[:q])) if params[:q].present?
 
       @categories = Category.ordered
-      @firms, @meta = paginate(scope)
+      @deleted_count = Firm.only_deleted.count
+      @firms, @meta = paginate(filter(scope))
       @visible_ids = Firm.visible.where(id: @firms.map(&:id)).pluck(:id).to_set
     end
 
@@ -45,6 +52,14 @@ module Admin
       destroy_and_redirect(@firm, admin_firms_path)
     end
 
+    def restore
+      restore_and_redirect(@firm, admin_firm_path(@firm))
+    end
+
+    def destroy_fully
+      destroy_fully_and_redirect(@firm, admin_firms_path)
+    end
+
     def approve
       @firm.update!(status: :active)
       redirect_back_or_to admin_firm_path(@firm), notice: "تم اعتماد النشاط."
@@ -58,7 +73,7 @@ module Admin
     private
 
     def set_firm
-      @firm = Firm.find(params[:id])
+      @firm = Firm.with_deleted.find(params[:id])
     end
 
     def load_form_options

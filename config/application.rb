@@ -31,7 +31,7 @@ module AghourServices
     # Arabic first, English as fallback. Clients choose via the Accept-Language header.
     config.i18n.available_locales = %i[ar en]
     config.i18n.default_locale = :ar
-    config.i18n.fallbacks = [:en]
+    config.i18n.fallbacks = [ :en ]
 
     # The JSON API controllers inherit ActionController::API, but the app is not api_only,
     # because the admin dashboard (/admin) needs cookies, sessions, flash and assets.
