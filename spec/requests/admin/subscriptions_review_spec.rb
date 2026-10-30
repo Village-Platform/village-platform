@@ -43,4 +43,32 @@ RSpec.describe "Admin subscription review", type: :request do
     expect(response).to have_http_status(:found)
     expect(response.location).to include("/rails/active_storage/disk/")
   end
+
+  # A deleted account stays as a tombstone so its payment records keep their user.
+  context "when the owner has deleted their account" do
+    before do
+      subscription
+      Users::DeleteAccount.call(user: owner)
+    end
+
+    it "still lists and shows the subscription" do
+      get "/admin/subscriptions"
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(Users::DeleteAccount::DELETED_NAME)
+
+      get "/admin/subscriptions/#{subscription.id}"
+      expect(response).to have_http_status(:ok)
+    end
+
+    it "still shows the dashboard" do
+      get "/admin"
+      expect(response).to have_http_status(:ok)
+    end
+
+    it "can still reject the subscription" do
+      patch "/admin/subscriptions/#{subscription.id}/reject", params: { reason: "الحساب محذوف" }
+
+      expect(subscription.reload).to be_rejected
+    end
+  end
 end

@@ -4,6 +4,8 @@ class User < ApplicationRecord
                 admin_associations: %w[ firms articles subscriptions ]
 
   has_secure_password
+  # The default scope hides deleted users, and a deleted account stays as a tombstone that payment
+  # records still point at: every belongs_to reaching a User needs with_deleted: true.
   acts_as_paranoid
 
   # user        -> normal village resident

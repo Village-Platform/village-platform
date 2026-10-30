@@ -15,7 +15,7 @@ class Firm < ApplicationRecord
   enum :status, { pending: 0, active: 1, suspended: 2 }, default: :pending, validate: true
 
   belongs_to :category
-  belongs_to :owner, class_name: "User", inverse_of: :firms
+  belongs_to :owner, class_name: "User", inverse_of: :firms, with_deleted: true
 
   scope :search, ->(term) { where("firms.name ILIKE ?", "%#{sanitize_sql_like(term)}%") }
 

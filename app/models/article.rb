@@ -7,7 +7,7 @@ class Article < ApplicationRecord
 
   enum :kind, { news: 0, article: 1, announcement: 2 }, default: :news, validate: true
 
-  belongs_to :author, class_name: "User", inverse_of: :articles
+  belongs_to :author, class_name: "User", inverse_of: :articles, with_deleted: true
 
   scope :published, -> { where(published_at: ..Time.current) }
   scope :latest_first, -> { order(published_at: :desc, id: :desc) }

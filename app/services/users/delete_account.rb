@@ -18,7 +18,9 @@ module Users
       raise ArgumentError, "Super admins cannot delete their own account" if @user.super_admin?
 
       @user.with_lock do
-        @user.firms.destroy_all
+        # Firm is soft-deletable: destroy would only hide the rows, and the default scope would skip
+        # firms the owner had already deleted. Both kinds hold the user's contact details.
+        @user.firms.with_deleted.find_each(&:destroy_fully!)
         @user.notifications.delete_all
         @user.subscriptions.find_each do |subscription|
           subscription.payment_screenshot.purge if subscription.payment_screenshot.attached?

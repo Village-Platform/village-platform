@@ -37,6 +37,15 @@ RSpec.describe Users::DeleteAccount do
     expect(subscription.transaction_reference).to be_present # kept for reconciliation
   end
 
+  # Firm is soft-deletable, so the default scope would hide a firm that was only marked deleted.
+  it "removes the firm rows themselves, including ones the owner had already deleted" do
+    create(:firm, owner: user).destroy
+
+    described_class.call(user:)
+
+    expect(Firm.with_deleted.where(owner_id: user.id)).to be_empty
+  end
+
   it "frees the phone number so it can register again" do
     phone = user.phone
     described_class.call(user:)
