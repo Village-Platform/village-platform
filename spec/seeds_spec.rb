@@ -13,42 +13,39 @@ RSpec.describe "db/seeds.rb" do
     expect { Rails.application.load_seed }.to output.to_stdout
   end
 
-  it "creates demo firms that are visible in every category" do
+  it "imports the demo firms as visible listings" do
     seed!
 
-    expect(Firm.visible.count).to be >= 15
-    Category.find_each do |category|
+    expect(Firm.visible.count).to eq(79)
+    Category.where.not(name: [ "مواصلات" ]).find_each do |category|
       expect(Firm.visible.where(category:)).to exist, "no visible firm in #{category.name}"
     end
-    expect(Firm.pending).to exist
-    expect(Firm.suspended).to exist
+    expect(Firm.pending).to be_empty
+    expect(Firm.suspended).to be_empty
   end
 
-  it "creates news of every kind, a draft and a scheduled post" do
+  it "keeps the welcome announcement" do
     seed!
 
-    expect(Article.published.distinct.pluck(:kind)).to match_array(%w[news article announcement])
-    expect(Article.where(published_at: nil)).to exist
-    expect(Article.where(published_at: Time.current..)).to exist
+    expect(Article.count).to eq(1)
+    expect(Article.published).to contain_exactly(Article.find_by!(title: "مرحباً بكم في تطبيق أجهور الكبرى"))
+    expect(Article.first).to be_announcement
   end
 
-  it "creates subscriptions for the dashboard: current, expiring soon, pending and rejected" do
+  it "does not create fictional subscriptions" do
     seed!
 
-    expect(Subscription.current.count).to be >= 10
-    expect(Subscription.current.where(ends_at: ..7.days.from_now)).to exist
-    expect(Subscription.pending).to exist
-    expect(Subscription.rejected).to exist
+    expect(Subscription).to be_empty
   end
 
   it "imports the real places from Google Maps" do
     seed!
 
     real = Firm.where("description LIKE ?", "%خرائط جوجل%")
-    expect(real.count).to eq(51)
-    expect(real.active.count).to eq(46)
-    expect(real.pending.count).to eq(4)   # locality not verified
-    expect(real.suspended.count).to eq(1) # temporarily closed
+    expect(real.count).to eq(79)
+    expect(real.active.count).to eq(79)
+    expect(real.pending).to be_empty
+    expect(real.suspended).to be_empty
     expect(real.distinct.pluck(:owner_id)).to eq([ User.super_admin.first.id ])
 
     pharmacy = Firm.find_by!(name: "صيدليات العمري [ اجهور الكبري ]")

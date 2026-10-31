@@ -4,7 +4,7 @@ default: &default
       batch_size: 500
   workers:
     - queues: "*"
-      # Each forked process has its own pool of RAILS_MAX_THREADS connections; leave one spare.
+      # A worker needs threads + 2 connections (polling, heartbeat); config/database.yml sizes the pool.
       threads: <%= ENV.fetch("JOB_THREADS", 2) %>
       processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
       polling_interval: 1

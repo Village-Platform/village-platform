@@ -22,8 +22,17 @@ module Admin
     def show
       @current_subscription = @user.current_subscription
       @subscriptions = @user.subscriptions.includes(:subscription_plan).latest_first.limit(20)
-      @firms = @user.firms.with_deleted.includes(:category).order(:name)
+      @firms_pagy, @firms = pagy(:offset, @user.firms.with_deleted.includes(:category).order(:name),
+                                 request: pagination_request, limit: Pagination::DEFAULT_PER_PAGE,
+                                 client_limit: Pagination::MAX_PER_PAGE, limit_key: "firms_per_page",
+                                 page_key: "firms_page")
+      @devices_pagy, @devices = pagy(:offset, @user.devices.includes(:topic_subscriptions).order(last_seen_at: :desc, id: :desc),
+                                     request: pagination_request, limit: Pagination::DEFAULT_PER_PAGE,
+                                     client_limit: Pagination::MAX_PER_PAGE, limit_key: "devices_per_page",
+                                     page_key: "devices_page")
       @visible_ids = Firm.visible.where(id: @firms.map(&:id)).pluck(:id).to_set
+      @firm_count = @firms_pagy.count
+      @device_count = @devices_pagy.count
       @owners = User.where(role: %i[ firm_admin super_admin ]).where.not(id: @user.id).order(:name)
       @attachable_firms = Firm.includes(:owner).where.not(owner_id: @user.id).order(:name)
       # Super admins are unlimited; for everyone else the plan caps what they may add themselves.

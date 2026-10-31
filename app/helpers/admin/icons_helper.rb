@@ -9,6 +9,7 @@ module Admin
       articles: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/>',
       plans: '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
       users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.6c2.4.2 4.2 1.8 5 4.4"/>',
+      devices: '<rect x="6" y="3" width="12" height="18" rx="2"/><path d="M10 6h4M11 18h2"/>',
       logout: '<path d="M14 4h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-5"/><path d="M9 16l-4-4 4-4M5 12h10"/>',
       menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
       search: '<circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/>',

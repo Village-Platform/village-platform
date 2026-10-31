@@ -3,8 +3,8 @@ module Pagination
 
   include Pagy::Method
 
-  DEFAULT_PER_PAGE = 20
-  MAX_PER_PAGE = 50
+  DEFAULT_PER_PAGE = 12
+  MAX_PER_PAGE = 100
 
   private
 

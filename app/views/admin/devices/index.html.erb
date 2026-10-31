@@ -1,0 +1,32 @@
+<%= page_header "الأجهزة", subtitle: "تسجيلات التطبيق التي تستقبل الإشعارات" do %>
+  <%= link_to new_admin_device_path, class: "btn btn-gold" do %><%= icon(:plus, size: 16) %> إضافة جهاز<% end %>
+<% end %>
+
+<%= form_with url: admin_devices_path, method: :get, class: "flex flex-wrap gap-2 items-center mb-4" do |f| %>
+  <%= f.search_field :q, value: params[:q], placeholder: "ابحث بالمعرّف أو المستخدم...", class: "w-72 input", "aria-label": "بحث" %>
+  <%= f.select :platform, options_for_select(Device::PLATFORMS.map { |p| [p, p] }, params[:platform]), { include_blank: "كل المنصات" }, class: "input" %>
+  <%= button_tag type: "submit", class: "btn btn-ghost", name: nil do %><%= icon(:search, size: 16) %> بحث<% end %>
+<% end %>
+
+<div class="tbl">
+  <table>
+    <thead><tr><th>المستخدم</th><th>رمز الاشعارات</th><th>الإصدار</th><th>آخر ظهور</th><th>إجراءات</th></tr></thead>
+    <tbody>
+      <% @devices.each do |device| %>
+        <tr>
+          <td><%= device.user ? link_to(device.user.name, admin_user_path(device.user)) : badge("زائر") %></td>
+          <td class="rtl"><%= truncate(device.token, length: 32) %></td>
+          <td><%= device.app_version.presence || "—" %></td>
+          <td><%= fmt_time(device.last_seen_at) %></td>
+          <td class="actions">
+            <%= link_to admin_device_path(device), class: "btn btn-ghost btn-sm", title: "عرض" do %><%= icon(:eye, size: 14) %><% end %>
+            <%= link_to edit_admin_device_path(device), class: "btn btn-ghost btn-sm", title: "تعديل" do %><%= icon(:edit, size: 14) %><% end %>
+            <%= button_to admin_device_path(device), method: :delete, class: "btn btn-ghost btn-sm text-bad", title: "حذف", form: { data: { confirm: "حذف هذا الجهاز؟" } } do %><%= icon(:trash, size: 14) %><% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= empty_state("لا توجد أجهزة مسجلة.") if @devices.none? %>
+</div>
+<%= render "admin/shared/pagination", pagy: @pagy %>

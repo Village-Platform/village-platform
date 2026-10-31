@@ -95,6 +95,8 @@ RSpec.describe "Observability metrics", :metrics, type: :request do
       create(:subscription, subscription_plan: plan)
       create(:subscription, :current, subscription_plan: plan)
 
+      Observability::Gauges.reset!
+
       expect(metric_value("aghour.subscriptions.pending")).to eq(2)
       expect(metric_value("aghour.subscriptions.pending.oldest_age")).to be_within(60).of(2.days.to_i)
       expect(metric_value("aghour.subscriptions.current")).to eq(1)

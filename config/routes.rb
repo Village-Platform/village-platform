@@ -74,6 +74,7 @@ Rails.application.routes.draw do
     resources :topics do
       resources :members, only: %i[ create destroy ], controller: "topic_members"
     end
+    resources :devices
   end
 
   namespace :api do

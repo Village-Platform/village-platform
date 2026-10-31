@@ -1,7 +1,10 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  # Every process (Puma, and each Solid Queue process it forks) builds its own pool from this, so it
+  # fits the hungrier one: Puma's threads, or a worker's job threads + its polling and heartbeat
+  # threads. Pools open connections lazily, so the spare slots in Puma cost nothing.
+  max_connections: <%= [ ENV.fetch("RAILS_MAX_THREADS", 5).to_i, ENV.fetch("JOB_THREADS", 2).to_i + 2 ].max %>
   host: <%= ENV["DB_HOST"] %>
   username: <%= ENV["DB_USERNAME"] %>
   password: <%= ENV["DB_PASSWORD"] %>

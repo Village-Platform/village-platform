@@ -1,0 +1,12 @@
+<%= form_with model: [:admin, device], class: "form card" do |f| %>
+  <%= render "admin/shared/errors", record: device %>
+  <div class="form-grid">
+    <div class="field"><%= f.label :installation_id, "معرّف التثبيت" %><%= f.text_field :installation_id, required: true, dir: "ltr" %></div>
+    <div class="field"><%= f.label :platform, "المنصة" %><%= f.select :platform, Device::PLATFORMS.map { |p| [p, p] } %></div>
+    <div class="field full"><%= f.label :token, "رمز الإشعارات" %><%= f.text_field :token, required: true, dir: "ltr" %></div>
+    <div class="field"><%= f.label :user_id, "المستخدم" %><%= f.select :user_id, options_from_collection_for_select(users, :id, :name, device.user_id), { include_blank: "زائر" } %></div>
+    <div class="field"><%= f.label :locale, "اللغة" %><%= f.text_field :locale, dir: "ltr" %></div>
+    <div class="field"><%= f.label :app_version, "إصدار التطبيق" %><%= f.text_field :app_version, dir: "ltr" %></div>
+  </div>
+  <div class="form-actions"><%= f.submit "حفظ", class: "btn btn-gold" %><%= link_to "إلغاء", device.persisted? ? admin_device_path(device) : admin_devices_path, class: "btn btn-ghost" %></div>
+<% end %>

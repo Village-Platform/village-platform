@@ -1,8 +1,19 @@
 <%# Pagy builds these links from the request's own path and query string, so the text search,
-    status tab and advanced filters (f[...]) all survive a page change. %>
+    # status tab and advanced filters (f[...]) all survive a page change. %>
 <% if pagy.last > 1 %>
   <div class="pagination">
     <%== pagy.series_nav(aria_label: "الصفحات") %>
     <span><%= pagy.from %>–<%= pagy.to %> من <%= pagy.count %></span>
+    <% limit_key = pagy.options.fetch(:limit_key, "per_page") %>
+    <% page_key = pagy.options.fetch(:page_key, "page") %>
+    <%= form_with url: request.path, method: :get, class: "flex items-center gap-2" do %>
+      <% request.query_parameters.except(limit_key, page_key).each do |key, value| %>
+        <%= hidden_field_tag key, value %>
+      <% end %>
+      <%= select_tag limit_key,
+            options_for_select([ 12, 25, 75 ].map { |size| [ size, size ] }, pagy.limit),
+            class: "input text-xs", onchange: "this.form.submit()", aria: { label: "عدد السجلات في الصفحة" } %>
+      <%= hidden_field_tag page_key, 0 %>
+    <% end %>
   </div>
 <% end %>

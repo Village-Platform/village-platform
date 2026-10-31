@@ -22,8 +22,8 @@ RSpec.describe "Pagination", type: :request do
       expect(json["meta"]).to include("page" => 2)
     end
 
-    it "caps per_page at 50" do
-      expect(meta_for(per_page: 999)).to include("per_page" => 50)
+    it "caps per_page at 100" do
+      expect(meta_for(per_page: 999)).to include("per_page" => 100)
     end
 
     it "clamps a per_page of zero, below zero or garbage to 1" do

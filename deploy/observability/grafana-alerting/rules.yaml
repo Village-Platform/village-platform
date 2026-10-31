@@ -105,7 +105,7 @@ groups:
         execErrState: Error
         labels: { severity: warning }
         annotations:
-          summary: Requests are queueing for Active Record connections (pool = RAILS_MAX_THREADS).
+          summary: Requests are queueing for Active Record connections (pool = max(RAILS_MAX_THREADS, JOB_THREADS + 2)).
 
       - uid: aghour-telemetry-missing
         title: App is not exporting metrics

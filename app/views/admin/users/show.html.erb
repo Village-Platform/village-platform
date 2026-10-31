@@ -70,11 +70,11 @@
   <div class="card-header">
     <h2>الأنشطة التابعة</h2>
     <span class="text-[10px] text-muted">
-      <%= @firms.size %> نشاط<% if @firm_quota %> · الباقة تسمح بـ <%= @firm_quota %><% end %>
+      <%= @firm_count %> نشاط<% if @firm_quota %> · الباقة تسمح بـ <%= @firm_quota %><% end %>
     </span>
   </div>
 
-  <% if @firm_quota && @firms.reject(&:deleted?).size > @firm_quota %>
+  <% if @firm_quota && @user.firms.count > @firm_quota %>
     <p class="text-[11px] text-bad mb-2">تجاوز حد الباقة — لن يستطيع إضافة أنشطة جديدة بنفسه.</p>
   <% end %>
 
@@ -128,6 +128,7 @@
   <% else %>
     <%= empty_state("لا توجد أنشطة.") %>
   <% end %>
+  <%= render "admin/shared/pagination", pagy: @firms_pagy %>
 
   <% unless @user.deleted? %>
     <div class="form-actions">
@@ -145,6 +146,34 @@
       <% end %>
     </div>
   <% end %>
+</section>
+
+<section class="card mt">
+  <div class="card-header">
+    <h2>أجهزة المستخدم</h2>
+    <span class="text-[10px] text-muted"><%= @device_count %> جهاز</span>
+  </div>
+  <% if @devices.any? %>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>المنصة</th><th>الإصدار</th><th>اللغة</th><th>آخر ظهور</th><th></th></tr></thead>
+        <tbody>
+          <% @devices.each do |device| %>
+            <tr>
+              <td><%= link_to device.platform, admin_device_path(device), class: "cell-main" %></td>
+              <td><%= device.app_version.presence || "—" %></td>
+              <td><%= device.locale.presence || "—" %></td>
+              <td><%= fmt_time(device.last_seen_at) %></td>
+              <td class="actions"><%= link_to admin_device_path(device), class: "btn btn-ghost btn-sm", title: "عرض" do %><%= icon(:eye, size: 14) %><% end %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <%= empty_state("لا توجد أجهزة لهذا المستخدم.") %>
+  <% end %>
+  <%= render "admin/shared/pagination", pagy: @devices_pagy %>
 </section>
 
 <section class="card mt">

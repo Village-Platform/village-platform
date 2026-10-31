@@ -1,0 +1,15 @@
+<%= page_header "تفاصيل الجهاز", subtitle: "تفاصيل تسجيل التطبيق" do %>
+  <%= link_to admin_devices_path, class: "btn btn-ghost" do %><%= icon(:arrow_left, size: 16) %> كل الأجهزة<% end %>
+  <%= link_to edit_admin_device_path(@device), class: "btn btn-ghost" do %><%= icon(:edit, size: 16) %> تعديل<% end %>
+  <%= button_to admin_device_path(@device), method: :delete, class: "btn btn-danger", form: { data: { confirm: "حذف هذا الجهاز؟" } } do %><%= icon(:trash, size: 16) %> حذف<% end %>
+<% end %>
+<section class="card"><dl class="details">
+  <dt>المستخدم</dt><dd><%= @device.user ? link_to(@device.user.name, admin_user_path(@device.user)) : badge("زائر") %></dd>
+  <dt>رمز الإشعارات</dt><dd class="ltr"><%= @device.token %></dd>
+  <dt>المنصة</dt><dd><%= @device.platform %></dd>
+  <dt>إصدار التطبيق</dt><dd><%= @device.app_version.presence || "—" %></dd>
+  <dt>آخر ظهور</dt><dd><%= fmt_time(@device.last_seen_at) %></dd>
+</dl></section>
+<section class="card mt"><div class="card-header"><h2>المواضيع المشتركة</h2></div>
+  <% if @topics.any? %><ul><% @topics.each do |topic| %><li><%= link_to topic.name, admin_topic_path(topic) %></li><% end %></ul><% else %><%= empty_state("لا توجد اشتراكات في مواضيع.") %><% end %>
+</section>
