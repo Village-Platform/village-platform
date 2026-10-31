@@ -24,5 +24,3 @@
 # committing host output here shadows the load path and hides newly added assets.
 /public/assets
 
-# Firebase keys and configs (service-account private keys must never be committed).
-# /config/fcm/
