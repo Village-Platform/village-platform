@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+# Deploys the current commit to the single-node k3s server (see deploy/k8s/README.md).
+#
+#   bin/deploy                 build HEAD on the server, then roll it out
+#   bin/deploy rollback SHA    roll back to an image already on the server
+#   bin/deploy status          pods, the running image and the images kept on the node
+#
+# The server is DEPLOY_HOST (e.g. root@1.2.3.4), from the environment or .env.
+# Only committed, pushed code is deployed: the image is built from `git archive HEAD`.
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+if [[ -z "${DEPLOY_HOST:-}" && -f .env ]]; then
+  DEPLOY_HOST=$(sed -n 's/^DEPLOY_HOST=//p' .env | tail -1)
+fi
+: "${DEPLOY_HOST:?set DEPLOY_HOST (e.g. root@1.2.3.4) in the environment or .env}"
+
+APP_DIR=/opt/village-platform
+DEPLOY_DIR=/opt/village-deploy
+
+remote() { ssh -o BatchMode=yes "$DEPLOY_HOST" "$@"; }
+step() { printf '\n==> %s\n' "$*"; }
+
+# Points the server's manifests at an image tag and waits for the web pod to pass its probes.
+roll_out() {
+  local sha=$1
+  remote "k3s ctr images ls -q | grep -q 'village-platform:$sha\$'" ||
+    { echo "Image village-platform:$sha is not on the server." >&2; exit 1; }
+
+  step "Applying manifests with image village-platform:$sha"
+  tar -czf - deploy/k8s | remote "rm -rf $DEPLOY_DIR/deploy/k8s && mkdir -p $DEPLOY_DIR \
+    && tar -xzf - -C $DEPLOY_DIR \
+    && sed -i 's/newTag: .*/newTag: $sha/' $DEPLOY_DIR/deploy/k8s/kustomization.yaml \
+    && kubectl apply -k $DEPLOY_DIR/deploy/k8s"
+
+  step "Waiting for the rollout"
+  if ! remote "kubectl -n village rollout status deploy/web --timeout=6m"; then
+    echo "Rollout did not finish. Inspect: kubectl -n village get pods / logs deploy/web" >&2
+    echo "Roll back with: bin/deploy rollback ${PREVIOUS:-<sha>}" >&2
+    exit 1
+  fi
+}
+
+running_image() {
+  remote "kubectl -n village get deploy web -o jsonpath='{.spec.template.spec.containers[0].image}'" | sed 's/.*://'
+}
+
+deploy() {
+  # Untracked files are ignored: git archive never ships them anyway.
+  if [[ -n "$(git status --porcelain --untracked-files=no)" ]]; then
+    echo "Uncommitted changes; commit or stash first (only HEAD gets deployed)." >&2
+    exit 1
+  fi
+  git fetch --quiet origin
+  if [[ -z "$(git branch -r --contains HEAD)" ]]; then
+    echo "HEAD is not pushed to origin; push it so the deployed code is in shared history." >&2
+    exit 1
+  fi
+
+  local sha
+  sha=$(git rev-parse --short HEAD)
+  PREVIOUS=$(running_image)
+  echo "Deploying $sha ($(git log -1 --format=%s)) to $DEPLOY_HOST, replacing $PREVIOUS"
+
+  if remote "k3s ctr images ls -q | grep -q 'village-platform:$sha\$'"; then
+    step "Image village-platform:$sha already on the server, skipping the build"
+  else
+    step "Building village-platform:$sha on the server"
+    git archive --format=tar.gz HEAD | remote "rm -rf $APP_DIR && mkdir -p $APP_DIR \
+      && tar -xzf - -C $APP_DIR && cd $APP_DIR \
+      && docker build -f Dockerfile.vercel --build-arg APP_REVISION=$sha -t village-platform:$sha . \
+      && docker save village-platform:$sha | k3s ctr images import -"
+  fi
+
+  roll_out "$sha"
+  step "Deployed $sha. Roll back with: bin/deploy rollback $PREVIOUS"
+}
+
+case "${1:-deploy}" in
+  deploy) deploy ;;
+  rollback)
+    sha=${2:?usage: bin/deploy rollback SHA}
+    PREVIOUS=$(running_image)
+    roll_out "$sha"
+    step "Rolled back to $sha"
+    ;;
+  status)
+    remote "kubectl -n village get pods; echo; echo running: \$(kubectl -n village get deploy web \
+      -o jsonpath='{.spec.template.spec.containers[0].image}'); echo; k3s ctr images ls -q | grep village-platform"
+    ;;
+  *) sed -n '2,9p' "$0" | sed 's/^# \{0,1\}//'; exit 1 ;;
+esac

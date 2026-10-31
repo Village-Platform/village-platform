@@ -27,6 +27,18 @@ Keys: `SECRET_KEY_BASE`, `CRON_SECRET`, `POSTGRES_PASSWORD`, `SUPER_ADMIN_PASSWO
 
 ## Deploy a new version
 
+Set `DEPLOY_HOST=root@<server ip>` in `.env`, commit and push, then:
+
+```bash
+make deploy                    # bin/deploy: build HEAD on the server, apply, wait for the rollout
+make deploy-status             # pods, running image, images kept on the node
+make rollback SHA=<short sha>  # any image still listed by deploy-status
+```
+
+`bin/deploy` refuses uncommitted or unpushed changes (it ships `git archive HEAD`), skips the build when
+the image is already on the node, and only changes `newTag` in the server's copy of the manifests, so
+`kustomization.yaml` in the repo does not track what is live. What it runs, by hand:
+
 ```bash
 SHA=$(git rev-parse --short HEAD)
 git archive --format=tar.gz HEAD | ssh root@HOST "rm -rf /opt/village-platform && mkdir -p /opt/village-platform \
