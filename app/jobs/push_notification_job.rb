@@ -10,7 +10,7 @@ class PushNotificationJob < ApplicationJob
     device = Device.find_by(id: device_id)
     return unless notification && device && device.user_id == notification.user_id
 
-    Fcm.client.deliver(message_for(notification, device))
+    Fcm.client.send_to_token(device.token, payload_for(notification))
     record_push("ok")
   rescue Fcm::Unregistered
     device.destroy
@@ -23,9 +23,8 @@ class PushNotificationJob < ApplicationJob
 
   private
 
-  def message_for(notification, device)
-    Fcm::Message.build(
-      target: { token: device.token },
+  def payload_for(notification)
+    Fcm::Message.payload(
       title: notification.title,
       body: notification.body,
       data: notification.data.merge("notification_id" => notification.id)

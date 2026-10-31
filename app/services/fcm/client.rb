@@ -1,75 +1,125 @@
 require "fcm"
-require "googleauth"
 
 module Fcm
   # The adapter between the app and Google: callers see these methods and the Fcm::* errors only.
+  # Every request goes through the fcm gem; this class only turns its results into errors.
   #
-  # Sending goes through the fcm gem (FCM#send_v1, HTTP v1). The gem reports failures as a status
-  # hash instead of raising, and asks Google for a new access token on every send; both are fine
-  # here because a campaign is one topic send and a user has a handful of devices.
+  # The gem never raises for a failed request, it returns { status_code:, body:, headers: }, and it
+  # returns nil, without sending, when it dislikes a topic name or condition.
   #
-  # Topic membership does NOT use the gem: its topic methods call the Instance ID API, deprecated,
-  # closed to projects not onboarded before 2026-10-01 and turned down on 2027-09-29. It uses the
-  # topicSubscriptions REST API instead, one call per token, over Net::HTTP.
+  # Topic membership uses the gem's batch_topic_subscription, i.e. the legacy Instance ID API,
+  # which Google removes on 2027-09-29 ("Manage topics" in the FCM docs). Before then, move
+  # subscribe/unsubscribe to the topicSubscriptions REST API or a gem version that uses it.
   #
   # FCM_SERVICE_ACCOUNT_JSON holds the service-account key itself, or a path to it (relative to the
   # app root, e.g. config/fcm/dev/service-account.json, which is git-ignored). Without it
   # (development without Firebase, CI) every call is a logged no-op.
   class Client
-    BASE_URL = "https://fcm.googleapis.com/v1/projects"
-    SCOPE = "https://www.googleapis.com/auth/firebase.messaging"
+    MAX_CONDITION_TOPICS = 5
+    MAX_BATCH_TOKENS = 1000 # Instance ID batchAdd / batchRemove limit
 
-    DEFAULT_TRANSPORT = ->(uri, request) {
-      Net::HTTP.start(uri.host, uri.port, use_ssl: true, open_timeout: 5, read_timeout: 10) { |http| http.request(request) }
-    }
-
-    def initialize(credentials_json: ENV["FCM_SERVICE_ACCOUNT_JSON"].presence, transport: DEFAULT_TRANSPORT,
-                   token_source: nil, sender: nil)
+    def initialize(credentials_json: ENV["FCM_SERVICE_ACCOUNT_JSON"].presence, sender: nil)
       @credentials_json = load_credentials(credentials_json)
       @project_id = JSON.parse(@credentials_json).fetch("project_id") if @credentials_json
-      @transport = transport
-      @token_source = token_source || method(:oauth_token)
       @sender = sender
-      @mutex = Mutex.new
     end
 
     def enabled?
       @credentials_json.present?
     end
 
-    # Returns FCM's message name ("projects/p/messages/123"), or "disabled".
-    def deliver(message)
-      return disabled("deliver") unless enabled?
+    # The send_to_* methods take a payload from Fcm::Message.payload and return FCM's message name
+    # ("projects/p/messages/123"), or "disabled". Failures raise Fcm::* errors.
 
-      result = translate_errors { sender.send_v1(message) }
-      # The gem returns nil, without sending, when it dislikes a topic name or condition.
-      raise InvalidArgument, "FCM message rejected by the fcm gem before sending" if result.nil?
-
-      code = result[:status_code].to_i
-      body = result[:body].to_s
-      raise error_for(code, body, header(result[:headers], "Retry-After")) unless code.between?(200, 299)
-
-      JSON.parse(body).fetch("name")
+    def send_to_token(token, payload)
+      send_message { sender.send_v1({ token: }.merge(payload)) }
     end
 
-    # Both return the tokens FCM reported UNREGISTERED; the caller deletes those devices. Nothing
-    # else ever marks a token dead: a 400 is logged and the token kept, and a 404 without that code
-    # (a wrong path, say) raises, so a mistake on our side cannot wipe the devices table.
-    def subscribe(topic_key, tokens)
-      each_token(tokens) do |token|
-        path = "#{BASE_URL}/#{@project_id}/registrations/#{encode(token)}/topicSubscriptions?topic_name=#{encode(topic_key)}"
-        request(Net::HTTP::Post, path, {}, ok: [ 409 ]) # 409: already subscribed
+    # HTTP v1 has no multicast (the legacy registration_ids and the batch endpoint are gone), so
+    # this is one request per token. It never raises for one token: a retry of the whole list
+    # would re-send to the tokens that already got it. Only AuthError stops it, since no other
+    # token would get through either.
+    def send_to_tokens(tokens, payload)
+      tokens.uniq.each_with_object(TokensResult.empty) do |token, result|
+        result.sent[token] = send_to_token(token, payload)
+      rescue AuthError
+        raise
+      rescue Unregistered
+        result.unregistered << token
+      rescue Error => e
+        result.failed[token] = e
       end
+    end
+
+    def send_to_topic(topic, payload)
+      send_message { sender.send_to_topic(topic, payload) }
+    end
+
+    # One topic is addressed directly; 2 to 5 become a condition (:or reaches anyone in any of them,
+    # :and only those in all of them).
+    def send_to_topics(topics, payload, operator: :or)
+      topics = topics.uniq
+      unless topics.size.between?(1, MAX_CONDITION_TOPICS)
+        raise ArgumentError, "FCM sends to 1 to #{MAX_CONDITION_TOPICS} topics at once, got #{topics.size}"
+      end
+      return send_to_topic(topics.first, payload) if topics.one?
+
+      send_to_condition(Message.condition_for(topics, operator:), payload)
+    end
+
+    # Any condition FCM accepts, e.g. "'news' in topics && !('owners' in topics)".
+    def send_to_condition(condition, payload)
+      send_message { sender.send_to_topic_condition(condition, payload) }
+    end
+
+    # Both return the tokens FCM reported NOT_FOUND (no longer registered); the caller deletes those
+    # devices. Any other per-token error is logged and the token kept, so a mistake on our side
+    # cannot wipe the devices table.
+    def subscribe(topic_key, tokens)
+      manage_topic(tokens) { |batch| sender.batch_topic_subscription(topic_key, batch) }
     end
 
     def unsubscribe(topic_key, tokens)
-      each_token(tokens) do |token|
-        path = "#{BASE_URL}/#{@project_id}/registrations/#{encode(token)}/topicSubscriptions/#{encode(topic_key)}"
-        request(Net::HTTP::Delete, path, nil, ok: [ 404 ]) # 404: was not subscribed
-      end
+      manage_topic(tokens) { |batch| sender.batch_topic_unsubscription(topic_key, batch) }
     end
 
     private
+
+    def send_message
+      return disabled("send") unless enabled?
+
+      JSON.parse(checked { yield }[:body]).fetch("name")
+    end
+
+    # The batch answers 200 with one result per token, in order: {} or { "error" => "NOT_FOUND" }.
+    def manage_topic(tokens)
+      unless enabled?
+        disabled("topics")
+        return []
+      end
+
+      tokens.each_slice(MAX_BATCH_TOKENS).flat_map do |batch|
+        results = JSON.parse(checked { yield batch }[:body].presence || "{}").fetch("results", [])
+        batch.zip(results).filter_map do |token, result|
+          error = result&.dig("error")
+          next token if error == "NOT_FOUND"
+
+          Rails.logger.warn("[Fcm] topic call refused, token kept: #{error}") if error
+          nil
+        end
+      end
+    end
+
+    # Runs a gem call and raises the matching Fcm::* error unless it succeeded.
+    def checked
+      result = translate_errors { yield }
+      raise InvalidArgument, "FCM message rejected by the fcm gem before sending" if result.nil?
+
+      code = result[:status_code].to_i
+      raise error_for(code, result[:body].to_s, header(result[:headers], "Retry-After")) unless code.between?(200, 299)
+
+      result
+    end
 
     # Fails at boot-time use with an actionable message rather than with an obscure OAuth error on
     # the first push. The usual mistake is the Android google-services.json, which cannot send.
@@ -92,32 +142,6 @@ module Fcm
       full.read
     end
 
-    def each_token(tokens)
-      unless enabled?
-        disabled("topics")
-        return []
-      end
-
-      tokens.each_with_object([]) do |token, rejected|
-        yield token
-      rescue Unregistered
-        rejected << token
-      rescue InvalidArgument => e
-        Rails.logger.warn("[Fcm] topic call refused, token kept: #{e.message}")
-      end
-    end
-
-    def request(klass, url, payload, ok: [])
-      uri = URI(url)
-      request = klass.new(uri, "Authorization" => "Bearer #{@token_source.call}", "Content-Type" => "application/json")
-      request.body = payload.to_json if payload
-      response = translate_errors { @transport.call(uri, request) }
-      code = response.code.to_i
-      return response if code.between?(200, 299) || ok.include?(code)
-
-      raise error_for(code, response.body, response["Retry-After"])
-    end
-
     def error_for(code, body, retry_after_header)
       error_code = parse_error_code(body)
       message = "FCM #{code} #{error_code}".strip
@@ -136,7 +160,8 @@ module Fcm
                        Errno::ECONNREFUSED, Errno::ECONNRESET, Errno::EHOSTUNREACH, OpenSSL::SSL::SSLError ].freeze
 
     # Everything that can go wrong on the wire becomes an Fcm::* error, so jobs only handle those.
-    # Signet raises AuthorizationError for a revoked or wrong key (invalid_grant).
+    # The gem fetches its access token through Signet, which raises AuthorizationError for a revoked
+    # or wrong key (invalid_grant).
     def translate_errors
       yield
     rescue *NETWORK_ERRORS, Signet::RemoteServerError, Signet::UnexpectedStatusError => e
@@ -145,17 +170,22 @@ module Fcm
       raise AuthError, "#{e.class}: #{e.message}"
     end
 
-    # The FCM-specific code is in error.details[] (type FcmError), not in error.status.
+    # HTTP v1 puts the FCM-specific code in error.details[] (type FcmError); the Instance ID API
+    # answers { "error": "<CODE>" }.
     def parse_error_code(body)
-      details = JSON.parse(body.to_s).dig("error", "details") || []
-      details.filter_map { |detail| detail["errorCode"] }.first
+      error = JSON.parse(body.to_s)["error"]
+      return error if error.is_a?(String)
+
+      (error&.dig("details") || []).filter_map { |detail| detail["errorCode"] }.first
     rescue JSON::ParserError
       nil
     end
 
-    # Built lazily: the gem reads the key once and keeps its authorizer.
+    # Built lazily. Kept-alive connections are per thread (Net::HTTP is not thread-safe), so each
+    # Puma or Solid Queue thread reuses its own TLS connection to FCM.
     def sender
-      @sender ||= FCM.new(StringIO.new(@credentials_json), @project_id, timeout: 10, open_timeout: 5)
+      @sender ||= FCM.new(StringIO.new(@credentials_json), @project_id,
+                          timeout: 10, open_timeout: 5, keep_alive_connections: true)
     end
 
     # Faraday's headers are case-insensitive; a plain Hash (specs) is not.
@@ -163,21 +193,6 @@ module Fcm
       return if headers.nil?
 
       headers[name] || headers.find { |key, _| key.to_s.casecmp?(name) }&.last
-    end
-
-    def encode(value)
-      ERB::Util.url_encode(value)
-    end
-
-    # Access tokens last an hour; refresh a minute early. Puma is threaded, hence the mutex.
-    def oauth_token
-      @mutex.synchronize do
-        @credentials ||= Google::Auth::ServiceAccountCredentials.make_creds(
-          json_key_io: StringIO.new(@credentials_json), scope: SCOPE
-        )
-        @credentials.fetch_access_token! if @credentials.access_token.nil? || @credentials.expires_within?(60)
-        @credentials.access_token
-      end
     end
 
     def disabled(action)

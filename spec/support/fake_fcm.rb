@@ -1,4 +1,5 @@
-# Stands in for Fcm::Client in every example: records what would have been sent to Google.
+# Stands in for Fcm::Client in every example: records what would have been sent to Google, each
+# delivery a full message (the payload plus its token:, topic: or condition:).
 #
 #   Fcm.client.deliveries.last[:data]          # => { "screen" => "article", ... }
 #   Fcm.client.subscribed["news"]              # => [ "token" ]
@@ -25,18 +26,47 @@ class FakeFcm
     @rejected_tokens.concat(tokens)
   end
 
-  def deliver(message)
-    raise @failures.shift if @failures.any?
+  def send_to_token(token, payload) = deliver(token:, **payload)
 
-    @deliveries << message
-    "projects/test/messages/#{@deliveries.size}"
+  # Same contract as the client: per-token outcome, only AuthError raises.
+  def send_to_tokens(tokens, payload)
+    tokens.uniq.each_with_object(Fcm::TokensResult.empty) do |token, result|
+      next result.unregistered << token if @rejected_tokens.include?(token)
+
+      result.sent[token] = send_to_token(token, payload)
+    rescue Fcm::AuthError
+      raise
+    rescue Fcm::Unregistered
+      result.unregistered << token
+    rescue Fcm::Error => e
+      result.failed[token] = e
+    end
   end
+
+  def send_to_topic(topic, payload) = deliver(topic:, **payload)
+
+  def send_to_topics(topics, payload, operator: :or)
+    topics = topics.uniq
+    raise ArgumentError, "1 to 5 topics" unless topics.size.between?(1, Fcm::Client::MAX_CONDITION_TOPICS)
+    return send_to_topic(topics.first, payload) if topics.one?
+
+    send_to_condition(Fcm::Message.condition_for(topics, operator:), payload)
+  end
+
+  def send_to_condition(condition, payload) = deliver(condition:, **payload)
 
   def subscribe(topic_key, tokens) = topic_call(@subscribed, topic_key, tokens)
 
   def unsubscribe(topic_key, tokens) = topic_call(@unsubscribed, topic_key, tokens)
 
   private
+
+  def deliver(message)
+    raise @failures.shift if @failures.any?
+
+    @deliveries << message
+    "projects/test/messages/#{@deliveries.size}"
+  end
 
   def topic_call(log, topic_key, tokens)
     raise @failures.shift if @failures.any?

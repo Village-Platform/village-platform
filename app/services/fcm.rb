@@ -22,6 +22,12 @@ module Fcm
     end
   end
 
+  # Outcome of Client#send_to_tokens, per token: sent ({ token => message name }), unregistered
+  # (delete those devices) and failed ({ token => Fcm::Error }; Retryable ones can be tried again).
+  TokensResult = Data.define(:sent, :unregistered, :failed) do
+    def self.empty = new(sent: {}, unregistered: [], failed: {})
+  end
+
   class << self
     attr_writer :client
 

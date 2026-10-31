@@ -55,13 +55,12 @@ class DeliverCampaignJob < ApplicationJob
   end
 
   def push(campaign, destination)
-    message = Fcm::Message.build(
-      target: Fcm::Message.target_for_topics(campaign.topics.pluck(:key)),
+    payload = Fcm::Message.payload(
       title: campaign.title,
       body: campaign.body,
       data: destination.to_data.merge("campaign_id" => campaign.id)
     )
-    campaign.update!(fcm_message_name: Fcm.client.deliver(message))
+    campaign.update!(fcm_message_name: Fcm.client.send_to_topics(campaign.topics.pluck(:key), payload))
     record_push("ok")
   end
 

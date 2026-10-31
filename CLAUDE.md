@@ -158,10 +158,13 @@ These are easy to break from a single file and are covered by request specs:
 - **Devices belong to an install, not a token.** `devices.installation_id` is stable, `token`
   rotates. An anonymous request can never modify a device that has a user (`Devices::OwnershipError`
   → 403); logout calls `detach`, which also pulls the token out of that user's topics.
-- **All Google calls go through `Fcm.client`** (`Fcm::Client`: sends via the `fcm` gem, topic
-  membership via the topicSubscriptions REST API — the gem's topic methods use the deprecated
-  Instance ID API). Specs get `FakeFcm` automatically (`spec/support/fake_fcm.rb`); nothing in the
-  suite reaches the network. No `FCM_SERVICE_ACCOUNT_JSON` = logged no-op.
+- **All Google calls go through `Fcm.client`** (`Fcm::Client`, a thin layer over the `fcm` gem that
+  turns its status hashes into `Fcm::*` errors): `send_to_token(s)`, `send_to_topic(s)`,
+  `send_to_condition`, and topic membership through the gem's `batch_topic_subscription`.
+  **Deadline:** that is the legacy Instance ID API, removed by Google on 2027-09-29; move
+  `subscribe`/`unsubscribe` to the topicSubscriptions REST API before then. Specs get `FakeFcm`
+  automatically (`spec/support/fake_fcm.rb`); nothing in the suite reaches the network. No
+  `FCM_SERVICE_ACCOUNT_JSON` = logged no-op.
 - **Payment screenshots are never public.** Controllers authorize first, then redirect to a URL that
   expires in 5 minutes (`ScreenshotRedirect`). Max 4MB, PNG/JPEG/WEBP.
 - **Payment account numbers live in ENV** (`INSTAPAY_ADDRESS`, `VODAFONE_CASH_NUMBER`), surfaced by
