@@ -25,4 +25,4 @@
 /public/assets
 
 # Firebase keys and configs (service-account private keys must never be committed).
-/config/fcm/
+# /config/fcm/

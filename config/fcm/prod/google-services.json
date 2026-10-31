@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "344587732104",
+    "project_id": "aghour-app",
+    "storage_bucket": "aghour-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344587732104:android:d5d366f4a4a7682fc30b3d",
+        "android_client_info": {
+          "package_name": "com.aghourservices"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "344587732104-tv7ov75kba957qtsmk3tk1gn7461bdkv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuqo8CAeue4IVAdhGwJtdofArV_mzxdV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "344587732104-tv7ov75kba957qtsmk3tk1gn7461bdkv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-6023673239780727~5080774708"
+    }
+  ],
+  "configuration_version": "1"
+}
